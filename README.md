@@ -7,9 +7,9 @@ Orbital (Independent Software Development Project) is NUS School of Computing se
 Our Android app to help users seamlessly connect with one another
 
 **Key Features:**
-⋅⋅* Matching Algorithm
-⋅⋅* Forum
-⋅⋅* Direct Messages
-⋅⋅* Telegram Functionality
+* Matching Algorithm
+* Forum
+* Direct Messages
+* Telegram Functionality
 
 [Documentation can be found here](https://docs.google.com/document/d/1KQt-ke-O7QabJMdp9oJYTGkmXdK-TGQFx0Jig3PgIJ0/edit?usp=sharing)
