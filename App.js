@@ -26,60 +26,6 @@ if (!firebase.apps.length) {
   firebase.initializeApp(FIREBASE_CONFIG)
 }
 
-const Tab = createMaterialBottomTabNavigator();
-
-function MyTabs() {
-  return (
-    <Tab.Navigator
-      initialRouteName="Home"
-      activeColor="#aaf0d1"
-      labelStyle={{ fontSize: 12 }}
-      barStyle={{ backgroundColor: '#00203f' }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={DashBoard}
-        options={{
-          tabBarLabel: 'Home',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={28} style={{marginTop: -2, marginRight:1, width: 28}} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Forum"
-        component={ForumScreen}
-        options={{
-          tabBarLabel: 'Forum',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="forum" color={color} size={26} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Friends"
-        component={FriendsScreen}
-        options={{
-          tabBarLabel: 'Friends',
-          tabBarIcon: ({ color }) => (
-            <FontAwesome5 name="user-friends" color={color} size={24} style={{width: 34}} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          tabBarLabel: 'Profile',
-          tabBarIcon: ({ color }) => (
-            <FontAwesome5 name="user" color={color} size={24} solid />
-          ),
-        }}
-    />
-    </Tab.Navigator>
-  );
-}
-
 export default function App() {
   return (
     <Provider theme={theme}>
@@ -105,8 +51,5 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
-    <NavigationContainer>
-      <MyTabs />
-    </NavigationContainer>
   );
 }
