@@ -4,7 +4,6 @@ import Logo from '../components/Logo'
 import Header from '../components/Header'
 import Paragraph from '../components/Paragraph'
 import Button from '../components/Button'
-import NavigationBar from '../components/NavigationBar'
 import { logoutUser } from '../api/auth'
 
 export default function HomeScreen() {

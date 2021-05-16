@@ -26,7 +26,8 @@ function MyTabs() {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={28} style={{marginTop: -2, marginRight:1, width: 28}} />
+            <MaterialCommunityIcons name="home" color={color} size={28}
+            style={{marginTop: -2, marginRight:1, width: 28}} />
           ),
         }}
       />
@@ -69,11 +70,3 @@ export default function Dashboard() {
         <MyTabs />
     );
 }
-
-//export default function Dashboard() {
-//    return (
-//      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//        <Text>Dummy Dashboard</Text>
-//      </View>
-//    );
-//}

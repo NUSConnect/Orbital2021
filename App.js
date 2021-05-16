@@ -14,11 +14,7 @@ import {
   LoginScreen,
   RegisterScreen,
   ResetPasswordScreen,
-  Dashboard,
-  HomeScreen,
-  ForumScreen,
-  FriendsScreen,
-  ProfileScreen
+  Dashboard
 } from './src/screens'
 import { FIREBASE_CONFIG } from './src/core/config'
 
