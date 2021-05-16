@@ -1,5 +1,5 @@
 import React from 'react'
-import { ActivityIndicator } from 'react-native'
+import { ActivityIndicator, StackActions } from 'react-native'
 import firebase from 'firebase/app'
 import Background from '../components/Background'
 import { theme } from '../core/theme'
@@ -13,7 +13,7 @@ export default function AuthLoadingScreen({ navigation }) {
         routes: [{ name: 'Dashboard' }],
       })
     } else {
-      // User is not logged in
+      // User is not logged in: reset stack & reset navigation to start page
       navigation.reset({
         index: 0,
         routes: [{ name: 'StartScreen' }],
