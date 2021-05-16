@@ -15,6 +15,7 @@ import {
   RegisterScreen,
   ResetPasswordScreen,
   Dashboard,
+  HomeScreen,
   ForumScreen,
   FriendsScreen,
   ProfileScreen

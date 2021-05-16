@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons, FontAwesome5 } from 'react-native-vector-icons';
 import {
@@ -67,9 +66,14 @@ function MyTabs() {
 
 export default function Dashboard() {
     return (
-//      <NavigationContainer>
-//      <Stack
         <MyTabs />
-//      </NavigationContainer>
     );
 }
+
+//export default function Dashboard() {
+//    return (
+//      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+//        <Text>Dummy Dashboard</Text>
+//      </View>
+//    );
+//}
