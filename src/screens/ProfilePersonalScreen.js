@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet,Text,View, Image } from 'react-native';
+import { StyleSheet,Text,View, Image, SafeAreaView } from 'react-native';
 import Button from '../components/Button';
 import { theme } from '../core/theme';
 
 export default function ProfilePersonalScreen() {
     return (
+    <SafeAreaView>
       <View style={styles.container}>
          <View style={styles.header}>
             <View style={styles.headerContent}>
@@ -26,6 +27,7 @@ export default function ProfilePersonalScreen() {
             </Button>
          </View>
       </View>
+      </SafeAreaView>
     );
 }
 
