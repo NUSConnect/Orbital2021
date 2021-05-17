@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView, Text, StyleSheet, View, FlatList } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 
-const App = () => {
+export default function FriendsScreen() {
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
@@ -94,5 +94,3 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
-export default App;
