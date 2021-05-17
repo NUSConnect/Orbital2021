@@ -46,8 +46,3 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
-
-//        refreshControl={<RefreshControl
-//                        colors={['#9Bd35A', '#689F39']}
-//                        refreshing={this.props.refreshing}
-//                        onRefresh={this._onRefresh.bind(this)} />}
