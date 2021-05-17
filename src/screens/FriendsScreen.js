@@ -68,19 +68,26 @@ export default function FriendsScreen() {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <SearchBar
-          round
+          inputStyle={{backgroundColor: 'black'}}
+          inputContainerStyle={{backgroundColor: 'white'}}
+          containerStyle={{backgroundColor: 'white', borderWidth: 1, borderRadius: 5}}
           searchIcon={{ size: 24 }}
           onChangeText={(text) => searchFilterFunction(text)}
           onClear={(text) => searchFilterFunction('')}
           placeholder="Type Here..."
           value={search}
+          inputStyle={{height:40}}
         />
-        <FlatList
-          data={filteredDataSource}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          renderItem={ItemView}
-        />
+
+        <View style={styles.flatListWindow}>
+            <FlatList
+                data={filteredDataSource}
+                keyExtractor={(item, index) => index.toString()}
+                ItemSeparatorComponent={ItemSeparatorView}
+                renderItem={ItemView}
+            />
+        </View>
+
       </View>
     </SafeAreaView>
   );
@@ -92,5 +99,9 @@ const styles = StyleSheet.create({
   },
   itemStyle: {
     padding: 10,
+  },
+  flatListWindow: {
+  //done via trial and error, check
+    paddingBottom:140,
   },
 });
