@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, View, SafeAreaView, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {
-  HomeScreen,
+  ProfilePersonalScreen,
   ProfileForumScreen,
   ProfileCommentsScreen
 } from './'
@@ -13,7 +13,7 @@ function MyTabs() {
   return (
     <SafeAreaView style={styles.safe}>
     <Tab.Navigator>
-      <Tab.Screen name="Personal" component={HomeScreen} />
+      <Tab.Screen name="Personal" component={ProfilePersonalScreen} />
       <Tab.Screen name="Posts" component={ProfileForumScreen} />
       <Tab.Screen name="Comments" component={ProfileCommentsScreen} />
     </Tab.Navigator>
