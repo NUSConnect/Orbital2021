@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, SafeAreaView, FlatList, View, Image, TouchableOpacity } from "react-native";
 
-export default class ProfileCommentsScreen extends React.Component {
+export default class ProfileForumScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

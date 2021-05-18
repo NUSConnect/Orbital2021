@@ -6,6 +6,8 @@ import Paragraph from '../components/Paragraph'
 import Button from '../components/Button'
 import { logoutUser } from '../api/auth'
 
+// currently unused
+
 export default function Logout() {
   return (
     <Background>

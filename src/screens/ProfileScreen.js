@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, SafeAreaView, StyleSheet } from 'react-native';
+import { Text, View, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {
   ProfilePersonalScreen,
@@ -30,5 +30,6 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   safe: {
     flex:1,
+    marginTop: StatusBar.currentHeight || 0,
   },
 })
