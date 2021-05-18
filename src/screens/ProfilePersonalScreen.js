@@ -1,29 +1,35 @@
 import React, { Component } from 'react';
-import { StyleSheet,Text,View, Image, SafeAreaView } from 'react-native';
+import { TouchableOpacity, StyleSheet,Text,View, Image, SafeAreaView } from 'react-native';
+import { logoutUser } from '../api/auth'
 import Button from '../components/Button';
 import { theme } from '../core/theme';
+import firebase from 'firebase/app';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import AccountSettingsScreen from './AccountSettingsScreen';
 
-export default function ProfilePersonalScreen() {
+export default function ProfilePersonalScreen({navigation}) {
     return (
     <SafeAreaView>
+
       <View style={styles.container}>
          <View style={styles.header}>
             <View style={styles.headerContent}>
                 <Image style={styles.avatar}
                   source={require('../assets/logo.png')}/>
 
-                <Text style={styles.name}>Name</Text>
-                <Text style={styles.userInfo}>email</Text>
+                <Text style={styles.name}>{firebase.auth().currentUser.displayName}</Text>
+                <Text style={styles.userInfo}>{firebase.auth().currentUser.email}</Text>
             </View>
          </View>
 
          <View style={styles.body}>
-            <Button mode="contained">
-               Settings
+            <Button mode="outlined" onPress={() => navigation.navigate('AccountSettingsScreen')} >
+                Account Settings
             </Button>
 
-            <Button mode="contained">
-               Test
+            <Button mode="outlined" onPress={logoutUser}>
+                Logout
             </Button>
          </View>
       </View>
