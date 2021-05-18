@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, Text, StyleSheet, View, FlatList } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, View, FlatList, StatusBar } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 
 export default function FriendsScreen() {
@@ -65,7 +65,7 @@ export default function FriendsScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, marginTop: StatusBar.currentHeight || 0 }}>
       <View style={styles.container}>
         <SearchBar
           inputStyle={{backgroundColor: 'black'}}

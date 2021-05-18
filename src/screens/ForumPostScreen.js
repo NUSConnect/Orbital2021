@@ -2,14 +2,16 @@ import React, { useEffect,useState } from 'react';
 import { View, Text, StyleSheet, TextInput, SafeAreaView, } from 'react-native';
 import CancelButton from '../components/CancelButton';
 import SubmitButton from '../components/SubmitButton';
-import HomePostsScreen from './HomePostsScreen';
+import ForumRecommendedScreen from './ForumRecommendedScreen';
 
-export default class MainPostScreen extends React.Component {
+// Not used yet
+
+export default class ForumPostScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       text: "Type something",
-      HOME_PAGE: 'HomePostsScreen',
+      HOME_PAGE: 'ForumRecommendedScreen',
     };
   }
 
@@ -19,13 +21,12 @@ export default class MainPostScreen extends React.Component {
         <SafeAreaView>
           <View style={styles.container}>
               <Text style={styles.title}>
-                Create a Post
+                -Create a Post
               </Text>
               <TextInput
                 style={styles.input}
                 onChangeText={(text) => this.setState({ text })}
                 value={this.state.text}
-                multiline={true}
               />
               <View style={styles.buttons}>
                 <CancelButton goBack = {() => navigation.navigate(this.state.HOME_PAGE)}/>
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00203f',
     color: '#aaf0d1',
     fontSize: 30,
-    paddingLeft: 15,
+    marginLeft: 0
   },
   input: {
     flex: 0,

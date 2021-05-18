@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import {
-Text, Image, View, FlatList, SafeAreaView, StyleSheet, StatusBar, RefreshControl, TouchableOpacity
-} from 'react-native';
-import MainPostScreen from './MainPostScreen';
-import PostButton from '../components/PostButton';
+import React from "react";
+import { StyleSheet, SafeAreaView, FlatList, View, Image, TouchableOpacity } from "react-native";
 
-export default class HomePostsScreen extends React.Component {
+export default class ForumFavouritesScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -46,13 +42,8 @@ export default class HomePostsScreen extends React.Component {
     }
 
     render() {
-      const { navigation } = this.props;
       return (
         <SafeAreaView>
-          <PostButton
-            style={{ height: 100, marginTop: 10 }}
-            onPress={() => navigation.navigate('MainPostScreen')}>
-          </PostButton>
           <FlatList
             data={this.state.data}
             renderItem={item => this.renderItemComponent(item)}

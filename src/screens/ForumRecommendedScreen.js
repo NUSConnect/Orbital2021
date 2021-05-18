@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-Text, Image, View, FlatList, SafeAreaView, StyleSheet, StatusBar, RefreshControl, TouchableOpacity
+  Text, Image, View, FlatList, SafeAreaView, StyleSheet, StatusBar, RefreshControl, TouchableOpacity
 } from 'react-native';
-import MainPostScreen from './MainPostScreen';
-import PostButton from '../components/PostButton';
+import ForumCreationScreen from './ForumCreationScreen';
 
-export default class HomePostsScreen extends React.Component {
+export default class ForumRecommendedScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -49,10 +48,18 @@ export default class HomePostsScreen extends React.Component {
       const { navigation } = this.props;
       return (
         <SafeAreaView>
-          <PostButton
-            style={{ height: 100, marginTop: 10 }}
-            onPress={() => navigation.navigate('MainPostScreen')}>
-          </PostButton>
+          <Text style={styles.createForum}>
+            Can't find what you're looking for?
+          </Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              onPress={() => navigation.navigate('ForumCreationScreen')}>
+                <Text style={styles.buttonText}>
+                  CREATE A NEW FORUM
+                </Text>
+            </TouchableOpacity>
+          </View>
           <FlatList
             data={this.state.data}
             renderItem={item => this.renderItemComponent(item)}
@@ -72,8 +79,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: 6,
   },
+  createForum: {
+    fontSize: 20,
+    color: '#000000',
+    paddingLeft: 20,
+    paddingTop: 10,
+  },
   image: {
     height: '100%',
     borderRadius: 4,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'baseline',
+  },
+  buttonStyle: {
+    height: 50,
+    backgroundColor: '#6495ed',
+    justifyContent: 'center',
+    alignSelf: 'flex-start',
+    borderRadius: 50,
+  },
+  buttonText: {
+    fontSize: 20,
+    color: 'white',
+    padding: 10,
   },
 });
