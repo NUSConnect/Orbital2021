@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet,Text,View, Image, SafeAreaView } from 'react-native';
-import { User } from '../api/auth'
+import { TouchableOpacity, StyleSheet,Text,View, Image, SafeAreaView } from 'react-native';
+import { logoutUser } from '../api/auth'
 import Button from '../components/Button';
 import { theme } from '../core/theme';
 import firebase from 'firebase/app';
 
-export default function ProfilePersonalScreen() {
+export default function ProfilePersonalScreen({ navigation }) {
+
     return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -20,12 +21,12 @@ export default function ProfilePersonalScreen() {
          </View>
 
          <View style={styles.body}>
-            <Button mode="contained">
-               Settings
+            <Button mode="outlined">
+                Account Settings
             </Button>
 
-            <Button mode="contained">
-               Test
+            <Button mode="outlined" onPress={logoutUser}>
+                Logout
             </Button>
          </View>
       </View>
