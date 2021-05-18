@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet,Text,View, Image, SafeAreaView } from 'react-native';
+import { User } from '../api/auth'
 import Button from '../components/Button';
 import { theme } from '../core/theme';
+import firebase from 'firebase/app';
 
 export default function ProfilePersonalScreen() {
     return (
@@ -12,8 +14,8 @@ export default function ProfilePersonalScreen() {
                 <Image style={styles.avatar}
                   source={require('../assets/logo.png')}/>
 
-                <Text style={styles.name}>Name</Text>
-                <Text style={styles.userInfo}>email</Text>
+                <Text style={styles.name}>{firebase.auth().currentUser.displayName}</Text>
+                <Text style={styles.userInfo}>{firebase.auth().currentUser.email}</Text>
             </View>
          </View>
 
