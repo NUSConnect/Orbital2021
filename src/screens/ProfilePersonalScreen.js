@@ -8,10 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AccountSettingsScreen from './AccountSettingsScreen';
 
-const Stack = createStackNavigator()
-
-export default function ProfilePersonalScreen() {
-
+export default function ProfilePersonalScreen({navigation}) {
     return (
     <SafeAreaView>
 

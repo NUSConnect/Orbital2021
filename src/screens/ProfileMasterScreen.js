@@ -11,17 +11,17 @@ const ProfileMasterScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Navigator
-                initialRouteName="ProfilePersonalScreen"
-                screenOptions={{
-                  headerShown: false,
-                }}
-                >
-                  <Stack.Screen
-                    name="ProfilePersonalScreen"
-                    component={ProfilePersonalScreen}
-                  />
-                  <Stack.Screen name="AccountSettingsScreen" component={AccountSettingsScreen} />
-              </Stack.Navigator>
+        initialRouteName="ProfilePersonalScreen"
+        screenOptions={{
+          headerShown: false,
+         }}
+      >
+        <Stack.Screen
+          name="ProfilePersonalScreen"
+          component={ProfilePersonalScreen}
+        />
+        <Stack.Screen name="AccountSettingsScreen" component={AccountSettingsScreen} />
+      </Stack.Navigator>
     </SafeAreaView>
   );
 }
@@ -29,7 +29,6 @@ const ProfileMasterScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
   },
   item: {
     backgroundColor: '#ffffff',

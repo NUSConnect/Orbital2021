@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Text, View, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+//import { useNavigation } from '@react-navigation/native';
 import {
-  ProfilePersonalScreen,
+  ProfileMasterScreen,
   ProfileForumScreen,
   ProfileCommentsScreen
 } from './'
@@ -12,11 +13,11 @@ const Tab = createMaterialTopTabNavigator();
 function MyTabs() {
   return (
     <SafeAreaView style={styles.safe}>
-    <Tab.Navigator>
-      <Tab.Screen name="Personal" component={ProfilePersonalScreen} />
-      <Tab.Screen name="Posts" component={ProfileForumScreen} />
-      <Tab.Screen name="Comments" component={ProfileCommentsScreen} />
-    </Tab.Navigator>
+      <Tab.Navigator>
+        <Tab.Screen name="Personal" component={ProfileMasterScreen} />
+        <Tab.Screen name="Posts" component={ProfileForumScreen} />
+        <Tab.Screen name="Comments" component={ProfileCommentsScreen} />
+      </Tab.Navigator>
     </SafeAreaView>
   );
 }
