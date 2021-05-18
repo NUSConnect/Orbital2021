@@ -10,23 +10,10 @@ import AccountSettingsScreen from './AccountSettingsScreen';
 
 const Stack = createStackNavigator()
 
-export default function ProfilePersonalScreen({ navigation }) {
+export default function ProfilePersonalScreen() {
 
     return (
     <SafeAreaView>
-
-        <Stack.Navigator
-          initialRouteName="ProfilePersonalScreen"
-          screenOptions={{
-            headerShown: false,
-          }}
-          >
-            <Stack.Screen
-              name="ProfilePersonalScreen"
-              component={ProfilePersonalScreen}
-            />
-            <Stack.Screen name="AccountSettingsScreen" component={AccountSettingsScreen} />
-        </Stack.Navigator>
 
       <View style={styles.container}>
          <View style={styles.header}>
