@@ -4,11 +4,30 @@ import { logoutUser } from '../api/auth'
 import Button from '../components/Button';
 import { theme } from '../core/theme';
 import firebase from 'firebase/app';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import AccountSettingsScreen from './AccountSettingsScreen';
+
+const Stack = createStackNavigator()
 
 export default function ProfilePersonalScreen({ navigation }) {
 
     return (
     <SafeAreaView>
+
+        <Stack.Navigator
+          initialRouteName="ProfilePersonalScreen"
+          screenOptions={{
+            headerShown: false,
+          }}
+          >
+            <Stack.Screen
+              name="ProfilePersonalScreen"
+              component={ProfilePersonalScreen}
+            />
+            <Stack.Screen name="AccountSettingsScreen" component={AccountSettingsScreen} />
+        </Stack.Navigator>
+
       <View style={styles.container}>
          <View style={styles.header}>
             <View style={styles.headerContent}>
@@ -21,7 +40,7 @@ export default function ProfilePersonalScreen({ navigation }) {
          </View>
 
          <View style={styles.body}>
-            <Button mode="outlined">
+            <Button mode="outlined" onPress={() => navigation.navigate('AccountSettingsScreen')} >
                 Account Settings
             </Button>
 
