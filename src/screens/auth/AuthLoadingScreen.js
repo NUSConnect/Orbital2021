@@ -1,8 +1,8 @@
 import React from 'react'
 import { ActivityIndicator, StackActions } from 'react-native'
 import firebase from 'firebase/app'
-import Background from '../components/Background'
-import { theme } from '../core/theme'
+import Background from '../../components/Background'
+import { theme } from '../../core/theme'
 
 export default function AuthLoadingScreen({ navigation }) {
   firebase.auth().onAuthStateChanged((user) => {

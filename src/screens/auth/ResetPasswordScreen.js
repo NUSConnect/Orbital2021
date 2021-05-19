@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
-import Background from '../components/Background'
-import BackButton from '../components/BackButton'
-import Logo from '../components/Logo'
-import Header from '../components/Header'
-import TextInput from '../components/TextInput'
-import Button from '../components/Button'
-import { emailValidator } from '../helpers/emailValidator'
-import { sendEmailWithPassword } from '../api/auth'
-import Toast from '../components/Toast'
+import Background from '../../components/Background'
+import BackButton from '../../components/BackButton'
+import Logo from '../../components/Logo'
+import Header from '../../components/Header'
+import TextInput from '../../components/TextInput'
+import Button from '../../components/Button'
+import { emailValidator } from '../../helpers/emailValidator'
+import { sendEmailWithPassword } from '../../api/auth'
+import Toast from '../../components/Toast'
 
 export default function ResetPasswordScreen({ navigation }) {
   const [email, setEmail] = useState({ value: '', error: '' })

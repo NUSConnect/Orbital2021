@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
-import BackButton from '../components/BackButton'
+import BackButton from '../../components/BackButton'
 
 export default function AccountSettingsScreen({ navigation }) {
   return (

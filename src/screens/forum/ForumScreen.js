@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, View, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
-import SearchBar from '../components/SearchBar'
+import SearchBar from '../../components/SearchBar'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {
   ForumFavouritesScreen,

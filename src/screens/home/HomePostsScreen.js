@@ -3,7 +3,7 @@ import {
 Text, Image, View, FlatList, SafeAreaView, StyleSheet, StatusBar, RefreshControl, TouchableOpacity
 } from 'react-native';
 import MainPostScreen from './MainPostScreen';
-import PostButton from '../components/PostButton';
+import PostButton from '../../components/PostButton';
 
 export default class HomePostsScreen extends React.Component {
     constructor(props) {
