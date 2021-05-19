@@ -12,7 +12,13 @@ const Tab = createMaterialTopTabNavigator();
 function MyTabs() {
   return (
     <SafeAreaView style={styles.safe}>
-      <Tab.Navigator>
+      <Tab.Navigator
+        tabBarOptions= {{
+        pressColor: '#ffa500',
+        pressOpacity: 'ffa500',
+        indicatorStyle: { backgroundColor: '#ff8c00' },
+        labelStyle: { fontSize: 14 }
+      }}>
         <Tab.Screen name="Personal" component={ProfileMasterScreen} />
         <Tab.Screen name="Posts" component={ProfileForumScreen} />
         <Tab.Screen name="Comments" component={ProfileCommentsScreen} />

@@ -24,11 +24,13 @@ export default function ProfilePersonalScreen({navigation}) {
          </View>
 
          <View style={styles.body}>
-            <Button mode="outlined" onPress={() => navigation.navigate('AccountSettingsScreen')} >
+            <Button style = {styles.accountset}
+            mode="outlined" onPress={() => navigation.navigate('AccountSettingsScreen')} >
                 Account Settings
             </Button>
 
-            <Button mode="outlined" onPress={logoutUser}>
+            <Button style = {styles.logout}
+            mode="outlined" onPress={logoutUser}>
                 Logout
             </Button>
          </View>
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
     fontWeight:'600',
   },
   body:{
-    backgroundColor: "#778899",
+    backgroundColor: "#FFFAFA",
     height:500,
     alignItems:'center',
   },
@@ -93,5 +95,11 @@ const styles = StyleSheet.create({
     fontSize:18,
     marginTop:20,
     color: "#FFFFFF",
-  }
+  },
+  accountset: {
+    backgroundColor:'#add8e6'
+  },
+  logout: {
+    backgroundColor: '#add8e6'
+  },
 });
