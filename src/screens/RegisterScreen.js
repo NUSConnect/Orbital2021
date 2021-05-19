@@ -77,11 +77,10 @@ export default function RegisterScreen({ navigation }) {
         errorText={password.error}
         secureTextEntry
       />
-      <Button
+      <Button style={styles.signup}
         loading={loading}
         mode="contained"
         onPress={onSignUpPressed}
-        style={{ marginTop: 24 }}
       >
         Sign Up
       </Button>
@@ -104,5 +103,9 @@ const styles = StyleSheet.create({
   link: {
     fontWeight: 'bold',
     color: theme.colors.primary,
+  },
+  signup: {
+    backgroundColor: '#ff8c00',
+    marginTop: 24
   },
 })

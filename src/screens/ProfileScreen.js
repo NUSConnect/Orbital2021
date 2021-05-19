@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Text, View, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-//import { useNavigation } from '@react-navigation/native';
 import {
   ProfileMasterScreen,
   ProfileForumScreen,
@@ -13,7 +12,13 @@ const Tab = createMaterialTopTabNavigator();
 function MyTabs() {
   return (
     <SafeAreaView style={styles.safe}>
-      <Tab.Navigator>
+      <Tab.Navigator
+        tabBarOptions= {{
+        pressColor: '#ffa500',
+        pressOpacity: 'ffa500',
+        indicatorStyle: { backgroundColor: '#ff8c00' },
+        labelStyle: { fontSize: 14 }
+      }}>
         <Tab.Screen name="Personal" component={ProfileMasterScreen} />
         <Tab.Screen name="Posts" component={ProfileForumScreen} />
         <Tab.Screen name="Comments" component={ProfileCommentsScreen} />

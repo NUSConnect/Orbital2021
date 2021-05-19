@@ -19,6 +19,7 @@ export default function FriendsScreen() {
       });
   }, []);
 
+/*
   const searchFilterFunction = (text) => {
     // Check if searched text is not blank
     if (text) {
@@ -36,6 +37,7 @@ export default function FriendsScreen() {
       setSearch(text);
     }
   };
+*/
 
   const ItemView = ({ item }) => {
     return (
@@ -68,15 +70,17 @@ export default function FriendsScreen() {
     <SafeAreaView style={{ flex: 1, marginTop: StatusBar.currentHeight || 0 }}>
       <View style={styles.container}>
         <SearchBar
+        placeholder="Type Here..."
+        /*
           inputStyle={{backgroundColor: 'black'}}
           inputContainerStyle={{backgroundColor: 'white'}}
           containerStyle={{backgroundColor: 'white', borderWidth: 1, borderRadius: 5}}
           searchIcon={{ size: 24 }}
           onChangeText={(text) => searchFilterFunction(text)}
           onClear={(text) => searchFilterFunction('')}
-          placeholder="Type Here..."
           value={search}
           inputStyle={{height:40}}
+          */
         />
 
         <View style={styles.flatListWindow}>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { StyleSheet } from 'react-native'
 import Background from '../components/Background'
 import BackButton from '../components/BackButton'
 import Logo from '../components/Logo'
@@ -51,11 +52,10 @@ export default function ResetPasswordScreen({ navigation }) {
         keyboardType="email-address"
         description="You will receive an email with password reset link."
       />
-      <Button
+      <Button style={styles.reset}
         loading={loading}
         mode="contained"
         onPress={sendResetPasswordEmail}
-        style={{ marginTop: 16 }}
       >
         Send Reset Link
       </Button>
@@ -63,3 +63,10 @@ export default function ResetPasswordScreen({ navigation }) {
     </Background>
   )
 }
+
+const styles = StyleSheet.create({
+  reset: {
+    backgroundColor: '#ff8c00',
+    marginTop: 16,
+  }
+})

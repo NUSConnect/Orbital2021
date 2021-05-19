@@ -71,7 +71,8 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.forgot}>Forgot your password?</Text>
         </TouchableOpacity>
       </View>
-      <Button loading={loading} mode="contained" onPress={onLoginPressed}>
+      <Button style={styles.login}
+      loading={loading} mode="contained" onPress={onLoginPressed}>
         Login
       </Button>
       <View style={styles.row}>
@@ -102,5 +103,8 @@ const styles = StyleSheet.create({
   link: {
     fontWeight: 'bold',
     color: theme.colors.primary,
+  },
+  login: {
+    backgroundColor:'#ff8c00',
   },
 })
