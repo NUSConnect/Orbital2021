@@ -1,61 +1,48 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { TouchableOpacity, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
-import Background from '../components/Background'
-import Logo from '../components/Logo'
-import Header from '../components/Header'
-import Button from '../components/Button'
-import TextInput from '../components/TextInput'
-import BackButton from '../components/BackButton'
-import { theme } from '../core/theme'
-import { emailValidator } from '../helpers/emailValidator'
-import { passwordValidator } from '../helpers/passwordValidator'
-import { nameValidator } from '../helpers/nameValidator'
-import { signUpUser } from '../api/auth'
-import Toast from '../components/Toast'
+import Background from '../../components/Background'
+import Logo from '../../components/Logo'
+import Header from '../../components/Header'
+import Button from '../../components/Button'
+import TextInput from '../../components/TextInput'
+import BackButton from '../../components/BackButton'
+import { theme } from '../../core/theme'
+import { emailValidator } from '../../helpers/emailValidator'
+import { passwordValidator } from '../../helpers/passwordValidator'
+import { loginUser } from '../../api/auth'
+import Toast from '../../components/Toast'
 
-export default function RegisterScreen({ navigation }) {
-  const [name, setName] = useState({ value: '', error: '' })
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
   const [loading, setLoading] = useState()
   const [error, setError] = useState()
 
-  const onSignUpPressed = async () => {
-    const nameError = nameValidator(name.value)
+  const onLoginPressed = async () => {
     const emailError = emailValidator(email.value)
     const passwordError = passwordValidator(password.value)
-    if (emailError || passwordError || nameError) {
-      setName({ ...name, error: nameError })
+    if (emailError || passwordError) {
       setEmail({ ...email, error: emailError })
       setPassword({ ...password, error: passwordError })
       return
     }
     setLoading(true)
-    const response = await signUpUser({
-      name: name.value,
+    const response = await loginUser({
       email: email.value,
       password: password.value,
     })
     if (response.error) {
       setError(response.error)
     }
-    () => setLoading(false)
+    setLoading(false)
   }
 
   return (
     <Background>
       <BackButton goBack={navigation.goBack} />
       <Logo />
-      <Header>Create Account</Header>
-      <TextInput
-        label="Name"
-        returnKeyType="next"
-        value={name.value}
-        onChangeText={(text) => setName({ value: text, error: '' })}
-        error={!!name.error}
-        errorText={name.error}
-      />
+      <Header>Welcome back.</Header>
       <TextInput
         label="Email"
         returnKeyType="next"
@@ -77,17 +64,21 @@ export default function RegisterScreen({ navigation }) {
         errorText={password.error}
         secureTextEntry
       />
-      <Button style={styles.signup}
-        loading={loading}
-        mode="contained"
-        onPress={onSignUpPressed}
-      >
-        Sign Up
+      <View style={styles.forgotPassword}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ResetPasswordScreen')}
+        >
+          <Text style={styles.forgot}>Forgot your password?</Text>
+        </TouchableOpacity>
+      </View>
+      <Button style={styles.login}
+      loading={loading} mode="contained" onPress={onLoginPressed}>
+        Login
       </Button>
       <View style={styles.row}>
-        <Text>Already have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.replace('LoginScreen')}>
-          <Text style={styles.link}>Login</Text>
+        <Text>Don’t have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.replace('RegisterScreen')}>
+          <Text style={styles.link}>Sign up</Text>
         </TouchableOpacity>
       </View>
       <Toast message={error} onDismiss={() => setError('')} />
@@ -96,16 +87,24 @@ export default function RegisterScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  forgotPassword: {
+    width: '100%',
+    alignItems: 'flex-end',
+    marginBottom: 24,
+  },
   row: {
     flexDirection: 'row',
     marginTop: 4,
+  },
+  forgot: {
+    fontSize: 13,
+    color: theme.colors.secondary,
   },
   link: {
     fontWeight: 'bold',
     color: theme.colors.primary,
   },
-  signup: {
-    backgroundColor: '#ff8c00',
-    marginTop: 24
+  login: {
+    backgroundColor:'#ff8c00',
   },
 })

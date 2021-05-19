@@ -1,7 +1,7 @@
 import React, { useEffect,useState } from 'react';
 import { View, Text, StyleSheet, TextInput, SafeAreaView, } from 'react-native';
-import CancelButton from '../components/CancelButton';
-import SubmitButton from '../components/SubmitButton';
+import CancelButton from '../../components/CancelButton';
+import SubmitButton from '../../components/SubmitButton';
 import ForumRecommendedScreen from './ForumRecommendedScreen';
 
 

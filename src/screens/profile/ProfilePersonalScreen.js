@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, StyleSheet,Text,View, Image, SafeAreaView } from 'react-native';
-import { logoutUser } from '../api/auth'
-import Button from '../components/Button';
-import { theme } from '../core/theme';
+import { logoutUser } from '../../api/auth'
+import Button from '../../components/Button';
+import { theme } from '../../core/theme';
 import firebase from 'firebase/app';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -16,7 +16,7 @@ export default function ProfilePersonalScreen({navigation}) {
          <View style={styles.header}>
             <View style={styles.headerContent}>
                 <Image style={styles.avatar}
-                  source={require('../assets/logo.png')}/>
+                  source={require('../../assets/logo.png')}/>
 
                 <Text style={styles.name}>{firebase.auth().currentUser.displayName}</Text>
                 <Text style={styles.userInfo}>{firebase.auth().currentUser.email}</Text>
