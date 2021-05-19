@@ -4,6 +4,7 @@ import Logo from '../components/Logo'
 import Header from '../components/Header'
 import Button from '../components/Button'
 import Paragraph from '../components/Paragraph'
+import { StyleSheet } from 'react-native'
 
 export default function StartScreen({ navigation }) {
   return (
@@ -11,16 +12,16 @@ export default function StartScreen({ navigation }) {
       <Logo />
       <Header>Portal.io</Header>
       <Paragraph>
-        Something
+        A new way to connect.
       </Paragraph>
-      <Button
+      <Button style={styles.login}
         mode="contained"
         onPress={() => navigation.navigate('LoginScreen')}
       >
         Login
       </Button>
-      <Button
-        mode="outlined"
+      <Button style={styles.signup}
+        mode="contained"
         onPress={() => navigation.navigate('RegisterScreen')}
       >
         Sign Up
@@ -28,3 +29,12 @@ export default function StartScreen({ navigation }) {
     </Background>
   )
 }
+
+const styles = StyleSheet.create({
+  login: {
+    backgroundColor:'#ff8c00',
+  },
+  signup: {
+    backgroundColor: '#79D2E6',
+  },
+})
