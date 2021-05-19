@@ -93,10 +93,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'baseline',
+    paddingTop: 4,
   },
   buttonStyle: {
     height: 50,
-    backgroundColor: '#6495ed',
+    backgroundColor: '#79D2E6',
     justifyContent: 'center',
     alignSelf: 'flex-start',
     borderRadius: 50,
