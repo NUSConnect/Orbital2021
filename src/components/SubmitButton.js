@@ -14,10 +14,11 @@ export default function SubmitButton({ goBack, string }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#00bfff",
+    backgroundColor: "#79D2E6",
     alignItems:  'center',
     height: 50,
     width: 180,
+    borderRadius: 30,
   },
   text: {
     color: '#ffffff',

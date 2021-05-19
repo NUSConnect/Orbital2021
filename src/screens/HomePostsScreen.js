@@ -50,7 +50,6 @@ export default class HomePostsScreen extends React.Component {
       return (
         <SafeAreaView>
           <PostButton
-            style={{ height: 100, marginTop: 10 }}
             onPress={() => navigation.navigate('MainPostScreen')}>
           </PostButton>
           <FlatList

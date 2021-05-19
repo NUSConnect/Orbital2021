@@ -12,10 +12,16 @@ const TopTab = createMaterialTopTabNavigator();
 
 function MyTabs() {
   return (
-    <TopTab.Navigator>
-      <TopTab.Screen name="Favourites" component={ForumFavouritesScreen} />
-      <TopTab.Screen name="Subscribed" component={ForumSubscribedScreen} />
-      <TopTab.Screen name="Others" component={ForumOthersScreen} />
+    <TopTab.Navigator
+      tabBarOptions= {{
+        pressColor: '#ffa500',
+        pressOpacity: 'ffa500',
+        indicatorStyle: { backgroundColor: '#ff8c00' },
+        labelStyle: { fontSize: 14 }
+      }}>
+        <TopTab.Screen name="Favourites" component={ForumFavouritesScreen} />
+        <TopTab.Screen name="Subscribed" component={ForumSubscribedScreen} />
+        <TopTab.Screen name="Others" component={ForumOthersScreen} />
     </TopTab.Navigator>
 
   );

@@ -6,45 +6,47 @@ import { theme } from '../core/theme'
 
 export default function PostButton({ style, onPress, ...props }) {
   return (
-    <View style={styles.container}>
-      <Image style={styles.avatar}
-        resizeMode={"cover"}
-        source={require('../assets/logo.png')}/>
-      <TouchableOpacity
-        style={[ style ]}
+     <TouchableOpacity
+        style={styles.button}
+        activeOpacity={ 0.4 }
         onPress={ onPress }>
+          <Image style={styles.avatar}
+            resizeMode={"cover"}
+            source={require('../assets/logo.png')}/>
           <Text style={styles.text}>
             Say Something...
           </Text>
-      </TouchableOpacity>
-      <Ionicons name="send" color="#aaf0d1" size={38}
-        style={styles.icon}
-        onPress={ onPress } />
-    </View>
+          <Ionicons name="send" color="#ffa500" size={38}
+            style={styles.icon} />
+    </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  button: {
+    height: 100,
     flexDirection: 'row',
-    marginTop: 10,
-    backgroundColor: '#00203f',
-    alignItems: 'center'
+    backgroundColor: '#a9a9a9',
+    paddingTop: 10,
+    borderColor: 'black'
   },
   avatar: {
     marginLeft: 10,
     width: 80,
     height: 80,
     borderRadius: 40,
+    borderColor: 'black',
+    borderWidth: 1,
   },
   text: {
     color: '#ffffff',
     fontWeight: 'bold',
     fontSize: 30,
-    marginTop:20,
-    marginLeft:10
+    marginLeft:10,
+    paddingTop: 18,
   },
   icon: {
-    marginLeft: 30
+    marginLeft: 30,
+    paddingTop: 18,
   },
 })

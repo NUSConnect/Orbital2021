@@ -15,7 +15,7 @@ export default class SearchBar extends React.Component {
 
     return (
       <Searcher
-        placeholder="Type Here..."
+        placeholder="Find a forum..."
         onChangeText={this.updateSearch}
         value={search}
       />
