@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-Text, Image, View, FlatList, SafeAreaView, StyleSheet, StatusBar, RefreshControl, TouchableOpacity
+Text, Image, View, FlatList, SafeAreaView, StyleSheet, StatusBar, RefreshControl, TouchableOpacity, Alert,
 } from 'react-native';
 import AddPostScreen from './AddPostScreen';
 import PostButton from '../../components/PostButton';
