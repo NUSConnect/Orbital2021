@@ -11,7 +11,8 @@ import * as ImagePicker from 'expo-image-picker';
 
 export default class ProfilePersonalScreen extends React.Component {
     state = {
-            imagePath: require("../../assets/placeholder.png"),
+            defaultUri: null,
+            userData: null,
             uploaded: false,
             status: '',
             imageURL: ''
@@ -26,10 +27,15 @@ export default class ProfilePersonalScreen extends React.Component {
         let result = await ImagePicker.launchImageLibraryAsync();
 
         if (!result.cancelled) {
-          this.uploadImage(result.uri, firebase.auth().currentUser.uid)
-            .then(() => {
+          const userId = firebase.auth().currentUser.uid
+          const imagePath = 'profile/' + userId;
+
+          this.uploadImage(result.uri, imagePath)
+            .then(async () => {
               console.log("Success");
-              this.setState()
+              const url = await firebase.storage().ref().child(imagePath).getDownloadURL();
+              firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).update({ userImg:url });
+              this.getUser();
             })
             .catch((error) => {
               console.log(error);
@@ -37,36 +43,49 @@ export default class ProfilePersonalScreen extends React.Component {
         }
       }
 
-      uploadImage = async (uri, imageName) => {
+      uploadImage = async (uri, imagePath) => {
         const response = await fetch(uri);
         const blob = await response.blob();
 
-        var ref = firebase.storage().ref().child("profile/" + imageName);
-        this.setState({ imagePath:"profile/" + imageName });
-        console.log(this.state.imagePath);
-        firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).update({ userImg:this.state.imagePath })
+        var ref = firebase.storage().ref(imagePath);
+
         return ref.put(blob);
       }
 
-      getURI(imagePath) {
-          let imgSource = imagePath;
-          if (isNaN(imagePath)) {
-             imgSource = firebase.storage().ref().child(imagePath).getDownloadURL();
+      getUser = async () => {
+        await firebase.firestore()
+        .collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .get().
+        then((documentSnapshot) => {
+          if (documentSnapshot.exists) {
+            console.log('User Data', documentSnapshot.data());
+            this.setState({ userData: documentSnapshot.data() });
           }
-          return imgSource;
+        })
+
+//        if (!this.state.userData.userImg) {
+//          this.setState({ imageUri: this.state.userData.userImg })
+//        };
       }
 
+    componentDidMount() {
+        this.getUser();
+        const uri = firebase.storage().ref('profile/placeholder.png').getDownloadURL();
+        this.setState({ defaultUri: uri });
+    }
+
     render() {
-    let { imagePath } = this.state;
-    let imgSource = this.getURI(imagePath);
-    console.log(imgSource);
+    console.log(this.state.imageUri);
+
     return (
     <SafeAreaView>
 
       <View style={styles.container}>
          <View style={styles.header}>
             <View style={styles.headerContent}>
-            <Image source={imgSource} />
+            <Image source={{ uri: this.state.userData ? this.state.userData.userImg ||
+                this.state.defaultUri : this.state.defaultUri }} />
             <Button title="Choose image..." onPress={this.onChooseImagePress}>
                 Upload profile picture
             </Button>
