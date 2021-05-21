@@ -161,10 +161,6 @@ export default class AddPostScreen extends React.Component {
       this.setState({ image: null });
       this.setState({ blob: null });
 
-      // Alert.alert(
-      //   'Image uploaded!',
-      //   'Your image has been uploaded to the Firebase Cloud Storage Successfully!',
-      // );
       return url;
 
     } catch (e) {

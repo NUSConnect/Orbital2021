@@ -1,6 +1,7 @@
 import React, {createContext, useState} from 'react';
-import 'firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import * as firebase from 'firebase';
+//import 'firebase/auth';
+//import firestore from '@react-native-firebase/firestore';
 
 export const AuthContext = createContext();
 
@@ -14,23 +15,23 @@ export const AuthProvider = ({children}) => {
         setUser,
         login: async (email, password) => {
           try {
-            await auth().signInWithEmailAndPassword(email, password);
+            await firebase.auth().signInWithEmailAndPassword(email, password);
           } catch (e) {
             console.log(e);
           }
         },
         register: async (email, password) => {
           try {
-            await auth().createUserWithEmailAndPassword(email, password)
+            await firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(() => {
               //Once the user creation has happened successfully, we can add the currentUser into firestore
               //with the appropriate details.
-              firebase.firestore().collection('users').doc(auth().currentUser.uid)
+              firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
               .set({
                   fname: '',
                   lname: '',
                   email: email,
-                  createdAt: firestore.Timestamp.fromDate(new Date()),
+                  createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
                   userImg: null,
               })
               //ensure we catch any errors at this stage to advise us if something does go wrong
@@ -48,7 +49,7 @@ export const AuthProvider = ({children}) => {
         },
         logout: async () => {
           try {
-            await auth().signOut();
+            await firebase.auth().signOut();
           } catch (e) {
             console.log(e);
           }
