@@ -1,66 +1,62 @@
-const DATA = [
+const Posts = [
   {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Post',
-    likes: 100,
-    created_at: "2018-07-24T11:05:21Z",
+    id: '1',
+    userName: 'Jenny Doe',
+    userImg: require('../assets/users/user-3.jpg'),
+    postTime: '4 mins ago',
+    post:
+      'Hey there, this is my test for a post of my social app in React Native.',
+    postImg: require('../assets/posts/post-img-3.jpg'),
+    liked: true,
+    likes: '14',
+    comments: '5',
   },
   {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Post',
-    likes: 99,
-    created_at: "2018-07-25T11:05:21Z",
+    id: '2',
+    userName: 'John Doe',
+    userImg: require('../assets/users/user-1.jpg'),
+    postTime: '2 hours ago',
+    post:
+      'Hey there, this is my test for a post of my social app in React Native.',
+    postImg: 'none',
+    liked: false,
+    likes: '8',
+    comments: '0',
   },
   {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Post',
-    likes: 98,
-    created_at: "2020-07-24T11:05:21Z",
+    id: '3',
+    userName: 'Ken William',
+    userImg: require('../assets/users/user-4.jpg'),
+    postTime: '1 hours ago',
+    post:
+      'Hey there, this is my test for a post of my social app in React Native.',
+    postImg: require('../assets/posts/post-img-2.jpg'),
+    liked: true,
+    likes: '1',
+    comments: '0',
   },
   {
-    id: '58694b0f-3da1-471f-bd96-145571e29d72',
-    title: 'Fourth Post',
-    likes: 97,
-    created_at: "2020-07-24T11:05:23Z",
+    id: '4',
+    userName: 'Selina Paul',
+    userImg: require('../assets/users/user-6.jpg'),
+    postTime: '1 day ago',
+    post:
+      'Hey there, this is my test for a post of my social app in React Native.',
+    postImg: require('../assets/posts/post-img-4.jpg'),
+    liked: true,
+    likes: '22',
+    comments: '4',
   },
   {
-    id: '58694c0f-3da1-471f-bd96-145571e29d72',
-    title: 'Fifth Post',
-    likes: 96,
-    created_at: "2018-05-23T11:05:21Z",
+    id: '5',
+    userName: 'Christy Alex',
+    userImg: require('../assets/users/user-7.jpg'),
+    postTime: '2 days ago',
+    post:
+      'Hey there, this is my test for a post of my social app in React Native.',
+    postImg: 'none',
+    liked: false,
+    likes: '0',
+    comments: '0',
   },
-  {
-    id: '58694d0f-3da1-471f-bd96-145571e29d72',
-    title: 'Sixth Post',
-    likes: 9,
-    created_at: "2021-01-24T11:05:21Z",
-  },
-  {
-    id: '58694e0f-3da1-471f-bd96-145571e29d72',
-    title: 'Seventh Post',
-    likes: 6,
-    created_at: "2018-07-24T11:05:21Z",
-  },
-  {
-    id: '58694f0f-3da1-471f-bd96-145571e29d72',
-    title: 'Eighth Post',
-    likes: 4,
-    created_at: "2019-07-40T11:05:21Z",
-  },
-  {
-    id: '58694j0f-3da1-471f-bd96-145571e29d72',
-    title: 'Ninth Post',
-    likes: 3,
-    created_at: "2021-03-24T11:05:01Z",
-  },
-  {
-    id: '58694k0f-3da1-471f-bd96-145571e29d72',
-    title: 'Tenth Post',
-    likes: 1,
-    created_at: "2021-05-17T11:05:21Z",
-  }
 ];
-
-export default function Posts() {
-    return DATA;
-}

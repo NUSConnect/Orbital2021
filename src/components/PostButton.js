@@ -6,47 +6,44 @@ import { theme } from '../core/theme'
 
 export default function PostButton({ style, onPress, ...props }) {
   return (
-     <TouchableOpacity
-        style={styles.button}
-        activeOpacity={ 0.4 }
-        onPress={ onPress }>
-          <Image style={styles.avatar}
-            resizeMode={"cover"}
-            source={require('../assets/logo.png')}/>
+     <View style={styles.container}>
           <Text style={styles.text}>
-            Say Something...
+            Portal.io
           </Text>
-          <Ionicons name="send" color="#ffa500" size={38}
-            style={styles.icon} />
-    </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            activeOpacity={ 0.4 }
+            onPress={ onPress }>
+                <Ionicons name="add" color="#79D2E6" size={38}
+                    style={styles.icon} />
+          </TouchableOpacity>
+     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  button: {
-    height: 100,
+  container: {
+    height: 60,
     flexDirection: 'row',
-    backgroundColor: '#a9a9a9',
-    paddingTop: 10,
-    borderColor: 'black'
-  },
-  avatar: {
-    marginLeft: 10,
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    borderColor: 'black',
+    backgroundColor: '#ffffff',
+    borderColor: '#dcdcdc',
     borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  button: {
+    width: '15%',
+    paddingLeft: 12,
   },
   text: {
-    color: '#ffffff',
-    fontWeight: 'bold',
+    flex: 1,
+    width: '85%',
+    color: '#ff7f50',
+    fontFamily: 'notoserif',
     fontSize: 30,
-    marginLeft:10,
-    paddingTop: 18,
+    textAlign: 'center',
+    paddingLeft: 60
   },
   icon: {
-    marginLeft: 30,
-    paddingTop: 18,
   },
 })
