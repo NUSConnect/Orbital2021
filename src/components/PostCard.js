@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import {
@@ -19,18 +19,19 @@ import {
 
 import ProgressiveImage from './ProgressiveImage';
 
-import {AuthContext} from '../api/AuthProvider';
-
 import moment from 'moment';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import firestore from '@react-native-firebase/firestore';
+import * as firebase from 'firebase';
+//import firestore from '@react-native-firebase/firestore';
 
 const PostCard = ({item, onDelete, onPress}) => {
-  const {user, logout} = useContext(AuthContext);
+  const userId = firebase.auth().currentUser.uid;
   const [userData, setUserData] = useState(null);
 
-  likeIcon = item.liked ? 'heart' : 'heart-outline';
-  likeIconColor = item.liked ? '#2e64e5' : '#333';
+  var likeIcon = item.liked ? 'heart' : 'heart-outline';
+  var likeIconColor = item.liked ? '#2e64e5' : '#333';
+  var likeText;
+  var commentText;
 
   if (item.likes == 1) {
     likeText = '1 Like';
@@ -108,7 +109,7 @@ const PostCard = ({item, onDelete, onPress}) => {
           <Ionicons name="md-chatbubble-outline" size={25} />
           <InteractionText>{commentText}</InteractionText>
         </Interaction>
-        {user.uid == item.userId ? (
+        {userId == item.userId ? (
           <Interaction onPress={() => onDelete(item.id)}>
             <Ionicons name="md-trash-bin" size={25} />
           </Interaction>

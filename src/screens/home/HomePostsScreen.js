@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
 Text, Image, View, FlatList, SafeAreaView, StyleSheet, StatusBar, RefreshControl, TouchableOpacity, Alert
 } from 'react-native';
 import AddPostScreen from './AddPostScreen';
 import PostButton from '../../components/PostButton';
-//import PostCard from '../../components/PostCard';
+import PostCard from '../../components/PostCard';
 
 import * as firebase from 'firebase';
 
@@ -171,14 +171,14 @@ export default class HomePostsScreen extends React.Component {
           </PostButton>
           <FlatList
             data={this.state.data}
-//            renderItem={({item}) => (
-//                <PostCard
-//                  item={item}
-//                  onDelete={this.handleDelete}
-//                  onPress={() => alert('user profile')}
-//                />
-//            )}
-            renderItem={item => this.renderItemComponent(item)}
+            renderItem={({item}) => (
+                <PostCard
+                  item={item}
+                  onDelete={this.handleDelete}
+                  onPress={() => alert('user profile')}
+                />
+            )}
+//            renderItem={item => this.renderItemComponent(item)}
             keyExtractor={item => item.id}
             ItemSeparatorComponent={this.ItemSeparator}
             refreshing={this.state.refreshing}
