@@ -12,8 +12,8 @@ export default function OnBoardScreen({navigation}) {
         NextButtonComponent={NextButton}
         DoneButtonComponent={DoneButton}
         //replace
-        onSkip={() => navigation.replace("StartScreen")}
-        onDone={() => navigation.replace("StartScreen")}
+        onSkip={() => navigation.replace("AuthLoadingScreen")}
+        onDone={() => navigation.replace("AuthLoadingScreen")}
         pages={[
           {
             backgroundColor: '#a6ffcc',
