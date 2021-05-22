@@ -18,6 +18,18 @@ import {
 } from './src/screens'
 import { FIREBASE_CONFIG } from './src/core/config'
 
+// https://stackoverflow.com/questions/44603362/setting-a-timer-for-a-long-period-of-time-i-e-multiple-minutes
+import { LogBox } from 'react-native';
+import _ from 'lodash';
+
+LogBox.ignoreLogs(['Setting a timer']);
+const _console = _.clone(console);
+console.warn = message => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
+};
+
 const Stack = createStackNavigator()
 if (!firebase.apps.length) {
   firebase.initializeApp(FIREBASE_CONFIG)

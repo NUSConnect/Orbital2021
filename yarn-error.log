@@ -1,19 +1,24 @@
 Arguments: 
+
   C:\Program Files\nodejs\node.exe C:\Users\Lua Yi Da\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-native-image-picker 28.0.0
 
+  /usr/local/Cellar/node/15.5.1/bin/node /usr/local/bin/yarn add react-native-image-crop-picke
+
+
 PATH: 
-  C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Python38\Scripts\;C:\Python38\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\Wolfram Research\WolframScript\;C:\Program Files\MATLAB\R2020a\bin;c:\Program Files (x86)\Calibre2\;c:\WINDOWS\System32\WBem;C:\Program Files\Java\jdk-15.0.1\bin;C:\MinGW\bin;C:\Program Files\Git\cmd;C:\Users\Lua Yi Da\AppData\Local\Microsoft\WindowsApps;C:\Users\Lua Yi Da\AppData\Roaming\npm;C:\Users\Lua Yi Da\AppData\Local\Programs\Microsoft VS Code\bin;C:\texlive\2020\bin\win32;C:\Users\Lua Yi Da\AppData\Local\GitHubDesktop\bin;
+  /Users/benedict/Sentient Workspace/google-cloud-sdk/bin:/Users/benedict/anaconda3/envs/hi/bin:/Users/benedict/anaconda3/condabin:/Users/benedict/opt/anaconda3/bin:/anaconda3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/Apple/usr/bin
 
 Yarn version: 
   1.22.10
 
 Node version: 
-  12.18.1
+  15.5.1
 
 Platform: 
-  win32 x64
+  darwin x64
 
 Trace: 
+
   Error: https://registry.yarnpkg.com/28.0.0: Not found
       at Request.params.callback [as _callback] (C:\Users\Lua Yi Da\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66988:18)
       at Request.self.callback (C:\Users\Lua Yi Da\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140662:22)
@@ -25,6 +30,19 @@ Trace:
       at IncomingMessage.emit (events.js:327:22)
       at endReadableNT (_stream_readable.js:1221:12)
       at processTicksAndRejections (internal/process/task_queues.js:84:21)
+
+  Error: https://registry.yarnpkg.com/react-native-image-crop-picke: Not found
+      at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66988:18)
+      at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140662:22)
+      at Request.emit (node:events:376:20)
+      at Request.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141634:10)
+      at Request.emit (node:events:376:20)
+      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141556:12)
+      at Object.onceWrapper (node:events:482:28)
+      at IncomingMessage.emit (node:events:388:22)
+      at endReadableNT (node:internal/streams/readable:1305:12)
+      at processTicksAndRejections (node:internal/process/task_queues:80:21)
+
 
 npm manifest: 
   {
@@ -39,6 +57,7 @@ npm manifest:
     "dependencies": {
       "@eva-design/eva": "^2.1.0",
       "@react-native-firebase/app": "^12.0.0",
+      "@react-native-firebase/firestore": "^12.0.0",
       "@react-native-firebase/storage": "^12.0.0",
       "@react-navigation/material-bottom-tabs": "^5.3.15",
       "@react-navigation/material-top-tabs": "^5.3.15",
@@ -57,6 +76,7 @@ npm manifest:
       "react": "16.13.1",
       "react-dom": "16.13.1",
       "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
+      "react-native-action-button": "^2.8.5",
       "react-native-elements": "^3.4.1",
       "react-native-fs": "^2.18.0",
       "react-native-gesture-handler": "^1.10.3",
@@ -2210,6 +2230,11 @@ Lockfile:
     dependencies:
       opencollective-postinstall "^2.0.1"
       superstruct "^0.6.2"
+  
+  "@react-native-firebase/firestore@^12.0.0":
+    version "12.0.0"
+    resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-12.0.0.tgz#bf8794b72c45a8eea09cf27b7499a8d87fb3a815"
+    integrity sha512-Js+oz1hZG0DMPYV3wLIcAWTN0vmjv4ZRlFWoUXPyVFfF7QQapnb9T6iYZ7KPnAY0lITTX1yvtkxGSnY02vkq0Q==
   
   "@react-native-firebase/storage@^12.0.0":
     version "12.0.0"
@@ -7778,6 +7803,13 @@ Lockfile:
     version "17.0.2"
     resolved "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
     integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+  
+  react-native-action-button@^2.8.5:
+    version "2.8.5"
+    resolved "https://registry.yarnpkg.com/react-native-action-button/-/react-native-action-button-2.8.5.tgz#4152a50323a8a6b3468e6f161f9a9071f2f0739a"
+    integrity sha512-BvGZpzuGeuFR2Y6j93+vKiSqDhsF87VHvNXFs/qEYKfzT4b1ASAT/GQbgS6gNt4jRJCUnJWYrIwlBzRjesZQmQ==
+    dependencies:
+      prop-types "^15.5.10"
   
   react-native-elements@^3.4.1:
     version "3.4.1"
