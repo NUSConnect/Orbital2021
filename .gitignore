@@ -1,6 +1,7 @@
 node_modules/
 .expo/
 npm-debug.*
+Yarn-error.log
 *.jks
 *.p8
 *.p12

@@ -51,7 +51,7 @@ export default function App() {
     if (isFirstLaunch === null) return null
 
   return (
-      isFirstLaunch
+      !isFirstLaunch
       ? (<Provider theme={theme}>
         <NavigationContainer>
         <Stack.Navigator
