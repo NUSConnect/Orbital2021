@@ -23,7 +23,6 @@ export default class ProfilePersonalScreen extends React.Component {
       };
 
       onChooseImagePress = async () => {
-        //let result = await ImagePicker.launchCameraAsync();
         let result = await ImagePicker.launchImageLibraryAsync({ allowsEditing: true, aspect: [1, 1], });
 
         if (!result.cancelled) {
@@ -64,9 +63,6 @@ export default class ProfilePersonalScreen extends React.Component {
           }
         })
 
-//        if (!this.state.userData.userImg) {
-//          this.setState({ imageUri: this.state.userData.userImg })
-//        };
       }
 
     componentDidMount() {
