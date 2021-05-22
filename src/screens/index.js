@@ -22,7 +22,7 @@ export { default as FriendsScreen } from './friends/FriendsScreen'
 
 // profile
 export { default as ProfileScreen } from './profile/ProfileScreen'
-export { default as ProfileForumScreen } from './profile/ProfileForumScreen'
+export { default as ProfilePostsScreen } from './profile/ProfilePostsScreen'
 export { default as ProfileCommentsScreen } from './profile/ProfileCommentsScreen'
 export { default as ProfileMasterScreen } from './profile/ProfileMasterScreen'
 export { default as AccountSettingsScreen } from './profile/AccountSettingsScreen'

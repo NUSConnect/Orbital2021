@@ -3,7 +3,7 @@ import { Text, View, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {
   ProfileMasterScreen,
-  ProfileForumScreen,
+  ProfilePostsScreen,
   ProfileCommentsScreen
 } from './'
 
@@ -20,7 +20,7 @@ function MyTabs() {
         labelStyle: { fontSize: 14 }
       }}>
         <Tab.Screen name="Personal" component={ProfileMasterScreen} />
-        <Tab.Screen name="Posts" component={ProfileForumScreen} />
+        <Tab.Screen name="Posts" component={ProfilePostsScreen} />
         <Tab.Screen name="Comments" component={ProfileCommentsScreen} />
       </Tab.Navigator>
     </SafeAreaView>

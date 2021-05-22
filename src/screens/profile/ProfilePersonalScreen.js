@@ -78,13 +78,12 @@ export default class ProfilePersonalScreen extends React.Component {
       <View style={styles.container}>
          <View style={styles.header}>
             <View style={styles.headerContent}>
-            <Image
-                source={{ uri: this.state.userData ? this.state.userData.userImg ||
-                    this.state.defaultUri : this.state.defaultUri }}
-                style={styles.avatar}/>
-            <Button title="Choose image..." onPress={this.onChooseImagePress}>
-                Upload profile picture
-            </Button>
+            <TouchableOpacity onPress={this.onChooseImagePress}>
+                <Image
+                    source={{ uri: this.state.userData ? this.state.userData.userImg ||
+                        this.state.defaultUri : this.state.defaultUri }}
+                    style={styles.avatar}/>
+            </TouchableOpacity>
             <Text style={styles.name}>{firebase.auth().currentUser.displayName}</Text>
             <Text style={styles.userInfo}>{firebase.auth().currentUser.email}</Text>
          </View>
