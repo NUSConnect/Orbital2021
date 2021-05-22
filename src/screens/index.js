@@ -26,3 +26,6 @@ export { default as ProfileForumScreen } from './profile/ProfileForumScreen'
 export { default as ProfileCommentsScreen } from './profile/ProfileCommentsScreen'
 export { default as ProfileMasterScreen } from './profile/ProfileMasterScreen'
 export { default as AccountSettingsScreen } from './profile/AccountSettingsScreen'
+
+//onboard
+export { default as OnBoardScreen } from './onboarding/OnBoardScreen'

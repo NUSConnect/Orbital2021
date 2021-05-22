@@ -14,9 +14,11 @@ import {
   LoginScreen,
   RegisterScreen,
   ResetPasswordScreen,
-  Dashboard
+  Dashboard,
+  OnBoardScreen
 } from './src/screens'
 import { FIREBASE_CONFIG } from './src/core/config'
+import checkIfFirstLaunch from './src/api/firstLaunch'
 
 // https://stackoverflow.com/questions/44603362/setting-a-timer-for-a-long-period-of-time-i-e-multiple-minutes
 import { LogBox } from 'react-native';
@@ -30,15 +32,28 @@ console.warn = message => {
   }
 };
 
-const Stack = createStackNavigator()
+const Stack = createStackNavigator();
+const firstStack = createStackNavigator();
+
 if (!firebase.apps.length) {
   firebase.initializeApp(FIREBASE_CONFIG)
 }
 
 export default function App() {
+  const [isFirstLaunch, setIsFirstLaunch] = React.useState(null)
+
+    React.useEffect(() => {
+        checkIfFirstLaunch().then((isFirstLaunch) => {
+            setIsFirstLaunch(isFirstLaunch)
+        });
+    }, [])
+
+    if (isFirstLaunch === null) return null
+
   return (
-    <Provider theme={theme}>
-      <NavigationContainer>
+      isFirstLaunch
+      ? (<Provider theme={theme}>
+        <NavigationContainer>
         <Stack.Navigator
           initialRouteName="AuthLoadingScreen"
           screenOptions={{
@@ -59,6 +74,27 @@ export default function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
-    </Provider>
+      </Provider>)
+      : (<Provider theme={theme}>
+           <NavigationContainer>
+           <firstStack.Navigator
+              initialRouteName="OnBoardScreen"
+              screenOptions={{
+               headerShown: false,
+              }}
+           >
+             <firstStack.Screen
+                name="OnBoardScreen"
+                component={OnBoardScreen}
+             />
+             <firstStack.Screen name="AuthLoadingScreen" component={AuthLoadingScreen} />
+             <firstStack.Screen name="StartScreen" component={StartScreen} />
+             <firstStack.Screen name="LoginScreen" component={LoginScreen} />
+             <firstStack.Screen name="RegisterScreen" component={RegisterScreen} />
+             <firstStack.Screen name="Dashboard" component={Dashboard} />
+             <firstStack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
+             </firstStack.Navigator>
+           </NavigationContainer>
+         </Provider>)
   );
 }
