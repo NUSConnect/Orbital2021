@@ -3,7 +3,7 @@ import { Text, View, FlatList, SafeAreaView, StyleSheet, StatusBar, RefreshContr
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import HomePostsScreen from './HomePostsScreen';
-import MainPostScreen from './MainPostScreen';
+import AddPostScreen from './AddPostScreen';
 
 const Stack = createStackNavigator();
 
@@ -20,7 +20,7 @@ const HomeScreen = ({navigation}) => {
           name="HomePostsScreen"
           component={HomePostsScreen}
         />
-        <Stack.Screen name="MainPostScreen" component={MainPostScreen} />
+        <Stack.Screen name="AddPostScreen" component={AddPostScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   );
