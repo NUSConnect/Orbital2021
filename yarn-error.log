@@ -1,5 +1,9 @@
 Arguments: 
+
+  C:\Program Files\nodejs\node.exe C:\Users\Lua Yi Da\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-native-image-picker 28.0.0
+
   /usr/local/Cellar/node/15.5.1/bin/node /usr/local/bin/yarn add react-native-image-crop-picke
+
 
 PATH: 
   /Users/benedict/Sentient Workspace/google-cloud-sdk/bin:/Users/benedict/anaconda3/envs/hi/bin:/Users/benedict/anaconda3/condabin:/Users/benedict/opt/anaconda3/bin:/anaconda3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/Apple/usr/bin
@@ -14,6 +18,19 @@ Platform:
   darwin x64
 
 Trace: 
+
+  Error: https://registry.yarnpkg.com/28.0.0: Not found
+      at Request.params.callback [as _callback] (C:\Users\Lua Yi Da\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66988:18)
+      at Request.self.callback (C:\Users\Lua Yi Da\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140662:22)
+      at Request.emit (events.js:315:20)
+      at Request.<anonymous> (C:\Users\Lua Yi Da\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141634:10)
+      at Request.emit (events.js:315:20)
+      at IncomingMessage.<anonymous> (C:\Users\Lua Yi Da\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141556:12)
+      at Object.onceWrapper (events.js:421:28)
+      at IncomingMessage.emit (events.js:327:22)
+      at endReadableNT (_stream_readable.js:1221:12)
+      at processTicksAndRejections (internal/process/task_queues.js:84:21)
+
   Error: https://registry.yarnpkg.com/react-native-image-crop-picke: Not found
       at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66988:18)
       at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140662:22)
@@ -25,6 +42,7 @@ Trace:
       at IncomingMessage.emit (node:events:388:22)
       at endReadableNT (node:internal/streams/readable:1305:12)
       at processTicksAndRejections (node:internal/process/task_queues:80:21)
+
 
 npm manifest: 
   {
@@ -49,6 +67,9 @@ npm manifest:
       "@ui-kitten/components": "^5.1.0",
       "css-tree": "^1.1.3",
       "expo": "~41.0.1",
+      "expo-clipboard": "^1.0.2",
+      "expo-image-picker": "^10.1.4",
+      "expo-permissions": "^12.0.1",
       "expo-status-bar": "~1.0.4",
       "firebase": "^8.6.1",
       "lodash.filter": "^4.6.0",
@@ -59,11 +80,11 @@ npm manifest:
       "react-native-elements": "^3.4.1",
       "react-native-fs": "^2.18.0",
       "react-native-gesture-handler": "^1.10.3",
-      "react-native-image-picker": "^3.6.0",
       "react-native-image-resizer": "^1.4.4",
       "react-native-pager-view": "^5.1.8",
       "react-native-paper": "^4.8.1",
       "react-native-photo-upload": "^1.3.0",
+      "react-native-progress": "^4.1.2",
       "react-native-reanimated": "^2.1.0",
       "react-native-screens": "^3.2.0",
       "react-native-status-bar-height": "^2.6.0",
@@ -2073,6 +2094,15 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
     integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
   
+  "@react-native-community/art@^1.1.2":
+    version "1.2.0"
+    resolved "https://registry.yarnpkg.com/@react-native-community/art/-/art-1.2.0.tgz#386d95393f6042d9006f9d4bc6063fb898794460"
+    integrity sha512-a+ZcRGl/BzLa89yi33Mbn5SHavsEXqKUMdbfLf3U8MDLElndPqUetoJyGkv63+BcPO49UMWiQRP1YUz6/zfJ+A==
+    dependencies:
+      art "^0.10.3"
+      invariant "^2.2.4"
+      prop-types "^15.7.2"
+  
   "@react-native-community/cli-debugger-ui@^4.13.1":
     version "4.13.1"
     resolved "https://registry.npmjs.org/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-4.13.1.tgz"
@@ -2638,7 +2668,7 @@ Lockfile:
     resolved "https://registry.npmjs.org/array-unique/-/array-unique-0.3.2.tgz"
     integrity sha1-qJS3XUvE9s1nnvMkSp/Y9Gri1Cg=
   
-  art@^0.10.0:
+  art@^0.10.0, art@^0.10.3:
     version "0.10.3"
     resolved "https://registry.yarnpkg.com/art/-/art-0.10.3.tgz#b01d84a968ccce6208df55a733838c96caeeaea2"
     integrity sha512-HXwbdofRTiJT6qZX/FnchtldzJjS3vkLJxQilc3Xj+ma2MXjY4UAyQ0ls1XZYVnDvVIBiFZbC6QsvtW86TD6tQ==
@@ -4722,6 +4752,11 @@ Lockfile:
       path-browserify "^1.0.0"
       url-parse "^1.4.4"
   
+  expo-clipboard@^1.0.2:
+    version "1.0.2"
+    resolved "https://registry.yarnpkg.com/expo-clipboard/-/expo-clipboard-1.0.2.tgz#7b759aef61616ce700c4077f0ab1589c974887f8"
+    integrity sha512-0uarcOHQKPW658eMhW2KBnTxtiS7yFQZ95j+Dz71Kn50X9V7HGXsexEETQ0lL05ArDAgpVRTPHz0YKkaq8Kn/Q==
+  
   expo-constants@~10.1.3:
     version "10.1.3"
     resolved "https://registry.npmjs.org/expo-constants/-/expo-constants-10.1.3.tgz"
@@ -4750,10 +4785,25 @@ Lockfile:
     dependencies:
       fontfaceobserver "^2.1.0"
   
+  expo-image-picker@^10.1.4:
+    version "10.1.4"
+    resolved "https://registry.yarnpkg.com/expo-image-picker/-/expo-image-picker-10.1.4.tgz#5805ea365385298cd59315790481a0a8d6c6a9ef"
+    integrity sha512-4U16RteJNWP5mC198fOIK/BgI3ZXRjqwslFK/gUrKiK5QKECXdvPCHrPwbXlo1DRQNhoPvWd+Cnhod0RsDnMkQ==
+    dependencies:
+      "@expo/config-plugins" "^1.0.18"
+      expo-permissions "~12.0.1"
+      unimodules-permissions-interface "~6.1.0"
+      uuid "7.0.2"
+  
   expo-keep-awake@~9.1.2:
     version "9.1.2"
     resolved "https://registry.npmjs.org/expo-keep-awake/-/expo-keep-awake-9.1.2.tgz"
     integrity sha512-CCuEOQUNLYtMA0rt0sQ9u5LlIMH7lDJG7dImoorfKMsP95yHXy8dl3oCdtaz2zbsPgggVYeom9gE+gQu+Ki4rQ==
+  
+  expo-permissions@^12.0.1, expo-permissions@~12.0.1:
+    version "12.0.1"
+    resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-12.0.1.tgz#5163c00d991bf565bf987354611628c298ddd0c4"
+    integrity sha512-TtypNPPLG4SdVEKBlrArLLZIyhlhE+3B4dhz2HaY1Mve2rcvKE0C7z/e1WoUVU8+LgcdKoNGwg/wRVeCkxeEhg==
   
   expo-status-bar@~1.0.4:
     version "1.0.4"
@@ -7799,11 +7849,6 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.26.10.tgz#0bb9ab928984948c67aee0b9e64216bee007a9fc"
     integrity sha512-z6gAbru2E6SyGWm4ZTbiM9hPHZ5Tsl9kXGfRxW6YQXf9us7zybKoS7dKE1fQPsssv/OSvpPDKannJNncE+ATRA==
   
-  react-native-image-picker@^3.6.0:
-    version "3.6.0"
-    resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-3.6.0.tgz#7defd37c61d20650f2e89f30b4b637511aeb0140"
-    integrity sha512-5Qs4w1aN4hzESKl8qqYhSuXa84AYy1E9Je/owG7c1N+Gb4fWkmSL/fldiMJ/UYMXg4Ae/1tikLLAbJDTofCkAQ==
-  
   react-native-image-resizer@^1.0.0, react-native-image-resizer@^1.4.4:
     version "1.4.4"
     resolved "https://registry.yarnpkg.com/react-native-image-resizer/-/react-native-image-resizer-1.4.4.tgz#75eee65580de509ada674669d13e4d236caea2d5"
@@ -7837,6 +7882,14 @@ Lockfile:
       react-native-fs "^2.5.1"
       react-native-image-picker "^0.26.7"
       react-native-image-resizer "^1.0.0"
+  
+  react-native-progress@^4.1.2:
+    version "4.1.2"
+    resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-4.1.2.tgz#ffb2264ddfeba409c730e36a9791bb7bbe07a00d"
+    integrity sha512-sFHs6k6npWDOyvQoL2NeyOyHb+q1s8iOAOeyzoObN77zkxOAsgJt9FcSJLRq70Mw7qSGNJMFDqCgvYR1huYRwQ==
+    dependencies:
+      "@react-native-community/art" "^1.1.2"
+      prop-types "^15.7.2"
   
   react-native-ratings@^7.3.0:
     version "7.6.1"
@@ -9249,6 +9302,11 @@ Lockfile:
     resolved "https://registry.npmjs.org/unicode-property-aliases-ecmascript/-/unicode-property-aliases-ecmascript-1.1.0.tgz"
     integrity sha512-PqSoPh/pWetQ2phoj5RLiaqIk4kCNwoV3CI+LfGmWLKI3rE3kl1h59XpX2BjgDrmbxD9ARtQobPGU1SguCYuQg==
   
+  unimodules-permissions-interface@~6.1.0:
+    version "6.1.0"
+    resolved "https://registry.yarnpkg.com/unimodules-permissions-interface/-/unimodules-permissions-interface-6.1.0.tgz#fd5589945e3b8fc9d2c80c52521853caea85a9ca"
+    integrity sha512-jeJx/y+Vn/Cp1/4su5XJ06UBul83MpXkYEqIOAb2jwaikhmj6tNwko7HpKy9OhfGfrhddCzwtedlro8xxZUk9A==
+  
   union-value@^1.0.0:
     version "1.0.1"
     resolved "https://registry.npmjs.org/union-value/-/union-value-1.0.1.tgz"
@@ -9357,6 +9415,11 @@ Lockfile:
     version "3.0.1"
     resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
     integrity sha1-ZUS7ot/ajBzxfmKaOjBeK7H+5sE=
+  
+  uuid@7.0.2:
+    version "7.0.2"
+    resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.2.tgz#7ff5c203467e91f5e0d85cfcbaaf7d2ebbca9be6"
+    integrity sha512-vy9V/+pKG+5ZTYKf+VcphF5Oc6EFiu3W8Nv3P3zIh0EqVI80ZxOzuPfe9EHjkFNvf8+xuTHVeei4Drydlx4zjw==
   
   uuid@^3.3.2, uuid@^3.4.0:
     version "3.4.0"

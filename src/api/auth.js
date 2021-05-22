@@ -1,6 +1,3 @@
-//import firebase from 'firebase/app';
-//import 'firebase/auth';
-//import firestore from '@react-native-firebase/firestore';
 import * as firebase from 'firebase';
 
 export const logoutUser = () => {
