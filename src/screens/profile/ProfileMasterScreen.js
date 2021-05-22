@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ProfilePersonalScreen from './ProfilePersonalScreen';
 import AccountSettingsScreen from './AccountSettingsScreen';
+import DummyScreen from './DummyScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,7 @@ const ProfileMasterScreen = ({navigation}) => {
           component={ProfilePersonalScreen}
         />
         <Stack.Screen name="AccountSettingsScreen" component={AccountSettingsScreen} />
+        <Stack.Screen name="DummyScreen" component={DummyScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, StyleSheet,Text,View, Image, SafeAreaView } from 'react-native';
-import { logoutUser } from '../../api/auth'
+import { logoutUser } from '../../api/auth';
 import Button from '../../components/Button';
 import { theme } from '../../core/theme';
 import * as firebase from 'firebase';
@@ -91,14 +91,11 @@ export default class ProfilePersonalScreen extends React.Component {
 
          <View style={styles.body}>
             <Button style = {styles.accountset}
-            mode="outlined" onPress={() => this.props.navigation.navigate('AccountSettingsScreen')} >
+             onPress={() => this.props.navigation.navigate('AccountSettingsScreen')} >
                 Account Settings
             </Button>
+            <Button style={styles.button} color='#de1738'onPress={logoutUser}> Developer Logout </Button>
 
-            <Button style = {styles.logout}
-            mode="outlined" onPress={logoutUser}>
-                Logout
-            </Button>
          </View>
       </View>
       </SafeAreaView>
@@ -136,7 +133,7 @@ const styles = StyleSheet.create({
     fontWeight:'600',
   },
   body:{
-    backgroundColor: "#FFFAFA",
+    backgroundColor: "#FFFFFF",
     height:500,
     alignItems:'center',
   },
@@ -164,7 +161,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   accountset: {
-    backgroundColor:'#add8e6'
+    backgroundColor:'#FFFFFF'
   },
   logout: {
     backgroundColor: '#add8e6'

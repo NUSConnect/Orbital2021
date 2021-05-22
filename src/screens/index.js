@@ -26,6 +26,7 @@ export { default as ProfilePostsScreen } from './profile/ProfilePostsScreen'
 export { default as ProfileCommentsScreen } from './profile/ProfileCommentsScreen'
 export { default as ProfileMasterScreen } from './profile/ProfileMasterScreen'
 export { default as AccountSettingsScreen } from './profile/AccountSettingsScreen'
+export { default as DummyScreen } from './profile/DummyScreen'
 
 //onboard
 export { default as OnBoardScreen } from './onboarding/OnBoardScreen'
