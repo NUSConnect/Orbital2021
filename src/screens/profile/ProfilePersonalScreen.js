@@ -11,7 +11,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 export default class ProfilePersonalScreen extends React.Component {
     state = {
-            defaultUri: null,
+            defaultUri: 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460',
             userData: null,
             uploaded: false,
             status: '',
@@ -24,7 +24,7 @@ export default class ProfilePersonalScreen extends React.Component {
 
       onChooseImagePress = async () => {
         //let result = await ImagePicker.launchCameraAsync();
-        let result = await ImagePicker.launchImageLibraryAsync();
+        let result = await ImagePicker.launchImageLibraryAsync({ allowsEditing: true, aspect: [1, 1], });
 
         if (!result.cancelled) {
           const userId = firebase.auth().currentUser.uid
@@ -71,8 +71,6 @@ export default class ProfilePersonalScreen extends React.Component {
 
     componentDidMount() {
         this.getUser();
-        const uri = firebase.storage().ref('profile/placeholder.png').getDownloadURL();
-        this.setState({ defaultUri: uri });
     }
 
     render() {
@@ -84,8 +82,10 @@ export default class ProfilePersonalScreen extends React.Component {
       <View style={styles.container}>
          <View style={styles.header}>
             <View style={styles.headerContent}>
-            <Image source={{ uri: this.state.userData ? this.state.userData.userImg ||
-                this.state.defaultUri : this.state.defaultUri }} />
+            <Image
+                source={{ uri: this.state.userData ? this.state.userData.userImg ||
+                    this.state.defaultUri : this.state.defaultUri }}
+                style={styles.avatar}/>
             <Button title="Choose image..." onPress={this.onChooseImagePress}>
                 Upload profile picture
             </Button>
@@ -123,9 +123,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatar: {
-    width: 130,
-    height: 130,
-    borderRadius: 63,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
     borderWidth: 4,
     borderColor: "white",
     marginBottom:10,
