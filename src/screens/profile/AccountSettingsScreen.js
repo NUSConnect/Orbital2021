@@ -8,6 +8,7 @@ import { logoutUser } from '../../api/auth'
 export default function AccountSettingsScreen({ navigation }) {
   return (
     <Background style={styles.bg}>
+      <BackButton goBack={navigation.goBack} />
         <View style={styles.buttonwrap}>
           <Button style={styles.button} title='update' onPress={() => navigation.navigate('DummyScreen')}> Update Email Address </Button>
           <Button style={styles.button} onPress={() => navigation.navigate('DummyScreen')}> Change Password </Button>
