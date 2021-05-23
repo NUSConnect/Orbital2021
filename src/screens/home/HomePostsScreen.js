@@ -46,10 +46,11 @@ export default class HomePostsScreen extends React.Component {
               querySnapshot.forEach((doc) => {
                 const {
                   userId,
+                  postId,
                   post,
                   postImg,
                   postTime,
-                  likes,
+                  likeCount,
                   comments,
                 } = doc.data();
                 list.push({
@@ -58,11 +59,11 @@ export default class HomePostsScreen extends React.Component {
                   userName: 'Test Name',
                   userImg:
                     'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+                  postId,
                   postTime: postTime,
                   post,
                   postImg,
-                  liked: false,
-                  likes,
+                  likeCount,
                   comments,
                 });
               });

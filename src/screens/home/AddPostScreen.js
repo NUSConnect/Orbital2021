@@ -97,7 +97,6 @@ export default class AddPostScreen extends React.Component {
 
     const postID = firebase.auth().currentUser.uid + Date.now();
     const userID = firebase.auth().currentUser.uid;
-    const initMap = { userID: false }
 
     firebase.firestore()
     .collection('posts')
@@ -108,9 +107,8 @@ export default class AddPostScreen extends React.Component {
       post: this.state.text,
       postImg: imageUrl,
       postTime: firebase.firestore.Timestamp.fromDate(new Date()),
-      likes: 0,
+      likeCount: 0,
       comments: [],
-      usersWhoLiked: initMap,
     })
     .then(() => {
       console.log('Post Added!');

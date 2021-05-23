@@ -18,9 +18,10 @@ import {
 import * as firebase from 'firebase';
 
 const MainPostScreen = ({navigation, route, onPress}) => {
-    const userId = firebase.auth().currentUser.uid;
+    const currentUserId = firebase.auth().currentUser.uid;
     const [userData, setUserData] = useState(null);
     const [userLiked, setUserLiked] = useState(null);
+    const [likeNumber, setLikeNumber] = useState(null);
 
     const {item} = route.params;
 
@@ -58,31 +59,44 @@ const MainPostScreen = ({navigation, route, onPress}) => {
           });
     };
 
+    const checkLiked = async() => {
+        await firebase.firestore()
+            .collection('posts')
+            .doc(item.postId)
+            .collection('likes')
+            .doc(currentUserId)
+            .onSnapshot((snapshot) => {
+                if (snapshot.exists) {
+                    setUserLiked(true);
+                } else {
+                    setUserLiked(false);
+                }
+            })
+    }
+
     const likePost = async () => {
-        mappedUser =  'usersWhoLiked.' + userId;
+        console.log('Post ID: ' + item.postId);
         if (userLiked) {
-            firebase.firestore().collection('posts').doc(item.postId).update({ mappedUser: false });
+            item.likeCount = item.likeCount - 1;
+            firebase.firestore().collection('posts').doc(item.postId).collection('likes').doc(currentUserId).delete();
+            firebase.firestore().collection('posts').doc(item.postId).update({ likeCount: item.likeCount });
+            console.log('Dislike')
+            setLikeNumber(item.likeCount);
             setUserLiked(false);
         } else {
-            firebase.firestore().collection('posts').doc(item.postId).update({ mappedUser: true });
+            item.likeCount = item.likeCount + 1;
+            firebase.firestore().collection('posts').doc(item.postId).collection('likes').doc(currentUserId).set({});
+            firebase.firestore().collection('posts').doc(item.postId).update({ likeCount: item.likeCount });
+            console.log('Like')
+            setLikeNumber(item.likeCount);
             setUserLiked(true);
         }
     }
 
     useEffect(() => {
         getUser();
-        console.log('Item: ' + item.comments);
-        console.log('Map: ' + item.usersWhoLiked);
-//        bool = item.usersWhoLiked.get(userId, false);
-
-//        if (bool == true) {
-//            //user alr liked
-//            setUserLiked(true);
-//        } else {
-//            setUserLiked(false);
-//        }
-//        likeIcon = userLiked ? 'heart' : 'heart-outline';
-//        likeIconColor = userLiked ? '#dc143c' : '#333';
+        checkLiked();
+        setLikeNumber(item.likeCount);
     }, []);
 
     return (
@@ -121,14 +135,17 @@ const MainPostScreen = ({navigation, route, onPress}) => {
               )}
 
               <TouchableOpacity
-                active={item.liked}
-                onPress={() => (item.liked ? item.liked = false : item.liked = true)}
+                active={userLiked}
+                onPress={likePost}
                 style={styles.like}>
                     <Ionicons
                         name={userLiked ? 'heart' : 'heart-outline'}
                         size={40}
                         color={userLiked ? '#dc143c' : '#333'} />
-                    <Text style={styles.likeText} active={item.liked}>{likeText}</Text>
+                    <Text style={styles.likeText}
+                        active={userLiked}>
+                            {(likeNumber === 0) ? 'Like' : (likeNumber === 1) ? '1 Like' : 'Likes'}
+                    </Text>
               </TouchableOpacity>
             </View>
 
