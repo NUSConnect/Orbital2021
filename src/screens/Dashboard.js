@@ -7,7 +7,7 @@ import {
   HomeScreen,
   ForumScreen,
   FriendsScreen,
-  ProfileScreen
+  ProfileMasterScreen
 } from './'
 
 const Tab = createMaterialBottomTabNavigator();
@@ -53,7 +53,7 @@ function MyTabs() {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileMasterScreen}
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (

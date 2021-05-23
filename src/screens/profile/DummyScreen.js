@@ -6,7 +6,7 @@ export default function AccountSettingsScreen({ navigation }) {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <BackButton goBack={navigation.goBack} />
-      <Text>Dummy</Text>
+      <Text>Work In Progress</Text>
     </View>
   );
 }

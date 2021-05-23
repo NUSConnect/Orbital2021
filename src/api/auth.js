@@ -18,6 +18,7 @@ export const signUpUser = async ({ name, email, password }) => {
             email: email,
             createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
             userImg: null,
+            bio:'Introduce yourself!'
         })
         //ensure we catch any errors at this stage to advise us if something does go wrong
         .catch(error => {

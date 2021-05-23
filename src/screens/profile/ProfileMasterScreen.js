@@ -4,25 +4,43 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ProfilePersonalScreen from './ProfilePersonalScreen';
 import AccountSettingsScreen from './AccountSettingsScreen';
+import ProfilePostsScreen from './ProfilePostsScreen';
+import ProfileCommentsScreen from './ProfileCommentsScreen';
 import DummyScreen from './DummyScreen';
+import AddBioScreen from './AddBioScreen';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 const Stack = createStackNavigator();
+const Tab = createMaterialTopTabNavigator();
+
+function ProfileHomeTabs() {
+  return (
+      <Tab.Navigator
+      tabBarOptions= {{
+              pressColor: '#ffa500',
+              pressOpacity: 'ffa500',
+              indicatorStyle: { backgroundColor: '#ff8c00' },
+              labelStyle: { fontSize: 14 }
+            }}>
+        <Tab.Screen name="Personal" component={ProfilePersonalScreen} />
+        <Tab.Screen name="Posts" component={ProfilePostsScreen} />
+        <Tab.Screen name="Comments" component={ProfileCommentsScreen} />
+      </Tab.Navigator>
+    );
+}
 
 const ProfileMasterScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Stack.Navigator
-        initialRouteName="ProfilePersonalScreen"
-        screenOptions={{
-          headerShown: false,
-         }}
-      >
+
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen
-          name="ProfilePersonalScreen"
-          component={ProfilePersonalScreen}
+          name="ProfileHomeTabs"
+          component={ProfileHomeTabs}
         />
         <Stack.Screen name="AccountSettingsScreen" component={AccountSettingsScreen} />
         <Stack.Screen name="DummyScreen" component={DummyScreen} />
+        <Stack.Screen name="AddBioScreen" component={AddBioScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   );

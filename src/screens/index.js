@@ -21,12 +21,12 @@ export { default as ForumOthersScreen } from './forum/ForumOthersScreen'
 export { default as FriendsScreen } from './friends/FriendsScreen'
 
 // profile
-export { default as ProfileScreen } from './profile/ProfileScreen'
 export { default as ProfilePostsScreen } from './profile/ProfilePostsScreen'
 export { default as ProfileCommentsScreen } from './profile/ProfileCommentsScreen'
 export { default as ProfileMasterScreen } from './profile/ProfileMasterScreen'
 export { default as AccountSettingsScreen } from './profile/AccountSettingsScreen'
 export { default as DummyScreen } from './profile/DummyScreen'
+export { default as AddBioScreen } from './profile/AddBioScreen'
 
 //onboard
 export { default as OnBoardScreen } from './onboarding/OnBoardScreen'

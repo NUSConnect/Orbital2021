@@ -15,7 +15,8 @@ export default class ProfilePersonalScreen extends React.Component {
             userData: null,
             uploaded: false,
             status: '',
-            imageURL: ''
+            imageURL: '',
+            bio:''
         }
 
     static navigationOptions = {
@@ -60,6 +61,7 @@ export default class ProfilePersonalScreen extends React.Component {
           if (documentSnapshot.exists) {
             console.log('User Data', documentSnapshot.data());
             this.setState({ userData: documentSnapshot.data() });
+            this.setState({ bio:documentSnapshot.data().bio });
           }
         })
 
@@ -71,6 +73,7 @@ export default class ProfilePersonalScreen extends React.Component {
 
     render() {
     console.log(this.state.imageUri);
+    console.log(this.state.bio);
 
     return (
     <SafeAreaView>
@@ -85,16 +88,24 @@ export default class ProfilePersonalScreen extends React.Component {
                     style={styles.avatar}/>
             </TouchableOpacity>
             <Text style={styles.name}>{firebase.auth().currentUser.displayName}</Text>
-            <Text style={styles.userInfo}>{firebase.auth().currentUser.email}</Text>
+            <Text style={styles.userInfo}>{this.state.bio}</Text>
          </View>
       </View>
 
          <View style={styles.body}>
             <Button style = {styles.accountset}
+              onPress={() => this.props.navigation.navigate('AddBioScreen')} >
+             Update Bio
+            </Button>
+            <Button style = {styles.accountset}
              onPress={() => this.props.navigation.navigate('AccountSettingsScreen')} >
                 Account Settings
             </Button>
-            <Button style={styles.button} color='#de1738'onPress={logoutUser}> Developer Logout </Button>
+            <Button style = {styles.accountset}
+              onPress={() => this.props.navigation.navigate('DummyScreen')} >
+                Flairs
+            </Button>
+            <Button style={styles.button} color='#de1738'onPress={logoutUser}> Logout </Button>
 
          </View>
       </View>
