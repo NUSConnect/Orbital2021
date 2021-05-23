@@ -22,7 +22,6 @@ import ProgressiveImage from './ProgressiveImage';
 import moment from 'moment';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
-//import firestore from '@react-native-firebase/firestore';
 
 const PostCard = ({item, onDelete, onPress}) => {
   const userId = firebase.auth().currentUser.uid;
@@ -73,8 +72,8 @@ const PostCard = ({item, onDelete, onPress}) => {
           source={{
             uri: userData
               ? userData.userImg ||
-                'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'
-              : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+                'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
+              : 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460',
           }}
         />
         <UserInfoText>
@@ -100,7 +99,7 @@ const PostCard = ({item, onDelete, onPress}) => {
       )}
 
       <InteractionWrapper>
-        <Interaction active={item.liked}>
+        <Interaction active={item.liked} onPress={() => (item.liked = true)}>
           <Ionicons name={likeIcon} size={25} color={likeIconColor} />
           <InteractionText active={item.liked}>{likeText}</InteractionText>
         </Interaction>

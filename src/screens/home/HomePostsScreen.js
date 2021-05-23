@@ -3,6 +3,7 @@ import {
 Text, Image, View, FlatList, SafeAreaView, StyleSheet, StatusBar, RefreshControl, TouchableOpacity, Alert
 } from 'react-native';
 import AddPostScreen from './AddPostScreen';
+import MainPostScreen from './MainPostScreen';
 import PostButton from '../../components/PostButton';
 import PostCard from '../../components/PostCard';
 
@@ -73,7 +74,7 @@ export default class HomePostsScreen extends React.Component {
           this.setState({ refreshing: false });
         }
 
-        console.log('Posts: ', posts);
+        console.log('Posts: ', this.state.data);
       } catch (e) {
         console.log(e);
       }
@@ -91,7 +92,7 @@ export default class HomePostsScreen extends React.Component {
             },
             {
               text: 'Confirm',
-              onPress: () => deletePost(postId),
+              onPress: () => this.deletePost(postId),
             },
           ],
           {cancelable: false},
@@ -111,20 +112,21 @@ export default class HomePostsScreen extends React.Component {
 
               if (postImg != null) {
                 const storageRef = firebase.storage().refFromURL(postImg);
+                console.log('storageRef',  storageRef.fullPath);
                 const imageRef = firebase.storage().ref(storageRef.fullPath);
 
                 imageRef
                   .delete()
                   .then(() => {
                     console.log(`${postImg} has been deleted successfully.`);
-                    deleteFirestoreData(postId);
+                    this.deleteFirestoreData(postId);
                   })
                   .catch((e) => {
                     console.log('Error while deleting the image. ', e);
                   });
                 // If the post image is not available
               } else {
-                deleteFirestoreData(postId);
+                this.deleteFirestoreData(postId);
               }
             }
           });
@@ -167,22 +169,21 @@ export default class HomePostsScreen extends React.Component {
       return (
         <SafeAreaView>
           <PostButton
-            onPress={() => navigation.navigate('AddPostScreen')}>
-          </PostButton>
+            onPress={() => navigation.navigate('AddPostScreen')}/>
           <FlatList
             data={this.state.data}
             renderItem={({item}) => (
                 <PostCard
                   item={item}
                   onDelete={this.handleDelete}
-                  onPress={() => alert('user profile')}
+                  onPress={() => navigation.navigate('MainPostScreen', {item})}
                 />
             )}
-//            renderItem={item => this.renderItemComponent(item)}
             keyExtractor={item => item.id}
             ItemSeparatorComponent={this.ItemSeparator}
             refreshing={this.state.refreshing}
             onRefresh={this.handleRefresh}
+            style={{ marginBottom:  40 }}
           />
         </SafeAreaView>)
     }

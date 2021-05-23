@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, Image, StyleSheet, TextInput, SafeAreaView, Alert, ActivityIndicator, Platform, Animated } from 'react-native';
 import CancelButton from '../../components/CancelButton';
 import SubmitButton from '../../components/SubmitButton';
-import { FIREBASE_CONFIG } from '../../core/config'
 import HomePostsScreen from './HomePostsScreen';
 
 import ActionButton from 'react-native-action-button';
@@ -96,15 +95,22 @@ export default class AddPostScreen extends React.Component {
     console.log('Image Url: ', imageUrl);
     console.log('Post: ', this.state.text);
 
+    const postID = firebase.auth().currentUser.uid + Date.now();
+    const userID = firebase.auth().currentUser.uid;
+    const initMap = { userID: false }
+
     firebase.firestore()
     .collection('posts')
-    .add({
-      userId: firebase.auth().currentUser.uid,
+    .doc(postID)
+    .set({
+      userId: userID,
+      postId: postID,
       post: this.state.text,
       postImg: imageUrl,
       postTime: firebase.firestore.Timestamp.fromDate(new Date()),
-      likes: null,
-      comments: null,
+      likes: 0,
+      comments: [],
+      usersWhoLiked: initMap,
     })
     .then(() => {
       console.log('Post Added!');

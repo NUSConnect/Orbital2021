@@ -1,71 +1,171 @@
-import React, { useEffect,useState } from 'react';
-import { View, Text, StyleSheet, TextInput, SafeAreaView, } from 'react-native';
-import CancelButton from '../../components/CancelButton';
-import SubmitButton from '../../components/SubmitButton';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, StyleSheet, TextInput, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import TitleWithBack from '../../components/TitleWithBack';
 import HomePostsScreen from './HomePostsScreen';
+import moment from 'moment';
 
-export default class MainPostScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      text: "Type something",
-      HOME_PAGE: 'HomePostsScreen',
+import {
+  UserInfo,
+  UserImg,
+  UserName,
+  UserInfoText,
+  PostTime,
+  PostImg,
+  Divider
+} from '../../styles/FeedStyles';
+
+import * as firebase from 'firebase';
+
+const MainPostScreen = ({navigation, route, onPress}) => {
+    const userId = firebase.auth().currentUser.uid;
+    const [userData, setUserData] = useState(null);
+    const [userLiked, setUserLiked] = useState(null);
+
+    const {item} = route.params;
+
+//    var likeIcon = item.liked ? 'heart' : 'heart-outline';
+//    var likeIconColor = item.liked ? '#dc143c' : '#333';
+    var likeText;
+    var commentText;
+
+    if (item.likes == 1) {
+        likeText = '1 Like';
+    } else if (item.likes > 1) {
+        likeText = item.likes + ' Likes';
+    } else {
+        likeText = 'Like';
+    }
+
+    if (item.comments == 1) {
+        commentText = '1 Comment';
+    } else if (item.comments > 1) {
+        commentText = item.comments + ' Comments';
+    } else {
+        commentText = 'Comment';
+    }
+
+    const getUser = async () => {
+        await firebase.firestore()
+          .collection('users')
+          .doc(item.userId)
+          .get()
+          .then((documentSnapshot) => {
+            if (documentSnapshot.exists) {
+              console.log('User Data', documentSnapshot.data());
+              setUserData(documentSnapshot.data());
+            }
+          });
     };
-  }
 
-  render() {
-    const { navigation } = this.props;
+    const likePost = async () => {
+        mappedUser =  'usersWhoLiked.' + userId;
+        if (userLiked) {
+            firebase.firestore().collection('posts').doc(item.postId).update({ mappedUser: false });
+            setUserLiked(false);
+        } else {
+            firebase.firestore().collection('posts').doc(item.postId).update({ mappedUser: true });
+            setUserLiked(true);
+        }
+    }
+
+    useEffect(() => {
+        getUser();
+        console.log('Item: ' + item.comments);
+        console.log('Map: ' + item.usersWhoLiked);
+//        bool = item.usersWhoLiked.get(userId, false);
+
+//        if (bool == true) {
+//            //user alr liked
+//            setUserLiked(true);
+//        } else {
+//            setUserLiked(false);
+//        }
+//        likeIcon = userLiked ? 'heart' : 'heart-outline';
+//        likeIconColor = userLiked ? '#dc143c' : '#333';
+    }, []);
+
     return (
         <SafeAreaView>
           <View style={styles.container}>
-              <Text style={styles.title}>
-                Create a Post
+            <TitleWithBack onPress={() => navigation.navigate('HomePostsScreen')}/>
+
+            <View style={styles.postInfo}>
+              <UserInfo>
+                  <UserImg
+                    source={{
+                      uri: userData
+                        ? userData.userImg ||
+                          'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
+                        : 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460',
+                    }}
+                  />
+                  <UserInfoText>
+                    <UserName>
+                      {userData ? userData.name || 'Anonymous User' : 'Anonymous User'}
+                    </UserName>
+                    <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
+                  </UserInfoText>
+              </UserInfo>
+              <Text style={styles.postText}>
+                {item.post}
               </Text>
-              <TextInput
-                style={styles.input}
-                onChangeText={(text) => this.setState({ text })}
-                value={this.state.text}
-                multiline={true}
-              />
-              <View style={styles.buttons}>
-                <CancelButton goBack = {() => navigation.navigate(this.state.HOME_PAGE)}/>
-                <View style={styles.space} />
-                <SubmitButton goBack = {() => navigation.navigate(this.state.HOME_PAGE)} string = {'Post'}/>
-              </View>
+              {item.postImg != null ? (
+                  <Image
+                    source={{uri: item.postImg}}
+                    style={styles.image}
+                    resizeMode='contain'
+                  />
+              ) : (
+                  <Divider />
+              )}
+
+              <TouchableOpacity
+                active={item.liked}
+                onPress={() => (item.liked ? item.liked = false : item.liked = true)}
+                style={styles.like}>
+                    <Ionicons
+                        name={userLiked ? 'heart' : 'heart-outline'}
+                        size={40}
+                        color={userLiked ? '#dc143c' : '#333'} />
+                    <Text style={styles.likeText} active={item.liked}>{likeText}</Text>
+              </TouchableOpacity>
+            </View>
+
           </View>
         </SafeAreaView>
     );
-  }
+
 };
+
+export default MainPostScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-  },
-  title: {
-    height: 60,
-    lineHeight: 60,
+    flex:0,
     width: '100%',
-    backgroundColor: '#ff8c00',
-    color: '#ffffff',
-    fontSize: 30,
-    paddingLeft: 15,
-  },
-  input: {
-    flex: 0,
-    height: 500,
-    margin: 12,
-    borderWidth: 1,
-    fontSize: 18,
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-  },
-  buttons: {
-    flex: 1,
-    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
   },
-  space: {
-    width:20
-  }
+  postInfo: {
+    width: '100%',
+  },
+  postText: {
+    width: '100%',
+    margin: 12,
+    fontSize: 16,
+  },
+  image: {
+    width: '100%',
+    aspectRatio: 1,
+  },
+  like: {
+    paddingLeft: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  likeText: {
+    fontSize: 16,
+    paddingLeft: 10,
+  },
 });
