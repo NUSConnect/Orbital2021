@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, TextInput, FlatList, TouchableOpacity, SafeAreaView, StatusBar, StyleSheet } from 'react-native'
 import SearchBar from '../../components/SearchBar';
-import firebase from 'firebase';
-require('firebase/firestore');
+import * as firebase from 'firebase';
 
 export default function FriendsScreen(props) {
     const [users, setUsers] = useState([])
