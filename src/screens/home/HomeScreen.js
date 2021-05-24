@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import HomePostsScreen from './HomePostsScreen';
 import AddPostScreen from './AddPostScreen';
+import CommentScreen from './CommentScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,7 @@ const HomeScreen = ({navigation}) => {
           component={HomePostsScreen}
         />
         <Stack.Screen name="AddPostScreen" component={AddPostScreen} />
+        <Stack.Screen name="CommentScreen" component={CommentScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   );
