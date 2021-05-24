@@ -206,7 +206,7 @@ const ViewProfileScreen = ({navigation, route, onPress}) => {
 
     return (
         <SafeAreaView style={styles.container}>
-          <TitleWithBack onPress={() => navigation.navigate('HomePostsScreen')}/>
+          <TitleWithBack onPress={() => navigation.goBack()}/>
           <View style={styles.profileContainer}>
             <Image
                 source={{ uri: userData ? userData.userImg || defaultUri : defaultUri }}
