@@ -3,6 +3,7 @@ import {
 Text, Image, View, FlatList, SafeAreaView, StyleSheet, StatusBar, RefreshControl, TouchableOpacity, Alert
 } from 'react-native';
 import AddPostScreen from './AddPostScreen';
+import CommentScreen from './CommentScreen';
 import PostButton from '../../components/PostButton';
 import PostCard from '../../components/PostCard';
 
@@ -45,11 +46,12 @@ export default class HomePostsScreen extends React.Component {
               querySnapshot.forEach((doc) => {
                 const {
                   userId,
+                  postId,
                   post,
                   postImg,
                   postTime,
-                  likes,
-                  comments,
+                  likeCount,
+                  commentCount,
                 } = doc.data();
                 list.push({
                   id: doc.id,
@@ -57,12 +59,12 @@ export default class HomePostsScreen extends React.Component {
                   userName: 'Test Name',
                   userImg:
                     'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+                  postId,
                   postTime: postTime,
                   post,
                   postImg,
-                  liked: false,
-                  likes,
-                  comments,
+                  likeCount,
+                  commentCount,
                 });
               });
             });
@@ -73,7 +75,7 @@ export default class HomePostsScreen extends React.Component {
           this.setState({ refreshing: false });
         }
 
-        console.log('Posts: ', posts);
+        console.log('Posts: ', this.state.data);
       } catch (e) {
         console.log(e);
       }
@@ -91,7 +93,7 @@ export default class HomePostsScreen extends React.Component {
             },
             {
               text: 'Confirm',
-              onPress: () => deletePost(postId),
+              onPress: () => this.deletePost(postId),
             },
           ],
           {cancelable: false},
@@ -111,24 +113,47 @@ export default class HomePostsScreen extends React.Component {
 
               if (postImg != null) {
                 const storageRef = firebase.storage().refFromURL(postImg);
+                console.log('storageRef',  storageRef.fullPath);
                 const imageRef = firebase.storage().ref(storageRef.fullPath);
 
                 imageRef
                   .delete()
                   .then(() => {
                     console.log(`${postImg} has been deleted successfully.`);
-                    deleteFirestoreData(postId);
+                    this.deleteFirestoreData(postId);
                   })
                   .catch((e) => {
                     console.log('Error while deleting the image. ', e);
                   });
                 // If the post image is not available
               } else {
-                deleteFirestoreData(postId);
+                this.deleteFirestoreData(postId);
               }
             }
           });
     };
+
+    handleReport = (postId) => {
+        Alert.alert(
+          'Report Post',
+          'Are you sure?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed!'),
+              style: 'cancel',
+            },
+            {
+              text: 'Confirm',
+              onPress: () => Alert.alert(
+               'Post Reported!',
+               'This post has been reported successfully!',
+              ),
+            },
+          ],
+          {cancelable: false},
+        );
+    }
 
     renderItemComponent = (data) =>
         <TouchableOpacity style={styles.container}>
@@ -155,7 +180,7 @@ export default class HomePostsScreen extends React.Component {
             );
             this.setState({ deleted: true });
           })
-          .catch((e) => console.log('Error deleting posst.', e));
+          .catch((e) => console.log('Error deleting post.', e));
     };
 
     handleRefresh = () => {
@@ -167,22 +192,22 @@ export default class HomePostsScreen extends React.Component {
       return (
         <SafeAreaView>
           <PostButton
-            onPress={() => navigation.navigate('AddPostScreen')}>
-          </PostButton>
+            onPress={() => navigation.navigate('AddPostScreen')}/>
           <FlatList
             data={this.state.data}
             renderItem={({item}) => (
                 <PostCard
                   item={item}
                   onDelete={this.handleDelete}
-                  onPress={() => alert('user profile')}
+                  onReport={this.handleReport}
+                  onPress={() => navigation.navigate('CommentScreen', {item})}
                 />
             )}
-//            renderItem={item => this.renderItemComponent(item)}
             keyExtractor={item => item.id}
             ItemSeparatorComponent={this.ItemSeparator}
             refreshing={this.state.refreshing}
             onRefresh={this.handleRefresh}
+            style={{ marginBottom:  40 }}
           />
         </SafeAreaView>)
     }
