@@ -142,7 +142,7 @@ const CommentScreen = ({navigation, route, onPress}) => {
 
     const handleReport = (postId) => {
         Alert.alert(
-          'Report Post',
+          'Report Comment',
           'Are you sure?',
           [
             {
@@ -153,8 +153,8 @@ const CommentScreen = ({navigation, route, onPress}) => {
             {
               text: 'Confirm',
               onPress: () => Alert.alert(
-               'Post Reported!',
-               'This post has been reported successfully!',
+               'Comment Reported!',
+               'This comment has been reported successfully!',
               ),
             },
           ],
@@ -182,7 +182,7 @@ const CommentScreen = ({navigation, route, onPress}) => {
 
     return (
         <SafeAreaView style={styles.container}>
-          <TitleWithBack onPress={() => navigation.navigate('HomePostsScreen')}/>
+          <TitleWithBack onPress={() => navigation.goBack()}/>
           <View style={styles.commentContainer}>
             <Text style={styles.username}>
                 {userData ? userData.name + ':' || 'Anonymous User:' : 'Anonymous User:'}
@@ -217,7 +217,7 @@ const CommentScreen = ({navigation, route, onPress}) => {
                         <Ionicons name="md-trash-bin" size={25} />
                       </TouchableOpacity>
                     ) : (
-                      <TouchableOpacity onPress={() => handleDelete(item.id)} style={styles.deleter}>
+                      <TouchableOpacity onPress={() => handleReport(item.id)} style={styles.deleter}>
                         <MaterialIcons name="report-problem" size={25} />
                       </TouchableOpacity>
                     )}

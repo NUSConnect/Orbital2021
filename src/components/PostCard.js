@@ -23,7 +23,7 @@ import moment from 'moment';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
 
-const PostCard = ({route, item, onDelete, onPress, onReport}) => {
+const PostCard = ({route, item, onViewProfile, onDelete, onPress, onReport}) => {
   const currentUserId = firebase.auth().currentUser.uid;
   const [userData, setUserData] = useState(null);
   const [userLiked, setUserLiked] = useState(null);
@@ -112,7 +112,7 @@ const PostCard = ({route, item, onDelete, onPress, onReport}) => {
           }}
         />
         <UserInfoText>
-          <TouchableOpacity onPress={() => alert('User profile')}>
+          <TouchableOpacity onPress={onViewProfile}>
             <UserName>
               {userData ? userData.name || 'Anonymous User' : 'Anonymous User'}
             </UserName>
