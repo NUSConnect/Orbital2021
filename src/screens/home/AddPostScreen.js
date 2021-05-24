@@ -108,7 +108,7 @@ export default class AddPostScreen extends React.Component {
       postImg: imageUrl,
       postTime: firebase.firestore.Timestamp.fromDate(new Date()),
       likeCount: 0,
-      comments: [],
+      commentCount: 0,
     })
     .then(() => {
       console.log('Post Added!');

@@ -3,7 +3,7 @@ import {
 Text, Image, View, FlatList, SafeAreaView, StyleSheet, StatusBar, RefreshControl, TouchableOpacity, Alert
 } from 'react-native';
 import AddPostScreen from './AddPostScreen';
-import MainPostScreen from './MainPostScreen';
+import CommentScreen from './CommentScreen';
 import PostButton from '../../components/PostButton';
 import PostCard from '../../components/PostCard';
 
@@ -51,7 +51,7 @@ export default class HomePostsScreen extends React.Component {
                   postImg,
                   postTime,
                   likeCount,
-                  comments,
+                  commentCount,
                 } = doc.data();
                 list.push({
                   id: doc.id,
@@ -64,7 +64,7 @@ export default class HomePostsScreen extends React.Component {
                   post,
                   postImg,
                   likeCount,
-                  comments,
+                  commentCount,
                 });
               });
             });
@@ -133,6 +133,28 @@ export default class HomePostsScreen extends React.Component {
           });
     };
 
+    handleReport = (postId) => {
+        Alert.alert(
+          'Report Post',
+          'Are you sure?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed!'),
+              style: 'cancel',
+            },
+            {
+              text: 'Confirm',
+              onPress: () => Alert.alert(
+               'Post Reported!',
+               'This post has been reported successfully!',
+              ),
+            },
+          ],
+          {cancelable: false},
+        );
+    }
+
     renderItemComponent = (data) =>
         <TouchableOpacity style={styles.container}>
             <Image style={styles.image} source={{ uri: data.item.url }} />
@@ -158,7 +180,7 @@ export default class HomePostsScreen extends React.Component {
             );
             this.setState({ deleted: true });
           })
-          .catch((e) => console.log('Error deleting posst.', e));
+          .catch((e) => console.log('Error deleting post.', e));
     };
 
     handleRefresh = () => {
@@ -177,7 +199,8 @@ export default class HomePostsScreen extends React.Component {
                 <PostCard
                   item={item}
                   onDelete={this.handleDelete}
-                  onPress={() => navigation.navigate('MainPostScreen', {item})}
+                  onReport={this.handleReport}
+                  onPress={() => navigation.navigate('CommentScreen', {item})}
                 />
             )}
             keyExtractor={item => item.id}

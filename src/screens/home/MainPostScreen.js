@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, TextInput, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TextInput, SafeAreaView, FlatList, Button } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TitleWithBack from '../../components/TitleWithBack';
 import HomePostsScreen from './HomePostsScreen';
@@ -24,19 +24,6 @@ const MainPostScreen = ({navigation, route, onPress}) => {
     const [likeNumber, setLikeNumber] = useState(null);
 
     const {item} = route.params;
-
-//    var likeIcon = item.liked ? 'heart' : 'heart-outline';
-//    var likeIconColor = item.liked ? '#dc143c' : '#333';
-    var likeText;
-    var commentText;
-
-    if (item.likes == 1) {
-        likeText = '1 Like';
-    } else if (item.likes > 1) {
-        likeText = item.likes + ' Likes';
-    } else {
-        likeText = 'Like';
-    }
 
     if (item.comments == 1) {
         commentText = '1 Comment';
@@ -147,6 +134,7 @@ const MainPostScreen = ({navigation, route, onPress}) => {
                             {(likeNumber === 0) ? 'Like' : (likeNumber === 1) ? '1 Like' : 'Likes'}
                     </Text>
               </TouchableOpacity>
+
             </View>
 
           </View>

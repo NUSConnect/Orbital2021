@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Ionicons, MaterialIcons } from 'react-native-vector-icons';
 
 import {
   Container,
@@ -23,13 +23,12 @@ import moment from 'moment';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
 
-const PostCard = ({item, onDelete, onPress}) => {
-  const userId = firebase.auth().currentUser.uid;
+const PostCard = ({route, item, onDelete, onPress, onReport}) => {
+  const currentUserId = firebase.auth().currentUser.uid;
   const [userData, setUserData] = useState(null);
+  const [userLiked, setUserLiked] = useState(null);
+  const [likeNumber, setLikeNumber] = useState(null);
 
-  var likeIcon = item.liked ? 'heart' : 'heart-outline';
-  var likeIconColor = item.liked ? '#2e64e5' : '#333';
-  var likeText;
   var commentText;
 
   if (item.likes == 1) {
@@ -40,10 +39,10 @@ const PostCard = ({item, onDelete, onPress}) => {
     likeText = 'Like';
   }
 
-  if (item.comments == 1) {
+  if (item.commentCount == 1) {
     commentText = '1 Comment';
-  } else if (item.comments > 1) {
-    commentText = item.comments + ' Comments';
+  } else if (item.commentCount > 1) {
+    commentText = item.commentCount + ' Comments';
   } else {
     commentText = 'Comment';
   }
@@ -61,8 +60,44 @@ const PostCard = ({item, onDelete, onPress}) => {
       });
   };
 
+  const checkLiked = async() => {
+    await firebase.firestore()
+        .collection('posts')
+        .doc(item.postId)
+        .collection('likes')
+        .doc(currentUserId)
+        .onSnapshot((snapshot) => {
+            if (snapshot.exists) {
+                setUserLiked(true);
+            } else {
+                setUserLiked(false);
+            }
+        })
+  }
+
+  const likePost = async () => {
+    console.log('Post ID: ' + item.postId);
+    if (userLiked) {
+        item.likeCount = item.likeCount - 1;
+        firebase.firestore().collection('posts').doc(item.postId).collection('likes').doc(currentUserId).delete();
+        firebase.firestore().collection('posts').doc(item.postId).update({ likeCount: item.likeCount });
+        console.log('Dislike')
+        setLikeNumber(item.likeCount);
+        setUserLiked(false);
+    } else {
+        item.likeCount = item.likeCount + 1;
+        firebase.firestore().collection('posts').doc(item.postId).collection('likes').doc(currentUserId).set({});
+        firebase.firestore().collection('posts').doc(item.postId).update({ likeCount: item.likeCount });
+        console.log('Like')
+        setLikeNumber(item.likeCount);
+        setUserLiked(true);
+    }
+  }
+
   useEffect(() => {
     getUser();
+    checkLiked();
+    setLikeNumber(item.likeCount);
   }, []);
 
   return (
@@ -77,7 +112,7 @@ const PostCard = ({item, onDelete, onPress}) => {
           }}
         />
         <UserInfoText>
-          <TouchableOpacity onPress={onPress}>
+          <TouchableOpacity onPress={() => alert('User profile')}>
             <UserName>
               {userData ? userData.name || 'Anonymous User' : 'Anonymous User'}
             </UserName>
@@ -91,27 +126,38 @@ const PostCard = ({item, onDelete, onPress}) => {
         <ProgressiveImage
           defaultImageSource={require('../assets/default-img.jpg')}
           source={{uri: item.postImg}}
-          style={{width: '100%', height: 250}}
-          resizeMode="cover"
+          style={{width: '100%', height: 350}}
+          resizeMode="contain"
         />
       ) : (
         <Divider />
       )}
 
       <InteractionWrapper>
-        <Interaction active={item.liked} onPress={() => (item.liked = true)}>
-          <Ionicons name={likeIcon} size={25} color={likeIconColor} />
-          <InteractionText active={item.liked}>{likeText}</InteractionText>
+        <Interaction onPress={likePost}>
+          <Ionicons
+            name={userLiked ? 'heart' : 'heart-outline'}
+            size={25}
+            color={userLiked ? '#dc143c' : '#333'} />
+          <InteractionText>
+            {(likeNumber === 0) ? 'Like' : (likeNumber === 1) ? '1 Like' : likeNumber + ' Likes'}
+          </InteractionText>
         </Interaction>
-        <Interaction>
+        <Interaction onPress={onPress}>
           <Ionicons name="md-chatbubble-outline" size={25} />
-          <InteractionText>{commentText}</InteractionText>
+          <InteractionText>
+            {commentText}
+          </InteractionText>
         </Interaction>
-        {userId == item.userId ? (
+        {currentUserId == item.userId ? (
           <Interaction onPress={() => onDelete(item.id)}>
             <Ionicons name="md-trash-bin" size={25} />
           </Interaction>
-        ) : null}
+        ) : (
+          <Interaction onPress={() => onReport(item.id)}>
+            <MaterialIcons name="report-problem" size={25} />
+          </Interaction>
+        )}
       </InteractionWrapper>
     </Card>
   );
