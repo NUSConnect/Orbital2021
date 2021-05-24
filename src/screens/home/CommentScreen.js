@@ -182,7 +182,7 @@ const CommentScreen = ({navigation, route, onPress}) => {
 
     return (
         <SafeAreaView style={styles.container}>
-          <TitleWithBack onPress={() => navigation.navigate('HomePostsScreen')}/>
+          <TitleWithBack onPress={() => navigation.goBack()}/>
           <View style={styles.commentContainer}>
             <Text style={styles.username}>
                 {userData ? userData.name + ':' || 'Anonymous User:' : 'Anonymous User:'}

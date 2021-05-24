@@ -4,6 +4,7 @@ Text, Image, View, FlatList, SafeAreaView, StyleSheet, StatusBar, RefreshControl
 } from 'react-native';
 import AddPostScreen from './AddPostScreen';
 import CommentScreen from './CommentScreen';
+import ViewProfileScreen from '../profile/ViewProfileScreen';
 import PostButton from '../../components/PostButton';
 import PostCard from '../../components/PostCard';
 
@@ -198,6 +199,7 @@ export default class HomePostsScreen extends React.Component {
             renderItem={({item}) => (
                 <PostCard
                   item={item}
+                  onViewProfile={() => navigation.navigate('ViewProfileScreen', {item})}
                   onDelete={this.handleDelete}
                   onReport={this.handleReport}
                   onPress={() => navigation.navigate('CommentScreen', {item})}
