@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, StyleSheet,Text,View, Image, SafeAreaView } from 'react-native';
-import { logoutUser } from '../../api/auth'
+import { logoutUser } from '../../api/auth';
 import Button from '../../components/Button';
 import { theme } from '../../core/theme';
 import * as firebase from 'firebase';
@@ -15,7 +15,8 @@ export default class ProfilePersonalScreen extends React.Component {
             userData: null,
             uploaded: false,
             status: '',
-            imageURL: ''
+            imageURL: '',
+            bio:''
         }
 
     static navigationOptions = {
@@ -60,6 +61,7 @@ export default class ProfilePersonalScreen extends React.Component {
           if (documentSnapshot.exists) {
             console.log('User Data', documentSnapshot.data());
             this.setState({ userData: documentSnapshot.data() });
+            this.setState({ bio:documentSnapshot.data().bio });
           }
         })
 
@@ -71,6 +73,7 @@ export default class ProfilePersonalScreen extends React.Component {
 
     render() {
     console.log(this.state.imageUri);
+    console.log(this.state.bio);
 
     return (
     <SafeAreaView>
@@ -78,28 +81,32 @@ export default class ProfilePersonalScreen extends React.Component {
       <View style={styles.container}>
          <View style={styles.header}>
             <View style={styles.headerContent}>
-            <Image
-                source={{ uri: this.state.userData ? this.state.userData.userImg ||
-                    this.state.defaultUri : this.state.defaultUri }}
-                style={styles.avatar}/>
-            <Button title="Choose image..." onPress={this.onChooseImagePress}>
-                Upload profile picture
-            </Button>
+            <TouchableOpacity onPress={this.onChooseImagePress}>
+                <Image
+                    source={{ uri: this.state.userData ? this.state.userData.userImg ||
+                        this.state.defaultUri : this.state.defaultUri }}
+                    style={styles.avatar}/>
+            </TouchableOpacity>
             <Text style={styles.name}>{firebase.auth().currentUser.displayName}</Text>
-            <Text style={styles.userInfo}>{firebase.auth().currentUser.email}</Text>
+            <Text style={styles.userInfo}>{this.state.bio}</Text>
          </View>
       </View>
 
          <View style={styles.body}>
             <Button style = {styles.accountset}
-            mode="outlined" onPress={() => this.props.navigation.navigate('AccountSettingsScreen')} >
+              onPress={() => this.props.navigation.navigate('AddBioScreen')} >
+             Update Bio
+            </Button>
+            <Button style = {styles.accountset}
+             onPress={() => this.props.navigation.navigate('AccountSettingsScreen')} >
                 Account Settings
             </Button>
-
-            <Button style = {styles.logout}
-            mode="outlined" onPress={logoutUser}>
-                Logout
+            <Button style = {styles.accountset}
+              onPress={() => this.props.navigation.navigate('DummyScreen')} >
+                Flairs
             </Button>
+            <Button style={styles.button} color='#de1738'onPress={logoutUser}> Logout </Button>
+
          </View>
       </View>
       </SafeAreaView>
@@ -137,7 +144,7 @@ const styles = StyleSheet.create({
     fontWeight:'600',
   },
   body:{
-    backgroundColor: "#FFFAFA",
+    backgroundColor: "#FFFFFF",
     height:500,
     alignItems:'center',
   },
@@ -165,7 +172,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   accountset: {
-    backgroundColor:'#add8e6'
+    backgroundColor:'#FFFFFF'
   },
   logout: {
     backgroundColor: '#add8e6'
