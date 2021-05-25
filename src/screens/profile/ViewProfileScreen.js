@@ -26,11 +26,36 @@ const ViewProfileScreen = ({navigation, route, onPress}) => {
           .get()
           .then((documentSnapshot) => {
             if (documentSnapshot.exists) {
-              console.log('User Data', documentSnapshot.data());
+//              console.log('User Data', documentSnapshot.data());
               setUserData(documentSnapshot.data());
             }
           });
     };
+
+    const getFollowing = async () => {
+        await firebase.firestore()
+            .collection('users')
+            .doc(currentUserId)
+            .collection('following')
+            .doc(item.userId)
+            .onSnapshot((snapshot) => {
+                if (snapshot.exists) {
+                    setFollowing(true);
+                } else {
+                    setFollowing(false);
+                }
+            })
+    };
+
+    const follow = async () => {
+        if (following) {
+            firebase.firestore().collection('users').doc(currentUserId).collection('following').doc(item.userId).delete();
+            setFollowing(false);
+        } else {
+            firebase.firestore().collection('users').doc(currentUserId).collection('following').doc(item.userId).set({});
+            setFollowing(true);
+        }
+    }
 
     const fetchUserPosts = async () => {
       try {
@@ -83,7 +108,7 @@ const ViewProfileScreen = ({navigation, route, onPress}) => {
           setRefreshing(false);
         }
 
-        console.log('Posts: ', posts);
+//        console.log('Posts: ', posts);
       } catch (e) {
         console.log(e);
       }
@@ -178,14 +203,6 @@ const ViewProfileScreen = ({navigation, route, onPress}) => {
         );
     }
 
-    const follow = () => {
-        if (following) {
-            setFollowing(false);
-        } else {
-            setFollowing(true);
-        }
-    }
-
     const ItemSeparator = () => <View style={{
         height: 2,
         backgroundColor: "rgba(0,0,0,0.5)",
@@ -201,6 +218,7 @@ const ViewProfileScreen = ({navigation, route, onPress}) => {
 
     useEffect(() => {
         getUser();
+        getFollowing();
         fetchUserPosts();
     }, []);
 
@@ -300,6 +318,7 @@ const styles = StyleSheet.create({
     color: '#778899',
     fontWeight: '600',
     flexWrap: 'wrap',
+    paddingLeft: 4,
     width: 280,
   },
   buttonContainer: {

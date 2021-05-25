@@ -31,22 +31,6 @@ const PostCard = ({route, item, onViewProfile, onDelete, onPress, onReport}) => 
 
   var commentText;
 
-  if (item.likes == 1) {
-    likeText = '1 Like';
-  } else if (item.likes > 1) {
-    likeText = item.likes + ' Likes';
-  } else {
-    likeText = 'Like';
-  }
-
-  if (item.commentCount == 1) {
-    commentText = '1 Comment';
-  } else if (item.commentCount > 1) {
-    commentText = item.commentCount + ' Comments';
-  } else {
-    commentText = 'Comment';
-  }
-
   const getUser = async () => {
     await firebase.firestore()
       .collection('users')
@@ -54,7 +38,7 @@ const PostCard = ({route, item, onViewProfile, onDelete, onPress, onReport}) => 
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          console.log('User Data', documentSnapshot.data());
+//          console.log('User Data', documentSnapshot.data());
           setUserData(documentSnapshot.data());
         }
       });
@@ -102,26 +86,25 @@ const PostCard = ({route, item, onViewProfile, onDelete, onPress, onReport}) => 
 
   return (
     <Card key={item.id}>
-      <UserInfo>
-        <UserImg
-          source={{
-            uri: userData
-              ? userData.userImg ||
-                'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
-              : 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460',
-          }}
-        />
-        <UserInfoText>
-          <TouchableOpacity onPress={onViewProfile}>
-            <UserName>
-              {userData ? userData.name || 'Anonymous User' : 'Anonymous User'}
-            </UserName>
-          </TouchableOpacity>
-          <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
-        </UserInfoText>
-      </UserInfo>
+      <TouchableOpacity onPress={() => onViewProfile(currentUserId)}>
+          <UserInfo>
+            <UserImg
+              source={{
+                uri: userData
+                  ? userData.userImg ||
+                    'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
+                  : 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460',
+              }}
+            />
+            <UserInfoText>
+              <UserName>
+                {userData ? userData.name || 'Anonymous User' : 'Anonymous User'}
+              </UserName>
+              <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
+            </UserInfoText>
+          </UserInfo>
+      </TouchableOpacity>
       <PostText>{item.post}</PostText>
-      {/* {item.postImg != null ? <PostImg source={{uri: item.postImg}} /> : <Divider />} */}
       {item.postImg != null ? (
         <ProgressiveImage
           defaultImageSource={require('../assets/default-img.jpg')}

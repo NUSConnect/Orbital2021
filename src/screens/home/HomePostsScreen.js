@@ -188,6 +188,18 @@ export default class HomePostsScreen extends React.Component {
         this.setState({ refreshing: false }, () => { this.fetchPosts() });
     }
 
+    navigateProfile = (creatorId, ownNavigation, otherNavigation) => {
+        return (currUserId) => {
+            console.log('Current User: ', currUserId);
+            console.log('Creator User: ', creatorId);
+            if (currUserId == creatorId) {
+                ownNavigation();
+            } else {
+                otherNavigation();
+            }
+        }
+    }
+
     render() {
       const { navigation } = this.props;
       return (
@@ -199,7 +211,8 @@ export default class HomePostsScreen extends React.Component {
             renderItem={({item}) => (
                 <PostCard
                   item={item}
-                  onViewProfile={() => navigation.navigate('ViewProfileScreen', {item})}
+                  onViewProfile={this.navigateProfile(item.userId, () => navigation.navigate('Profile'),
+                                        () => navigation.navigate('ViewProfileScreen', {item}))}
                   onDelete={this.handleDelete}
                   onReport={this.handleReport}
                   onPress={() => navigation.navigate('CommentScreen', {item})}
