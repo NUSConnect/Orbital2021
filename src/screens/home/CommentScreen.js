@@ -53,6 +53,8 @@ const CommentScreen = ({navigation, route, onPress}) => {
 
         await firebase.firestore()
           .collection('posts')
+          .doc(item.userId)
+          .collection('userPosts')
           .doc(item.postId)
           .collection('comments')
           .orderBy('postTime', 'asc')
@@ -81,6 +83,8 @@ const CommentScreen = ({navigation, route, onPress}) => {
     const onCommentSend = () => {
         firebase.firestore()
           .collection('posts')
+          .doc(item.userId)
+          .collection('userPosts')
           .doc(item.postId)
           .collection('comments')
           .add({
@@ -98,7 +102,7 @@ const CommentScreen = ({navigation, route, onPress}) => {
           })
 
         item.commentCount = item.commentCount + 1;
-        firebase.firestore().collection('posts').doc(item.postId).update({ commentCount: item.commentCount });
+        firebase.firestore().collection('posts').doc(item.userId).collection('userPosts').doc(item.postId).update({ commentCount: item.commentCount });
     }
 
     const handleDelete = (commentId) => {
@@ -125,6 +129,8 @@ const CommentScreen = ({navigation, route, onPress}) => {
 
         firebase.firestore()
           .collection('posts')
+          .doc(item.userId)
+          .collection('userPosts')
           .doc(item.postId)
           .collection('comments')
           .doc(commentId)
@@ -137,7 +143,7 @@ const CommentScreen = ({navigation, route, onPress}) => {
           }).catch((e) => console.log('Error deleting comment.', e));
 
         item.commentCount = item.commentCount - 1;
-        firebase.firestore().collection('posts').doc(item.postId).update({ commentCount: item.commentCount });
+        firebase.firestore().collection('posts').doc(item.userId).collection('userPosts').doc(item.postId).update({ commentCount: item.commentCount });
     };
 
     const handleReport = (postId) => {

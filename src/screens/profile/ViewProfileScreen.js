@@ -60,12 +60,13 @@ const ViewProfileScreen = ({navigation, route, onPress}) => {
     const fetchUserPosts = async () => {
       try {
         const allPosts = [];
-        const filteredPosts = [];
         let counter = 0;
         setRefreshing(true);
 
         await firebase.firestore()
             .collection('posts')
+            .doc(item.userId)
+            .collection('userPosts')
             .orderBy('postTime', 'desc')
             .get()
             .then((querySnapshot) => {
@@ -95,14 +96,7 @@ const ViewProfileScreen = ({navigation, route, onPress}) => {
               });
             });
 
-        for (let i = 0; i < allPosts.length; i++) {
-            if (allPosts[i].userId == item.userId) {
-                filteredPosts[counter] = allPosts[i];
-                counter++;
-            }
-        }
-
-        setPosts(filteredPosts);
+        setPosts(allPosts);
 
         if (refreshing) {
           setRefreshing(false);
@@ -112,73 +106,6 @@ const ViewProfileScreen = ({navigation, route, onPress}) => {
       } catch (e) {
         console.log(e);
       }
-    };
-
-    const handleDelete = (postId) => {
-        Alert.alert(
-          'Delete post',
-          'Are you sure?',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => console.log('Cancel Pressed!'),
-              style: 'cancel',
-            },
-            {
-              text: 'Confirm',
-              onPress: () => deleteComment(commentId),
-            },
-          ],
-          {cancelable: false},
-        );
-    };
-
-    const deletePost = (postId) => {
-        console.log('Current Post Id: ', postId);
-
-        firebase.firestore()
-          .collection('posts')
-          .doc(postId)
-          .get()
-          .then((documentSnapshot) => {
-            if (documentSnapshot.exists) {
-              const {postImg} = documentSnapshot.data();
-
-              if (postImg != null) {
-                const storageRef = firebase.storage().refFromURL(postImg);
-                console.log('storageRef',  storageRef.fullPath);
-                const imageRef = firebase.storage().ref(storageRef.fullPath);
-
-                imageRef
-                  .delete()
-                  .then(() => {
-                    console.log(`${postImg} has been deleted successfully.`);
-                    deleteFirestoreData(postId);
-                  })
-                  .catch((e) => {
-                    console.log('Error while deleting the image. ', e);
-                  });
-                // If the post image is not available
-              } else {
-                deleteFirestoreData(postId);
-              }
-            }
-          });
-    };
-
-    const deleteFirestoreData = (postId) => {
-        firebase.firestore()
-          .collection('posts')
-          .doc(postId)
-          .delete()
-          .then(() => {
-            Alert.alert(
-              'Post deleted!',
-              'Your post has been deleted successfully!',
-            );
-            this.setState({ deleted: true });
-          })
-          .catch((e) => console.log('Error deleting post.', e));
     };
 
     const handlePostsReport = (postId) => {
@@ -263,7 +190,6 @@ const ViewProfileScreen = ({navigation, route, onPress}) => {
             renderItem={({ item }) => (
                 <PostCard
                   item={item}
-                  onDelete={handleDelete}
                   onReport={handlePostsReport}
                   onPress={() => navigation.navigate('CommentScreen', {item})}
                 />

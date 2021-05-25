@@ -31,6 +31,14 @@ const PostCard = ({route, item, onViewProfile, onDelete, onPress, onReport}) => 
 
   var commentText;
 
+  if (item.commentCount == 1) {
+    commentText = '1 Comment';
+  } else if (item.commentCount > 1) {
+    commentText = item.commentCount + ' Comments';
+  } else {
+    commentText = 'Comment';
+  }
+
   const getUser = async () => {
     await firebase.firestore()
       .collection('users')
@@ -47,6 +55,8 @@ const PostCard = ({route, item, onViewProfile, onDelete, onPress, onReport}) => 
   const checkLiked = async() => {
     await firebase.firestore()
         .collection('posts')
+        .doc(item.userId)
+        .collection('userPosts')
         .doc(item.postId)
         .collection('likes')
         .doc(currentUserId)
@@ -63,15 +73,15 @@ const PostCard = ({route, item, onViewProfile, onDelete, onPress, onReport}) => 
     console.log('Post ID: ' + item.postId);
     if (userLiked) {
         item.likeCount = item.likeCount - 1;
-        firebase.firestore().collection('posts').doc(item.postId).collection('likes').doc(currentUserId).delete();
-        firebase.firestore().collection('posts').doc(item.postId).update({ likeCount: item.likeCount });
+        firebase.firestore().collection('posts').doc(item.userId).collection('userPosts').doc(item.postId).collection('likes').doc(currentUserId).delete();
+        firebase.firestore().collection('posts').doc(item.userId).collection('userPosts').doc(item.postId).update({ likeCount: item.likeCount });
         console.log('Dislike')
         setLikeNumber(item.likeCount);
         setUserLiked(false);
     } else {
         item.likeCount = item.likeCount + 1;
-        firebase.firestore().collection('posts').doc(item.postId).collection('likes').doc(currentUserId).set({});
-        firebase.firestore().collection('posts').doc(item.postId).update({ likeCount: item.likeCount });
+        firebase.firestore().collection('posts').doc(item.userId).collection('userPosts').doc(item.postId).collection('likes').doc(currentUserId).set({});
+        firebase.firestore().collection('posts').doc(item.userId).collection('userPosts').doc(item.postId).update({ likeCount: item.likeCount });
         console.log('Like')
         setLikeNumber(item.likeCount);
         setUserLiked(true);
