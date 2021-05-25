@@ -44,7 +44,7 @@ export default class HomePostsScreen extends React.Component {
           this.setState({gestureName: gestureName});
           switch (gestureName) {
             case SWIPE_LEFT:
-              this.props.navigation.navigate('ChatScreen');
+              this.props.navigation.navigate('MessagesScreen');
               console.log(this.state.myText);
               break;
             case SWIPE_RIGHT:

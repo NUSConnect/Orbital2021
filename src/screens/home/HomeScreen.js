@@ -6,6 +6,7 @@ import HomePostsScreen from './HomePostsScreen';
 import AddPostScreen from './AddPostScreen';
 import CommentScreen from './CommentScreen';
 import ChatScreen from './ChatScreen';
+import MessagesScreen from './MessagesScreen';
 import ViewProfileScreen from '../profile/ViewProfileScreen';
 
 const Stack = createStackNavigator();
@@ -27,6 +28,7 @@ const HomeScreen = ({navigation}) => {
         <Stack.Screen name="CommentScreen" component={CommentScreen} />
         <Stack.Screen name="ViewProfileScreen" component={ViewProfileScreen} />
         <Stack.Screen name="ChatScreen" component={ChatScreen} />
+        <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   );
