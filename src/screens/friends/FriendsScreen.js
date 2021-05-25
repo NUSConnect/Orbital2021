@@ -108,6 +108,7 @@ export default function FriendsScreen() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
+    flex: 1
   },
   itemStyle: {
     padding: 10,
