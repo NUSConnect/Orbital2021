@@ -12,7 +12,8 @@ export const signUpUser = async ({ name, email, password }) => {
       .then(() => {
         //Once the user creation has happened successfully, we can add the currentUser into firestore
         //with the appropriate details.
-        firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid)
+        const currentUserId = firebase.auth().currentUser.uid
+        firebase.firestore().collection('users').doc(currentUserId)
         .set({
             name: name,
             email: email,
@@ -24,6 +25,7 @@ export const signUpUser = async ({ name, email, password }) => {
         .catch(error => {
             console.log('Something went wrong with added user to firestore: ', error);
         })
+        firebase.firestore().collection('users').doc(currentUserId).collection('following').doc(currentUserId).set({});
       })
 
     firebase.auth().currentUser.updateProfile({

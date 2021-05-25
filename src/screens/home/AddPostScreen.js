@@ -100,6 +100,8 @@ export default class AddPostScreen extends React.Component {
 
     firebase.firestore()
     .collection('posts')
+    .doc(userID)
+    .collection('userPosts')
     .doc(postID)
     .set({
       userId: userID,

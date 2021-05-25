@@ -14,6 +14,7 @@ export default class HomePostsScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentUserId: firebase.auth().currentUser.uid,
             data: [],
             refreshing: true,
             deleted: false,
@@ -26,40 +27,55 @@ export default class HomePostsScreen extends React.Component {
 
     fetchPosts = async () => {
       try {
+        const following = [];
+        await firebase.firestore().collection('users').doc(this.state.currentUserId).collection('following')
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+              following.push(doc.id)
+          })
+        })
+
+        console.log('Following: ', following);
         const list = [];
         this.setState({ refreshing: true });
 
-        await firebase.firestore()
-            .collection('posts')
-            .orderBy('postTime', 'desc')
-            .get()
-            .then((querySnapshot) => {
-              querySnapshot.forEach((doc) => {
-                const {
-                  userId,
-                  postId,
-                  post,
-                  postImg,
-                  postTime,
-                  likeCount,
-                  commentCount,
-                } = doc.data();
-                list.push({
-                  id: doc.id,
-                  userId,
-                  userName: 'Test Name',
-                  userImg:
-                    'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
-                  postId,
-                  postTime: postTime,
-                  post,
-                  postImg,
-                  likeCount,
-                  commentCount,
-                });
-              });
-            });
+        for (let i = 0; i < following.length; i++) {
+            const followingId = following[i];
 
+            await firebase.firestore().collection('posts').doc(followingId).collection('userPosts')
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                      const {
+                        userId,
+                        postId,
+                        post,
+                        postImg,
+                        postTime,
+                        likeCount,
+                        commentCount,
+                      } = doc.data();
+                      list.push({
+                        id: doc.id,
+                        userId,
+                        userName: 'Test Name',
+                        userImg:
+                          'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+                        postId,
+                        postTime: postTime,
+                        post,
+                        postImg,
+                        likeCount,
+                        commentCount,
+                      });
+                    })
+                })
+        }
+
+        list.sort(function (x, y) {
+            return y.postTime - x.postTime;
+        })
         this.setState({ data: list });
 
         if (this.state.refreshing) {
@@ -96,6 +112,8 @@ export default class HomePostsScreen extends React.Component {
 
         firebase.firestore()
           .collection('posts')
+          .doc(this.state.currentUserId)
+          .collection('userPosts')
           .doc(postId)
           .get()
           .then((documentSnapshot) => {
@@ -122,6 +140,23 @@ export default class HomePostsScreen extends React.Component {
               }
             }
           });
+    };
+
+    deleteFirestoreData = (postId) => {
+        firebase.firestore()
+          .collection('posts')
+          .doc(this.state.currentUserId)
+          .collection('userPosts')
+          .doc(postId)
+          .delete()
+          .then(() => {
+            Alert.alert(
+              'Post deleted!',
+              'Your post has been deleted successfully!',
+            );
+            this.setState({ deleted: true });
+          })
+          .catch((e) => console.log('Error deleting post.', e));
     };
 
     handleReport = (postId) => {
@@ -159,23 +194,20 @@ export default class HomePostsScreen extends React.Component {
     }}
     />
 
-    deleteFirestoreData = (postId) => {
-        firebase.firestore()
-          .collection('posts')
-          .doc(postId)
-          .delete()
-          .then(() => {
-            Alert.alert(
-              'Post deleted!',
-              'Your post has been deleted successfully!',
-            );
-            this.setState({ deleted: true });
-          })
-          .catch((e) => console.log('Error deleting post.', e));
-    };
-
     handleRefresh = () => {
         this.setState({ refreshing: false }, () => { this.fetchPosts() });
+    }
+
+    navigateProfile = (creatorId, ownNavigation, otherNavigation) => {
+        return (currUserId) => {
+            console.log('Current User: ', currUserId);
+            console.log('Creator User: ', creatorId);
+            if (currUserId == creatorId) {
+                ownNavigation();
+            } else {
+                otherNavigation();
+            }
+        }
     }
 
     render() {
@@ -189,7 +221,8 @@ export default class HomePostsScreen extends React.Component {
             renderItem={({item}) => (
                 <PostCard
                   item={item}
-                  onViewProfile={() => navigation.navigate('ViewProfileScreen', {item})}
+                  onViewProfile={this.navigateProfile(item.userId, () => navigation.navigate('Profile'),
+                                        () => navigation.navigate('ViewProfileScreen', {item}))}
                   onDelete={this.handleDelete}
                   onReport={this.handleReport}
                   onPress={() => navigation.navigate('CommentScreen', {item})}

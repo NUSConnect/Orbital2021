@@ -13,6 +13,7 @@ export default class ProfilePostsScreen extends React.Component {
             data: [],
             refreshing: true,
             deleted: false,
+            userId: firebase.auth().currentUser.uid,
         }
     }
 
@@ -27,18 +28,20 @@ export default class ProfilePostsScreen extends React.Component {
 
         await firebase.firestore()
             .collection('posts')
-            .where("userId","==",firebase.auth().currentUser.uid)
+            .doc(this.state.userId)
+            .collection('userPosts')
             .orderBy('postTime', 'desc')
             .get()
             .then((querySnapshot) => {
               querySnapshot.forEach((doc) => {
                 const {
                   userId,
+                  postId,
                   post,
                   postImg,
                   postTime,
-                  likes,
-                  comments,
+                  likeCount,
+                  commentCount,
                 } = doc.data();
                 list.push({
                   id: doc.id,
@@ -46,12 +49,12 @@ export default class ProfilePostsScreen extends React.Component {
                   userName: 'Test Name',
                   userImg:
                     'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+                  postId,
                   postTime: postTime,
                   post,
                   postImg,
-                  liked: false,
-                  likes,
-                  comments,
+                  likeCount,
+                  commentCount,
                 });
               });
             });
@@ -62,63 +65,81 @@ export default class ProfilePostsScreen extends React.Component {
           this.setState({ refreshing: false });
         }
 
-        console.log('Posts: ', posts);
+        console.log('Posts: ', this.state.data);
       } catch (e) {
         console.log(e);
       }
     };
 
-        handleDelete = (postId) => {
-                Alert.alert(
-                  'Delete post',
-                  'Are you sure?',
-                  [
-                    {
-                      text: 'Cancel',
-                      onPress: () => console.log('Cancel Pressed!'),
-                      style: 'cancel',
-                    },
-                    {
-                      text: 'Confirm',
-                      onPress: () => this.deletePost(postId),
-                    },
-                  ],
-                  {cancelable: false},
-                );
-            };
+    handleDelete = (postId) => {
+        Alert.alert(
+          'Delete post',
+          'Are you sure?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed!'),
+              style: 'cancel',
+            },
+            {
+              text: 'Confirm',
+              onPress: () => this.deletePost(postId),
+            },
+          ],
+          {cancelable: false},
+        );
+    };
 
-            deletePost = (postId) => {
-                console.log('Current Post Id: ', postId);
+    deletePost = (postId) => {
+        console.log('Current Post Id: ', postId);
 
-                firebase.firestore()
-                  .collection('posts')
-                  .doc(postId)
-                  .get()
-                  .then((documentSnapshot) => {
-                    if (documentSnapshot.exists) {
-                      const {postImg} = documentSnapshot.data();
+        firebase.firestore()
+          .collection('posts')
+          .doc(this.state.userId)
+          .collection('userPosts')
+          .doc(postId)
+          .get()
+          .then((documentSnapshot) => {
+            if (documentSnapshot.exists) {
+              const {postImg} = documentSnapshot.data();
 
-                      if (postImg != null) {
-                        const storageRef = firebase.storage().refFromURL(postImg);
-                        console.log('storageRef',  storageRef.fullPath);
-                        const imageRef = firebase.storage().ref(storageRef.fullPath);
+              if (postImg != null) {
+                const storageRef = firebase.storage().refFromURL(postImg);
+                const imageRef = firebase.storage().ref(storageRef.fullPath);
 
-                        imageRef
-                          .delete()
-                          .then(() => {
-                            console.log(`${postImg} has been deleted successfully.`);
-                            this.deleteFirestoreData(postId);
-                          })
-                          .catch((e) => {
-                            console.log('Error while deleting the image. ', e);
-                          });
-                        // If the post image is not available
-                      } else {
-                        this.deleteFirestoreData(postId);
-                      }
-                    }
+                imageRef
+                  .delete()
+                  .then(() => {
+                    console.log(`${postImg} has been deleted successfully.`);
+                    this.deleteFirestoreData(postId);
+                  })
+                  .catch((e) => {
+                    console.log('Error while deleting the image. ', e);
                   });
-            };
+                // If the post image is not available
+              } else {
+                this.deleteFirestoreData(postId);
+              }
+            }
+          });
+    };
+
+    deleteFirestoreData = (postId) => {
+        firebase.firestore()
+          .collection('posts')
+          .doc(this.state.userId)
+          .collection('userPosts')
+          .doc(postId)
+          .delete()
+          .then(() => {
+            Alert.alert(
+              'Post deleted!',
+              'Your post has been deleted successfully!',
+            );
+            this.setState({ deleted: true });
+          })
+          .catch((e) => console.log('Error deleting post.', e));
+    };
 
     renderItemComponent = (data) =>
         <TouchableOpacity style={styles.container}>
@@ -132,21 +153,6 @@ export default class ProfilePostsScreen extends React.Component {
         marginRight: 10,
     }}
     />
-
-    deleteFirestoreData = (postId) => {
-        firebase.firestore()
-          .collection('posts')
-          .doc(postId)
-          .delete()
-          .then(() => {
-            Alert.alert(
-              'Post deleted!',
-              'Your post has been deleted successfully!',
-            );
-            this.setState({ deleted: true });
-          })
-          .catch((e) => console.log('Error deleting posst.', e));
-    };
 
     handleRefresh = () => {
         this.setState({ refreshing: false }, () => { this.fetchPosts() });
@@ -162,7 +168,8 @@ export default class ProfilePostsScreen extends React.Component {
                 <PostCard
                   item={item}
                   onDelete={this.handleDelete}
-                  onPress={() => alert('user profile')}
+                  onViewProfile={() => alert('user profile')}
+                  onPress={() => navigation.navigate('CommentScreen', {item})}
                 />
             )}
 //            renderItem={item => this.renderItemComponent(item)}
