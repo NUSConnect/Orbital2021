@@ -6,7 +6,8 @@ import {
   View,
   FlatList,
   TextInput,
-  ActivityIndicator
+  ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import * as firebase from 'firebase';
 
@@ -108,7 +109,8 @@ export default function FriendsScreen() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    flex: 1
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
   },
   itemStyle: {
     padding: 10,
