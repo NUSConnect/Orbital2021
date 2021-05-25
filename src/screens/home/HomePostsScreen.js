@@ -7,7 +7,7 @@ import CommentScreen from './CommentScreen';
 import ViewProfileScreen from '../profile/ViewProfileScreen';
 import PostButton from '../../components/PostButton';
 import PostCard from '../../components/PostCard';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import GestureRecognizer, {swipeDirections} from 'rn-swipe-gestures';
 
 import * as firebase from 'firebase';
 
@@ -40,15 +40,12 @@ export default class HomePostsScreen extends React.Component {
       }
 
       onSwipe(gestureName, gestureState) {
-          const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+          const {SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
           this.setState({gestureName: gestureName});
           switch (gestureName) {
-            case SWIPE_UP:
-              break;
-            case SWIPE_DOWN:
-              break;
             case SWIPE_LEFT:
               this.props.navigation.navigate('ChatScreen');
+              console.log(this.state.myText);
               break;
             case SWIPE_RIGHT:
               break;
@@ -217,14 +214,14 @@ export default class HomePostsScreen extends React.Component {
       const { navigation } = this.props;
       const config = {
             velocityThreshold: 0.3,
-            directionalOffsetThreshold: 80
+            directionalOffsetThreshold: 80,
+            detectSwipeUp: false,
+            detectSwipeDown: false,
           };
       return (
         <SafeAreaView>
           <GestureRecognizer
                   onSwipe={(direction, state) => this.onSwipe(direction, state)}
-                  onSwipeUp={(state) => this.onSwipeUp(state)}
-                  onSwipeDown={(state) => this.onSwipeDown(state)}
                   onSwipeLeft={(state) => this.onSwipeLeft(state)}
                   onSwipeRight={(state) => this.onSwipeRight(state)}
                   config={config}
