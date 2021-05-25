@@ -24,16 +24,6 @@ export default class HomePostsScreen extends React.Component {
         this.fetchPosts();
     }
 
-    fetchCats() {
-        this.setState({ refreshing: true });
-        fetch('https://api.thecatapi.com/v1/images/search?limit=10&page=1')
-            .then(res => res.json())
-            .then(resJson => {
-                this.setState({ data: resJson });
-                this.setState({ refreshing: false });
-            }).catch(e => console.log(e));
-    }
-
     fetchPosts = async () => {
       try {
         const list = [];
