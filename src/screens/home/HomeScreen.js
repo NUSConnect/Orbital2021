@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import HomePostsScreen from './HomePostsScreen';
 import AddPostScreen from './AddPostScreen';
 import CommentScreen from './CommentScreen';
+import ChatScreen from './ChatScreen';
 import ViewProfileScreen from '../profile/ViewProfileScreen';
 
 const Stack = createStackNavigator();
@@ -25,6 +26,7 @@ const HomeScreen = ({navigation}) => {
         <Stack.Screen name="AddPostScreen" component={AddPostScreen} />
         <Stack.Screen name="CommentScreen" component={CommentScreen} />
         <Stack.Screen name="ViewProfileScreen" component={ViewProfileScreen} />
+        <Stack.Screen name="ChatScreen" component={ChatScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   );

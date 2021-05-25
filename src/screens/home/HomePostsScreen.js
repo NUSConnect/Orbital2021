@@ -7,6 +7,7 @@ import CommentScreen from './CommentScreen';
 import ViewProfileScreen from '../profile/ViewProfileScreen';
 import PostButton from '../../components/PostButton';
 import PostCard from '../../components/PostCard';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 import * as firebase from 'firebase';
 
@@ -17,8 +18,42 @@ export default class HomePostsScreen extends React.Component {
             data: [],
             refreshing: true,
             deleted: false,
+            myText: 'Ready to get swiped!',
+            gestureName: 'none',
         }
     }
+
+    onSwipeUp(gestureState) {
+        this.setState({myText: 'You swiped up!'});
+      }
+
+      onSwipeDown(gestureState) {
+        this.setState({myText: 'You swiped down!'});
+      }
+
+      onSwipeLeft(gestureState) {
+        this.setState({myText: 'You swiped left!'});
+      }
+
+      onSwipeRight(gestureState) {
+        this.setState({myText: 'You swiped right!'});
+      }
+
+      onSwipe(gestureName, gestureState) {
+          const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+          this.setState({gestureName: gestureName});
+          switch (gestureName) {
+            case SWIPE_UP:
+              break;
+            case SWIPE_DOWN:
+              break;
+            case SWIPE_LEFT:
+              this.props.navigation.navigate('ChatScreen');
+              break;
+            case SWIPE_RIGHT:
+              break;
+          }
+        }
 
     componentDidMount() {
         this.fetchPosts();
@@ -180,8 +215,20 @@ export default class HomePostsScreen extends React.Component {
 
     render() {
       const { navigation } = this.props;
+      const config = {
+            velocityThreshold: 0.3,
+            directionalOffsetThreshold: 80
+          };
       return (
         <SafeAreaView>
+          <GestureRecognizer
+                  onSwipe={(direction, state) => this.onSwipe(direction, state)}
+                  onSwipeUp={(state) => this.onSwipeUp(state)}
+                  onSwipeDown={(state) => this.onSwipeDown(state)}
+                  onSwipeLeft={(state) => this.onSwipeLeft(state)}
+                  onSwipeRight={(state) => this.onSwipeRight(state)}
+                  config={config}
+                  >
           <PostButton
             onPress={() => navigation.navigate('AddPostScreen')}/>
           <FlatList
@@ -201,6 +248,7 @@ export default class HomePostsScreen extends React.Component {
             onRefresh={this.handleRefresh}
             style={{ marginBottom:  40 }}
           />
+          </GestureRecognizer>
         </SafeAreaView>)
     }
 }
