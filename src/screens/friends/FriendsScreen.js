@@ -7,7 +7,7 @@ import {
   FlatList,
   TextInput,
   ActivityIndicator,
-  StatusBar
+  StatusBar,
 } from 'react-native';
 import * as firebase from 'firebase';
 
