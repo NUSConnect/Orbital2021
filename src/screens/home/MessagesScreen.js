@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, Button, StyleSheet, FlatList, SafeAreaView } from 'react-native';
 import {
   Container,
@@ -12,53 +12,44 @@ import {
   MessageText,
   TextSection,
 } from '../../styles/MessageStyles';
-
-const Messages = [
-  {
-    id: '1',
-    userName: 'A',
-    messageTime: '4 mins ago',
-    messageText:
-      'test'
-  },
-  {
-    id: '2',
-    userName: 'B',
-    messageTime: '2 hours ago',
-    messageText:
-      'test'
-  },
-  {
-    id: '3',
-    userName: 'C',
-    messageTime: '1 hours ago',
-    messageText:
-      'test'
-  },
-  {
-    id: '4',
-    userName: 'D',
-    messageTime: '1 day ago',
-    messageText:
-      'test',
-  },
-];
+import * as firebase from 'firebase';
 
 const MessagesScreen = ({navigation}) => {
+    const currentUserId = firebase.auth().currentUser.uid;
+    const [friends, setFriends] = useState([]);
+
+    useEffect(() => {
+            const subscriber = firebase.firestore()
+              .collection('users')
+              .onSnapshot(querySnapshot => {
+                const friendsArr = [];
+                querySnapshot.forEach(documentSnapshot => {
+                console.log(documentSnapshot.id)
+                console.log(currentUserId)
+                if (documentSnapshot.id !== currentUserId) {
+                    friendsArr.push(documentSnapshot.data());
+                }
+                });
+                console.log(friendsArr)
+                setFriends(friendsArr);
+              });
+            return () => subscriber();
+          }, []);
+
     return (
       <Container>
         <FlatList
-          data={Messages}
-          keyExtractor={item=>item.id}
+          data={friends}
+          keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => (
-            <Card onPress={() => navigation.navigate('ChatScreen')}>
+            <Card onPress={() => navigation.navigate('ChatScreen', {name: item.name})}>
               <UserInfo>
                 <UserImgWrapper>
                   <UserImg source={item.userImg} />
                 </UserImgWrapper>
                 <TextSection>
                   <UserInfoText>
-                    <UserName>{item.userName}</UserName>
+                    <UserName>{item.name}</UserName>
                     <PostTime>{item.messageTime}</PostTime>
                   </UserInfoText>
                   <MessageText>{item.messageText}</MessageText>
