@@ -1,16 +1,20 @@
 import * as React from 'react';
 import { Text, View, SafeAreaView, StyleSheet, StatusBar } from 'react-native';
-import SearchBar from '../../components/SearchBar'
+import SearchBar from '../../components/SearchBar';
+import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import {
   ForumFavouritesScreen,
   ForumSubscribedScreen,
-  ForumOthersScreen
+  ForumOthersScreen,
+  ForumCreationScreen,
 } from './'
 
+const Stack = createStackNavigator();
 const TopTab = createMaterialTopTabNavigator();
 
-function MyTabs() {
+function ForumTabs() {
   return (
     <TopTab.Navigator
       tabBarOptions= {{
@@ -23,15 +27,19 @@ function MyTabs() {
         <TopTab.Screen name="Subscribed" component={ForumSubscribedScreen} />
         <TopTab.Screen name="Others" component={ForumOthersScreen} />
     </TopTab.Navigator>
-
   );
 }
 
 export default function ForumScreen() {
   return (
     <SafeAreaView style={styles.container}>
-        <SearchBar />
-        <MyTabs />
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen
+          name="ForumTabs"
+          component={ForumTabs}
+        />
+        <Stack.Screen name="ForumCreationScreen" component={ForumCreationScreen} />
+      </Stack.Navigator>
     </SafeAreaView>
   );
 }
