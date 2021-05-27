@@ -1,43 +1,53 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, SafeAreaView, } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import CancelButton from '../../components/CancelButton';
 import SubmitButton from '../../components/SubmitButton';
 import ForumRecommendedScreen from './ForumRecommendedScreen';
 
 // Not used yet
 
-export default class ForumPostScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      text: "Type something",
-      HOME_PAGE: 'ForumRecommendedScreen',
-    };
-  }
+const ForumPostScreen = ({navigation, route, onPress}) => {
+    const [title, setTitle] = useState('')
+    const [text, setText] = useState('');
 
-  render() {
-    const { navigation } = this.props;
+    const { forumId } = route.params;
+
     return (
-        <SafeAreaView>
-          <View style={styles.container}>
-              <Text style={styles.title}>
-                -Create a Post
-              </Text>
-              <TextInput
-                style={styles.input}
-                onChangeText={(text) => this.setState({ text })}
-                value={this.state.text}
-              />
-              <View style={styles.buttons}>
-                <CancelButton goBack = {() => navigation.navigate(this.state.HOME_PAGE)}/>
-                <View style={styles.space} />
-                <SubmitButton goBack = {() => navigation.navigate(this.state.HOME_PAGE)} string = {'Post'}/>
-              </View>
+      <KeyboardAwareScrollView style={styles.container}>
+          <Text style={styles.title}>
+            Create a Forum Post
+          </Text>
+          <Text style={styles.subTitle}>
+            Post Title
+          </Text>
+          <TextInput
+            style={styles.inputTitle}
+            returnKeyType="next"
+            onChangeText={(title) => setTitle(title)}
+            value={title}
+            placeholder="Post title"
+          />
+          <Text style={styles.subTitle}>
+            Post Body
+          </Text>
+          <TextInput
+            style={styles.inputBody}
+            onChangeText={(text) => setText(text)}
+            value={text}
+            multiline={true}
+            placeholder="Post body"
+          />
+          <View style={styles.buttons}>
+            <CancelButton goBack = {() => navigation.goBack()}/>
+            <View style={styles.space} />
+            <SubmitButton goBack = {() => navigation.goBack()} string = {'Post'}/>
           </View>
-        </SafeAreaView>
+      </KeyboardAwareScrollView>
     );
-  }
 };
+
+export default ForumPostScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -47,18 +57,34 @@ const styles = StyleSheet.create({
     height: 60,
     lineHeight: 60,
     width: '100%',
-    backgroundColor: '#00203f',
-    color: '#aaf0d1',
+    backgroundColor: '#ff8c00',
+    color: '#ffffff',
     fontSize: 30,
-    marginLeft: 0
+    paddingLeft: 15,
   },
-  input: {
+  subTitle: {
+    fontSize: 16,
+    color: "#000000",
+    paddingTop: 10,
+    paddingLeft: 20,
+  },
+  inputTitle: {
     flex: 0,
-    height: 500,
+    height: 40,
     margin: 12,
     borderWidth: 1,
     justifyContent: "flex-start",
     alignItems: "flex-start",
+    paddingLeft: 10,
+  },
+  inputBody: {
+    flex: 0,
+    height: 440,
+    margin: 12,
+    borderWidth: 1,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    paddingLeft: 10,
   },
   buttons: {
     flex: 1,
@@ -67,5 +93,5 @@ const styles = StyleSheet.create({
   },
   space: {
     width:20
-  }
+  },
 });

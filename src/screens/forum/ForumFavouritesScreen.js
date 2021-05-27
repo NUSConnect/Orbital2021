@@ -1,5 +1,7 @@
 import React from "react";
 import { StyleSheet, SafeAreaView, FlatList, View, Image, TouchableOpacity } from "react-native";
+import ForumIcon from '../../components/ForumIcon';
+import * as firebase from 'firebase';
 
 export default class ForumFavouritesScreen extends React.Component {
     constructor(props) {
@@ -11,23 +13,32 @@ export default class ForumFavouritesScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.fetchCats();
+        this.fetchForums();
     }
 
-    fetchCats() {
-        this.setState({ refreshing: true });
-        fetch('https://api.thecatapi.com/v1/images/search?limit=10&page=1')
-            .then(res => res.json())
-            .then(resJson => {
-                this.setState({ data: resJson });
-                this.setState({ refreshing: false });
-            }).catch(e => console.log(e));
-    }
+    fetchForums = async () => {
+        const list = [];
 
-    renderItemComponent = (data) =>
-        <TouchableOpacity style={styles.container}>
-            <Image style={styles.image} source={{ uri: data.item.url }} />
-        </TouchableOpacity>
+        await firebase.firestore()
+            .collection('forums')
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    const {
+                        forumName,
+                        forumImg,
+                    } = doc.data();
+                    list.push({
+                        id: doc.id,
+                        forumName,
+                        forumImg,
+                    });
+                })
+            })
+
+        this.setState({ data: list});
+        console.log(this.state.data);
+    }
 
     ItemSeparator = () => <View style={{
         height: 2,
@@ -38,15 +49,22 @@ export default class ForumFavouritesScreen extends React.Component {
     />
 
     handleRefresh = () => {
-        this.setState({ refreshing: false }, () => { this.fetchCats() });
+        this.setState({ refreshing: false }, () => { this.fetchForums() });
     }
 
     render() {
+      const { navigation } = this.props;
       return (
         <SafeAreaView>
           <FlatList
+            numColumns={3}
             data={this.state.data}
-            renderItem={item => this.renderItemComponent(item)}
+            renderItem={({item}) => (
+                <ForumIcon
+                  item={item}
+                  onPress={() => navigation.navigate('SubForumScreen', {item})}
+                />
+            )}
             keyExtractor={item => item.id.toString()}
             ItemSeparatorComponent={this.ItemSeparator}
             refreshing={this.state.refreshing}
