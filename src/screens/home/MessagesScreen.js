@@ -3,6 +3,17 @@ import { View, StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native
 import { List, Divider } from 'react-native-paper';
 import MessageTopTab from '../../components/MessageTopTab';
 import * as firebase from 'firebase';
+import {
+  Card,
+  UserInfo,
+  UserImgWrapper,
+  UserImg,
+  UserInfoText,
+  UserName,
+  PostTime,
+  MessageText,
+  TextSection,
+} from '../../styles/MessageStyles';
 
 export default function MessagesScreen({ navigation }) {
 
@@ -52,6 +63,7 @@ export default function MessagesScreen({ navigation }) {
             const {
               name,
               createdAt,
+              userImg,
             } = doc.data();
 
             var threadID;
@@ -66,6 +78,7 @@ export default function MessagesScreen({ navigation }) {
               id: threadID,
               name,
               createdAt,
+              userImg,
             })
 
           }
@@ -81,19 +94,20 @@ export default function MessagesScreen({ navigation }) {
         data={threads}
         keyExtractor={item => item.name}
         ItemSeparatorComponent={() => <Divider />}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ChatScreen', { thread: item })}
-          >
-            <List.Item
-              title={item.name}
-              titleNumberOfLines={1}
-              titleStyle={styles.listTitle}
-              descriptionStyle={styles.listDescription}
-              descriptionNumberOfLines={1}
-            />
-          </TouchableOpacity>
-        )}
+        renderItem={({item}) => (
+                    <Card onPress={() => navigation.navigate('ChatScreen', {thread: item})}>
+                      <UserInfo>
+                        <UserImgWrapper>
+                          <UserImg source={{uri:item.userImg}} />
+                        </UserImgWrapper>
+                        <TextSection>
+                          <UserInfoText>
+                            <UserName>{item.name}</UserName>
+                          </UserInfoText>
+                        </TextSection>
+                      </UserInfo>
+                    </Card>
+                  )}
       />
     </View>
   );
