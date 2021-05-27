@@ -9,26 +9,31 @@ export default function MessagesScreen({ navigation }) {
   const [threads, setThreads] = useState([]);
 
   useEffect(() => {
-              const subscriber = firebase.firestore()
+              const friendsArr = [];
+              firebase.firestore()
                 .collection('users')
                 .onSnapshot(querySnapshot => {
                   const friendsArr = [];
-                  querySnapshot.forEach(documentSnapshot => {
-                  if (documentSnapshot.id !== currentUserId) {
-                      friendsArr.push(documentSnapshot.data());
-                  }
-                  });
-                  console.log(friendsArr)
-                  setThreads(friendsArr);
-                });
-              return () => subscriber();
-            }, []);
+                  querySnapshot.forEach(doc => {
+                  if (doc.id !== currentUserId) {
+                    const {
+                      name,
+                      createdAt,
+                    } = doc.data();
+                    friendsArr.push({
+                      id: doc.id,
+                      name,
+                      createdAt,
+                       })
+                      console.log(friendsArr);
+                      setThreads(friendsArr);
+                      }})})}, []);
 
   return (
     <View style={styles.container}>
       <FlatList
         data={threads}
-        keyExtractor={item => item._id}
+        keyExtractor={item => item.name}
         ItemSeparatorComponent={() => <Divider />}
         renderItem={({ item }) => (
           <TouchableOpacity

@@ -13,25 +13,25 @@ export default function ChatScreen({ route }) {
 
   const [messages, setMessages] = useState([]);
   const { thread } = route.params;
-  const { user } = firebase.auth().currentUser;
+  const currentUser = firebase.auth().currentUser.uid;
 
   async function handleSend(messages) {
     const text = messages[0].text;
     firebase.firestore()
       .collection('THREADS')
-      .doc(thread._id)
+      .doc(thread.id)
       .collection('MESSAGES')
       .add({
         text,
         createdAt: new Date().getTime(),
         user: {
-          _id: firebase.auth().currentUser.id,
+          _id: currentUser,
         }
       });
 
     await firebase.firestore()
       .collection('THREADS')
-      .doc(thread._id)
+      .doc(thread.id)
       .set(
         {
           latestMessage: {
@@ -46,7 +46,7 @@ export default function ChatScreen({ route }) {
   useEffect(() => {
     const messagesListener = firebase.firestore()
       .collection('THREADS')
-      .doc(thread._id)
+      .doc(thread.id)
       .collection('MESSAGES')
       .orderBy('createdAt', 'desc')
       .onSnapshot(querySnapshot => {
@@ -134,7 +134,7 @@ export default function ChatScreen({ route }) {
     <GiftedChat
       messages={messages}
       onSend={handleSend}
-      user={{ _id: firebase.auth().currentUser.id }}
+      user={{ _id: firebase.auth().currentUser.uid }}
       placeholder='Type your message here...'
       alwaysShowSend
       showUserAvatar
