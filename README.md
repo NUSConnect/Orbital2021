@@ -7,8 +7,7 @@ Orbital (Independent Software Development Project) is NUS School of Computing se
 
 ## Introducting Portal.io
 
-![Logo](https://raw.githubusercontent.com/benedictchuajj/Orbital2021/main/src/assets/logo.png)
-<img src="https://raw.githubusercontent.com/benedictchuajj/Orbital2021/main/src/assets/logo.png" width="48">
+<img src="https://raw.githubusercontent.com/benedictchuajj/Orbital2021/main/src/assets/logo.png" width="250">
 
 A cross-platform mobile application (written in React Native) to help users seamlessly connect with each other.
 
