@@ -1,70 +1,92 @@
 import React, { useEffect,useState } from 'react';
-import { View, Text, StyleSheet, TextInput, SafeAreaView, } from 'react-native';
+import { View, Text, StyleSheet, TextInput, SafeAreaView, Alert, } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import CancelButton from '../../components/CancelButton';
 import SubmitButton from '../../components/SubmitButton';
-import ForumRecommendedScreen from './ForumRecommendedScreen';
-
 
 export default class ForumCreationScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nameText: "Enter a name",
-      descriptionText: "Enter a description",
-      reasonText: "Give a few reasons why this is different from existing forums",
-      HOME_PAGE: 'ForumRecommendedScreen',
+      nameText: "",
+      descriptionText: "",
+      reasonText: "",
     };
   }
 
+  handleSubmit = (goBack) => {
+      Alert.alert(
+        'Submit request for creation of forum',
+        'Are you sure? (This is a dummy creation, nothing will be created)',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed!'),
+            style: 'cancel',
+          },
+          {
+            text: 'Confirm',
+            onPress: () => goBack(),
+          },
+        ],
+        {cancelable: false},
+      );
+  }
   render() {
     const { navigation } = this.props;
     return (
-        <SafeAreaView>
-          <View style={styles.container}>
-              <Text style={styles.title}>
-                Create a new Forum
-              </Text>
-              <Text style={styles.subTitle}>
-                Forum Name
-              </Text>
-              <TextInput
-                style={styles.nameInput}
-                onChangeText={(nameText) => this.setState({ nameText })}
-                value={this.state.nameText}
-                multiline={true}
-              />
-              <Text style={styles.subTitle}>
-                Forum Description
-              </Text>
-              <TextInput
-                style={styles.descriptionInput}
-                onChangeText={(descriptionText) => this.setState({ descriptionText })}
-                value={this.state.descriptionText}
-                multiline={true}
-              />
-              <Text style={styles.subTitle}>
-                Reason for new Forum
-              </Text>
-              <TextInput
-                style={styles.reasonInput}
-                onChangeText={(reasonText) => this.setState({ reasonText })}
-                value={this.state.reasonText}
-                multiline={true}
-              />
-              <View style={styles.buttons}>
-                <CancelButton goBack = {() => navigation.navigate(this.state.HOME_PAGE)}/>
-                <View style={styles.space} />
-                <SubmitButton goBack = {() => navigation.navigate(this.state.HOME_PAGE)} string = {'Create'}/>
-              </View>
+      <KeyboardAwareScrollView
+        style={styles.container}
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        scrollEnabled={true}
+      >
+          <Text style={styles.title}>
+            Create a new Forum
+          </Text>
+          <Text style={styles.subTitle}>
+            Forum Name
+          </Text>
+          <TextInput
+            style={styles.nameInput}
+            returnKeyType="next"
+            onChangeText={(nameText) => this.setState({ nameText })}
+            value={this.state.nameText}
+            placeholder='Enter a name'
+          />
+          <Text style={styles.subTitle}>
+            Forum Description
+          </Text>
+          <TextInput
+            style={styles.descriptionInput}
+            onChangeText={(descriptionText) => this.setState({ descriptionText })}
+            value={this.state.descriptionText}
+            placeholder='Enter a description'
+            multiline={true}
+          />
+          <Text style={styles.subTitle}>
+            Reason for new Forum
+          </Text>
+          <TextInput
+            style={styles.reasonInput}
+            onChangeText={(reasonText) => this.setState({ reasonText })}
+            value={this.state.reasonText}
+            placeholder='Give a few reasons why this is different from existing forums'
+            multiline={true}
+          />
+          <View style={styles.buttons}>
+            <CancelButton goBack = {() => navigation.goBack()}/>
+            <View style={styles.space} />
+            <SubmitButton goBack = {() => this.handleSubmit(() => navigation.goBack())} string = {'Create'}/>
           </View>
-        </SafeAreaView>
+      </KeyboardAwareScrollView>
     );
   }
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    width: '100%',
   },
   title: {
     height: 60,
