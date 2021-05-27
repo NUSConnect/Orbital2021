@@ -5,8 +5,9 @@ import {
   Send,
   SystemMessage
 } from 'react-native-gifted-chat';
-import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { ActivityIndicator, View, StyleSheet, Text } from 'react-native';
 import { IconButton } from 'react-native-paper';
+import BackButton from '../../components/BackButton';
 import * as firebase from 'firebase';
 
 export default function ChatScreen({ route }) {
@@ -134,6 +135,12 @@ export default function ChatScreen({ route }) {
   }
 
   return (
+  <View style={{flex: 1}}>
+    <View style={styles.container}>
+      <Text style={styles.text}>
+        {thread.name}
+      </Text>
+    </View>
     <GiftedChat
       messages={messages}
       onSend={handleSend}
@@ -148,6 +155,7 @@ export default function ChatScreen({ route }) {
       scrollToBottomComponent={scrollToBottomComponent}
       renderSystemMessage={renderSystemMessage}
     />
+   </View>
   );
 }
 
@@ -174,5 +182,25 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#fff',
     fontWeight: 'bold'
-  }
+  },
+  container: {
+      height: 60,
+      flexDirection: 'row',
+      backgroundColor: '#ffffff',
+      borderColor: '#dcdcdc',
+      borderWidth: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    text: {
+      flex: 1,
+      width: '85%',
+      color: '#ff7f50',
+      fontFamily: 'notoserif',
+      fontSize: 24,
+      textAlign: 'center',
+      paddingLeft: 0,
+    },
+    icon: {
+    },
 });
