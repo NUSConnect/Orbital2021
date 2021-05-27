@@ -93,8 +93,6 @@ const styles = StyleSheet.create({
     lineHeight: 60,
     width: '100%',
     backgroundColor: '#ff8c00',
-    borderColor: 'black',
-    borderWidth: 1,
     color: '#ffffff',
     fontSize: 30,
     paddingLeft: 15,

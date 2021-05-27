@@ -9,6 +9,8 @@ import {
   ForumSubscribedScreen,
   ForumOthersScreen,
   ForumCreationScreen,
+  SubForumScreen,
+  ForumPostScreen,
 } from './'
 
 const Stack = createStackNavigator();
@@ -39,6 +41,8 @@ export default function ForumScreen() {
           component={ForumTabs}
         />
         <Stack.Screen name="ForumCreationScreen" component={ForumCreationScreen} />
+        <Stack.Screen name="SubForumScreen" component={SubForumScreen} />
+        <Stack.Screen name="ForumPostScreen" component={ForumPostScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   );

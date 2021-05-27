@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, SafeAreaView, FlatList, View, Image, TouchableOpacity } from "react-native";
+import ForumIcon from '../../components/ForumIcon';
 import * as firebase from 'firebase';
 
 export default class ForumFavouritesScreen extends React.Component {
@@ -39,11 +40,6 @@ export default class ForumFavouritesScreen extends React.Component {
         console.log(this.state.data);
     }
 
-    renderItemComponent = (data) =>
-        <TouchableOpacity style={styles.container}>
-            <Image style={styles.image} source={{ uri: data.item.url }} />
-        </TouchableOpacity>
-
     ItemSeparator = () => <View style={{
         height: 2,
         backgroundColor: "rgba(0,0,0,0.5)",
@@ -53,15 +49,22 @@ export default class ForumFavouritesScreen extends React.Component {
     />
 
     handleRefresh = () => {
-        this.setState({ refreshing: false }, () => { this.fetchCats() });
+        this.setState({ refreshing: false }, () => { this.fetchForums() });
     }
 
     render() {
+      const { navigation } = this.props;
       return (
         <SafeAreaView>
           <FlatList
+            numColumns={3}
             data={this.state.data}
-            renderItem={item => this.renderItemComponent(item)}
+            renderItem={({item}) => (
+                <ForumIcon
+                  item={item}
+                  onPress={() => navigation.navigate('SubForumScreen', {item})}
+                />
+            )}
             keyExtractor={item => item.id.toString()}
             ItemSeparatorComponent={this.ItemSeparator}
             refreshing={this.state.refreshing}
