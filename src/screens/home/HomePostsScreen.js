@@ -6,6 +6,7 @@ import AddPostScreen from './AddPostScreen';
 import CommentScreen from './CommentScreen';
 import ViewProfileScreen from '../profile/ViewProfileScreen';
 import PostButton from '../../components/PostButton';
+import HomeTopTab from '../../components/HomeTopTab';
 import PostCard from '../../components/PostCard';
 import GestureRecognizer, {swipeDirections} from 'rn-swipe-gestures';
 
@@ -226,8 +227,9 @@ export default class HomePostsScreen extends React.Component {
                   onSwipeRight={(state) => this.onSwipeRight(state)}
                   config={config}
                   >
-          <PostButton
-            onPress={() => navigation.navigate('AddPostScreen')}/>
+          <HomeTopTab
+            onPress={() => navigation.navigate('MessagesScreen')}
+            onPress2={() => navigation.navigate('AddPostScreen')}/>
           <FlatList
             data={this.state.data}
             renderItem={({item}) => (
