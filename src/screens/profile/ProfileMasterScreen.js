@@ -8,6 +8,7 @@ import ProfilePostsScreen from './ProfilePostsScreen';
 import ProfileCommentsScreen from './ProfileCommentsScreen';
 import DummyScreen from './DummyScreen';
 import AddBioScreen from './AddBioScreen';
+import CommentScreen from '../home/CommentScreen';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 const Stack = createStackNavigator();
@@ -41,6 +42,7 @@ const ProfileMasterScreen = ({navigation}) => {
         <Stack.Screen name="AccountSettingsScreen" component={AccountSettingsScreen} />
         <Stack.Screen name="DummyScreen" component={DummyScreen} />
         <Stack.Screen name="AddBioScreen" component={AddBioScreen} />
+        <Stack.Screen name="CommentScreen" component={CommentScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   );

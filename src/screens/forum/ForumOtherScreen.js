@@ -2,27 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, FlatList, SafeAreaView, StyleSheet, StatusBar, RefreshControl } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
-import FriendSearchScreen from './FriendSearchScreen';
-import CommentScreen from '../home/CommentScreen';
-import ViewProfileScreen from '../profile/ViewProfileScreen';
+import ForumRecommendedScreen from './ForumRecommendedScreen';
+import ForumCreationScreen from './ForumCreationScreen';
 
 const Stack = createStackNavigator();
 
-const FriendsScreen = ({navigation}) => {
+const ForumOthersScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Navigator
-        initialRouteName="FriendSearchScreen"
+        initialRouteName="ForumRecommendedScreen"
         screenOptions={{
           headerShown: false,
         }}
       >
         <Stack.Screen
-          name="FriendSearchScreen"
-          component={FriendSearchScreen}
+          name="ForumRecommendedScreen"
+          component={ForumRecommendedScreen}
         />
-        <Stack.Screen name="ViewProfileScreen" component={ViewProfileScreen} />
-        <Stack.Screen name="CommentScreen" component={CommentScreen} />
+        <Stack.Screen name="ForumCreationScreen" component={ForumCreationScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   );
@@ -31,7 +29,6 @@ const FriendsScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
   },
   item: {
     backgroundColor: '#ffffff',
@@ -47,4 +44,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FriendsScreen;
+export default ForumOthersScreen;

@@ -2,9 +2,9 @@ import React from 'react'
 import { Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 
-export default function SubmitButton({ next, string }) {
+export default function SubmitButton({ goBack, string }) {
   return (
-    <TouchableOpacity onPress={next} style={styles.container}>
+    <TouchableOpacity onPress={goBack} style={styles.container}>
       <Text style={styles.text}>
         {string}
       </Text>

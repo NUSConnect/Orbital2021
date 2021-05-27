@@ -53,6 +53,8 @@ const CommentScreen = ({navigation, route, onPress}) => {
 
         await firebase.firestore()
           .collection('posts')
+          .doc(item.userId)
+          .collection('userPosts')
           .doc(item.postId)
           .collection('comments')
           .orderBy('postTime', 'asc')
@@ -81,6 +83,8 @@ const CommentScreen = ({navigation, route, onPress}) => {
     const onCommentSend = () => {
         firebase.firestore()
           .collection('posts')
+          .doc(item.userId)
+          .collection('userPosts')
           .doc(item.postId)
           .collection('comments')
           .add({
@@ -98,7 +102,7 @@ const CommentScreen = ({navigation, route, onPress}) => {
           })
 
         item.commentCount = item.commentCount + 1;
-        firebase.firestore().collection('posts').doc(item.postId).update({ commentCount: item.commentCount });
+        firebase.firestore().collection('posts').doc(item.userId).collection('userPosts').doc(item.postId).update({ commentCount: item.commentCount });
     }
 
     const handleDelete = (commentId) => {
@@ -125,6 +129,8 @@ const CommentScreen = ({navigation, route, onPress}) => {
 
         firebase.firestore()
           .collection('posts')
+          .doc(item.userId)
+          .collection('userPosts')
           .doc(item.postId)
           .collection('comments')
           .doc(commentId)
@@ -137,7 +143,7 @@ const CommentScreen = ({navigation, route, onPress}) => {
           }).catch((e) => console.log('Error deleting comment.', e));
 
         item.commentCount = item.commentCount - 1;
-        firebase.firestore().collection('posts').doc(item.postId).update({ commentCount: item.commentCount });
+        firebase.firestore().collection('posts').doc(item.userId).collection('userPosts').doc(item.postId).update({ commentCount: item.commentCount });
     };
 
     const handleReport = (postId) => {
@@ -164,7 +170,7 @@ const CommentScreen = ({navigation, route, onPress}) => {
 
     const ItemSeparator = () => <View style={{
         height: 2,
-        backgroundColor: "rgba(0,0,0,0.5)",
+        backgroundColor: "#dcdcdc",
         marginLeft: 10,
         marginRight: 10,
     }}
@@ -184,12 +190,17 @@ const CommentScreen = ({navigation, route, onPress}) => {
         <SafeAreaView style={styles.container}>
           <TitleWithBack onPress={() => navigation.goBack()}/>
           <View style={styles.commentContainer}>
-            <Text style={styles.username}>
-                {userData ? userData.name + ':' || 'Anonymous User:' : 'Anonymous User:'}
-            </Text>
-            <Text style={styles.comment}>
-                {item.post}
-            </Text>
+            <View style={styles.postInfo}>
+                <View style={styles.userComment}>
+                    <Text style={styles.username}>
+                        {userData ? userData.name + ':' || 'Anonymous User:' : 'Anonymous User:'}
+                    </Text>
+                    <Text style={styles.comment}>
+                        {item.post}
+                    </Text>
+                </View>
+                <Text style={styles.time}> {moment(item.postTime.toDate()).fromNow()} </Text>
+            </View>
           </View>
           <View style={{
                height: 2,
@@ -205,12 +216,15 @@ const CommentScreen = ({navigation, route, onPress}) => {
             renderItem={({ item }) => (
                 <View style={styles.commentContainer}>
                     <View style={styles.textContainer}>
-                        <Text style={styles.username}>
-                            {item.user}
-                        </Text>
-                        <Text style={styles.comment}>
-                            {item.text}
-                        </Text>
+                        <View style={styles.userComment}>
+                            <Text style={styles.username}>
+                                {item.user}
+                            </Text>
+                            <Text style={styles.comment}>
+                                {item.text}
+                            </Text>
+                        </View>
+                        <Text style={styles.time}> {moment(item.postTime.toDate()).fromNow()} </Text>
                     </View>
                     {currentUserId === item.creator ? (
                       <TouchableOpacity onPress={() => handleDelete(item.id)} style={styles.deleter}>
@@ -266,6 +280,16 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: 'white',
     alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  postInfo: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
+  userComment: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
   username: {
     fontSize: 16,
@@ -274,6 +298,10 @@ const styles = StyleSheet.create({
   },
   commentText: {
     fontSize: 16,
+  },
+  time: {
+    fontSize: 14,
+    color: '#666',
   },
   textContainer: {
     width: '90%',
