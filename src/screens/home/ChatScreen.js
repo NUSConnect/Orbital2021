@@ -1,102 +1,179 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {View, ScrollView, Text, Button, StyleSheet} from 'react-native';
-import {Bubble, GiftedChat, Send} from 'react-native-gifted-chat';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import React, { useState, useContext, useEffect } from 'react';
+import {
+  GiftedChat,
+  Bubble,
+  Send,
+  SystemMessage
+} from 'react-native-gifted-chat';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { IconButton } from 'react-native-paper';
 
-const ChatScreen = () => {
+import * as firebase from 'firebase';
+
+export default function ChatScreen({ route }) {
+
   const [messages, setMessages] = useState([]);
+  const { thread } = route.params;
+  const { currentUser } = firebase.auth().currentUser.uid;
+
+  async function handleSend(messages) {
+    const text = messages[0].text;
+
+    firebase.firestore()
+      .collection('THREADS')
+      .doc(thread)
+      .collection('MESSAGES')
+      .add({
+        text,
+        createdAt: new Date().getTime(),
+        user: {
+          _id: currentUser,
+          email: currentUser.email
+        }
+      });
+
+    await firebase.firestore()
+      .collection('THREADS')
+      .doc(thread)
+      .set(
+        {
+          latestMessage: {
+            text,
+            createdAt: new Date().getTime()
+          }
+        },
+        { merge: true }
+      );
+  }
 
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-        },
-      },
-      {
-        _id: 2,
-        text: 'Hello',
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: 'React Native',
-        },
-      },
-    ]);
+    const messagesListener = firebase.firestore()
+      .collection('THREADS')
+      .doc(thread)
+      .collection('MESSAGES')
+      .orderBy('createdAt', 'desc')
+      .onSnapshot(querySnapshot => {
+        const messages = querySnapshot.docs.map(doc => {
+          const firebaseData = doc.data();
+
+          const data = {
+            _id: doc.id,
+            text: '',
+            createdAt: new Date().getTime(),
+            ...firebaseData
+          };
+
+          if (!firebaseData.system) {
+            data.user = {
+              ...firebaseData.user,
+              name: firebaseData.user.email
+            };
+          }
+
+          return data;
+        });
+
+        setMessages(messages);
+      });
+
+    // Stop listening for updates whenever the component unmounts
+    return () => messagesListener();
   }, []);
 
-  const onSend = useCallback((messages = []) => {
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages),
-    );
-  }, []);
-
-  const renderSend = (props) => {
-    return (
-      <Send {...props}>
-        <View>
-          <MaterialCommunityIcons
-            name="send-circle"
-            style={{marginBottom: 5, marginRight: 5}}
-            size={32}
-            color="#2e64e5"
-          />
-        </View>
-      </Send>
-    );
-  };
-
-  const renderBubble = (props) => {
+  function renderBubble(props) {
     return (
       <Bubble
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: '#2e64e5',
-          },
+            backgroundColor: '#6646ee'
+          }
         }}
         textStyle={{
           right: {
-            color: '#fff',
-          },
+            color: '#fff'
+          }
         }}
       />
     );
-  };
+  }
 
-  const scrollToBottomComponent = () => {
-    return(
-      <FontAwesome name='angle-double-down' size={22} color='#333' />
+  function renderLoading() {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size='large' color='#6646ee' />
+      </View>
+    );
+  }
+
+  function renderSend(props) {
+    return (
+      <Send {...props}>
+        <View style={styles.sendingContainer}>
+          <IconButton icon='send-circle' size={32} color='#6646ee' />
+        </View>
+      </Send>
+    );
+  }
+
+  function scrollToBottomComponent() {
+    return (
+      <View style={styles.bottomComponentContainer}>
+        <IconButton icon='chevron-double-down' size={36} color='#6646ee' />
+      </View>
+    );
+  }
+
+  function renderSystemMessage(props) {
+    return (
+      <SystemMessage
+        {...props}
+        wrapperStyle={styles.systemMessageWrapper}
+        textStyle={styles.systemMessageText}
+      />
     );
   }
 
   return (
     <GiftedChat
       messages={messages}
-      onSend={(messages) => onSend(messages)}
-      user={{
-        _id: 1,
-      }}
-      renderBubble={renderBubble}
+      onSend={handleSend}
+      user={{ _id: currentUser }}
+      placeholder='Type your message here...'
       alwaysShowSend
-      renderSend={renderSend}
+      showUserAvatar
       scrollToBottom
+      renderBubble={renderBubble}
+      renderLoading={renderLoading}
+      renderSend={renderSend}
       scrollToBottomComponent={scrollToBottomComponent}
+      renderSystemMessage={renderSystemMessage}
     />
   );
-};
-
-export default ChatScreen;
+}
 
 const styles = StyleSheet.create({
-  container: {
+  loadingContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
+  sendingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  bottomComponentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  systemMessageWrapper: {
+    backgroundColor: '#6646ee',
+    borderRadius: 4,
+    padding: 5
+  },
+  systemMessageText: {
+    fontSize: 14,
+    color: '#fff',
+    fontWeight: 'bold'
+  }
 });
