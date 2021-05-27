@@ -7,35 +7,31 @@ import {
 } from 'react-native-gifted-chat';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { IconButton } from 'react-native-paper';
-
 import * as firebase from 'firebase';
 
 export default function ChatScreen({ route }) {
 
   const [messages, setMessages] = useState([]);
-  const { item } = route.params;
-  const currentUser = firebase.auth().currentUser.uid;
-//  const thread = item.id +  currentUser;
-  const thread = currentUser;
+  const { thread } = route.params;
+  const { user } = firebase.auth().currentUser;
 
   async function handleSend(messages) {
     const text = messages[0].text;
-
     firebase.firestore()
       .collection('THREADS')
-      .doc(thread)
+      .doc(thread._id)
       .collection('MESSAGES')
       .add({
         text,
         createdAt: new Date().getTime(),
         user: {
-          _id: currentUser,
+          _id: firebase.auth().currentUser.id,
         }
       });
 
     await firebase.firestore()
       .collection('THREADS')
-      .doc(thread)
+      .doc(thread._id)
       .set(
         {
           latestMessage: {
@@ -48,10 +44,9 @@ export default function ChatScreen({ route }) {
   }
 
   useEffect(() => {
-    console.log('ThreadID', thread);
     const messagesListener = firebase.firestore()
       .collection('THREADS')
-      .doc(thread)
+      .doc(thread._id)
       .collection('MESSAGES')
       .orderBy('createdAt', 'desc')
       .onSnapshot(querySnapshot => {
@@ -68,7 +63,6 @@ export default function ChatScreen({ route }) {
           if (!firebaseData.system) {
             data.user = {
               ...firebaseData.user,
-              name: firebaseData.user.email
             };
           }
 
@@ -140,7 +134,7 @@ export default function ChatScreen({ route }) {
     <GiftedChat
       messages={messages}
       onSend={handleSend}
-      user={{ _id: currentUser }}
+      user={{ _id: firebase.auth().currentUser.id }}
       placeholder='Type your message here...'
       alwaysShowSend
       showUserAvatar
