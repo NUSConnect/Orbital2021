@@ -1,5 +1,5 @@
-import React from 'react'
-import { Text, Image, View, StyleSheet, TouchableOpacity } from 'react-native'
+import React from 'react';
+import { Text, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from 'react-native-vector-icons';
 import { theme } from '../core/theme'

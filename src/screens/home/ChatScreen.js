@@ -82,7 +82,10 @@ export default function ChatScreen({ route }) {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: '#6646ee'
+            backgroundColor: '#ff8c00'
+          },
+          left: {
+            backgroundColor: '#ffffff'
           }
         }}
         textStyle={{
@@ -97,7 +100,7 @@ export default function ChatScreen({ route }) {
   function renderLoading() {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size='large' color='#6646ee' />
+        <ActivityIndicator size='large' color='#ff8c00' />
       </View>
     );
   }
@@ -106,7 +109,7 @@ export default function ChatScreen({ route }) {
     return (
       <Send {...props}>
         <View style={styles.sendingContainer}>
-          <IconButton icon='send-circle' size={32} color='#6646ee' />
+          <IconButton icon='send-circle' size={35} color='#ff8c00' />
         </View>
       </Send>
     );
@@ -115,7 +118,7 @@ export default function ChatScreen({ route }) {
   function scrollToBottomComponent() {
     return (
       <View style={styles.bottomComponentContainer}>
-        <IconButton icon='chevron-double-down' size={36} color='#6646ee' />
+        <IconButton icon='chevron-double-down' size={36} color='#ff8c00' />
       </View>
     );
   }

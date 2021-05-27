@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native';
 import { List, Divider } from 'react-native-paper';
+import MessageTopTab from '../../components/MessageTopTab';
 import * as firebase from 'firebase';
 
 export default function MessagesScreen({ navigation }) {
@@ -75,6 +76,7 @@ export default function MessagesScreen({ navigation }) {
   }
   return (
     <View style={styles.container}>
+    <MessageTopTab />
       <FlatList
         data={threads}
         keyExtractor={item => item.name}
@@ -85,7 +87,6 @@ export default function MessagesScreen({ navigation }) {
           >
             <List.Item
               title={item.name}
-
               titleNumberOfLines={1}
               titleStyle={styles.listTitle}
               descriptionStyle={styles.listDescription}
@@ -100,7 +101,7 @@ export default function MessagesScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#ffffff',
     flex: 1
   },
   listTitle: {
@@ -108,5 +109,12 @@ const styles = StyleSheet.create({
   },
   listDescription: {
     fontSize: 16
-  }
+  },
+  header: {
+    fontSize: 35,
+    textAlign: 'right',
+    backgroundColor: '#ff8c00',
+    padding: 10,
+    color: '#ffffff'
+  },
 });
