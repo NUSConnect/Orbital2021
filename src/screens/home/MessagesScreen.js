@@ -6,29 +6,73 @@ import * as firebase from 'firebase';
 export default function MessagesScreen({ navigation }) {
 
   const currentUserId = firebase.auth().currentUser.uid;
+  var currentUserCreatedAt;
   const [threads, setThreads] = useState([]);
 
   useEffect(() => {
-              const friendsArr = [];
-              firebase.firestore()
-                .collection('users')
-                .onSnapshot(querySnapshot => {
-                  const friendsArr = [];
-                  querySnapshot.forEach(doc => {
-                  if (doc.id !== currentUserId) {
-                    const {
-                      name,
-                      createdAt,
-                    } = doc.data();
-                    friendsArr.push({
-                      id: doc.id,
-                      name,
-                      createdAt,
-                       })
-                      console.log(friendsArr);
-                      setThreads(friendsArr);
-                      }})})}, []);
+      getThreads();
+  }, []);
 
+
+  const getUserInfo = async () => {
+    await firebase.firestore()
+      .collection('users')
+      .doc(currentUserId)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+            const { createdAt } = documentSnapshot.data();
+            currentUserCreatedAt = createdAt;
+        }
+    });
+  };
+
+  const getThreads = async () => {
+    // Get curr user info
+    await firebase.firestore()
+        .collection('users')
+        .doc(currentUserId)
+        .get()
+        .then((documentSnapshot) => {
+          if (documentSnapshot.exists) {
+              const { createdAt } = documentSnapshot.data();
+              currentUserCreatedAt = createdAt;
+          }
+    });
+
+    // Get thread info
+    const friendsArr = [];
+    await firebase.firestore()
+      .collection('users')
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach(doc => {
+          if (doc.id !== currentUserId) {
+            const {
+              name,
+              createdAt,
+            } = doc.data();
+
+            var threadID;
+            if (currentUserCreatedAt <= createdAt) {
+                threadID = currentUserId + doc.id;
+            } else {
+                threadID = doc.id + currentUserId;
+            }
+
+            console.log('ThreadID: ', threadID);
+            friendsArr.push({
+              id: threadID,
+              name,
+              createdAt,
+            })
+
+          }
+      })
+    })
+    console.log(friendsArr);
+    setThreads(friendsArr);
+  }
   return (
     <View style={styles.container}>
       <FlatList
