@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     fontFamily: 'notoserif',
     fontSize: 30,
     textAlign: 'center',
-    paddingLeft: 60
+    paddingLeft: 0,
   },
   icon: {
   },
