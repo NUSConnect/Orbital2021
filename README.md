@@ -13,7 +13,9 @@ A cross-platform mobile application (written in React Native) to help users seam
 
 **Milestone 1:** [Link to report](https://docs.google.com/document/d/1kk2xyrJco7O6uScoS3XqIbGLOcx2QNYJV4IhLyRGNxg/edit?usp=sharing)
 
-**Key Features:**
+![Sample Screenshots](https://raw.githubusercontent.com/benedictchuajj/Orbital2021/forum/assets/sample_screenshots.png)
+
+**Key Features: (to be implemented)**
 * Group-based Matching Algorithm
 * Forum
 * Direct Messages
