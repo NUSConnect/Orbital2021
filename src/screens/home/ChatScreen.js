@@ -29,7 +29,7 @@ export default function ChatScreen({ route }) {
         text,
         createdAt: new Date().getTime(),
         user: {
-          sender_id: currentUser,
+          _id: currentUser,
         }
       });
 
