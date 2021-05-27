@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from 'react';
-import { View, Text, StyleSheet, TextInput, SafeAreaView, } from 'react-native';
+import { View, Text, StyleSheet, TextInput, SafeAreaView, Alert, } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import CancelButton from '../../components/CancelButton';
 import SubmitButton from '../../components/SubmitButton';
@@ -14,6 +14,24 @@ export default class ForumCreationScreen extends React.Component {
     };
   }
 
+  handleSubmit = (goBack) => {
+      Alert.alert(
+        'Submit request for creation of forum',
+        'Are you sure? (This is a dummy creation, nothing will be created)',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed!'),
+            style: 'cancel',
+          },
+          {
+            text: 'Confirm',
+            onPress: () => goBack(),
+          },
+        ],
+        {cancelable: false},
+      );
+  }
   render() {
     const { navigation } = this.props;
     return (
@@ -58,7 +76,7 @@ export default class ForumCreationScreen extends React.Component {
           <View style={styles.buttons}>
             <CancelButton goBack = {() => navigation.goBack()}/>
             <View style={styles.space} />
-            <SubmitButton goBack = {() => navigation.goBack()} string = {'Create'}/>
+            <SubmitButton goBack = {() => this.handleSubmit(() => navigation.goBack())} string = {'Create'}/>
           </View>
       </KeyboardAwareScrollView>
     );
