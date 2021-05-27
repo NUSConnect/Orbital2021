@@ -13,8 +13,10 @@ import * as firebase from 'firebase';
 export default function ChatScreen({ route }) {
 
   const [messages, setMessages] = useState([]);
-  const { thread } = route.params;
-  const { currentUser } = firebase.auth().currentUser.uid;
+  const { item } = route.params;
+  const currentUser = firebase.auth().currentUser.uid;
+//  const thread = item.id +  currentUser;
+  const thread = currentUser;
 
   async function handleSend(messages) {
     const text = messages[0].text;
@@ -27,8 +29,7 @@ export default function ChatScreen({ route }) {
         text,
         createdAt: new Date().getTime(),
         user: {
-          _id: currentUser,
-          email: currentUser.email
+          sender_id: currentUser,
         }
       });
 
@@ -47,6 +48,7 @@ export default function ChatScreen({ route }) {
   }
 
   useEffect(() => {
+    console.log('ThreadID', thread);
     const messagesListener = firebase.firestore()
       .collection('THREADS')
       .doc(thread)
