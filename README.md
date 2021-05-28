@@ -20,4 +20,4 @@ A cross-platform mobile application (written in React Native) to help users seam
 * Forum
 * Direct Messages
 
-[~~Documentation can be found here~~](https://docs.google.com/document/d/1KQt-ke-O7QabJMdp9oJYTGkmXdK-TGQFx0Jig3PgIJ0/edit?usp=sharing)
+[Documentation can be found here](https://docs.google.com/document/d/1KQt-ke-O7QabJMdp9oJYTGkmXdK-TGQFx0Jig3PgIJ0/edit?usp=sharing)
