@@ -22,6 +22,7 @@ To help university students make friends and combat the social isolation due to 
 **Milestone 1:** [Link to report](https://docs.google.com/document/d/1kk2xyrJco7O6uScoS3XqIbGLOcx2QNYJV4IhLyRGNxg/edit?usp=sharing)
 
 **Sample Screenshots:**
+
 ![Sample Screenshots](https://raw.githubusercontent.com/benedictchuajj/Orbital2021/main/assets/sample_screenshots.png)
 
 **Key Features:**
