@@ -1,10 +1,18 @@
 import React from 'react'
 import { Text, Image, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Ionicons } from 'react-native-vector-icons';
 import { theme } from '../core/theme'
 
-export default function MessageTopTab({ style, ...props }) {
+export default function MessageTopTab({ onPress, style, ...props }) {
   return (
      <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.button}
+          activeOpacity={ 0.4 }
+          onPress={ onPress }>
+              <Ionicons name="arrow-back" color="#79D2E6" size={38}
+                  style={styles.icon} />
+       </TouchableOpacity>
        <Text style={styles.text}>
          Messages
        </Text>
@@ -29,8 +37,12 @@ const styles = StyleSheet.create({
     fontFamily: 'notoserif',
     fontSize: 30,
     textAlign: 'center',
-    paddingLeft: 0,
+    paddingRight: 64
   },
   icon: {
+  },
+  button: {
+    width: '15%',
+    paddingLeft: 12,
   },
 })

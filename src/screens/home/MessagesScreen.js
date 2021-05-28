@@ -89,7 +89,7 @@ export default function MessagesScreen({ navigation }) {
   }
   return (
     <View style={styles.container}>
-    <MessageTopTab />
+    <MessageTopTab onPress={() => navigation.goBack()} />
       <FlatList
         data={threads}
         keyExtractor={item => item.name}

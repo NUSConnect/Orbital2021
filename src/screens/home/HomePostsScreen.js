@@ -253,12 +253,6 @@ export default class HomePostsScreen extends React.Component {
           };
       return (
         <SafeAreaView>
-          <GestureRecognizer
-                  onSwipe={(direction, state) => this.onSwipe(direction, state)}
-                  onSwipeLeft={(state) => this.onSwipeLeft(state)}
-                  onSwipeRight={(state) => this.onSwipeRight(state)}
-                  config={config}
-                  >
           <HomeTopTab
             onPress={() => navigation.navigate('MessagesScreen')}
             onPress2={() => navigation.navigate('AddPostScreen')}/>
@@ -280,7 +274,6 @@ export default class HomePostsScreen extends React.Component {
             onRefresh={this.handleRefresh}
             style={{ marginBottom:  40 }}
           />
-          </GestureRecognizer>
         </SafeAreaView>)
     }
 }
