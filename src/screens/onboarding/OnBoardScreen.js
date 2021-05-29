@@ -8,6 +8,8 @@ import Onboarding from 'react-native-onboarding-swiper';
 export default function OnBoardScreen({navigation}) {
     return (
         <Onboarding
+        controlStatusBar={false}
+        containerStyles={{ height: '100%' }}
         SkipButtonComponent={SkipButton}
         NextButtonComponent={NextButton}
         DoneButtonComponent={DoneButton}
