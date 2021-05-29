@@ -125,7 +125,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
   },
   itemStyle: {
     padding: 10,
