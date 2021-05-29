@@ -33,7 +33,6 @@ console.warn = message => {
 };
 
 const Stack = createStackNavigator();
-const firstStack = createStackNavigator();
 
 if (!firebase.apps.length) {
   firebase.initializeApp(FIREBASE_CONFIG)
@@ -77,23 +76,23 @@ export default function App() {
       </Provider>)
       : (<Provider theme={theme}>
            <NavigationContainer>
-           <firstStack.Navigator
+           <Stack.Navigator
               initialRouteName="OnBoardScreen"
               screenOptions={{
                headerShown: false,
               }}
            >
-             <firstStack.Screen
+             <Stack.Screen
                 name="OnBoardScreen"
                 component={OnBoardScreen}
              />
-             <firstStack.Screen name="AuthLoadingScreen" component={AuthLoadingScreen} />
-             <firstStack.Screen name="StartScreen" component={StartScreen} />
-             <firstStack.Screen name="LoginScreen" component={LoginScreen} />
-             <firstStack.Screen name="RegisterScreen" component={RegisterScreen} />
-             <firstStack.Screen name="Dashboard" component={Dashboard} />
-             <firstStack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
-             </firstStack.Navigator>
+             <Stack.Screen name="AuthLoadingScreen" component={AuthLoadingScreen} />
+             <Stack.Screen name="StartScreen" component={StartScreen} />
+             <Stack.Screen name="LoginScreen" component={LoginScreen} />
+             <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+             <Stack.Screen name="Dashboard" component={Dashboard} />
+             <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
+             </Stack.Navigator>
            </NavigationContainer>
          </Provider>)
   );
