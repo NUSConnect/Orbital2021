@@ -5,12 +5,13 @@ import {
   Send,
   SystemMessage
 } from 'react-native-gifted-chat';
-import { ActivityIndicator, View, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { IconButton } from 'react-native-paper';
+import { Ionicons } from 'react-native-vector-icons';
 import BackButton from '../../components/BackButton';
 import * as firebase from 'firebase';
 
-export default function ChatScreen({ route }) {
+export default function ChatScreen({ route, onPress, navigation }) {
 
   const [messages, setMessages] = useState([]);
   const { thread } = route.params;
@@ -137,6 +138,13 @@ export default function ChatScreen({ route }) {
   return (
   <View style={{flex: 1}}>
     <View style={styles.container}>
+    <TouchableOpacity
+              style={styles.button}
+              activeOpacity={ 0.4 }
+              onPress={() => navigation.navigate('MessagesScreen')}>
+                  <Ionicons name="arrow-back" color="#79D2E6" size={38}
+                      style={styles.icon} />
+           </TouchableOpacity>
       <Text style={styles.text}>
         {thread.name}
       </Text>
