@@ -207,7 +207,7 @@ export default class AddPostScreen extends React.Component {
                       <CancelButton goBack = {() => navigation.navigate(this.state.HOME_PAGE)} />
                       <View style={styles.space} />
                       <SubmitButton
-                        next = { () => {this.state.text != null ? this.submitPost()
+                        goBack = { () => {this.state.text != null ? this.submitPost()
                         : Alert.alert("Cannot submit an empty post!", "Write something into the text box to post.",)} }
                         string = {'Post'} />
                     </View>
