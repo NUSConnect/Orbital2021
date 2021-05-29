@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '85%',
     color: '#ff7f50',
-    fontFamily: 'notoserif',
     fontSize: 30,
     textAlign: 'center',
     paddingLeft: 60
