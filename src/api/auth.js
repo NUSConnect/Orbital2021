@@ -26,6 +26,7 @@ export const signUpUser = async ({ name, email, password }) => {
             console.log('Something went wrong with added user to firestore: ', error);
         })
         firebase.firestore().collection('users').doc(currentUserId).collection('following').doc(currentUserId).set({});
+        firebase.firestore().collection('users').doc(currentUserId).collection('following').doc('H0sH7GW3dyegouLw2cTEE1PoBBt1').set({});
       })
 
     firebase.auth().currentUser.updateProfile({
