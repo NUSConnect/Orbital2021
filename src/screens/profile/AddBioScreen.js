@@ -59,7 +59,7 @@ export default class AddBioScreen extends React.Component {
                     <View style={styles.buttons}>
                       <View style={styles.space} />
                       <SubmitButton
-                        next = { () => {this.state.text != null ? this.submitPost()
+                        goBack = { () => {this.state.text != null ? this.submitPost()
                         : Alert.alert("Your new bio is empty!", "Write something into the text box to post.",)} }
                         string = {'Update'} />
                     </View>
