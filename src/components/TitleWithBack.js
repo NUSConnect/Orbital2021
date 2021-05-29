@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
     color: '#ff7f50',
     fontSize: 30,
     textAlign: 'center',
-    paddingRight: 64
   },
   icon: {
   },

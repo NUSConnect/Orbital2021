@@ -206,9 +206,14 @@ const styles = StyleSheet.create({
       width: '85%',
       color: '#ff7f50',
       fontSize: 24,
+      paddingRight: 64,
       textAlign: 'center',
       paddingLeft: 0,
     },
     icon: {
     },
+    button: {
+      width: '15%',
+      paddingLeft: 12,
+    }
 });
