@@ -48,6 +48,8 @@ As of Milestone 1, Portal.io has been deployed for users to have a sneak preview
 
 Simply download Expo Go on your mobile devices and scan the QR code blow to test out our app!
 
+Note: iOS users will not be able to run the application out of the box due to restrictions on Expo put in place by Apple. If you want to test out the app, please contact us on Telegram for access.
+
 ![QR Code](https://raw.githubusercontent.com/benedictchuajj/Orbital2021/main/assets/deploymentQR.png)
 
 [Deployment link](https://expo.io/@luayida99/Orbital2021)
