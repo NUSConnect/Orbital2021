@@ -42,6 +42,14 @@ We plan to make it a cross-platform mobile app, which users can download and reg
 
 [Documentation can be found here](https://docs.google.com/document/d/1KQt-ke-O7QabJMdp9oJYTGkmXdK-TGQFx0Jig3PgIJ0/edit?usp=sharing)
 
+### Deployment
+
+As of Milestone 1, Portal.io has been deployed for users to have a sneak preview of what the app entails.
+
+Simply download Expo Go on your mobile devices and scan the QR code from the link below to test out our app!
+
+[Deployment link](https://expo.io/@luayida99/Orbital2021)
+
 ### Sample Screenshots:
 
 ![Sample Screenshots](https://raw.githubusercontent.com/benedictchuajj/Orbital2021/main/assets/sample_screenshots.png)
