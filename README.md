@@ -42,7 +42,7 @@ We plan to make it a cross-platform mobile app, which users can download and reg
 
 [Documentation can be found here](https://docs.google.com/document/d/1KQt-ke-O7QabJMdp9oJYTGkmXdK-TGQFx0Jig3PgIJ0/edit?usp=sharing)
 
-### Deployment
+### Deployment:
 
 As of Milestone 1, Portal.io has been deployed for users to have a sneak preview of what the app entails.
 
