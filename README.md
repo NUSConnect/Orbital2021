@@ -5,7 +5,7 @@ Orbital (Independent Software Development Project) is NUS School of Computing se
 **Proposed Level of Achievement:** Apollo 11
 
 
-## Introducting Portal.io
+## Introducing Portal.io
 
 <img src="https://raw.githubusercontent.com/benedictchuajj/Orbital2021/main/src/assets/logo.png" width="160">
 
