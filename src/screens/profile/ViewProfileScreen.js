@@ -57,6 +57,10 @@ const ViewProfileScreen = ({navigation, route, onPress}) => {
         }
     }
 
+    const message = async () => {
+        navigation.navigate("ChatScreen", { thread: userData });
+    }
+
     const fetchUserPosts = async () => {
       try {
         const allPosts = [];
@@ -168,7 +172,7 @@ const ViewProfileScreen = ({navigation, route, onPress}) => {
                         </Text>
                     </TouchableOpacity>
                     <View style={styles.space} />
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={message}>
                         <Text style={styles.text}>
                             Message
                         </Text>
