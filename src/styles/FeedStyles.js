@@ -1,10 +1,10 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.View`
-  flex: 1;
-  align-items: center;
-  background-color: #fff;
-  padding: 20px;
+    flex: 1;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
 `;
 
 export const Card = styled.View`
@@ -74,13 +74,14 @@ export const Interaction = styled.TouchableOpacity`
     justify-content: center;
     border-radius: 5px;
     padding: 2px 5px;
-    background-color: ${props => props.active ? '#2e64e515' : 'transparent'}
+    background-color: ${(props) =>
+        props.active ? "#2e64e515" : "transparent"};
 `;
 
 export const InteractionText = styled.Text`
     font-size: 12px;
     font-weight: bold;
-    color: ${props => props.active ? '#2e64e5' : '#333'};
+    color: ${(props) => (props.active ? "#2e64e5" : "#333")};
     margin-top: 5px;
     margin-left: 5px;
 `;
