@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import FriendSearchScreen from './FriendSearchScreen';
 import CommentScreen from '../home/CommentScreen';
+import ChatScreen from '../home/ChatScreen';
 import ViewProfileScreen from '../profile/ViewProfileScreen';
 
 const Stack = createStackNavigator();
@@ -22,6 +23,7 @@ const FriendsScreen = ({navigation}) => {
           component={FriendSearchScreen}
         />
         <Stack.Screen name="ViewProfileScreen" component={ViewProfileScreen} />
+        <Stack.Screen name="ChatScreen" component={ChatScreen} />
         <Stack.Screen name="CommentScreen" component={CommentScreen} />
       </Stack.Navigator>
     </SafeAreaView>

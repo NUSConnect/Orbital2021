@@ -141,7 +141,7 @@ export default function ChatScreen({ route, onPress, navigation }) {
     <TouchableOpacity
               style={styles.button}
               activeOpacity={ 0.4 }
-              onPress={() => navigation.navigate('MessagesScreen')}>
+              onPress={() => navigation.goBack(null)}>
                   <Ionicons name="arrow-back" color="#79D2E6" size={38}
                       style={styles.icon} />
            </TouchableOpacity>

@@ -31,17 +31,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  button: {
-    width: '15%',
-    paddingLeft: 12,
-  },
   text: {
     flex: 1,
     width: '85%',
     color: '#ff7f50',
     fontSize: 30,
     textAlign: 'center',
+    paddingRight: 64,
   },
   icon: {
+  },
+  button: {
+    width: '15%',
+    paddingLeft: 12,
   },
 })
