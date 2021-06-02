@@ -136,7 +136,10 @@ const PostCard = ({
     return (
         <Card key={item.id}>
             <View style={styles.container}>
-                <TouchableOpacity onPress={() => onViewProfile(currentUserId)} style={styles.user}>
+                <TouchableOpacity
+                    onPress={() => onViewProfile(currentUserId)}
+                    style={styles.user}
+                >
                     <UserInfo>
                         <UserImg
                             source={{
@@ -164,9 +167,9 @@ const PostCard = ({
                         activeOpacity={0.4}
                         onPress={onEdit}
                     >
-                        <MaterialIcons name='edit' size={25} />
+                        <MaterialIcons name="edit" size={25} />
                     </TouchableOpacity>
-                ) : null }
+                ) : null}
             </View>
             <PostText>{item.post}</PostText>
             {item.postImg != null ? (
@@ -218,12 +221,11 @@ export default PostCard;
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
-        width: '100%',
-        alignItems: 'center',
+        width: "100%",
+        alignItems: "center",
     },
     user: {
-        width: 360
+        width: 360,
     },
-    button: {
-    },
+    button: {},
 });

@@ -18,14 +18,13 @@ import moment from "moment";
 
 import * as firebase from "firebase";
 
-const EditPostScreen = ({ navigation, route, }) => {
+const EditPostScreen = ({ navigation, route }) => {
     const currentUserId = firebase.auth().currentUser.uid;
     const { item } = route.params;
     const [text, setText] = useState(item.post);
     const [image, setImage] = useState(item.postImg);
 
-    const updatePost = async ( navigator ) => {
-
+    const updatePost = async (navigator) => {
         firebase
             .firestore()
             .collection("posts")
@@ -43,7 +42,7 @@ const EditPostScreen = ({ navigation, route, }) => {
                     [
                         {
                             text: "OK",
-                            onPress: navigator
+                            onPress: navigator,
                         },
                     ],
                     { cancelable: false }
@@ -79,14 +78,12 @@ const EditPostScreen = ({ navigation, route, }) => {
                     />
 
                     <View style={styles.buttons}>
-                        <CancelButton
-                            goBack={() => navigation.goBack()}
-                        />
+                        <CancelButton goBack={() => navigation.goBack()} />
                         <View style={styles.space} />
                         <SubmitButton
                             goBack={() => {
                                 text != null
-                                    ? updatePost( () => navigation.goBack() )
+                                    ? updatePost(() => navigation.goBack())
                                     : Alert.alert(
                                           "Cannot submit an empty post!",
                                           "Write something into the text box to post."
@@ -95,12 +92,11 @@ const EditPostScreen = ({ navigation, route, }) => {
                             string={"Edit"}
                         />
                     </View>
-
                 </View>
             </View>
         </SafeAreaView>
     );
-}
+};
 
 export default EditPostScreen;
 

@@ -29,10 +29,7 @@ const HomeScreen = ({ navigation }) => {
                     headerShown: false,
                 }}
             >
-                <Stack.Screen
-                    name="HomePostsScreen"
-                    component={HomePostsScreen}
-                />
+                <Stack.Screen name="HomePostsScreen" component={HomePostsScreen} />
                 <Stack.Screen name="AddPostScreen" component={AddPostScreen} />
                 <Stack.Screen name="EditPostScreen" component={EditPostScreen} />
                 <Stack.Screen name="CommentScreen" component={CommentScreen} />

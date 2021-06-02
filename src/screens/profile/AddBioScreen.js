@@ -28,7 +28,7 @@ export default class AddBioScreen extends React.Component {
         };
     }
 
-    submitPost = async ( navigator ) => {
+    submitPost = async (navigator) => {
         console.log("Bio: ", this.state.text);
 
         firebase
@@ -46,7 +46,7 @@ export default class AddBioScreen extends React.Component {
                     [
                         {
                             text: "OK",
-                            onPress: navigator
+                            onPress: navigator,
                         },
                     ],
                     { cancelable: false }
@@ -77,14 +77,14 @@ export default class AddBioScreen extends React.Component {
                         />
 
                         <View style={styles.buttons}>
-                            <CancelButton
-                                goBack={() => navigation.goBack()}
-                            />
+                            <CancelButton goBack={() => navigation.goBack()} />
                             <View style={styles.space} />
                             <SubmitButton
                                 goBack={() => {
                                     this.state.text != null
-                                        ? this.submitPost(() => navigation.goBack())
+                                        ? this.submitPost(() =>
+                                              navigation.goBack()
+                                          )
                                         : Alert.alert(
                                               "Your new bio is empty!",
                                               "Write something into the text box to post."

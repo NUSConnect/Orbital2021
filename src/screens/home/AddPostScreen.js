@@ -110,7 +110,7 @@ export default class AddPostScreen extends React.Component {
         //    this.setState({ blob: pickerResult.uri.blob() })
     };
 
-    submitPost = async ( navigator ) => {
+    submitPost = async (navigator) => {
         const imageUrl = await this.uploadImage();
         console.log("Image Url: ", imageUrl);
         console.log("Post: ", this.state.text);
@@ -141,7 +141,7 @@ export default class AddPostScreen extends React.Component {
                     [
                         {
                             text: "OK",
-                            onPress: navigator
+                            onPress: navigator,
                         },
                     ],
                     { cancelable: false }
@@ -256,7 +256,9 @@ export default class AddPostScreen extends React.Component {
                                 <SubmitButton
                                     goBack={() => {
                                         this.state.text != null
-                                            ? this.submitPost( () => navigation.goBack() )
+                                            ? this.submitPost(() =>
+                                                  navigation.goBack()
+                                              )
                                             : Alert.alert(
                                                   "Cannot submit an empty post!",
                                                   "Write something into the text box to post."
