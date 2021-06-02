@@ -82,8 +82,8 @@ export default class AddBioScreen extends React.Component {
                             <SubmitButton
                                 goBack={() => {
                                     this.state.text != null
-                                        ? this.submitPost(() =>
-                                              navigation.goBack()
+                                        ? this.submitPost(
+                                            () => navigation.goBack()
                                           )
                                         : Alert.alert(
                                               "Your new bio is empty!",

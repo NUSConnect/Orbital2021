@@ -88,6 +88,11 @@ export default class ProfilePersonalScreen extends React.Component {
 
     componentDidMount() {
         this.getUser();
+        this._unsubscribe = this.props.navigation.addListener('focus', () => this.getUser());
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     render() {
