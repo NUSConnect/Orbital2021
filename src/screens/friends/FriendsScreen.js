@@ -8,14 +8,39 @@ import {
     StatusBar,
     RefreshControl,
 } from "react-native";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import FriendSearchScreen from "./FriendSearchScreen";
 import CommentScreen from "../home/CommentScreen";
 import ChatScreen from "../home/ChatScreen";
 import ViewProfileScreen from "../profile/ViewProfileScreen";
+import DummyScreen from '../profile/DummyScreen';
 
 const Stack = createStackNavigator();
+const TopTab = createMaterialTopTabNavigator();
+
+function FriendsTabs() {
+    return (
+        <TopTab.Navigator
+            tabBarOptions={{
+                pressColor: "#ffa500",
+                pressOpacity: "ffa500",
+                indicatorStyle: { backgroundColor: "#ff8c00" },
+                labelStyle: { fontSize: 14 },
+            }}
+        >
+            <TopTab.Screen
+                name="Search"
+                component={FriendSearchScreen}
+            />
+            <TopTab.Screen
+                name="Find A Group"
+                component={DummyScreen}
+            />
+        </TopTab.Navigator>
+    );
+}
 
 const FriendsScreen = ({ navigation }) => {
     return (
@@ -27,8 +52,8 @@ const FriendsScreen = ({ navigation }) => {
                 }}
             >
                 <Stack.Screen
-                    name="FriendSearchScreen"
-                    component={FriendSearchScreen}
+                    name="Tabs"
+                    component={FriendsTabs}
                 />
                 <Stack.Screen
                     name="ViewProfileScreen"
