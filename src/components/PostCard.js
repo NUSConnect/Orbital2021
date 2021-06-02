@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { View, StyleSheet } from "react-native";
 import { Ionicons, MaterialIcons } from "react-native-vector-icons";
 
 import {
@@ -30,6 +31,7 @@ const PostCard = ({
     onDelete,
     onPress,
     onReport,
+    onEdit,
 }) => {
     const currentUserId = firebase.auth().currentUser.uid;
     const [userData, setUserData] = useState(null);
@@ -133,28 +135,39 @@ const PostCard = ({
 
     return (
         <Card key={item.id}>
-            <TouchableOpacity onPress={() => onViewProfile(currentUserId)}>
-                <UserInfo>
-                    <UserImg
-                        source={{
-                            uri: userData
-                                ? userData.userImg ||
-                                  "https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460"
-                                : "https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460",
-                        }}
-                    />
-                    <UserInfoText>
-                        <UserName>
-                            {userData
-                                ? userData.name || "Anonymous User"
-                                : "Anonymous User"}
-                        </UserName>
-                        <PostTime>
-                            {moment(item.postTime.toDate()).fromNow()}
-                        </PostTime>
-                    </UserInfoText>
-                </UserInfo>
-            </TouchableOpacity>
+            <View style={styles.container}>
+                <TouchableOpacity onPress={() => onViewProfile(currentUserId)} style={styles.user}>
+                    <UserInfo>
+                        <UserImg
+                            source={{
+                                uri: userData
+                                    ? userData.userImg ||
+                                      "https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460"
+                                    : "https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460",
+                            }}
+                        />
+                        <UserInfoText>
+                            <UserName>
+                                {userData
+                                    ? userData.name || "Anonymous User"
+                                    : "Anonymous User"}
+                            </UserName>
+                            <PostTime>
+                                {moment(item.postTime.toDate()).fromNow()}
+                            </PostTime>
+                        </UserInfoText>
+                    </UserInfo>
+                </TouchableOpacity>
+                {currentUserId == item.userId ? (
+                    <TouchableOpacity
+                        style={styles.button}
+                        activeOpacity={0.4}
+                        onPress={onEdit}
+                    >
+                        <MaterialIcons name='edit' size={25} />
+                    </TouchableOpacity>
+                ) : null }
+            </View>
             <PostText>{item.post}</PostText>
             {item.postImg != null ? (
                 <ProgressiveImage
@@ -201,3 +214,16 @@ const PostCard = ({
 };
 
 export default PostCard;
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: "row",
+        width: '100%',
+        alignItems: 'center',
+    },
+    user: {
+        width: 360
+    },
+    button: {
+    },
+});

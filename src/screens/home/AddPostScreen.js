@@ -13,7 +13,6 @@ import {
 } from "react-native";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
-import HomePostsScreen from "./HomePostsScreen";
 
 import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -65,7 +64,6 @@ export default class AddPostScreen extends React.Component {
             uploading: false,
             transferred: 0,
             text: null,
-            HOME_PAGE: "HomePostsScreen",
         };
     }
 
@@ -112,7 +110,7 @@ export default class AddPostScreen extends React.Component {
         //    this.setState({ blob: pickerResult.uri.blob() })
     };
 
-    submitPost = async () => {
+    submitPost = async ( navigator ) => {
         const imageUrl = await this.uploadImage();
         console.log("Image Url: ", imageUrl);
         console.log("Post: ", this.state.text);
@@ -139,7 +137,14 @@ export default class AddPostScreen extends React.Component {
                 console.log("Post Added!");
                 Alert.alert(
                     "Post published!",
-                    "Your post has been published successfully!"
+                    "Your post has been published successfully!",
+                    [
+                        {
+                            text: "OK",
+                            onPress: navigator
+                        },
+                    ],
+                    { cancelable: false }
                 );
                 this.setState({ text: null });
             })
@@ -245,17 +250,13 @@ export default class AddPostScreen extends React.Component {
                         ) : (
                             <View style={styles.buttons}>
                                 <CancelButton
-                                    goBack={() =>
-                                        navigation.navigate(
-                                            this.state.HOME_PAGE
-                                        )
-                                    }
+                                    goBack={() => navigation.goBack()}
                                 />
                                 <View style={styles.space} />
                                 <SubmitButton
                                     goBack={() => {
                                         this.state.text != null
-                                            ? this.submitPost()
+                                            ? this.submitPost( () => navigation.goBack() )
                                             : Alert.alert(
                                                   "Cannot submit an empty post!",
                                                   "Write something into the text box to post."
