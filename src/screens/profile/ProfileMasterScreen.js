@@ -34,7 +34,6 @@ function ProfileHomeTabs() {
         >
             <Tab.Screen name="Personal" component={ProfilePersonalScreen} />
             <Tab.Screen name="Posts" component={ProfilePostsScreen} />
-            <Tab.Screen name="Comments" component={ProfileCommentsScreen} />
         </Tab.Navigator>
     );
 }
