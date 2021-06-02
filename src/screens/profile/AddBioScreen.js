@@ -12,7 +12,7 @@ import {
     Animated,
 } from "react-native";
 import SubmitButton from "../../components/SubmitButton";
-import BackButton from "../../components/BackButton";
+import CancelButton from "../../components/CancelButton";
 import { FIREBASE_CONFIG } from "../../core/config";
 import ProfilePersonalScreen from "./ProfilePersonalScreen";
 import ActionButton from "react-native-action-button";
@@ -28,7 +28,7 @@ export default class AddBioScreen extends React.Component {
         };
     }
 
-    submitPost = async () => {
+    submitPost = async (navigator) => {
         console.log("Bio: ", this.state.text);
 
         firebase
@@ -42,7 +42,14 @@ export default class AddBioScreen extends React.Component {
                 console.log("Bio updated!");
                 Alert.alert(
                     "Bio updated",
-                    "Your bio has been successfully updated!"
+                    "Your bio has been successfully updated!",
+                    [
+                        {
+                            text: "OK",
+                            onPress: navigator,
+                        },
+                    ],
+                    { cancelable: false }
                 );
                 this.setState({ text: null });
             })
@@ -70,11 +77,14 @@ export default class AddBioScreen extends React.Component {
                         />
 
                         <View style={styles.buttons}>
+                            <CancelButton goBack={() => navigation.goBack()} />
                             <View style={styles.space} />
                             <SubmitButton
                                 goBack={() => {
                                     this.state.text != null
-                                        ? this.submitPost()
+                                        ? this.submitPost(
+                                            () => navigation.goBack()
+                                          )
                                         : Alert.alert(
                                               "Your new bio is empty!",
                                               "Write something into the text box to post."

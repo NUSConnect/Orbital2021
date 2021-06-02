@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import { Ionicons, MaterialIcons } from "react-native-vector-icons";
 import TitleWithBack from "../../components/TitleWithBack";
-import HomePostsScreen from "./HomePostsScreen";
 import moment from "moment";
 
 import * as firebase from "firebase";
@@ -114,6 +113,8 @@ const CommentScreen = ({ navigation, route, onPress }) => {
                     "Comment published!",
                     "Your comment has been published successfully!"
                 );
+                fetchComments();
+                setRefreshing(false);
                 setText("");
             });
 
@@ -163,6 +164,8 @@ const CommentScreen = ({ navigation, route, onPress }) => {
                     "Comment deleted",
                     "Your comment has been deleted successfully!"
                 );
+                fetchComments();
+                setRefreshing(false);
             })
             .catch((e) => console.log("Error deleting comment.", e));
 
@@ -213,6 +216,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
     const handleRefresh = () => {
         setRefreshing(false);
         fetchComments();
+        setRefreshing(false);
     };
 
     useEffect(() => {

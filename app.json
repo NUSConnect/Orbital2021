@@ -4,7 +4,7 @@
     "slug": "Orbital2021",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/logo.png",
+    "icon": "./assets/logo.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

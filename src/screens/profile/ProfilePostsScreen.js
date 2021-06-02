@@ -28,6 +28,11 @@ export default class ProfilePostsScreen extends React.Component {
 
     componentDidMount() {
         this.fetchPosts();
+        this._unsubscribe = this.props.navigation.addListener('focus', () => this.fetchPosts());
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     fetchPosts = async () => {

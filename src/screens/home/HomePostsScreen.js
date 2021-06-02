@@ -65,6 +65,11 @@ export default class HomePostsScreen extends React.Component {
 
     componentDidMount() {
         this.fetchPosts();
+        this._unsubscribe = this.props.navigation.addListener('focus', () => this.fetchPosts());
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     fetchPosts = async () => {
@@ -307,6 +312,9 @@ export default class HomePostsScreen extends React.Component {
                             )}
                             onDelete={this.handleDelete}
                             onReport={this.handleReport}
+                            onEdit={() =>
+                                navigation.navigate("EditPostScreen", { item })
+                            }
                             onPress={() =>
                                 navigation.navigate("CommentScreen", { item })
                             }

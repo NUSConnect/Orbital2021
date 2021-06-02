@@ -12,6 +12,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomePostsScreen from "./HomePostsScreen";
 import AddPostScreen from "./AddPostScreen";
+import EditPostScreen from "./EditPostScreen";
 import CommentScreen from "./CommentScreen";
 import ChatScreen from "./ChatScreen";
 import MessagesScreen from "./MessagesScreen";
@@ -28,21 +29,13 @@ const HomeScreen = ({ navigation }) => {
                     headerShown: false,
                 }}
             >
-                <Stack.Screen
-                    name="HomePostsScreen"
-                    component={HomePostsScreen}
-                />
+                <Stack.Screen name="HomePostsScreen" component={HomePostsScreen} />
                 <Stack.Screen name="AddPostScreen" component={AddPostScreen} />
+                <Stack.Screen name="EditPostScreen" component={EditPostScreen} />
                 <Stack.Screen name="CommentScreen" component={CommentScreen} />
-                <Stack.Screen
-                    name="ViewProfileScreen"
-                    component={ViewProfileScreen}
-                />
+                <Stack.Screen name="ViewProfileScreen" component={ViewProfileScreen} />
                 <Stack.Screen name="ChatScreen" component={ChatScreen} />
-                <Stack.Screen
-                    name="MessagesScreen"
-                    component={MessagesScreen}
-                />
+                <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
             </Stack.Navigator>
         </SafeAreaView>
     );
