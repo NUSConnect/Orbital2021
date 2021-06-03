@@ -21,6 +21,7 @@ import * as firebase from "firebase";
 
 const ViewProfileScreen = ({ navigation, route, onPress }) => {
     const currentUserId = firebase.auth().currentUser.uid;
+    const currentUser = firebase.auth().currentUser;
     const defaultUri =
         "https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460";
     const [userData, setUserData] = useState(null);
@@ -38,7 +39,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
             .get()
             .then((documentSnapshot) => {
                 if (documentSnapshot.exists) {
-                    //              console.log('User Data', documentSnapshot.data());
+                    //console.log('User Data', documentSnapshot.data());
                     setUserData(documentSnapshot.data());
                 }
             });
@@ -83,7 +84,9 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     };
 
     const message = async () => {
-        navigation.navigate("ChatScreen", { thread: userData });
+        var threadID = currentUser.createdAt <= userData.createdAt ? currentUserId + item.userId : item.userId + currentUserId;
+        var threadObj =  new Object({ id: threadID, name: userData.name });
+        navigation.navigate("ChatScreen", { thread: threadObj });
     };
 
     const fetchUserPosts = async () => {
