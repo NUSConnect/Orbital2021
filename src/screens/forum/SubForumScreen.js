@@ -46,27 +46,31 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
 
         await firebase
             .firestore()
-            .collection("forum")
+            .collection("forums")
             .doc(item.id)
-            .collection("posts")
+            .collection("forumPosts")
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    const { creator, postTime, text } = doc.data();
+                    const { postTitle, postBody, userId, postTime, votes, commentCount } = doc.data();
                     list.push({
-                        id: doc.id,
-                        creator: creator,
+                        postId: doc.id,
+                        postTitle,
+                        postBody,
+                        creator: userId,
                         postTime: postTime,
-                        text: text,
+                        votes,
+                        commentCount,
                     });
                 });
             });
 
-        matchUserToComment(list);
-
         if (refreshing) {
             setRefreshing(false);
         }
+
+        setPosts(list);
+        console.log('Subforum Posts: ', posts)
     };
 
     const ItemSeparator = () => (
@@ -82,11 +86,12 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
 
     const handleRefresh = () => {
         setRefreshing(false);
-        fetchComments();
+        fetchPosts();
     };
 
     useEffect(() => {
         getUser();
+        fetchPosts();
     }, []);
 
     return (
@@ -111,50 +116,5 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginBottom: 40,
-    },
-    commentContainer: {
-        flexDirection: "row",
-        width: "100%",
-        padding: 10,
-        backgroundColor: "white",
-        alignItems: "center",
-        justifyContent: "flex-start",
-    },
-    postInfo: {
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-    },
-    userComment: {
-        flexDirection: "row",
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-    },
-    username: {
-        fontSize: 16,
-        fontWeight: "bold",
-        marginRight: 5,
-    },
-    commentText: {
-        fontSize: 16,
-    },
-    time: {
-        fontSize: 14,
-        color: "#666",
-    },
-    textContainer: {
-        width: "90%",
-    },
-    deleter: {},
-    inputContainer: {
-        width: "100%",
-        height: 50,
-        flexDirection: "row",
-        backgroundColor: "white",
-        marginBottom: 40,
-        alignItems: "center",
-    },
-    inputBox: {
-        width: "90%",
-        paddingLeft: 15,
     },
 });

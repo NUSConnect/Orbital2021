@@ -27,7 +27,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.portalio.orbital",
-      "versionCode": 0.1
+      "versionCode": 0
     },
     "web": {
       "favicon": "./assets/favicon.png"

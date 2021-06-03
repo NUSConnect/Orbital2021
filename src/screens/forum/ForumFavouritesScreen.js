@@ -24,6 +24,7 @@ export default class ForumFavouritesScreen extends React.Component {
     }
 
     fetchForums = async () => {
+        this.setState({ refreshing: true });
         const list = [];
 
         await firebase
@@ -41,6 +42,9 @@ export default class ForumFavouritesScreen extends React.Component {
                 });
             });
 
+        if (this.state.refreshing) {
+            this.setState({ refreshing: false });
+        }
         this.setState({ data: list });
         console.log(this.state.data);
     };

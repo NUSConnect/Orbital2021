@@ -1,18 +1,59 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TextInput, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, TextInput, SafeAreaView, Alert } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
-import ForumRecommendedScreen from "./ForumRecommendedScreen";
 
-// Not used yet
+import * as firebase from "firebase";
 
 const ForumPostScreen = ({ navigation, route, onPress }) => {
+    const userID = firebase.auth().currentUser.uid;
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
 
     const { forumId } = route.params;
 
+    const submitPost = async (navigator) => {
+        const postID = userID + Date.now();
+
+        firebase
+            .firestore()
+            .collection("forums")
+            .doc(forumId)
+            .collection("forumPosts")
+            .doc(postID)
+            .set({
+                userId: userID,
+                postId: postID,
+                postTitle: title,
+                postBody: text,
+                postTime: firebase.firestore.Timestamp.fromDate(new Date()),
+                votes: 0,
+                commentCount: 0,
+            })
+            .then(() => {
+                console.log("Post Added!");
+                Alert.alert(
+                    "Post published!",
+                    "Your post has been published successfully!",
+                    [
+                        {
+                            text: "OK",
+                            onPress: navigator,
+                        },
+                    ],
+                    { cancelable: false }
+                );
+                setTitle('');
+                setText('');
+            })
+            .catch((error) => {
+                console.log(
+                    "Something went wrong with added post to firestore.",
+                    error
+                );
+            });
+    };
     return (
         <KeyboardAwareScrollView style={styles.container}>
             <Text style={styles.title}>Create a Forum Post</Text>
@@ -36,7 +77,16 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                 <CancelButton goBack={() => navigation.goBack()} />
                 <View style={styles.space} />
                 <SubmitButton
-                    goBack={() => navigation.goBack()}
+                    goBack={() => {
+                        if (title != '' && text != '') {
+                            submitPost(() => navigation.goBack());
+                        } else {
+                            Alert.alert(
+                                "Cannot submit an empty post!",
+                                "Fill in title and text body to post."
+                            );
+                        }
+                    }}
                     string={"Post"}
                 />
             </View>
@@ -81,6 +131,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         justifyContent: "flex-start",
         alignItems: "flex-start",
+        textAlignVertical: 'top',
+        paddingTop: 10,
         paddingLeft: 10,
     },
     buttons: {
