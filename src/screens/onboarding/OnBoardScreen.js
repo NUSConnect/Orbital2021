@@ -25,7 +25,7 @@ export default function OnBoardScreen({ navigation }) {
                         />
                     ),
                     title: "A Portal To The World",
-                    subtitle: "A New Way To Make Friends",
+                    subtitle: "A New Way To Connect",
                 },
                 {
                     backgroundColor: "#fff29e",
