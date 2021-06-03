@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { Ionicons, MaterialIcons } from "react-native-vector-icons";
 import SubForumHeader from "../../components/SubForumHeader";
+import ForumPost from "../../components/ForumPost";
 import moment from "moment";
 
 import * as firebase from "firebase";
@@ -58,7 +59,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                         postId: doc.id,
                         postTitle,
                         postBody,
-                        creator: userId,
+                        userId,
                         postTime: postTime,
                         votes,
                         commentCount,
@@ -72,6 +73,18 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
 
         setPosts(list);
         console.log('Subforum Posts: ', posts)
+    };
+
+    const navigateProfile = (creatorId, ownNavigation, otherNavigation) => {
+        return (currUserId) => {
+            console.log("Current User: ", currUserId);
+            console.log("Creator User: ", creatorId);
+            if (currUserId == creatorId) {
+                ownNavigation();
+            } else {
+                otherNavigation();
+            }
+        };
     };
 
     const ItemSeparator = () => (
@@ -88,6 +101,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
     const handleRefresh = () => {
         setRefreshing(false);
         fetchPosts();
+        setRefreshing(false);
     };
 
     useEffect(() => {
@@ -103,6 +117,26 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                     navigation.navigate("ForumPostScreen", { forumId: item.id })
                 }
                 title={item.forumName}
+            />
+            <FlatList
+                data={posts}
+                renderItem={({ item }) => (
+                    <ForumPost
+                        item={item}
+                        onViewProfile={navigateProfile(
+                             item.userId,
+                             () => navigation.navigate("Profile"),
+                             () =>
+                                 navigation.navigate("ViewProfileScreen", {
+                                     item,
+                                 })
+                        )}
+                    />
+                )}
+                keyExtractor={(item) => item.id}
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+                style={{ marginBottom: 40 }}
             />
         </SafeAreaView>
     );

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { Ionicons, MaterialIcons } from "react-native-vector-icons";
+import { MaterialIcons } from "react-native-vector-icons";
 
 import ProgressiveImage from "./ProgressiveImage";
 
 import moment from "moment";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import * as firebase from "firebase";
 
 const ForumPost = ({
     route,
     item,
+    onViewProfile,
     onDelete,
     onPress,
     onReport,
@@ -160,98 +160,126 @@ const ForumPost = ({
     }, []);
 
     return (
-        <Card key={item.id}>
-            <View style={styles.container}>
-                <TouchableOpacity
-                    onPress={() => onViewProfile(currentUserId)}
-                    style={styles.user}
-                >
-                    <UserInfo>
-                        <UserImg
-                            source={{
-                                uri: userData
-                                    ? userData.userImg ||
-                                      "https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460"
-                                    : "https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460",
-                            }}
-                        />
-                        <UserInfoText>
-                            <UserName>
-                                {userData
-                                    ? userData.name || "Anonymous User"
-                                    : "Anonymous User"}
-                            </UserName>
-                            <PostTime>
-                                {moment(item.postTime.toDate()).fromNow()}
-                            </PostTime>
-                        </UserInfoText>
-                    </UserInfo>
-                </TouchableOpacity>
-                {currentUserId == item.userId ? (
-                    <TouchableOpacity
-                        style={styles.button}
-                        activeOpacity={0.4}
-                        onPress={onEdit}
+        <View style={styles.container}>
+            <View style={styles.headerContainer}>
+                <View style={styles.headerLeft}>
+                    <Text style={styles.regularFont}>{'Posted by '}</Text>
+                    <Text
+                        style={styles.username}
+                        onPress={() => onViewProfile(currentUserId)}
                     >
-                        <MaterialIcons name="edit" size={25} />
-                    </TouchableOpacity>
-                ) : null}
+                        {userData ? userData.name || "Anonymous User" : "Anonymous User"}
+                    </Text>
+                    <Text style={styles.regularFont}>
+                        {' ·'} {moment(item.postTime.toDate()).fromNow()}
+                    </Text>
+                </View>
+                <View style={styles.headerRight}>
+                </View>
             </View>
-            <PostText>{item.post}</PostText>
-            {item.postImg != null ? (
-                <ProgressiveImage
-                    defaultImageSource={require("../assets/default-img.jpg")}
-                    source={{ uri: item.postImg }}
-                    style={{ width: "100%", height: 350 }}
-                    resizeMode="contain"
-                />
-            ) : (
-                <Divider />
-            )}
 
-            <InteractionWrapper>
-                <Interaction onPress={likePost}>
-                    <Ionicons
-                        name={userLiked ? "heart" : "heart-outline"}
-                        size={25}
-                        color={userLiked ? "#dc143c" : "#333"}
+            <Text style={styles.title} onPress={() => alert('post pressed')}>
+                {item.postTitle}
+            </Text>
+            <Text style={styles.text} onPress={() => alert('post pressed')}>
+                {item.postBody}
+            </Text>
+
+            <View style={styles.bottomContainer}>
+                <View style={styles.voteContainer}>
+                    <TouchableOpacity onPress={() => (upvoted ? unVote(): upVote())}>
+                        <MaterialIcons
+                            name='arrow-upward'
+                            size={32}
+                            color={upvoted ? 'lightgreen' : 'darkgray'}
+                        />
+                    </TouchableOpacity>
+                    <Text style={styles.score}>{item.votes}</Text>
+                    <TouchableOpacity onPress={() => (downvoted ? unVote(): downVote())}>
+                        <MaterialIcons
+                            name='arrow-downward'
+                            size={32}
+                            color={downvoted ? 'crimson' : 'darkgray'}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity
+                    style={styles.centerAlign}
+                    activeOpacity={0.7}
+                    onPress={() => alert('post pressed')}
+                >
+                    <MaterialIcons
+                        name='messenger-outline'
+                        size={26}
+                        color={'darkgray'}
                     />
-                    <InteractionText>
-                        {likeNumber === 0
-                            ? "Like"
-                            : likeNumber === 1
-                            ? "1 Like"
-                            : likeNumber + " Likes"}
-                    </InteractionText>
-                </Interaction>
-                <Interaction onPress={onPress}>
-                    <Ionicons name="md-chatbubble-outline" size={25} />
-                    <InteractionText>{commentText}</InteractionText>
-                </Interaction>
-                {currentUserId == item.userId ? (
-                    <Interaction onPress={() => onDelete(item.id)}>
-                        <Ionicons name="md-trash-bin" size={25} />
-                    </Interaction>
-                ) : (
-                    <Interaction onPress={() => onReport(item.id)}>
-                        <MaterialIcons name="report-problem" size={25} />
-                    </Interaction>
-                )}
-            </InteractionWrapper>
-        </Card>
+                    <Text style={styles.commentText}>{item.commentCount}</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
     );
 };
 
-export default PostCard;
+export default ForumPost;
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: "row",
+        backgroundColor: 'white',
         width: "100%",
-        alignItems: "center",
+        marginBottom: 20,
+        borderRadius: 10,
     },
-    user: {
-        width: 360,
+    headerContainer: {
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-between',
+        paddingLeft: 10,
     },
-    button: {},
+    headerLeft: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    headerRight: {},
+    bottomContainer: {
+        flexDirection: 'row',
+    },
+    voteContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '33%',
+    },
+    centerAlign: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '33%',
+    },
+    title: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        paddingLeft: 10,
+    },
+    text: {
+        fontSize: 16,
+        paddingLeft: 10,
+    },
+    score: {
+        fontSize: 16,
+        paddingLeft: 4,
+        paddingRight: 4,
+        color: 'darkgray',
+    },
+    commentText: {
+        fontSize: 16,
+        paddingLeft: 4,
+        color: 'darkgray',
+    },
+    regularFont: {
+        fontSize: 14,
+    },
+    username: {
+        fontSize: 14,
+        color: 'blue'
+    },
 });

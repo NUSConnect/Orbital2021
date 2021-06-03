@@ -96,7 +96,7 @@ export default class ProfilePersonalScreen extends React.Component {
     }
 
     render() {
-        console.log(this.state.imageUri);
+        console.log(firebase.auth().currentUser.displayName)
         console.log(this.state.bio);
 
         return (

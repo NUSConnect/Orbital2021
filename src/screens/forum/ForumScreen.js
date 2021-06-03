@@ -12,6 +12,7 @@ import {
     SubForumScreen,
     ForumPostScreen,
 } from "./";
+import ViewProfileScreen from "../profile/ViewProfileScreen";
 
 const Stack = createStackNavigator();
 const TopTab = createMaterialTopTabNavigator();
@@ -44,18 +45,10 @@ export default function ForumScreen() {
         <SafeAreaView style={styles.container}>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="ForumTabs" component={ForumTabs} />
-                <Stack.Screen
-                    name="ForumCreationScreen"
-                    component={ForumCreationScreen}
-                />
-                <Stack.Screen
-                    name="SubForumScreen"
-                    component={SubForumScreen}
-                />
-                <Stack.Screen
-                    name="ForumPostScreen"
-                    component={ForumPostScreen}
-                />
+                <Stack.Screen name="ForumCreationScreen" component={ForumCreationScreen} />
+                <Stack.Screen name="SubForumScreen" component={SubForumScreen} />
+                <Stack.Screen name="ForumPostScreen" component={ForumPostScreen} />
+                <Stack.Screen name="ViewProfileScreen" component={ViewProfileScreen} />
             </Stack.Navigator>
         </SafeAreaView>
     );
