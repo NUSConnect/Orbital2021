@@ -54,6 +54,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                 querySnapshot.forEach((doc) => {
                     const { postTitle, postBody, userId, postTime, votes, commentCount } = doc.data();
                     list.push({
+                        forumId: item.id,
                         postId: doc.id,
                         postTitle,
                         postBody,

@@ -1,22 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Ionicons, MaterialIcons } from "react-native-vector-icons";
-
-import {
-    Container,
-    Card,
-    UserInfo,
-    UserImg,
-    UserName,
-    UserInfoText,
-    PostTime,
-    PostText,
-    PostImg,
-    InteractionWrapper,
-    Interaction,
-    InteractionText,
-    Divider,
-} from "../styles/FeedStyles";
 
 import ProgressiveImage from "./ProgressiveImage";
 
@@ -24,10 +8,9 @@ import moment from "moment";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as firebase from "firebase";
 
-const PostCard = ({
+const ForumPost = ({
     route,
     item,
-    onViewProfile,
     onDelete,
     onPress,
     onReport,
@@ -35,8 +18,9 @@ const PostCard = ({
 }) => {
     const currentUserId = firebase.auth().currentUser.uid;
     const [userData, setUserData] = useState(null);
-    const [userLiked, setUserLiked] = useState(null);
-    const [likeNumber, setLikeNumber] = useState(null);
+    const [upvoted, setUpvoted] = useState(null);
+    const [downvoted, setDownvoted] = useState(null);
+    const [votes, setVotes] = useState(null);
 
     var commentText;
 
@@ -56,81 +40,123 @@ const PostCard = ({
             .get()
             .then((documentSnapshot) => {
                 if (documentSnapshot.exists) {
-                    //          console.log('User Data', documentSnapshot.data());
                     setUserData(documentSnapshot.data());
                 }
             });
     };
 
-    const checkLiked = async () => {
+    const checkVoted = async () => {
         await firebase
             .firestore()
-            .collection("posts")
-            .doc(item.userId)
-            .collection("userPosts")
+            .collection("forums")
+            .doc(item.forumId)
+            .collection("forumPosts")
             .doc(item.postId)
-            .collection("likes")
+            .collection("votes")
             .doc(currentUserId)
             .onSnapshot((snapshot) => {
                 if (snapshot.exists) {
-                    setUserLiked(true);
+                    const { voted } = snapshot.data();
+                    if (voted == 1) {
+                        setUpvoted(true);
+                        setDownvoted(false);
+                    } else {
+                        setUpvoted(false);
+                        setDownvoted(true);
+                    }
+
                 } else {
-                    setUserLiked(false);
+                    setUpvoted(false);
+                    setDownvoted(false);
                 }
             });
     };
 
-    const likePost = async () => {
-        console.log("Post ID: " + item.postId);
-        if (userLiked) {
-            item.likeCount = item.likeCount - 1;
-            firebase
-                .firestore()
-                .collection("posts")
-                .doc(item.userId)
-                .collection("userPosts")
-                .doc(item.postId)
-                .collection("likes")
-                .doc(currentUserId)
-                .delete();
-            firebase
-                .firestore()
-                .collection("posts")
-                .doc(item.userId)
-                .collection("userPosts")
-                .doc(item.postId)
-                .update({ likeCount: item.likeCount });
-            console.log("Unlike");
-            setLikeNumber(item.likeCount);
-            setUserLiked(false);
+    const upVote = async () => {
+        if (downvoted) {
+            item.votes = item.votes + 2;
         } else {
-            item.likeCount = item.likeCount + 1;
-            firebase
-                .firestore()
-                .collection("posts")
-                .doc(item.userId)
-                .collection("userPosts")
-                .doc(item.postId)
-                .collection("likes")
-                .doc(currentUserId)
-                .set({});
-            firebase
-                .firestore()
-                .collection("posts")
-                .doc(item.userId)
-                .collection("userPosts")
-                .doc(item.postId)
-                .update({ likeCount: item.likeCount });
-            console.log("Like");
-            setLikeNumber(item.likeCount);
-            setUserLiked(true);
+            item.votes = item.votes + 1;
         }
+        firebase
+            .firestore()
+            .collection("forums")
+            .doc(item.forumId)
+            .collection("forumPosts")
+            .doc(item.postId)
+            .collection("votes")
+            .doc(currentUserId)
+            .set({ voted: 1 });
+        firebase
+            .firestore()
+            .collection("forums")
+            .doc(item.forumId)
+            .collection("forumPosts")
+            .doc(item.postId)
+            .update({ votes: item.votes });
+        setVotes(item.votes);
+        setUpvoted(true);
+        setDownvoted(false);
+    };
+
+    const downVote = async () => {
+        if (upvoted) {
+            item.votes = item.votes - 2;
+        } else {
+            item.votes = item.votes - 1;
+        }
+        firebase
+            .firestore()
+            .collection("forums")
+            .doc(item.forumId)
+            .collection("forumPosts")
+            .doc(item.postId)
+            .collection("votes")
+            .doc(currentUserId)
+            .set({ voted: -1 });
+        firebase
+            .firestore()
+            .collection("forums")
+            .doc(item.forumId)
+            .collection("forumPosts")
+            .doc(item.postId)
+            .update({ votes: item.votes });
+        setVotes(item.votes);
+        setUpvoted(false);
+        setDownvoted(true);
+    };
+
+    const unVote = async () => {
+        if (upvoted) {
+            item.votes = item.votes - 1;
+        } else {
+            item.votes = item.votes + 1;
+        }
+        firebase
+            .firestore()
+            .collection("forums")
+            .doc(item.forumId)
+            .collection("forumPosts")
+            .doc(item.postId)
+            .collection("votes")
+            .doc(currentUserId)
+            .delete();
+        firebase
+            .firestore()
+            .collection("forums")
+            .doc(item.forumId)
+            .collection("forumPosts")
+            .doc(item.postId)
+            .update({ votes: item.votes });
+        setVotes(item.votes);
+        setUpvoted(false);
+        setDownvoted(false);
     };
 
     useEffect(() => {
         getUser();
-        checkLiked();
-        setLikeNumber(item.likeCount);
+        checkVoted();
+        setVotes(item.votes);
     }, []);
 
     return (
