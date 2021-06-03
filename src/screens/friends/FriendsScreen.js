@@ -15,7 +15,7 @@ import FriendSearchScreen from "./FriendSearchScreen";
 import CommentScreen from "../home/CommentScreen";
 import ChatScreen from "../home/ChatScreen";
 import ViewProfileScreen from "../profile/ViewProfileScreen";
-import DummyScreen from '../profile/DummyScreen';
+import FindGroupScreen from './FindGroupScreen';
 
 const Stack = createStackNavigator();
 const TopTab = createMaterialTopTabNavigator();
@@ -36,7 +36,7 @@ function FriendsTabs() {
             />
             <TopTab.Screen
                 name="Find A Group"
-                component={DummyScreen}
+                component={FindGroupScreen}
             />
         </TopTab.Navigator>
     );
