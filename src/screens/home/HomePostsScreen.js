@@ -221,6 +221,7 @@ export default class HomePostsScreen extends React.Component {
                     "Your post has been deleted successfully!"
                 );
                 this.setState({ deleted: true });
+                this.fetchPosts();
             })
             .catch((e) => console.log("Error deleting post.", e));
     };

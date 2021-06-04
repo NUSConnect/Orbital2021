@@ -11,9 +11,7 @@ const CommentItem = ({
     route,
     item,
     onViewProfile,
-    onDelete,
-    onReport,
-    onEdit,
+    onPressHandle,
 }) => {
     const currentUserId = firebase.auth().currentUser.uid;
     const [userData, setUserData] = useState(null);
@@ -46,7 +44,7 @@ const CommentItem = ({
                     >
                         {userData ? userData.name || "Anonymous User" : "Anonymous User"}
                     </Text>
-                    <Text style={styles.regularFont}>
+                    <Text style={styles.regularFont} >
                         {' ·'} {moment(item.postTime.toDate()).fromNow()}
                     </Text>
                 </View>
@@ -54,7 +52,7 @@ const CommentItem = ({
                 </View>
             </View>
 
-            <Text style={styles.text}>
+            <Text style={styles.text} onPress={onPressHandle}>
                 {item.commentBody}
             </Text>
 

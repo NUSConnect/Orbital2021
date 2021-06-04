@@ -77,6 +77,88 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
         console.log('Subforum Posts: ', posts)
     };
 
+    const handleEdit = (post) => {
+        Alert.alert(
+            "Edit post",
+            "Are you sure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed!"),
+                    style: "cancel",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () => navigation.navigate('EditForumPostScreen', { post, forumId }),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
+    const handleDelete = (post) => {
+        Alert.alert(
+            "Delete post",
+            "Are you sure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed!"),
+                    style: "cancel",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () => deletePost(post),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
+    const deletePost = (post) => {
+        console.log("Current Post Id: ", post.postId);
+
+        firebase
+            .firestore()
+            .collection("forums")
+            .doc(forumId)
+            .collection("forumPosts")
+            .doc(post.postId)
+            .delete()
+            .then(() => {
+                Alert.alert(
+                    "Post deleted",
+                    "Your post has been deleted successfully!"
+                );
+                fetchPosts();
+                setRefreshing(false);
+            })
+            .catch((e) => console.log("Error deleting post.", e));
+    };
+
+    const handleReport = (post) => {
+        Alert.alert(
+            "Report Post",
+            "Are you sure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed!"),
+                    style: "cancel",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () =>
+                        Alert.alert(
+                            "Post Reported!",
+                            "This post has been reported successfully!"
+                        ),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
     const navigateProfile = (creatorId, ownNavigation, otherNavigation) => {
         return (currUserId) => {
             console.log("Current User: ", currUserId);
@@ -109,6 +191,11 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
     useEffect(() => {
         getUser();
         fetchPosts();
+        const _unsubscribe = navigation.addListener('focus', () => fetchPosts());
+
+        return () => {
+            _unsubscribe();
+        }
     }, []);
 
     return (
@@ -134,6 +221,9 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                                  })
                         )}
                         onPress={() => navigation.navigate("ForumPostScreen", { item, forumId, forumName })}
+                        onEdit={() => handleEdit(item)}
+                        onDelete={() => handleDelete(item)}
+                        onReport={() => handleReport(item)}
                     />
                 )}
                 keyExtractor={(item) => item.id}

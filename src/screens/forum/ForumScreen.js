@@ -12,6 +12,8 @@ import {
     SubForumScreen,
     ForumAddPostScreen,
     ForumPostScreen,
+    EditForumPostScreen,
+    EditForumCommentScreen,
 } from "./";
 import ViewProfileScreen from "../profile/ViewProfileScreen";
 
@@ -50,6 +52,8 @@ export default function ForumScreen() {
                 <Stack.Screen name="SubForumScreen" component={SubForumScreen} />
                 <Stack.Screen name="ForumAddPostScreen" component={ForumAddPostScreen} />
                 <Stack.Screen name="ForumPostScreen" component={ForumPostScreen} />
+                <Stack.Screen name="EditForumPostScreen" component={EditForumPostScreen} />
+                <Stack.Screen name="EditForumCommentScreen" component={EditForumCommentScreen} />
                 <Stack.Screen name="ViewProfileScreen" component={ViewProfileScreen} />
             </Stack.Navigator>
         </SafeAreaView>

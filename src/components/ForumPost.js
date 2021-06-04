@@ -215,6 +215,43 @@ const ForumPost = ({
                     />
                     <Text style={styles.commentText}>{item.commentCount}</Text>
                 </TouchableOpacity>
+                {currentUserId == item.userId ? (
+                    <View style={styles.buttons}>
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            onPress={onDelete}
+                        >
+                            <MaterialIcons
+                                name='delete'
+                                size={26}
+                                color={'darkgray'}
+                            />
+                        </TouchableOpacity>
+                        <View style={{ width: 30 }}/>
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            onPress={onEdit}
+                        >
+                            <MaterialIcons
+                                name='edit'
+                                size={26}
+                                color={'darkgray'}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                ) : (
+                    <TouchableOpacity
+                        style={styles.centerAlign}
+                        activeOpacity={0.7}
+                        onPress={onReport}
+                    >
+                        <MaterialIcons
+                            name='report'
+                            size={26}
+                            color={'darkgray'}
+                        />
+                    </TouchableOpacity>
+                )}
             </View>
         </View>
     );
@@ -254,6 +291,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: '33%',
+    },
+    buttons: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '33%',
+        paddingRight: 10,
     },
     title: {
         fontSize: 22,

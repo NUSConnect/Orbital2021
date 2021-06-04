@@ -44,6 +44,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                 querySnapshot.forEach((doc) => {
                     const { userId, postTime, commentBody } = doc.data();
                     list.push({
+                        postId: item.postId,
                         commentId: doc.id,
                         userId,
                         postTime: postTime,
@@ -106,6 +107,123 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         };
     };
 
+    const onPressComment = (comment) => {
+        console.log(currentUserId);
+        console.log(comment.userId);
+        if (currentUserId == comment.userId) {
+            Alert.alert(
+                "Your comment has been selected",
+                "What do you want to do with it?",
+                [
+                    {
+                        text: "Cancel",
+                        onPress: () => console.log("cancel pressed"),
+                    },
+                    {
+                        text: "Delete",
+                        onPress: () => handleDelete(comment),
+                    },
+                    {
+                        text: "Edit",
+                        onPress: () => navigation.navigate('EditForumCommentScreen', { comment, forumId }),
+                    },
+                ],
+                { cancelable: true }
+            );
+        } else {
+            Alert.alert(
+                "Report comment",
+                "Are you sure?",
+                [
+                    {
+                        text: "Cancel",
+                        onPress: () => console.log("cancel pressed"),
+                    },
+                    {
+                        text: "OK",
+                        onPress: () => handleReport(comment),
+                    },
+
+                ],
+                { cancelable: true }
+            );
+        }
+    }
+
+    const handleDelete = (comment) => {
+        Alert.alert(
+            "Delete comment",
+            "Are you sure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed!"),
+                    style: "cancel",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () => deleteComment(comment),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
+    const deleteComment = (comment) => {
+        console.log("Current Comment Id: ", comment.commentId);
+
+        firebase
+            .firestore()
+            .collection("forums")
+            .doc(forumId)
+            .collection("forumPosts")
+            .doc(comment.postId)
+            .collection("comments")
+            .doc(comment.commentId)
+            .delete()
+            .then(() => {
+                Alert.alert(
+                    "Comment deleted",
+                    "Your comment has been deleted successfully!"
+                );
+                fetchComments();
+                setRefreshing(false);
+            })
+            .catch((e) => console.log("Error deleting comment.", e));
+
+        item.commentCount = item.commentCount - 1;
+        firebase
+            .firestore()
+            .collection("forums")
+            .doc(forumId)
+            .collection("forumPosts")
+            .doc(comment.postId)
+            .update({ commentCount: item.commentCount });
+    };
+
+    const handleReport = (comment) => {
+        Alert.alert(
+            "Report Comment",
+            "Are you sure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed!"),
+                    style: "cancel",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () =>
+                        Alert.alert(
+                            "Comment Reported!",
+                            "This comment has been reported successfully!"
+                        ),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
     const ItemSeparator = () => (
         <View
             style={{
@@ -125,6 +243,11 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
 
     useEffect(() => {
         fetchComments();
+        const _unsubscribe = navigation.addListener('focus', () => fetchComments());
+
+        return () => {
+            _unsubscribe();
+        }
     }, []);
 
     return (
@@ -160,6 +283,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                                      item,
                                  })
                         )}
+                        onPressHandle={() => onPressComment(item)}
                     />
                 )}
                 keyExtractor={(item) => item.id}
