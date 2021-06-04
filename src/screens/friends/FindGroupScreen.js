@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Text, View, Dimensions, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import * as firebase from "firebase";
