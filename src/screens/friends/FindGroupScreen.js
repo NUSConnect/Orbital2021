@@ -1,11 +1,37 @@
 import * as React from "react";
 import { Text, View, Dimensions, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
+import * as firebase from "firebase";
 
 const DeviceWidth = Dimensions.get("window").width;
 const squareSide = 0.4 * DeviceWidth;
 
 export default function FindGroupScreen({ navigation }) {
+    const currentUserId = firebase.auth().currentUser.uid;
+
+    addToCategory = async (category) => {
+        await firebase
+              .firestore()
+              .collection("categories")
+              .doc(category)
+              .collection("people")
+              .doc(currentUserId)
+              .set({});
+        navigation.navigate("WaitingScreen");
+    }
+
+    CategoryCounter = async (category) => {
+        await firebase
+              .firestore()
+              .collection("categories")
+              .doc(category)
+              .collection("people")
+              .get()
+              .then(querySnapshot => {
+                console.log(querySnapshot.size);
+              })
+    }
+
     return (
         <View style={styles.center}>
         <Text> Choose a category </Text>
@@ -21,7 +47,7 @@ export default function FindGroupScreen({ navigation }) {
                             name="run"
                             size={130}
                             style={styles.icon}
-                            onPress={() => navigation.replace("WaitingScreen")}
+                            onPress={() => addToCategory("Sports")}
                         />
                         <Text> Sports </Text>
                     </View>
@@ -30,7 +56,7 @@ export default function FindGroupScreen({ navigation }) {
                             name="account-music"
                             size={130}
                             style={styles.icon}
-                            onPress={() => navigation.replace("WaitingScreen")}
+                            onPress={() => addToCategory("Music")}
                         />
                         <Text> Music </Text>
                     </View>
@@ -41,7 +67,7 @@ export default function FindGroupScreen({ navigation }) {
                             name="book-open"
                             size={130}
                             style={styles.icon}
-                            onPress={() => navigation.replace("WaitingScreen")}
+                            onPress={() => addToCategory("Study")}
                         />
                         <Text> Study </Text>
                     </View>
@@ -50,7 +76,7 @@ export default function FindGroupScreen({ navigation }) {
                             name="controller-classic"
                             size={130}
                             style={styles.icon}
-                            onPress={() => navigation.replace("WaitingScreen")}
+                            onPress={() => addToCategory("For Fun")}
                         />
                         <Text> For Fun </Text>
                     </View>
