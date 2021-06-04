@@ -20,7 +20,7 @@ export default function WaitingScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     find: {
-        textAlign:"center",
-        fontSize:50,
+        textAlign: "center",
+        fontSize: 50,
     },
 });

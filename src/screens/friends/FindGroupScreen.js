@@ -1,40 +1,45 @@
 import React from "react";
-import { Text, View, Dimensions, StyleSheet } from "react-native";
+import { Text, View, Dimensions, StyleSheet, Alert } from "react-native";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import * as firebase from "firebase";
 
 const DeviceWidth = Dimensions.get("window").width;
 const squareSide = 0.4 * DeviceWidth;
+const groupThreshold = 2;
 
 export default function FindGroupScreen({ navigation }) {
     const currentUserId = firebase.auth().currentUser.uid;
 
     addToCategory = async (category) => {
+        //add uid to corresponding category
         await firebase
-              .firestore()
-              .collection("categories")
-              .doc(category)
-              .collection("people")
-              .doc(currentUserId)
-              .set({});
-        navigation.navigate("WaitingScreen");
-    }
-
-    CategoryCounter = async (category) => {
+            .firestore()
+            .collection("categories")
+            .doc(category)
+            .collection("people")
+            .doc(currentUserId)
+            .set({});
+        //on press calculate number of people in category
+        var count;
         await firebase
-              .firestore()
-              .collection("categories")
-              .doc(category)
-              .collection("people")
-              .get()
-              .then(querySnapshot => {
-                console.log(querySnapshot.size);
-              })
-    }
+            .firestore()
+            .collection("categories")
+            .doc(category)
+            .collection("people")
+            .onSnapshot((querySnapshot) => {
+                count = querySnapshot.size;
+                if (count < groupThreshold) {
+                    navigation.replace("WaitingScreen");
+                } else {
+                    Alert.alert("Group found!");
+                    navigation.navigate("FindGroupScreen");
+                }
+            });
+    };
 
     return (
         <View style={styles.center}>
-        <Text> Choose a category </Text>
+            <Text> Choose a category </Text>
             <View
                 style={{
                     flexDirection: "row",
@@ -109,7 +114,5 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "skyblue",
     },
-    icon: {
-
-    },
+    icon: {},
 });
