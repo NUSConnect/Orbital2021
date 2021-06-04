@@ -24,6 +24,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
     const [userLiked, setUserLiked] = useState(null);
     const [likeNumber, setLikeNumber] = useState(null);
     const [refreshing, setRefreshing] = useState(true);
+    const [subscribed, setSubscribed] = useState(null);
 
     const { item } = route.params;
     const forumId = item.id;
@@ -41,6 +42,44 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                     setUserData(documentSnapshot.data());
                 }
             });
+    };
+
+    const getSubscribed = async () => {
+        await firebase
+            .firestore()
+            .collection("users")
+            .doc(currentUserId)
+            .collection("subscribedForums")
+            .doc(forumId)
+            .onSnapshot((snapshot) => {
+                if (snapshot.exists) {
+                    setSubscribed(true);
+                } else {
+                    setSubscribed(false);
+                }
+            });
+    };
+
+    const subscribe = () => {
+        if (subscribed) {
+            firebase
+                .firestore()
+                .collection("users")
+                .doc(currentUserId)
+                .collection("subscribedForums")
+                .doc(forumId)
+                .delete();
+            setSubscribed(false);
+        } else {
+            firebase
+                .firestore()
+                .collection("users")
+                .doc(currentUserId)
+                .collection("subscribedForums")
+                .doc(forumId)
+                .set({});
+            setSubscribed(true);
+        }
     };
 
     const fetchPosts = async () => {
@@ -190,6 +229,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
 
     useEffect(() => {
         getUser();
+        getSubscribed();
         fetchPosts();
         const _unsubscribe = navigation.addListener('focus', () => fetchPosts());
 
@@ -205,6 +245,8 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                 onPress={() =>
                     navigation.navigate("ForumAddPostScreen", { forumId })
                 }
+                isSubscribed={subscribed}
+                subscribe={subscribe}
                 title={item.forumName}
             />
             <FlatList

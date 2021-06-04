@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
-    ForumFavouritesScreen,
+    ForumSearchScreen,
     ForumSubscribedScreen,
     ForumOthersScreen,
     ForumCreationScreen,
@@ -30,14 +30,8 @@ function ForumTabs() {
                 labelStyle: { fontSize: 14 },
             }}
         >
-            <TopTab.Screen
-                name="Favourites"
-                component={ForumFavouritesScreen}
-            />
-            <TopTab.Screen
-                name="Subscribed"
-                component={ForumSubscribedScreen}
-            />
+            <TopTab.Screen name="Favourites" component={ForumSubscribedScreen} />
+            <TopTab.Screen name="Search" component={ForumSearchScreen} />
             <TopTab.Screen name="Others" component={ForumOthersScreen} />
         </TopTab.Navigator>
     );

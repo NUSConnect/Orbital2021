@@ -9,7 +9,8 @@ export default function SubForumHeader({
     style,
     goBack,
     onPress,
-    ...props
+    isSubscribed,
+    subscribe,
 }) {
     return (
         <View style={styles.container}>
@@ -25,7 +26,21 @@ export default function SubForumHeader({
                     style={styles.icon}
                 />
             </TouchableOpacity>
-            <Text style={styles.text}>{title}</Text>
+            <View style={styles.title}>
+                <Text style={styles.text}>{title}</Text>
+                <TouchableOpacity
+                    style={styles.button}
+                    activeOpacity={0.4}
+                    onPress={subscribe}
+                >
+                    <Ionicons
+                        name="star"
+                        color={isSubscribed ? 'gold' : 'darkgray'}
+                        size={26}
+                        style={styles.star}
+                    />
+                </TouchableOpacity>
+            </View>
             <TouchableOpacity
                 style={styles.button}
                 activeOpacity={0.4}
@@ -56,9 +71,15 @@ const styles = StyleSheet.create({
         width: "15%",
         paddingLeft: 12,
     },
-    text: {
+    title: {
         flex: 1,
+        flexDirection: 'row',
         width: "85%",
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingLeft: 30,
+    },
+    text: {
         color: "#ff7f50",
         fontSize: 30,
         textAlign: "center",

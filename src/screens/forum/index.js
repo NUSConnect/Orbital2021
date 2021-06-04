@@ -1,4 +1,4 @@
-export { default as ForumFavouritesScreen } from "./ForumFavouritesScreen";
+export { default as ForumSearchScreen } from "./ForumSearchScreen";
 export { default as ForumSubscribedScreen } from "./ForumSubscribedScreen";
 export { default as ForumOthersScreen } from "./ForumOthersScreen";
 export { default as ForumCreationScreen } from "./ForumCreationScreen";

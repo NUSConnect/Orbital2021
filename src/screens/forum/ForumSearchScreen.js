@@ -6,21 +6,30 @@ import {
     View,
     Image,
     TouchableOpacity,
+    TextInput,
 } from "react-native";
 import ForumIcon from "../../components/ForumIcon";
 import * as firebase from "firebase";
 
-export default class ForumFavouritesScreen extends React.Component {
+export default class ForumSearchScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             data: [],
             refreshing: true,
+            search: '',
+            filteredData: [],
+            filtered: false,
         };
     }
 
     componentDidMount() {
         this.fetchForums();
+        this._unsubscribe = this.props.navigation.addListener('focus', () => this.fetchForums());
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     fetchForums = async () => {
@@ -49,6 +58,21 @@ export default class ForumFavouritesScreen extends React.Component {
         console.log(this.state.data);
     };
 
+    searchFilterFunction = (text) => {
+        if (text) {
+            const newData = this.state.data.filter(function (item) {
+                const itemData = item.forumName
+                    ? item.forumName.toUpperCase()
+                    : "".toUpperCase();
+                const textData = text.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+            });
+            this.setState({ filtered: true, filteredData: newData, search: text });
+        } else {
+            this.setState({ filteredData: this.state.data, search: text });
+        }
+    };
+
     ItemSeparator = () => (
         <View
             style={{
@@ -70,9 +94,15 @@ export default class ForumFavouritesScreen extends React.Component {
         const { navigation } = this.props;
         return (
             <SafeAreaView>
+                <TextInput
+                    style={styles.textInputStyle}
+                    onChangeText={(text) => this.searchFilterFunction(text)}
+                    value={this.state.search}
+                    placeholder="Search Here"
+                />
                 <FlatList
                     numColumns={3}
-                    data={this.state.data}
+                    data={this.state.filtered ? this.state.filteredData : this.state.data}
                     renderItem={({ item }) => (
                         <ForumIcon
                             item={item}
@@ -92,14 +122,12 @@ export default class ForumFavouritesScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        height: 300,
-        margin: 10,
-        backgroundColor: "#FFF",
-        borderRadius: 6,
-    },
-    image: {
-        height: "100%",
-        borderRadius: 4,
+    textInputStyle: {
+        height: 40,
+        borderWidth: 1,
+        paddingLeft: 20,
+        margin: 5,
+        borderColor: "#ff8c00",
+        backgroundColor: "#FFFFFF",
     },
 });

@@ -13,9 +13,6 @@ export { default as HomeScreen } from "./home/HomeScreen";
 
 // forum
 export { default as ForumScreen } from "./forum/ForumScreen";
-export { default as ForumFavouritesScreen } from "./forum/ForumFavouritesScreen";
-export { default as ForumSubscribedScreen } from "./forum/ForumSubscribedScreen";
-export { default as ForumOthersScreen } from "./forum/ForumOthersScreen";
 
 // friends
 export { default as FriendsScreen } from "./friends/FriendsScreen";
