@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { Ionicons, MaterialIcons } from "react-native-vector-icons";
 import SubForumHeader from "../../components/SubForumHeader";
+import ForumPost from "../../components/ForumPost";
 import moment from "moment";
 
 import * as firebase from "firebase";
@@ -23,8 +24,11 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
     const [userLiked, setUserLiked] = useState(null);
     const [likeNumber, setLikeNumber] = useState(null);
     const [refreshing, setRefreshing] = useState(true);
+    const [subscribed, setSubscribed] = useState(null);
 
     const { item } = route.params;
+    const forumId = item.id;
+    const forumName = item.forumName;
 
     const getUser = async () => {
         await firebase
@@ -40,33 +44,170 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
             });
     };
 
+    const getSubscribed = async () => {
+        await firebase
+            .firestore()
+            .collection("users")
+            .doc(currentUserId)
+            .collection("subscribedForums")
+            .doc(forumId)
+            .onSnapshot((snapshot) => {
+                if (snapshot.exists) {
+                    setSubscribed(true);
+                } else {
+                    setSubscribed(false);
+                }
+            });
+    };
+
+    const subscribe = () => {
+        if (subscribed) {
+            firebase
+                .firestore()
+                .collection("users")
+                .doc(currentUserId)
+                .collection("subscribedForums")
+                .doc(forumId)
+                .delete();
+            setSubscribed(false);
+        } else {
+            firebase
+                .firestore()
+                .collection("users")
+                .doc(currentUserId)
+                .collection("subscribedForums")
+                .doc(forumId)
+                .set({});
+            setSubscribed(true);
+        }
+    };
+
     const fetchPosts = async () => {
         const list = [];
         setRefreshing(true);
 
         await firebase
             .firestore()
-            .collection("forum")
+            .collection("forums")
             .doc(item.id)
-            .collection("posts")
+            .collection("forumPosts")
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    const { creator, postTime, text } = doc.data();
+                    const { postTitle, postBody, userId, postTime, votes, commentCount } = doc.data();
                     list.push({
-                        id: doc.id,
-                        creator: creator,
+                        forumId: item.id,
+                        postId: doc.id,
+                        postTitle,
+                        postBody,
+                        userId,
                         postTime: postTime,
-                        text: text,
+                        votes,
+                        commentCount,
                     });
                 });
             });
 
-        matchUserToComment(list);
-
         if (refreshing) {
             setRefreshing(false);
         }
+
+        setPosts(list);
+        console.log('Subforum Posts: ', posts)
+    };
+
+    const handleEdit = (post) => {
+        Alert.alert(
+            "Edit post",
+            "Are you sure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed!"),
+                    style: "cancel",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () => navigation.navigate('EditForumPostScreen', { post, forumId }),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
+    const handleDelete = (post) => {
+        Alert.alert(
+            "Delete post",
+            "Are you sure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed!"),
+                    style: "cancel",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () => deletePost(post),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
+    const deletePost = (post) => {
+        console.log("Current Post Id: ", post.postId);
+
+        firebase
+            .firestore()
+            .collection("forums")
+            .doc(forumId)
+            .collection("forumPosts")
+            .doc(post.postId)
+            .delete()
+            .then(() => {
+                Alert.alert(
+                    "Post deleted",
+                    "Your post has been deleted successfully!"
+                );
+                fetchPosts();
+                setRefreshing(false);
+            })
+            .catch((e) => console.log("Error deleting post.", e));
+    };
+
+    const handleReport = (post) => {
+        Alert.alert(
+            "Report Post",
+            "Are you sure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed!"),
+                    style: "cancel",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () =>
+                        Alert.alert(
+                            "Post Reported!",
+                            "This post has been reported successfully!"
+                        ),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
+    const navigateProfile = (creatorId, ownNavigation, otherNavigation) => {
+        return (currUserId) => {
+            console.log("Current User: ", currUserId);
+            console.log("Creator User: ", creatorId);
+            if (currUserId == creatorId) {
+                ownNavigation();
+            } else {
+                otherNavigation();
+            }
+        };
     };
 
     const ItemSeparator = () => (
@@ -82,11 +223,19 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
 
     const handleRefresh = () => {
         setRefreshing(false);
-        fetchComments();
+        fetchPosts();
+        setRefreshing(false);
     };
 
     useEffect(() => {
         getUser();
+        getSubscribed();
+        fetchPosts();
+        const _unsubscribe = navigation.addListener('focus', () => fetchPosts());
+
+        return () => {
+            _unsubscribe();
+        }
     }, []);
 
     return (
@@ -94,9 +243,35 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
             <SubForumHeader
                 goBack={() => navigation.goBack()}
                 onPress={() =>
-                    navigation.navigate("ForumPostScreen", { forumId: item.id })
+                    navigation.navigate("ForumAddPostScreen", { forumId })
                 }
+                isSubscribed={subscribed}
+                subscribe={subscribe}
                 title={item.forumName}
+            />
+            <FlatList
+                data={posts}
+                renderItem={({ item }) => (
+                    <ForumPost
+                        item={item}
+                        onViewProfile={navigateProfile(
+                             item.userId,
+                             () => navigation.navigate("Profile"),
+                             () =>
+                                 navigation.navigate("ViewProfileScreen", {
+                                     item,
+                                 })
+                        )}
+                        onPress={() => navigation.navigate("ForumPostScreen", { item, forumId, forumName })}
+                        onEdit={() => handleEdit(item)}
+                        onDelete={() => handleDelete(item)}
+                        onReport={() => handleReport(item)}
+                    />
+                )}
+                keyExtractor={(item) => item.id}
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+                style={{ marginBottom: 40 }}
             />
         </SafeAreaView>
     );
@@ -111,50 +286,5 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginBottom: 40,
-    },
-    commentContainer: {
-        flexDirection: "row",
-        width: "100%",
-        padding: 10,
-        backgroundColor: "white",
-        alignItems: "center",
-        justifyContent: "flex-start",
-    },
-    postInfo: {
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-    },
-    userComment: {
-        flexDirection: "row",
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-    },
-    username: {
-        fontSize: 16,
-        fontWeight: "bold",
-        marginRight: 5,
-    },
-    commentText: {
-        fontSize: 16,
-    },
-    time: {
-        fontSize: 14,
-        color: "#666",
-    },
-    textContainer: {
-        width: "90%",
-    },
-    deleter: {},
-    inputContainer: {
-        width: "100%",
-        height: 50,
-        flexDirection: "row",
-        backgroundColor: "white",
-        marginBottom: 40,
-        alignItems: "center",
-    },
-    inputBox: {
-        width: "90%",
-        paddingLeft: 15,
     },
 });

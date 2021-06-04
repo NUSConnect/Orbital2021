@@ -14,6 +14,7 @@ import HomePostsScreen from "./HomePostsScreen";
 import AddPostScreen from "./AddPostScreen";
 import EditPostScreen from "./EditPostScreen";
 import CommentScreen from "./CommentScreen";
+import EditCommentScreen from "./EditCommentScreen";
 import ChatScreen from "./ChatScreen";
 import MessagesScreen from "./MessagesScreen";
 import ViewProfileScreen from "../profile/ViewProfileScreen";
@@ -33,6 +34,7 @@ const HomeScreen = ({ navigation }) => {
                 <Stack.Screen name="AddPostScreen" component={AddPostScreen} />
                 <Stack.Screen name="EditPostScreen" component={EditPostScreen} />
                 <Stack.Screen name="CommentScreen" component={CommentScreen} />
+                <Stack.Screen name="EditCommentScreen" component={EditCommentScreen} />
                 <Stack.Screen name="ViewProfileScreen" component={ViewProfileScreen} />
                 <Stack.Screen name="ChatScreen" component={ChatScreen} />
                 <Stack.Screen name="MessagesScreen" component={MessagesScreen} />

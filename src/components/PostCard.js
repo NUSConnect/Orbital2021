@@ -100,7 +100,7 @@ const PostCard = ({
                 .collection("userPosts")
                 .doc(item.postId)
                 .update({ likeCount: item.likeCount });
-            console.log("Dislike");
+            console.log("Unlike");
             setLikeNumber(item.likeCount);
             setUserLiked(false);
         } else {

@@ -8,9 +8,7 @@ export default function SubForumHeader({
     title,
     style,
     goBack,
-    onPress,
-    isSubscribed,
-    subscribe,
+    ...props
 }) {
     return (
         <View style={styles.container}>
@@ -26,33 +24,13 @@ export default function SubForumHeader({
                     style={styles.icon}
                 />
             </TouchableOpacity>
-            <View style={styles.title}>
-                <Text style={styles.text}>{title}</Text>
-                <TouchableOpacity
-                    style={styles.button}
-                    activeOpacity={0.4}
-                    onPress={subscribe}
-                >
-                    <Ionicons
-                        name="star"
-                        color={isSubscribed ? 'gold' : 'darkgray'}
-                        size={26}
-                        style={styles.star}
-                    />
-                </TouchableOpacity>
-            </View>
-            <TouchableOpacity
-                style={styles.button}
-                activeOpacity={0.4}
-                onPress={onPress}
-            >
-                <Ionicons
-                    name="add"
-                    color="#79D2E6"
-                    size={38}
-                    style={styles.icon}
-                />
-            </TouchableOpacity>
+            <Text style={styles.text}>{title}</Text>
+            <Ionicons
+                name="add"
+                color="white"
+                size={38}
+                style={{paddingLeft: 12}}
+            />
         </View>
     );
 }
@@ -71,15 +49,9 @@ const styles = StyleSheet.create({
         width: "15%",
         paddingLeft: 12,
     },
-    title: {
-        flex: 1,
-        flexDirection: 'row',
-        width: "85%",
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingLeft: 30,
-    },
     text: {
+        flex: 1,
+        width: "85%",
         color: "#ff7f50",
         fontSize: 30,
         textAlign: "center",

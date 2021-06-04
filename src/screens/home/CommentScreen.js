@@ -79,7 +79,9 @@ const CommentScreen = ({ navigation, route, onPress }) => {
                 querySnapshot.forEach((doc) => {
                     const { creator, postTime, text } = doc.data();
                     list.push({
-                        id: doc.id,
+                        overallCreator: item.userId,
+                        postId: item.postId,
+                        commentId: doc.id,
                         creator: creator,
                         postTime: postTime,
                         text: text,
@@ -127,6 +129,27 @@ const CommentScreen = ({ navigation, route, onPress }) => {
             .doc(item.postId)
             .update({ commentCount: item.commentCount });
     };
+
+    const onPressEdit = (comment) => {
+        if (currentUserId == comment.creator) {
+            Alert.alert(
+                "Edit comment",
+                "Are you sure?",
+                [
+                    {
+                        text: "Cancel",
+                        onPress: () => console.log("cancel pressed"),
+                    },
+                    {
+                        text: "OK",
+                        onPress: () => navigation.navigate('EditCommentScreen', { comment }),
+                    },
+
+                ],
+                { cancelable: true }
+            );
+        } else {}
+    }
 
     const handleDelete = (commentId) => {
         Alert.alert(
@@ -222,6 +245,11 @@ const CommentScreen = ({ navigation, route, onPress }) => {
     useEffect(() => {
         getUser();
         fetchComments();
+        const _unsubscribe = navigation.addListener('focus', () => fetchComments());
+
+        return () => {
+            _unsubscribe();
+        }
     }, []);
 
     return (
@@ -257,16 +285,22 @@ const CommentScreen = ({ navigation, route, onPress }) => {
                 data={comments}
                 renderItem={({ item }) => (
                     <View style={styles.commentContainer}>
-                        <View style={styles.textContainer}>
+                        <TouchableOpacity
+                            style={styles.textContainer}
+                            onPress={() => onPressEdit(item)}
+                            activeOpacity={1}
+                        >
                             <View style={styles.userComment}>
                                 <Text style={styles.username}>{item.user}</Text>
-                                <Text style={styles.comment}>{item.text}</Text>
+                                <Text style={styles.comment}>
+                                    {item.text}
+                                </Text>
                             </View>
                             <Text style={styles.time}>
                                 {" "}
                                 {moment(item.postTime.toDate()).fromNow()}{" "}
                             </Text>
-                        </View>
+                        </TouchableOpacity>
                         {currentUserId === item.creator ? (
                             <TouchableOpacity
                                 onPress={() => handleDelete(item.id)}
@@ -302,7 +336,16 @@ const CommentScreen = ({ navigation, route, onPress }) => {
                     multiline={true}
                 />
                 <TouchableOpacity
-                    onPress={() => onCommentSend()}
+                    onPress={() => {
+                        if (text != '') {
+                            onCommentSend();
+                        } else {
+                            Alert.alert(
+                            "Cannot submit an empty comment!",
+                            "Fill in comment body to post."
+                            );
+                        }
+                    }}
                     style={styles.sendButton}
                 >
                     <Ionicons name={"send-sharp"} size={25} color={"#79D2E6"} />

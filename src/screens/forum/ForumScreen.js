@@ -5,13 +5,17 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
-    ForumFavouritesScreen,
+    ForumSearchScreen,
     ForumSubscribedScreen,
     ForumOthersScreen,
     ForumCreationScreen,
     SubForumScreen,
+    ForumAddPostScreen,
     ForumPostScreen,
+    EditForumPostScreen,
+    EditForumCommentScreen,
 } from "./";
+import ViewProfileScreen from "../profile/ViewProfileScreen";
 
 const Stack = createStackNavigator();
 const TopTab = createMaterialTopTabNavigator();
@@ -26,14 +30,8 @@ function ForumTabs() {
                 labelStyle: { fontSize: 14 },
             }}
         >
-            <TopTab.Screen
-                name="Favourites"
-                component={ForumFavouritesScreen}
-            />
-            <TopTab.Screen
-                name="Subscribed"
-                component={ForumSubscribedScreen}
-            />
+            <TopTab.Screen name="Favourites" component={ForumSubscribedScreen} />
+            <TopTab.Screen name="Search" component={ForumSearchScreen} />
             <TopTab.Screen name="Others" component={ForumOthersScreen} />
         </TopTab.Navigator>
     );
@@ -44,18 +42,13 @@ export default function ForumScreen() {
         <SafeAreaView style={styles.container}>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="ForumTabs" component={ForumTabs} />
-                <Stack.Screen
-                    name="ForumCreationScreen"
-                    component={ForumCreationScreen}
-                />
-                <Stack.Screen
-                    name="SubForumScreen"
-                    component={SubForumScreen}
-                />
-                <Stack.Screen
-                    name="ForumPostScreen"
-                    component={ForumPostScreen}
-                />
+                <Stack.Screen name="ForumCreationScreen" component={ForumCreationScreen} />
+                <Stack.Screen name="SubForumScreen" component={SubForumScreen} />
+                <Stack.Screen name="ForumAddPostScreen" component={ForumAddPostScreen} />
+                <Stack.Screen name="ForumPostScreen" component={ForumPostScreen} />
+                <Stack.Screen name="EditForumPostScreen" component={EditForumPostScreen} />
+                <Stack.Screen name="EditForumCommentScreen" component={EditForumCommentScreen} />
+                <Stack.Screen name="ViewProfileScreen" component={ViewProfileScreen} />
             </Stack.Navigator>
         </SafeAreaView>
     );
