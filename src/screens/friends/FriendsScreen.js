@@ -15,10 +15,23 @@ import FriendSearchScreen from "./FriendSearchScreen";
 import CommentScreen from "../home/CommentScreen";
 import ChatScreen from "../home/ChatScreen";
 import ViewProfileScreen from "../profile/ViewProfileScreen";
-import DummyScreen from '../profile/DummyScreen';
+import WaitingScreen from "./WaitingScreen";
+import FindGroupScreen from './FindGroupScreen';
 
 const Stack = createStackNavigator();
 const TopTab = createMaterialTopTabNavigator();
+
+function GroupStack() {
+    return (
+        <Stack.Navigator initialRouteName="FriendSearchScreen"
+        screenOptions={{
+            headerShown: false,
+            }}>
+            <Stack.Screen name="FindGroupScreen" component={FindGroupScreen} />
+            <Stack.Screen name="WaitingScreen" component={WaitingScreen} />
+        </Stack.Navigator>
+    );
+}
 
 function FriendsTabs() {
     return (
@@ -36,7 +49,7 @@ function FriendsTabs() {
             />
             <TopTab.Screen
                 name="Find A Group"
-                component={DummyScreen}
+                component={GroupStack}
             />
         </TopTab.Navigator>
     );
