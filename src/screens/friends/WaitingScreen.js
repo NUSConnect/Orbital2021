@@ -34,7 +34,7 @@ export default function WaitingScreen({ navigation, route, goBack }) {
             <Button style={styles.stop}
                 color="#de1738"
                 onPress={handleDelete}>
-                y-yamete algo-chan...
+                Stop searching
             </Button>
         </Background>
     );
