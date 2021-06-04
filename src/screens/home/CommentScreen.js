@@ -302,7 +302,16 @@ const CommentScreen = ({ navigation, route, onPress }) => {
                     multiline={true}
                 />
                 <TouchableOpacity
-                    onPress={() => onCommentSend()}
+                    onPress={() => {
+                        if (text != '') {
+                            onCommentSend();
+                        } else {
+                            Alert.alert(
+                            "Cannot submit an empty comment!",
+                            "Fill in comment body to post."
+                            );
+                        }
+                    }}
                     style={styles.sendButton}
                 >
                     <Ionicons name={"send-sharp"} size={25} color={"#79D2E6"} />

@@ -178,10 +178,10 @@ const ForumPost = ({
                 </View>
             </View>
 
-            <Text style={styles.title} onPress={() => alert('post pressed')}>
+            <Text style={styles.title} onPress={onPress}>
                 {item.postTitle}
             </Text>
-            <Text style={styles.text} onPress={() => alert('post pressed')}>
+            <Text style={styles.text} onPress={onPress}>
                 {item.postBody}
             </Text>
 
@@ -206,7 +206,7 @@ const ForumPost = ({
                 <TouchableOpacity
                     style={styles.centerAlign}
                     activeOpacity={0.7}
-                    onPress={() => alert('post pressed')}
+                    onPress={onPress}
                 >
                     <MaterialIcons
                         name='messenger-outline'

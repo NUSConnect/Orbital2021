@@ -26,6 +26,8 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
     const [refreshing, setRefreshing] = useState(true);
 
     const { item } = route.params;
+    const forumId = item.id;
+    const forumName = item.forumName;
 
     const getUser = async () => {
         await firebase
@@ -114,7 +116,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
             <SubForumHeader
                 goBack={() => navigation.goBack()}
                 onPress={() =>
-                    navigation.navigate("ForumPostScreen", { forumId: item.id })
+                    navigation.navigate("ForumAddPostScreen", { forumId })
                 }
                 title={item.forumName}
             />
@@ -131,6 +133,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                                      item,
                                  })
                         )}
+                        onPress={() => navigation.navigate("ForumPostScreen", { item, forumId, forumName })}
                     />
                 )}
                 keyExtractor={(item) => item.id}
