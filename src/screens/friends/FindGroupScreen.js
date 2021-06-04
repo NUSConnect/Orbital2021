@@ -29,8 +29,10 @@ export default function FindGroupScreen({ navigation }) {
             .onSnapshot((querySnapshot) => {
                 count = querySnapshot.size;
                 if (count < groupThreshold) {
-                    navigation.replace("WaitingScreen");
+                    //not enough people to form group, send to waiting screen.
+                    navigation.navigate("WaitingScreen", { userCategory:category });
                 } else {
+                    //hit threshold, handle logic to form a group. currently only an alert.
                     Alert.alert("Group found!");
                     navigation.navigate("FindGroupScreen");
                 }
