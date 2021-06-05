@@ -11,7 +11,7 @@ export default function FindGroupScreen({ navigation }) {
     const currentUserId = firebase.auth().currentUser.uid;
     var finding = false;
 
-    addToCategory = async (category) => {
+    const addToCategory = async (category) => {
         //add uid to corresponding category
         await firebase
             .firestore()
@@ -21,8 +21,17 @@ export default function FindGroupScreen({ navigation }) {
             .doc(currentUserId)
             .set({})
             .then(() =>
-            firebase.firestore().collection("users").doc(currentUserId).update({ finding:true }));
-        //on press calculate number of people in category
+                firebase
+                    .firestore()
+                    .collection("users")
+                    .doc(currentUserId)
+                    .update({ finding: true })
+            );
+        //handle logic for group size
+        calculateGroup(category);
+    };
+
+    const calculateGroup = async (category) => {
         var count;
         await firebase
             .firestore()
@@ -33,10 +42,14 @@ export default function FindGroupScreen({ navigation }) {
                 count = querySnapshot.size;
                 if (count < groupThreshold) {
                     //not enough people to form group, send to waiting screen.
-                    navigation.navigate("WaitingScreen", { userCategory:category });
+                    navigation.navigate("WaitingScreen", { userCategory: category, });
                 } else {
                     //hit threshold, handle logic to form a group. currently only an alert.
-                    firebase.firestore().collection("users").doc(currentUserId).update({ finding:false });
+                    firebase
+                        .firestore()
+                        .collection("users")
+                        .doc(currentUserId)
+                        .update({ finding: false });
                     Alert.alert("Group found!");
                     navigation.navigate("FindGroupScreen");
                 }
