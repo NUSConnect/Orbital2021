@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, Dimensions, StyleSheet, Alert } from "react-native";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import * as firebase from "firebase";
@@ -9,9 +9,25 @@ const groupThreshold = 2;
 
 export default function FindGroupScreen({ navigation }) {
     const currentUserId = firebase.auth().currentUser.uid;
-    var finding = false;
+    var userCategory;
+
+    useEffect(() => {
+        firebase
+            .firestore()
+            .collection("users")
+            .doc(currentUserId)
+            .onSnapshot((documentSnapshot) => {
+                console.log(documentSnapshot.data().finding);
+                if (documentSnapshot.data().finding) {
+                    navigation.navigate("WaitingScreen", {
+                        userCategory: userCategory,
+                    });
+                }
+            });
+    }, []);
 
     const addToCategory = async (category) => {
+        userCategory = category;
         //add uid to corresponding category
         await firebase
             .firestore()
@@ -42,7 +58,9 @@ export default function FindGroupScreen({ navigation }) {
                 count = querySnapshot.size;
                 if (count < groupThreshold) {
                     //not enough people to form group, send to waiting screen.
-                    navigation.navigate("WaitingScreen", { userCategory: category, });
+                    navigation.navigate("WaitingScreen", {
+                        userCategory: category
+                    });
                 } else {
                     //hit threshold, handle logic to form a group. currently only an alert.
                     firebase
