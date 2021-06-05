@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View, Dimensions, StyleSheet, Alert } from "react-native";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import * as firebase from "firebase";
@@ -9,6 +9,7 @@ const groupThreshold = 2;
 
 export default function FindGroupScreen({ navigation }) {
     const currentUserId = firebase.auth().currentUser.uid;
+    var finding = false;
 
     addToCategory = async (category) => {
         //add uid to corresponding category
@@ -18,7 +19,9 @@ export default function FindGroupScreen({ navigation }) {
             .doc(category)
             .collection("people")
             .doc(currentUserId)
-            .set({});
+            .set({})
+            .then(() =>
+            firebase.firestore().collection("users").doc(currentUserId).update({ finding:true }));
         //on press calculate number of people in category
         var count;
         await firebase
@@ -33,6 +36,7 @@ export default function FindGroupScreen({ navigation }) {
                     navigation.navigate("WaitingScreen", { userCategory:category });
                 } else {
                     //hit threshold, handle logic to form a group. currently only an alert.
+                    firebase.firestore().collection("users").doc(currentUserId).update({ finding:false });
                     Alert.alert("Group found!");
                     navigation.navigate("FindGroupScreen");
                 }
