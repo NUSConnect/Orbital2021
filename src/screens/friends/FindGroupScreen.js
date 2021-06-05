@@ -19,9 +19,7 @@ export default function FindGroupScreen({ navigation }) {
             .onSnapshot((documentSnapshot) => {
                 console.log(documentSnapshot.data().finding);
                 if (documentSnapshot.data().finding) {
-                    navigation.navigate("WaitingScreen", {
-                        userCategory: userCategory,
-                    });
+                    calculateGroup(userCategory);
                 }
             });
     }, []);
