@@ -41,8 +41,6 @@ export default function FindGroupScreen({ navigation }) {
                     .doc(currentUserId)
                     .update({ finding: true })
             );
-        //handle logic for group size
-        calculateGroup(category);
     };
 
     const calculateGroup = async (category) => {
