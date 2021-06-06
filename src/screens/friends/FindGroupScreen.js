@@ -9,7 +9,6 @@ const groupThreshold = 2;
 
 export default function FindGroupScreen({ navigation }) {
     const currentUserId = firebase.auth().currentUser.uid;
-    var userCategory;
 
     useEffect(() => {
         firebase
@@ -17,15 +16,13 @@ export default function FindGroupScreen({ navigation }) {
             .collection("users")
             .doc(currentUserId)
             .onSnapshot((documentSnapshot) => {
-                console.log(documentSnapshot.data().finding);
                 if (documentSnapshot.data().finding) {
-                    calculateGroup(userCategory);
+                    calculateGroup(documentSnapshot.data().groupCategory);
                 }
             });
     }, []);
 
     const addToCategory = async (category) => {
-        userCategory = category;
         //add uid to corresponding category
         await firebase
             .firestore()
@@ -39,7 +36,7 @@ export default function FindGroupScreen({ navigation }) {
                     .firestore()
                     .collection("users")
                     .doc(currentUserId)
-                    .update({ finding: true })
+                    .update({ finding: true, groupCategory:category })
             );
     };
 
@@ -55,7 +52,7 @@ export default function FindGroupScreen({ navigation }) {
                 if (count < groupThreshold) {
                     //not enough people to form group, send to waiting screen.
                     navigation.navigate("WaitingScreen", {
-                        userCategory: category
+                        groupCategory: category
                     });
                 } else {
                     //hit threshold, handle logic to form a group. currently only an alert.
@@ -63,7 +60,7 @@ export default function FindGroupScreen({ navigation }) {
                         .firestore()
                         .collection("users")
                         .doc(currentUserId)
-                        .update({ finding: false });
+                        .update({ finding: false, groupCategory:null });
                     Alert.alert("Group found!");
                     navigation.navigate("FindGroupScreen");
                 }

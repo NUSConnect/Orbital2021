@@ -7,7 +7,7 @@ import * as firebase from "firebase";
 
 export default function WaitingScreen({ navigation, route, goBack }) {
     const currentUserId = firebase.auth().currentUser.uid;
-    var userCategory = route.params.userCategory;
+    var userCategory = route.params.groupCategory;
 
     handleDelete = async () => {
         await firebase
@@ -21,7 +21,7 @@ export default function WaitingScreen({ navigation, route, goBack }) {
               .firestore()
               .collection("users")
               .doc(currentUserId)
-              .update({ finding:false });
+              .update({ finding:false, groupCategory:null });
         navigation.goBack();
     }
 
