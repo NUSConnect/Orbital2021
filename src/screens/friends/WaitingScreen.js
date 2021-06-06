@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import Background from "../../components/Background";
 import Button from "../../components/Button";
@@ -7,8 +7,7 @@ import * as firebase from "firebase";
 
 export default function WaitingScreen({ navigation, route, goBack }) {
     const currentUserId = firebase.auth().currentUser.uid;
-    var userCategory = route.params.userCategory;
-    //console.log(userCategory);
+    var userCategory = route.params.groupCategory;
 
     handleDelete = async () => {
         await firebase
@@ -18,6 +17,11 @@ export default function WaitingScreen({ navigation, route, goBack }) {
               .collection("people")
               .doc(currentUserId)
               .delete();
+        await firebase
+              .firestore()
+              .collection("users")
+              .doc(currentUserId)
+              .update({ finding:false, groupCategory:null });
         navigation.goBack();
     }
 

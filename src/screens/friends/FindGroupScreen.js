@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, Dimensions, StyleSheet, Alert } from "react-native";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import * as firebase from "firebase";
@@ -10,7 +10,19 @@ const groupThreshold = 2;
 export default function FindGroupScreen({ navigation }) {
     const currentUserId = firebase.auth().currentUser.uid;
 
-    addToCategory = async (category) => {
+    useEffect(() => {
+        firebase
+            .firestore()
+            .collection("users")
+            .doc(currentUserId)
+            .onSnapshot((documentSnapshot) => {
+                if (documentSnapshot.data().finding) {
+                    calculateGroup(documentSnapshot.data().groupCategory);
+                }
+            });
+    }, []);
+
+    const addToCategory = async (category) => {
         //add uid to corresponding category
         await firebase
             .firestore()
@@ -18,8 +30,17 @@ export default function FindGroupScreen({ navigation }) {
             .doc(category)
             .collection("people")
             .doc(currentUserId)
-            .set({});
-        //on press calculate number of people in category
+            .set({})
+            .then(() =>
+                firebase
+                    .firestore()
+                    .collection("users")
+                    .doc(currentUserId)
+                    .update({ finding: true, groupCategory:category })
+            );
+    };
+
+    const calculateGroup = async (category) => {
         var count;
         await firebase
             .firestore()
@@ -30,9 +51,16 @@ export default function FindGroupScreen({ navigation }) {
                 count = querySnapshot.size;
                 if (count < groupThreshold) {
                     //not enough people to form group, send to waiting screen.
-                    navigation.navigate("WaitingScreen", { userCategory:category });
+                    navigation.navigate("WaitingScreen", {
+                        groupCategory: category
+                    });
                 } else {
                     //hit threshold, handle logic to form a group. currently only an alert.
+                    firebase
+                        .firestore()
+                        .collection("users")
+                        .doc(currentUserId)
+                        .update({ finding: false, groupCategory:null });
                     Alert.alert("Group found!");
                     navigation.navigate("FindGroupScreen");
                 }
