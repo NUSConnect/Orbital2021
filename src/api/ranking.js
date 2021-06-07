@@ -18,8 +18,9 @@ export const sortByLatest = (x, y) => {
 }
 
 export const sortByTrending = (x, y) => {
-    return (trendingScore(y.likeCount, y.commentCount, y.postTime, 3000000)
-        - trendingScore(x.likeCount, x.commentCount, x.postTime, 3000000));
+    const currentTime = Date.now()
+    return (trendingScore(y.likeCount, y.commentCount, currentTime - y.postTime, 300)
+        - trendingScore(x.likeCount, x.commentCount, currentTime - x.postTime, 300));
 }
 
 export const sortByLatestForum = (x, y) => {
@@ -27,6 +28,7 @@ export const sortByLatestForum = (x, y) => {
 }
 
 export const sortByTrendingForum = (x, y) => {
-    return trendingScore(y.votes, y.commentCount, y.postTime, 3000000)
-        - trendingScore(x.votes, x.commentCount, x.postTime, 3000000);
+    const currentTime = Date.now()
+    return trendingScore(y.votes, y.commentCount, currentTime - y.postTime, 3000000)
+        - trendingScore(x.votes, x.commentCount, currentTime - x.postTime, 3000000);
 }
