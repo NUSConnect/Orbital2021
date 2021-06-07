@@ -286,7 +286,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                         onPressHandle={() => onPressComment(item)}
                     />
                 )}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.commentId}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
                 style={{ marginBottom: 40, width: '100%' }}
