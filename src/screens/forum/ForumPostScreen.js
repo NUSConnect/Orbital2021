@@ -116,16 +116,16 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                 "What do you want to do with it?",
                 [
                     {
-                        text: "Cancel",
-                        onPress: () => console.log("cancel pressed"),
-                    },
-                    {
                         text: "Delete",
                         onPress: () => handleDelete(comment),
                     },
                     {
                         text: "Edit",
                         onPress: () => navigation.navigate('EditForumCommentScreen', { comment, forumId }),
+                    },
+                    {
+                        text: "Cancel",
+                        onPress: () => console.log("cancel pressed"),
                     },
                 ],
                 { cancelable: true }
