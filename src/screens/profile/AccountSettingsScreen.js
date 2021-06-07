@@ -13,14 +13,14 @@ export default function AccountSettingsScreen({ navigation }) {
                 <Button
                     style={styles.button}
                     title="update"
-                    onPress={() => navigation.navigate("DummyScreen")}
+                    onPress={() => navigation.navigate("UpdateEmailScreen")}
                 >
                     {" "}
                     Update Email Address{" "}
                 </Button>
                 <Button
                     style={styles.button}
-                    onPress={() => navigation.navigate("DummyScreen")}
+                    onPress={() => navigation.navigate("ChangePasswordScreen")}
                 >
                     {" "}
                     Change Password{" "}
