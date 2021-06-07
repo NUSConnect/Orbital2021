@@ -4,3 +4,6 @@ export { default as ProfileMasterScreen } from "./ProfileMasterScreen";
 export { default as AccountSettingsScreen } from "./AccountSettingsScreen";
 export { default as DummyScreen } from "./DummyScreen";
 export { default as AddBioScreen } from "./AddBioScreen";
+export { default as AddFacultyScreen } from "./profile/AddFacultyScreen";
+export { default as UpdateEmailScreen } from "./profile/UpdateEmailScreen";
+export { default as ChangePasswordScreen } from "./profile/ChangePasswordScreen";

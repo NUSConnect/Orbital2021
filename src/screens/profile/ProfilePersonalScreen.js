@@ -25,6 +25,7 @@ export default class ProfilePersonalScreen extends React.Component {
         status: "",
         imageURL: "",
         bio: "",
+        faculty: null,
     };
 
     static navigationOptions = {
@@ -82,6 +83,7 @@ export default class ProfilePersonalScreen extends React.Component {
                     console.log("User Data", documentSnapshot.data());
                     this.setState({ userData: documentSnapshot.data() });
                     this.setState({ bio: documentSnapshot.data().bio });
+                    this.setState({ faculty: documentSnapshot.data().faculty });
                 }
             });
     };
@@ -96,9 +98,6 @@ export default class ProfilePersonalScreen extends React.Component {
     }
 
     render() {
-        console.log(firebase.auth().currentUser.displayName)
-        console.log(this.state.bio);
-
         return (
             <SafeAreaView>
                 <View style={styles.container}>
@@ -117,6 +116,9 @@ export default class ProfilePersonalScreen extends React.Component {
                             </TouchableOpacity>
                             <Text style={styles.name}>
                                 {firebase.auth().currentUser.displayName}
+                            </Text>
+                            <Text style={styles.userInfo}>
+                                Faculty: {this.state.faculty ? this.state.faculty : "Undeclared"}
                             </Text>
                             <Text style={styles.userInfo}>
                                 {this.state.bio}
@@ -142,6 +144,14 @@ export default class ProfilePersonalScreen extends React.Component {
                             }
                         >
                             Account Settings
+                        </Button>
+                        <Button
+                            style={styles.accountset}
+                            onPress={() =>
+                                this.props.navigation.navigate("AddFacultyScreen")
+                            }
+                        >
+                            Add your faculty
                         </Button>
                         <Button
                             style={styles.accountset}
