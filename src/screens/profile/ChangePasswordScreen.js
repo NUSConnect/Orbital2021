@@ -49,6 +49,10 @@ export default class ChangePasswordScreen extends React.Component {
                     ],
                     { cancelable: false }
                 );
+            })
+            .catch(err => {
+                Alert.alert("Your login credentials have expired.", "Please login and try again.");
+                logoutUser();
             });
     };
 
