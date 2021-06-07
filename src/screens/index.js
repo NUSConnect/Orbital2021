@@ -27,6 +27,7 @@ export { default as ProfileMasterScreen } from "./profile/ProfileMasterScreen";
 export { default as AccountSettingsScreen } from "./profile/AccountSettingsScreen";
 export { default as DummyScreen } from "./profile/DummyScreen";
 export { default as AddBioScreen } from "./profile/AddBioScreen";
+export { default as AddFacultyScreen } from "./profile/AddFacultyScreen";
 
 //onboard
 export { default as OnBoardScreen } from "./onboarding/OnBoardScreen";
