@@ -10,6 +10,7 @@ import {
     RefreshControl,
     TouchableOpacity,
     Alert,
+    Picker,
 } from "react-native";
 import AddPostScreen from "./AddPostScreen";
 import CommentScreen from "./CommentScreen";
@@ -17,7 +18,10 @@ import ViewProfileScreen from "../profile/ViewProfileScreen";
 import PostButton from "../../components/PostButton";
 import HomeTopTab from "../../components/HomeTopTab";
 import PostCard from "../../components/PostCard";
+import { MaterialCommunityIcons } from "react-native-vector-icons";
 import GestureRecognizer, { swipeDirections } from "rn-swipe-gestures";
+
+import { sortByLatest, sortByTrending } from '../../api/ranking';
 
 import * as firebase from "firebase";
 
@@ -29,6 +33,7 @@ export default class HomePostsScreen extends React.Component {
             data: [],
             refreshing: true,
             deleted: false,
+            sortedBy: null,
             myText: "Ready to get swiped!",
             gestureName: "none",
         };
@@ -64,6 +69,7 @@ export default class HomePostsScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.getUser();
         this.fetchPosts();
         this._unsubscribe = this.props.navigation.addListener('focus', () => this.fetchPosts());
     }
@@ -71,6 +77,21 @@ export default class HomePostsScreen extends React.Component {
     componentWillUnmount() {
         this._unsubscribe();
     }
+
+    getUser = async () => {
+        await firebase
+            .firestore()
+            .collection("users")
+            .doc(this.state.currentUserId)
+            .get()
+            .then((documentSnapshot) => {
+                if (documentSnapshot.data().preferredSorting != null) {
+                    this.setState({ sortedBy: documentSnapshot.data().preferredSorting });
+                } else {
+                    this.setState({ sortedBy: "Latest" });
+                }
+            });
+    };
 
     fetchPosts = async () => {
         try {
@@ -128,20 +149,39 @@ export default class HomePostsScreen extends React.Component {
                     });
             }
 
-            list.sort(function (x, y) {
-                return y.postTime - x.postTime;
-            });
+            switch(this.state.sortedBy) {
+                case "Latest":
+                    list.sort(sortByLatest);
+                    break;
+                case "Trending":
+                    list.sort(sortByTrending);
+                    break;
+                default:
+                    list.sort(sortByLatest);
+            }
             this.setState({ data: list });
 
             if (this.state.refreshing) {
                 this.setState({ refreshing: false });
             }
 
-            console.log("Posts: ", this.state.data);
+//            console.log("Posts: ", this.state.data);
         } catch (e) {
             console.log(e);
         }
     };
+
+    changeSorting = async (sorter) => {
+        this.setState({ sortedBy: sorter })
+        await firebase
+            .firestore()
+            .collection("users")
+            .doc(this.state.currentUserId)
+            .update({
+                 preferredSorting: sorter,
+             })
+        this.fetchPosts();
+    }
 
     handleDelete = (postId) => {
         Alert.alert(
@@ -300,6 +340,27 @@ export default class HomePostsScreen extends React.Component {
                 />
                 <FlatList
                     data={this.state.data}
+                    ListHeaderComponent={
+                         <View style={styles.sortBar}>
+                            <MaterialCommunityIcons
+                                name="sort"
+                                color={'blue'}
+                                size={26}
+                            />
+                            <Text style={styles.text}>
+                                {'Sorted by: '}
+                            </Text>
+                            <Picker
+                                selectedValue={this.state.sortedBy}
+                                style={{ height: 40, width: 130,}}
+                                onValueChange={(itemValue, itemIndex) => this.changeSorting(itemValue)}
+                            >
+                                <Picker.Item label="Latest" value="Latest" />
+                                <Picker.Item label="Trending" value="Trending" />
+                            </Picker>
+                         </View>
+                    }
+                    ListHeaderComponentStyle={styles.headerComponentStyle}
                     renderItem={({ item }) => (
                         <PostCard
                             item={item}
@@ -338,6 +399,17 @@ const styles = StyleSheet.create({
         margin: 10,
         backgroundColor: "#FFF",
         borderRadius: 6,
+    },
+    sortBar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 10,
+    },
+    text: {
+        fontSize: 16,
+    },
+    headerComponentStyle: {
+        marginVertical: 7,
     },
     image: {
         height: "100%",

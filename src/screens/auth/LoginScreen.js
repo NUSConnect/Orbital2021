@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
-import Background from "../../components/Background";
 import Logo from "../../components/Logo";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
@@ -12,6 +11,8 @@ import { emailValidator } from "../../helpers/auth/emailValidator";
 import { passwordValidator } from "../../helpers/auth/passwordValidator";
 import { loginUser } from "../../api/auth";
 import Toast from "../../components/Toast";
+
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState({ value: "", error: "" });
@@ -39,7 +40,12 @@ export default function LoginScreen({ navigation }) {
     };
 
     return (
-        <Background>
+        <KeyboardAwareScrollView
+            style={styles.container}
+            contentContainerStyle={styles.inner}
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            scrollEnabled={true}
+        >
             <BackButton goBack={navigation.goBack} />
             <Logo />
             <Header>Welcome back.</Header>
@@ -88,11 +94,25 @@ export default function LoginScreen({ navigation }) {
                 </TouchableOpacity>
             </View>
             <Toast message={error} onDismiss={() => setError("")} />
-        </Background>
+        </KeyboardAwareScrollView>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: "100%",
+        backgroundColor: 'white',
+    },
+    inner: {
+        flex: 1,
+        padding: 20,
+        width: "100%",
+        maxWidth: 340,
+        alignSelf: "center",
+        alignItems: "center",
+        justifyContent: "center",
+    },
     forgotPassword: {
         width: "100%",
         alignItems: "flex-end",

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
-import Background from "../../components/Background";
 import BackButton from "../../components/BackButton";
 import Logo from "../../components/Logo";
 import Header from "../../components/Header";
@@ -9,6 +8,8 @@ import Button from "../../components/Button";
 import { emailValidator } from "../../helpers/auth/emailValidator";
 import { sendEmailWithPassword } from "../../api/auth";
 import Toast from "../../components/Toast";
+
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function ResetPasswordScreen({ navigation }) {
     const [email, setEmail] = useState({ value: "", error: "" });
@@ -35,7 +36,12 @@ export default function ResetPasswordScreen({ navigation }) {
     };
 
     return (
-        <Background>
+        <KeyboardAwareScrollView
+            style={styles.container}
+            contentContainerStyle={styles.inner}
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            scrollEnabled={true}
+        >
             <BackButton goBack={navigation.goBack} />
             <Logo />
             <Header>Restore Password</Header>
@@ -64,11 +70,25 @@ export default function ResetPasswordScreen({ navigation }) {
                 {...toast}
                 onDismiss={() => setToast({ value: "", type: "" })}
             />
-        </Background>
+        </KeyboardAwareScrollView>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: "100%",
+        backgroundColor: 'white',
+    },
+    inner: {
+        flex: 1,
+        padding: 20,
+        width: "100%",
+        maxWidth: 340,
+        alignSelf: "center",
+        alignItems: "center",
+        justifyContent: "center",
+    },
     reset: {
         backgroundColor: "#ff8c00",
         marginTop: 16,
