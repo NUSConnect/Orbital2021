@@ -15,6 +15,7 @@ import SubmitButton from "../../components/SubmitButton";
 import CancelButton from "../../components/CancelButton";
 import { FIREBASE_CONFIG } from "../../core/config";
 import { logoutUser } from "../../api/auth";
+import { emailValidator } from "../../helpers/auth/emailValidator";
 import * as firebase from "firebase";
 
 //issue with promise rejection due to long time since last login, refer to below site
@@ -29,6 +30,14 @@ export default class UpdateEmailScreen extends React.Component {
     }
 
     submitEmail = async (navigator, email) => {
+        if (firebase.auth().currentUser.email === email) {
+            Alert.alert("This is your current email!");
+            return;
+        }
+        if (emailValidator(email)) {
+            Alert.alert("This is an invalid email, please try again.");
+            return;
+        }
         await firebase
             .auth()
             .currentUser.updateEmail(email)
@@ -54,6 +63,13 @@ export default class UpdateEmailScreen extends React.Component {
                 <View style={styles.container}>
                     <View style={styles.innerContainer}>
                         <Text style={styles.title}>Enter your new email</Text>
+                        <Text style={styles.current}>
+                            Current email: {firebase.auth().currentUser.email}
+                        </Text>
+                        <View style={styles.wordspace} />
+                        <Text style={styles.current}>
+                            Enter your new email here:
+                        </Text>
                         <TextInput
                             style={styles.input}
                             placeholder="Type here..."
@@ -90,8 +106,6 @@ export default class UpdateEmailScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 0,
-        //    alignItems: 'center',
-        //    justifyContent: 'center',
         flexDirection: "row",
     },
     innerContainer: {
@@ -128,5 +142,11 @@ const styles = StyleSheet.create({
     },
     space: {
         width: 20,
+    },
+    current: {
+        fontSize: 20,
+    },
+    wordspace: {
+        height: 30,
     },
 });
