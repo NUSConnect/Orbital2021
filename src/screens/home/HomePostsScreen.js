@@ -35,7 +35,7 @@ export default class HomePostsScreen extends React.Component {
             refreshing: true,
             deleted: false,
             sortedBy: null,
-            sortingOptions: [{ key: 0, label: 'Latest'}, { key: 1, label: 'Trending' }],
+            sortingOptions: [{ key:0, section: true, label: 'Sort posts by:'}, { key: 1, label: 'Latest'}, { key: 2, label: 'Trending' }],
             myText: "Ready to get swiped!",
             gestureName: "none",
         };
@@ -355,13 +355,21 @@ export default class HomePostsScreen extends React.Component {
                             <ModalSelector
                                 data={this.state.sortingOptions}
                                 initValue={this.state.sortedBy}
-                                onChange={(option) => this.changeSorting(option.label)}>
-
+                                onChange={(option) => this.changeSorting(option.label)}
+                                animationType={'fade'}
+                                backdropPressToClose={true}
+                                overlayStyle={{ flex: 1, padding: '5%', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.9)' }}
+                                sectionTextStyle={{ fontSize: 20 }}
+                                cancelTextStyle={{ color: 'crimson', fontSize: 20 }}
+                                cancelText={'Cancel'}
+                                optionTextStyle={{ fontSize: 20 }}
+                            >
                                 <TextInput
                                     style={styles.pickerText}
                                     editable={false}
                                     placeholder={this.state.sortedBy}
-                                    value={this.state.sortedBy} />
+                                    value={this.state.sortedBy}
+                                />
                             </ModalSelector>
                          </View>
                     }

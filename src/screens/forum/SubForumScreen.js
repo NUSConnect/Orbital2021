@@ -32,7 +32,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
     const { item } = route.params;
     const forumId = item.id;
     const forumName = item.forumName;
-    const sortingOptions = [{ key: 0, label: 'Latest'}, { key: 1, label: 'Trending' }]
+    const sortingOptions = [{ key:0, section: true, label: 'Sort posts by:'}, { key: 1, label: 'Latest'}, { key: 2, label: 'Trending' }]
 
     const getUser = async () => {
         await firebase
@@ -299,13 +299,21 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                         <ModalSelector
                             data={sortingOptions}
                             initValue={sortedBy}
-                            onChange={(option) => changeSorting(option.label)}>
-
+                            onChange={(option) => changeSorting(option.label)}
+                            animationType={'fade'}
+                            backdropPressToClose={true}
+                            overlayStyle={{ flex: 1, padding: '5%', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.9)' }}
+                            sectionTextStyle={{ fontSize: 20 }}
+                            cancelTextStyle={{ color: 'crimson', fontSize: 20 }}
+                            cancelText={'Cancel'}
+                            optionTextStyle={{ fontSize: 20 }}
+                        >
                             <TextInput
                                 style={styles.pickerText}
                                 editable={false}
                                 placeholder={sortedBy}
-                                value={sortedBy} />
+                                value={sortedBy}
+                            />
                         </ModalSelector>
                      </View>
                 }
