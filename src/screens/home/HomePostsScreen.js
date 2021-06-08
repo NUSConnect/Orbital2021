@@ -1,6 +1,7 @@
 import React from "react";
 import {
     Text,
+    TextInput,
     Image,
     View,
     FlatList,
@@ -10,9 +11,8 @@ import {
     RefreshControl,
     TouchableOpacity,
     Alert,
-    Picker,
-    Platform,
 } from "react-native";
+import ModalSelector from 'react-native-modal-selector';
 import AddPostScreen from "./AddPostScreen";
 import CommentScreen from "./CommentScreen";
 import ViewProfileScreen from "../profile/ViewProfileScreen";
@@ -35,8 +35,7 @@ export default class HomePostsScreen extends React.Component {
             refreshing: true,
             deleted: false,
             sortedBy: null,
-            pickerOpacity: 0,
-            opacityOfOtherItems:  1,
+            sortingOptions: [{ key: 0, label: 'Latest'}, { key: 1, label: 'Trending' }],
             myText: "Ready to get swiped!",
             gestureName: "none",
         };
@@ -71,45 +70,7 @@ export default class HomePostsScreen extends React.Component {
         }
     }
 
-    checkIfIOS() {
-        if(Platform.OS === 'ios'){ // check if ios
-            console.log("IOS");
-            //this button will (onpress) set our picker visible
-            return (
-                <Button
-                    buttonStyle={{backgroundColor:'#D1D1D1', opacity: this.state.opacityOfOtherItems}}
-                    onPress={this.toggle()}
-                    color="#101010"
-                    title={this.state.sortedBy}
-                    onPress={this.changeOpacity}
-                />
-            );
-        }
-    }
-
-    toggle() {
-        if(Platform.OS === 'ios'){
-
-            if(this.state.pickerOpacity == 0){
-                this.setState({
-                    pickerOpacity: 1,
-                    opacityOfOtherItems: 0 // THIS WILL HIDE YOUR BUTTON!
-                });
-             }else{
-                 this.setState({
-                     pickerOpacity: 0,
-                     opacityOfOtherItems: 1
-                 });
-              }
-         }
-    }
-
     componentDidMount() {
-        if(Platform.OS === 'android') { //check if android
-            this.setState({
-                pickerOpacity: 1 //set picker opacity:1 -> picker is visible.
-            });
-        }
         this.getUser();
         this.fetchPosts();
         this._unsubscribe = this.props.navigation.addListener('focus', () => this.fetchPosts());
@@ -391,18 +352,17 @@ export default class HomePostsScreen extends React.Component {
                             <Text style={styles.text}>
                                 {'Sorted by: '}
                             </Text>
-                            {this.checkIfIOS()}
-                                <Picker
-                                    selectedValue={this.state.sortedBy}
-                                    style={{ height: 40, width: 130, opacity: this.state.pickerOpacity }}
-                                    onValueChange={(itemValue, itemIndex) => {
-                                        this.changeSorting(itemValue)
-                                        this.toggle();
-                                    }}
-                                >
-                                    <Picker.Item label="Latest" value="Latest" />
-                                    <Picker.Item label="Trending" value="Trending" />
-                                </Picker>
+                            <ModalSelector
+                                data={this.state.sortingOptions}
+                                initValue={this.state.sortedBy}
+                                onChange={(option) => this.changeSorting(option.label)}>
+
+                                <TextInput
+                                    style={styles.pickerText}
+                                    editable={false}
+                                    placeholder={this.state.sortedBy}
+                                    value={this.state.sortedBy} />
+                            </ModalSelector>
                          </View>
                     }
                     ListHeaderComponentStyle={styles.headerComponentStyle}
@@ -452,6 +412,14 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
+    },
+    pickerText: {
+        fontSize: 16,
+        color: 'blue',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderWidth: 1,
+        borderRadius: 10,
     },
     headerComponentStyle: {
         marginVertical: 7,

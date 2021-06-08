@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import {
     View,
     Text,
+    TextInput,
     Image,
     StyleSheet,
-    TextInput,
     SafeAreaView,
     FlatList,
     TouchableOpacity,
     Alert,
-    Picker,
 } from "react-native";
+import ModalSelector from 'react-native-modal-selector';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "react-native-vector-icons";
 import SubForumHeader from "../../components/SubForumHeader";
 import ForumPost from "../../components/ForumPost";
@@ -32,6 +32,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
     const { item } = route.params;
     const forumId = item.id;
     const forumName = item.forumName;
+    const sortingOptions = [{ key: 0, label: 'Latest'}, { key: 1, label: 'Trending' }]
 
     const getUser = async () => {
         await firebase
@@ -295,14 +296,17 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                         <Text style={styles.text}>
                             {'Sorted by: '}
                         </Text>
-                        <Picker
-                            selectedValue={sortedBy}
-                            style={{ height: 40, width: 130,}}
-                            onValueChange={(itemValue, itemIndex) => changeSorting(itemValue)}
-                        >
-                            <Picker.Item label="Latest" value="Latest" />
-                            <Picker.Item label="Trending" value="Trending" />
-                        </Picker>
+                        <ModalSelector
+                            data={sortingOptions}
+                            initValue={sortedBy}
+                            onChange={(option) => changeSorting(option.label)}>
+
+                            <TextInput
+                                style={styles.pickerText}
+                                editable={false}
+                                placeholder={sortedBy}
+                                value={sortedBy} />
+                        </ModalSelector>
                      </View>
                 }
                 ListHeaderComponentStyle={styles.headerComponentStyle}
@@ -349,6 +353,14 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
+    },
+    pickerText: {
+        fontSize: 16,
+        color: 'blue',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderWidth: 1,
+        borderRadius: 10,
     },
     headerComponentStyle: {
         marginVertical: 7,
