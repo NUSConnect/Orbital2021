@@ -81,6 +81,7 @@ export default function RegisterScreen({ navigation }) {
                 onChangeText={(text) => setPassword({ value: text, error: "" })}
                 error={!!password.error}
                 errorText={password.error}
+                autoCapitalize="none"
                 secureTextEntry
             />
             <Button
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
     },
     link: {
         fontWeight: "bold",
-        color: theme.colors.primary,
+        color: 'dodgerblue',
     },
     signup: {
         backgroundColor: "#ff8c00",

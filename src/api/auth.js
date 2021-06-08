@@ -1,4 +1,5 @@
 import * as firebase from "firebase";
+import { Alert } from 'react-native'
 
 export const logoutUser = () => {
     firebase.auth().signOut();
@@ -9,10 +10,17 @@ export const signUpUser = async ({ name, email, password }) => {
         const user = await firebase
             .auth()
             .createUserWithEmailAndPassword(email, password)
-            .then(() => {
+            .then((userCredential) => {
                 //Once the user creation has happened successfully, we can add the currentUser into firestore
                 //with the appropriate details.
+                userCredential.user.sendEmailVerification();
+
                 const currentUserId = firebase.auth().currentUser.uid;
+
+                firebase.auth().currentUser.updateProfile({
+                    displayName: name,
+                });
+
                 firebase
                     .firestore()
                     .collection("users")
@@ -47,11 +55,12 @@ export const signUpUser = async ({ name, email, password }) => {
                     .collection("following")
                     .doc("H0sH7GW3dyegouLw2cTEE1PoBBt1")
                     .set({});
+
             });
 
-        firebase.auth().currentUser.updateProfile({
-            displayName: name,
-        });
+        alert("Email sent.\nPlease verify your account before signing in." );
+        firebase.auth().signOut();
+
         return { user };
     } catch (error) {
         return {
@@ -65,7 +74,30 @@ export const loginUser = async ({ email, password }) => {
         const user = await firebase
             .auth()
             .signInWithEmailAndPassword(email, password);
-        return { user };
+        if (firebase.auth().currentUser.emailVerified) {
+            return { user };
+        } else {
+            Alert.alert(
+                "Email is not verified!",
+                "Resend verification email?",
+                [
+                    {
+                        text: "Resend",
+                        onPress: () => {
+                            user.user.sendEmailVerification()
+                        },
+                    },
+                    {
+                        text: "Cancel",
+                        onPress: () => console.log('cancel')
+                    },
+                ],
+                { cancelable: false }
+            );
+            firebase.auth().signOut()
+            return { user };
+        }
+
     } catch (error) {
         return {
             error: error.message,
