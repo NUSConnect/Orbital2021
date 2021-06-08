@@ -9,11 +9,19 @@ export default function AuthLoadingScreen({ navigation }) {
         if (user) {
             // User is logged in
             if (user.emailVerified) {
+            // User is verified
                 console.log('Verified')
                 navigation.reset({
                     index: 0,
                     routes: [{ name: "Dashboard" }],
                 });
+            } else {
+            // Force logout
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: "StartScreen" }],
+                });
+                firebase.auth().signOut();
             }
 
         } else {
