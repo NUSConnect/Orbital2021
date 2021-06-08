@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from "react-native";
 import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
 import Button from "../../components/Button";
-import { logoutUser } from "../../api/auth";
+import { logoutUser, deleteUser } from "../../api/auth";
 
 export default function AccountSettingsScreen({ navigation }) {
     return (
@@ -38,6 +38,14 @@ export default function AccountSettingsScreen({ navigation }) {
                 >
                     {" "}
                     Privacy Settings{" "}
+                </Button>
+                <Button
+                    style={styles.button}
+                    color="#de1738"
+                    onPress={deleteUser}
+                >
+                    {" "}
+                    Delete account{" "}
                 </Button>
                 <Button
                     style={styles.button}
