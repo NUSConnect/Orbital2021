@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TouchableOpacity, StyleSheet, View } from "react-native";
+import { TouchableOpacity, StyleSheet, View, StatusBar } from "react-native";
 import { Text } from "react-native-paper";
 import Logo from "../../components/Logo";
 import Header from "../../components/Header";
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
         backgroundColor: 'white',
+        marginTop: StatusBar.currentHeight || 0,
     },
     inner: {
         flex: 1,
