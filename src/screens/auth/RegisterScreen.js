@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, StatusBar } from "react-native";
 import { Text } from "react-native-paper";
 import Logo from "../../components/Logo";
 import Header from "../../components/Header";
@@ -50,9 +50,6 @@ export default function RegisterScreen({ navigation }) {
             contentContainerStyle={styles.inner}
             resetScrollToCoords={{ x: 0, y: 0 }}
             scrollEnabled={true}
-            extraScrollHeight={120}
-            enableOnAndroid={true}
-            keyboardShouldPersistTaps='handled'
         >
             <BackButton goBack={navigation.goBack} />
             <Logo />
@@ -112,10 +109,10 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
         backgroundColor: 'white',
+        marginTop: StatusBar.currentHeight || 0,
     },
     inner: {
         flex: 1,
-        flexGrow: 1,
         padding: 20,
         width: "100%",
         maxWidth: 340,
