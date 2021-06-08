@@ -35,7 +35,7 @@ export default function BusinessMajorsScreen({ props, navigation, goBack }) {
                             .collection("users")
                             .doc(currentUserId)
                             .update({ major: item.name });
-                        Alert.alert("Thank you for sharing your major!");
+                        Alert.alert("Thank you!", "Your major has been chosen");
                         returnToPersonal();
                     }}
                 >
