@@ -115,3 +115,36 @@ export const sendEmailWithPassword = async (email) => {
         };
     }
 };
+
+export const deleteUser = () => {
+    try {
+        const currentUserId = firebase.auth().currentUser.uid;
+        Alert.alert(
+            "Are you sure?",
+            "Deleting your account is permanent",
+            [
+                {
+                    text:"Delete",
+                    onPress: () => {
+                        firebase
+                            .firestore()
+                            .collection("users")
+                            .doc(currentUserId)
+                            .delete();
+                        firebase.auth().currentUser.delete();
+                        Alert.alert("Success!", "Your account has been deleted.");
+                    }
+                },
+                {
+                    text:"Cancel",
+                    onPress: () => console.log('cancel')
+                }
+            ],
+                { cancelable: false }
+        )
+    } catch (error) {
+        return {
+            error: error.message,
+        };
+    }
+}
