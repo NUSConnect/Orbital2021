@@ -29,7 +29,11 @@ export { default as DummyScreen } from "./profile/DummyScreen";
 export { default as AddBioScreen } from "./profile/AddBioScreen";
 export { default as AddFacultyScreen } from "./profile/AddFacultyScreen";
 export { default as UpdateEmailScreen } from "./profile/UpdateEmailScreen";
-export { default as ChangePasswordScreen } from "./profile/ChangePasswordScreen";
+export { default as BusinessMajorsScreen } from "./profile/BusinessMajorsScreen";
+export { default as CHSMajorsScreen } from "./profile/CHSMajorsScreen";
+export { default as ComputingMajorsScreen } from "./profile/ComputingMajorsScreen";
+export { default as DesignMajorsScreen } from "./profile/DesignMajorsScreen";
+export { default as EngineeringMajorsScreen } from "./profile/EngineeringMajorsScreen";
 
 //onboard
 export { default as OnBoardScreen } from "./onboarding/OnBoardScreen";

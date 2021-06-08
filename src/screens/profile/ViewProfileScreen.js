@@ -29,7 +29,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     const [posts, setPosts] = useState([]);
     const [following, setFollowing] = useState(false);
     const [refreshing, setRefreshing] = useState(true);
-    const [facultyData, setFacultyData] = useState(null);
+    const [majorData, setMajorData] = useState(null);
 
     const { item } = route.params;
 
@@ -41,9 +41,8 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
             .get()
             .then((documentSnapshot) => {
                 if (documentSnapshot.exists) {
-                    //console.log('User Data', documentSnapshot.data());
                     setUserData(documentSnapshot.data());
-                    setFacultyData(documentSnapshot.data().faculty);
+                    setMajorData(documentSnapshot.data().major);
                 }
             });
     };
@@ -220,7 +219,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
                     </Text>
                     <Text style={styles.userInfo}>
                         {" "}
-                        Faculty: {facultyData ? facultyData : "Undeclared"}{" "}
+                        Major: {majorData ? majorData : "Undeclared"}{" "}
                     </Text>
                     <Text style={styles.userInfo}>
                         {" "}
