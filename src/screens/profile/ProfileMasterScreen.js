@@ -20,6 +20,11 @@ import AddFacultyScreen from "./AddFacultyScreen";
 import UpdateEmailScreen from "./UpdateEmailScreen";
 import ChangePasswordScreen from "./ChangePasswordScreen";
 import CommentScreen from "../home/CommentScreen";
+import BusinessMajorsScreen from "./BusinessMajorsScreen";
+import CHSMajorsScreen from "./CHSMajorsScreen";
+import ComputingMajorsScreen from "./ComputingMajorsScreen";
+import DesignMajorsScreen from "./DesignMajorsScreen";
+import EngineeringMajorsScreen from "./EngineeringMajorsScreen";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 const Stack = createStackNavigator();
@@ -56,6 +61,11 @@ const ProfileMasterScreen = ({ navigation }) => {
                 <Stack.Screen name="DummyScreen" component={DummyScreen} />
                 <Stack.Screen name="UpdateEmailScreen" component={UpdateEmailScreen} />
                 <Stack.Screen name="AddFacultyScreen" component={AddFacultyScreen} />
+                <Stack.Screen name="BusinessMajorsScreen" component={BusinessMajorsScreen} />
+                <Stack.Screen name="CHSMajorsScreen" component={CHSMajorsScreen} />
+                <Stack.Screen name="ComputingMajorsScreen" component={ComputingMajorsScreen} />
+                <Stack.Screen name="DesignMajorsScreen" component={DesignMajorsScreen} />
+                <Stack.Screen name="EngineeringMajorsScreen" component={EngineeringMajorsScreen} />
                 <Stack.Screen name="AddBioScreen" component={AddBioScreen} />
                 <Stack.Screen name="CommentScreen" component={CommentScreen} />
                 <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} />

@@ -25,7 +25,7 @@ export default class ProfilePersonalScreen extends React.Component {
         status: "",
         imageURL: "",
         bio: "",
-        faculty: null,
+        major: null,
     };
 
     static navigationOptions = {
@@ -83,7 +83,7 @@ export default class ProfilePersonalScreen extends React.Component {
                     console.log("User Data", documentSnapshot.data());
                     this.setState({ userData: documentSnapshot.data() });
                     this.setState({ bio: documentSnapshot.data().bio });
-                    this.setState({ faculty: documentSnapshot.data().faculty });
+                    this.setState({ major: documentSnapshot.data().major });
                 }
             });
     };
@@ -118,7 +118,7 @@ export default class ProfilePersonalScreen extends React.Component {
                                 {firebase.auth().currentUser.displayName}
                             </Text>
                             <Text style={styles.userInfo}>
-                                Faculty: {this.state.faculty ? this.state.faculty : "Undeclared"}
+                                Major: {this.state.major ? this.state.major : "Undeclared"}
                             </Text>
                             <Text style={styles.userInfo}>
                                 {this.state.bio}
@@ -151,7 +151,7 @@ export default class ProfilePersonalScreen extends React.Component {
                                 this.props.navigation.navigate("AddFacultyScreen")
                             }
                         >
-                            Add your faculty
+                            Add your major
                         </Button>
                         <Button
                             style={styles.accountset}

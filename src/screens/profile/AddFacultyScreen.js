@@ -29,6 +29,25 @@ export default function AddFacultyScreen({ props, navigation, goBack }) {
         { name: "Music" },
     ];
 
+    const oneMajor = (major) => {
+        Alert.alert("Thank you!", "Your major has been chosen");
+        firebase
+            .firestore()
+            .collection("users")
+            .doc(currentUserId)
+            .update({ major:major });
+        navigation.goBack();
+    }
+
+    const multipleMajors = (screen) => {
+        firebase
+            .firestore()
+            .collection("users")
+            .doc(currentUserId)
+            .update({ major:null })
+        navigation.navigate(screen);
+    }
+
     const ItemView = ({ item }) => {
         return (
             // Flat List Item
@@ -40,8 +59,56 @@ export default function AddFacultyScreen({ props, navigation, goBack }) {
                         .collection("users")
                         .doc(currentUserId)
                         .update({ faculty: item.name });
-                    Alert.alert("Thank you for sharing your faculty!");
-                    navigation.goBack();
+                    switch (item.name) {
+                        case "College of Humanities and Sciences": {
+                            multipleMajors("CHSMajorsScreen");
+                            break;
+                        }
+                        case "Business and Accountancy": {
+                            multipleMajors("BusinessMajorsScreen");
+                            break;
+                        }
+                        case "Computing": {
+                            multipleMajors("ComputingMajorsScreen");
+                            break;
+                        }
+                        case "Dentistry": {
+                            oneMajor("Dentistry");
+                            break;
+                        }
+                        case "Design and Environment": {
+                            multipleMajors("DesignMajorsScreen");
+                            break;
+                        }
+                        case "Engineering": {
+                            multipleMajors("EngineeringMajorsScreen");
+                            break;
+                        }
+                        case "Law": {
+                            oneMajor("Law");
+                            break;
+                        }
+                        case "Medicine": {
+                            oneMajor("Medicine");
+                            break;
+                        }
+                        case "Nursing": {
+                            oneMajor("Nursing");
+                            break;
+                        }
+                        case "Pharmacy": {
+                            oneMajor("Pharmacy");
+                            break;
+                        }
+                        case "Music": {
+                            oneMajor("Music");
+                            break;
+                        }
+                        default: {
+                            //shouldn't ever be executed
+                            Alert.alert("No such faculty");
+                        }
+                    }
                 }}
             >
                 {item.name}
