@@ -2,45 +2,46 @@ import React, { useEffect, useState } from "react";
 import {
     View,
     Text,
+    TextInput,
     Image,
     StyleSheet,
-    TextInput,
     SafeAreaView,
     FlatList,
     TouchableOpacity,
     Alert,
 } from "react-native";
-import { Ionicons, MaterialIcons } from "react-native-vector-icons";
+import ModalSelector from 'react-native-modal-selector';
+import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "react-native-vector-icons";
 import SubForumHeader from "../../components/SubForumHeader";
 import ForumPost from "../../components/ForumPost";
 import moment from "moment";
+
+import { sortByLatestForum, sortByTrendingForum } from '../../api/ranking';
 
 import * as firebase from "firebase";
 
 const SubForumScreen = ({ navigation, route, onPress }) => {
     const currentUserId = firebase.auth().currentUser.uid;
     const [posts, setPosts] = useState([]);
-    const [userData, setUserData] = useState(null);
     const [userLiked, setUserLiked] = useState(null);
     const [likeNumber, setLikeNumber] = useState(null);
     const [refreshing, setRefreshing] = useState(true);
     const [subscribed, setSubscribed] = useState(null);
+    const [sortedBy, setSortedBy] = useState(null);
 
     const { item } = route.params;
     const forumId = item.id;
     const forumName = item.forumName;
+    const sortingOptions = [{ key:0, section: true, label: 'Sort posts by:'}, { key: 1, label: 'Latest'}, { key: 2, label: 'Trending' }]
 
     const getUser = async () => {
         await firebase
             .firestore()
             .collection("users")
-            .doc(item.userId)
+            .doc(currentUserId)
             .get()
             .then((documentSnapshot) => {
-                if (documentSnapshot.exists) {
-                    console.log("User Data", documentSnapshot.data());
-                    setUserData(documentSnapshot.data());
-                }
+                setSortedBy(documentSnapshot.data().preferredSorting);
             });
     };
 
@@ -83,6 +84,15 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
     };
 
     const fetchPosts = async () => {
+        var sorter;
+        await firebase
+            .firestore()
+            .collection("users")
+            .doc(currentUserId)
+            .get()
+            .then((documentSnapshot) => {
+                sorter = documentSnapshot.data().preferredSorting;
+            });
         const list = [];
         setRefreshing(true);
 
@@ -112,8 +122,20 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
             setRefreshing(false);
         }
 
+        switch(sorter) {
+            case "Latest":
+                console.log('sort by latest')
+                list.sort(sortByLatestForum);
+                break;
+            case "Trending":
+                console.log('sort by trending')
+                list.sort(sortByTrendingForum);
+                break;
+            default:
+                console.log('default sort')
+                list.sort(sortByLatestForum);
+        }
         setPosts(list);
-        console.log('Subforum Posts: ', posts)
     };
 
     const handleEdit = (post) => {
@@ -210,6 +232,19 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
         };
     };
 
+    const changeSorting = async (sorter) => {
+        setSortedBy(sorter);
+        await firebase
+            .firestore()
+            .collection("users")
+            .doc(currentUserId)
+            .update({
+                 preferredSorting: sorter,
+             })
+        fetchPosts();
+        setRefreshing(false);
+    }
+
     const ItemSeparator = () => (
         <View
             style={{
@@ -251,6 +286,38 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
             />
             <FlatList
                 data={posts}
+                ListHeaderComponent={
+                     <View style={styles.sortBar}>
+                        <MaterialCommunityIcons
+                            name="sort"
+                            color={'blue'}
+                            size={26}
+                        />
+                        <Text style={styles.text}>
+                            {'Sorted by: '}
+                        </Text>
+                        <ModalSelector
+                            data={sortingOptions}
+                            initValue={sortedBy}
+                            onChange={(option) => changeSorting(option.label)}
+                            animationType={'fade'}
+                            backdropPressToClose={true}
+                            overlayStyle={{ flex: 1, padding: '5%', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.9)' }}
+                            sectionTextStyle={{ fontSize: 20 }}
+                            cancelTextStyle={{ color: 'crimson', fontSize: 20 }}
+                            cancelText={'Cancel'}
+                            optionTextStyle={{ fontSize: 20 }}
+                        >
+                            <TextInput
+                                style={styles.pickerText}
+                                editable={false}
+                                placeholder={sortedBy}
+                                value={sortedBy}
+                            />
+                        </ModalSelector>
+                     </View>
+                }
+                ListHeaderComponentStyle={styles.headerComponentStyle}
                 renderItem={({ item }) => (
                     <ForumPost
                         item={item}
@@ -268,10 +335,10 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                         onReport={() => handleReport(item)}
                     />
                 )}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.postId}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
-                style={{ marginBottom: 40 }}
+                style={{ marginBottom: 40, width: '100%' }}
             />
         </SafeAreaView>
     );
@@ -286,5 +353,24 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginBottom: 40,
+    },
+    sortBar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 10,
+    },
+    text: {
+        fontSize: 16,
+    },
+    pickerText: {
+        fontSize: 16,
+        color: 'blue',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderWidth: 1,
+        borderRadius: 10,
+    },
+    headerComponentStyle: {
+        marginVertical: 7,
     },
 });

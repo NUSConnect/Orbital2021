@@ -200,7 +200,7 @@ export default class ProfilePostsScreen extends React.Component {
                         <PostCard
                             item={item}
                             onDelete={this.handleDelete}
-                            onViewProfile={() => alert("user profile")}
+                            onViewProfile={() => console.log('user pressed')}
                             onPress={() =>
                                 navigation.navigate("CommentScreen", { item })
                             }

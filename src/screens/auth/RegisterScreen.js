@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
-import Background from "../../components/Background";
 import Logo from "../../components/Logo";
 import Header from "../../components/Header";
 import Button from "../../components/Button";
@@ -13,6 +12,8 @@ import { passwordValidator } from "../../helpers/auth/passwordValidator";
 import { nameValidator } from "../../helpers/auth/nameValidator";
 import { signUpUser } from "../../api/auth";
 import Toast from "../../components/Toast";
+
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function RegisterScreen({ navigation }) {
     const [name, setName] = useState({ value: "", error: "" });
@@ -44,7 +45,15 @@ export default function RegisterScreen({ navigation }) {
     };
 
     return (
-        <Background>
+        <KeyboardAwareScrollView
+            style={styles.container}
+            contentContainerStyle={styles.inner}
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            scrollEnabled={true}
+            extraScrollHeight={120}
+            enableOnAndroid={true}
+            keyboardShouldPersistTaps='handled'
+        >
             <BackButton goBack={navigation.goBack} />
             <Logo />
             <Header>Create Account</Header>
@@ -94,11 +103,26 @@ export default function RegisterScreen({ navigation }) {
                 </TouchableOpacity>
             </View>
             <Toast message={error} onDismiss={() => setError("")} />
-        </Background>
+        </KeyboardAwareScrollView>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: "100%",
+        backgroundColor: 'white',
+    },
+    inner: {
+        flex: 1,
+        flexGrow: 1,
+        padding: 20,
+        width: "100%",
+        maxWidth: 340,
+        alignSelf: "center",
+        alignItems: "center",
+        justifyContent: "center",
+    },
     row: {
         flexDirection: "row",
         marginTop: 4,
