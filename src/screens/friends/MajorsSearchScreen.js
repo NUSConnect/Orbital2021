@@ -47,6 +47,12 @@ export default function MajorsSearchScreen({ props, navigation }) {
         { name: "Industrial and System Engineering" },
         { name: "Material Science and Engineering" },
         { name: "Mechanical Engineering" },
+        { name: "Dentistry" },
+        { name: "Law" },
+        { name: "Medicine" },
+        { name: "Nursing" },
+        { name: "Pharmacy" },
+        { name: "Music" },
     ];
 
     const searchFilterFunction = (text) => {
