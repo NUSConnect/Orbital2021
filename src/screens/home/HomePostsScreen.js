@@ -137,7 +137,7 @@ export default class HomePostsScreen extends React.Component {
                 this.setState({ refreshing: false });
             }
 
-            console.log("Posts: ", this.state.data);
+//            console.log("Posts: ", this.state.data);
         } catch (e) {
             console.log(e);
         }

@@ -62,6 +62,7 @@ export default function LoginScreen({ navigation }) {
                 onChangeText={(text) => setPassword({ value: text, error: "" })}
                 error={!!password.error}
                 errorText={password.error}
+                autoCapitalize="none"
                 secureTextEntry
             />
             <View style={styles.forgotPassword}>
@@ -105,11 +106,11 @@ const styles = StyleSheet.create({
     forgot: {
         fontSize: 13,
         fontWeight: "bold",
-        color: theme.colors.secondary,
+        color: 'dodgerblue',
     },
     link: {
         fontWeight: "bold",
-        color: theme.colors.primary,
+        color: 'dodgerblue',
     },
     login: {
         backgroundColor: "#ff8c00",

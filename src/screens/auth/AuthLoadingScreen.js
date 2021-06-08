@@ -8,10 +8,14 @@ export default function AuthLoadingScreen({ navigation }) {
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
             // User is logged in
-            navigation.reset({
-                index: 0,
-                routes: [{ name: "Dashboard" }],
-            });
+            if (user.emailVerified) {
+                console.log('Verified')
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: "Dashboard" }],
+                });
+            }
+
         } else {
             // User is not logged in: reset stack & reset navigation to start page
             navigation.reset({
