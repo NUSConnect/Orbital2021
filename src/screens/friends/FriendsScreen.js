@@ -17,6 +17,8 @@ import ChatScreen from "../home/ChatScreen";
 import ViewProfileScreen from "../profile/ViewProfileScreen";
 import WaitingScreen from "./WaitingScreen";
 import FindGroupScreen from './FindGroupScreen';
+import MajorsSearchScreen from "./MajorsSearchScreen";
+import FilteredMajorScreen from "./FilteredMajorScreen";
 
 const Stack = createStackNavigator();
 const TopTab = createMaterialTopTabNavigator();
@@ -29,6 +31,18 @@ function GroupStack() {
             }}>
             <Stack.Screen name="FindGroupScreen" component={FindGroupScreen} />
             <Stack.Screen name="WaitingScreen" component={WaitingScreen} />
+        </Stack.Navigator>
+    );
+}
+
+function MajorStack() {
+    return (
+        <Stack.Navigator initialRouteName="MajorsSearchScreen"
+        screenOptions={{
+            headerShown: false,
+            }}>
+            <Stack.Screen name="MajorsSearchScreen" component={MajorsSearchScreen} />
+            <Stack.Screen name="FilteredMajorScreen" component={FilteredMajorScreen} />
         </Stack.Navigator>
     );
 }
@@ -46,6 +60,10 @@ function FriendsTabs() {
             <TopTab.Screen
                 name="Search"
                 component={FriendSearchScreen}
+            />
+            <TopTab.Screen
+                name="Search By Major"
+                component={MajorStack}
             />
             <TopTab.Screen
                 name="Find A Group"

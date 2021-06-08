@@ -19,6 +19,8 @@ export { default as FriendsScreen } from "./friends/FriendsScreen";
 export { default as FriendSearchScreen } from "./friends/FriendSearchScreen";
 export { default as FindGroupScreen } from "./friends/FindGroupScreen";
 export { default as WaitingScreen } from "./friends/WaitingScreen";
+export { default as MajorsSearchScreen } from "./friends/MajorsSearchScreen";
+export { default as FilteredMajorScreen } from "./friends/FilteredMajorScreen";
 
 // profile
 export { default as ProfilePostsScreen } from "./profile/ProfilePostsScreen";
