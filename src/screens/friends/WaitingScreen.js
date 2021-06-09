@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+import { Text, StyleSheet } from "react-native";
 import Background from "../../components/Background";
 import Button from "../../components/Button";
 import * as Animatable from "react-native-animatable";
@@ -7,7 +7,19 @@ import * as firebase from "firebase";
 
 export default function WaitingScreen({ navigation, route, goBack }) {
     const currentUserId = firebase.auth().currentUser.uid;
+    const [size, setSize] = useState(0)
     var userCategory = route.params.groupCategory;
+
+    const checkGroupSize = async (category) => {
+        await firebase
+            .firestore()
+            .collection("categories")
+            .doc(category)
+            .collection("people")
+            .onSnapshot((querySnapshot) => {
+                setSize(querySnapshot.size);
+            });
+    };
 
     handleDelete = async () => {
         await firebase
@@ -25,6 +37,15 @@ export default function WaitingScreen({ navigation, route, goBack }) {
         navigation.goBack();
     }
 
+    useEffect(() => {
+        checkGroupSize(userCategory);
+        const _unsubscribe = navigation.addListener('focus', () => checkGroupSize(userCategory));
+
+        return () => {
+            _unsubscribe();
+        }
+    }, []);
+
     return (
         <Background>
             <Animatable.Text
@@ -35,6 +56,9 @@ export default function WaitingScreen({ navigation, route, goBack }) {
             >
                 Finding you a group...️
             </Animatable.Text>
+            <Text style={styles.text}>
+                {'Currently'} {size} {size <= 1 ? 'person is' : 'people are'} {'waiting to find a group'}
+            </Text>
             <Button style={styles.stop}
                 color="#de1738"
                 onPress={handleDelete}>
@@ -50,6 +74,11 @@ const styles = StyleSheet.create({
         fontSize: 50,
     },
     stop: {
-        marginTop: 120,
+        marginTop: 30,
+    },
+    text: {
+        marginTop: 70,
+        fontSize: 18,
+        alignItems: 'center',
     },
 });

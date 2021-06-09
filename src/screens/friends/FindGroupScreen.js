@@ -31,13 +31,20 @@ export default function FindGroupScreen({ navigation }) {
             .collection("people")
             .doc(currentUserId)
             .set({})
-            .then(() =>
+            .then(() => {
                 firebase
                     .firestore()
                     .collection("users")
                     .doc(currentUserId)
-                    .update({ finding: true, groupCategory:category })
-            );
+                    .update({ finding: true, groupCategory:category });
+                firebase
+                    .firestore()
+                    .collection("categories")
+                    .doc(category)
+                    .set({
+                         lastJoinedAt: firebase.firestore.Timestamp.fromDate(new Date()),
+                     });
+            });
     };
 
     const calculateGroup = async (category) => {
