@@ -22,6 +22,11 @@ export default function FindGroupScreen({ navigation }) {
             });
     }, []);
 
+    function getDifferenceInHours(date1, date2) {
+        const diffInMs = Math.abs(date2 - date1);
+        return diffInMs / (1000 * 60 * 60);
+    }
+
     const addToCategory = async (category) => {
         //add uid to corresponding category
         await firebase
@@ -36,51 +41,56 @@ export default function FindGroupScreen({ navigation }) {
                     .firestore()
                     .collection("users")
                     .doc(currentUserId)
-                    .update({ finding: true, groupCategory:category });
+                    .update({ finding: true, groupCategory: category });
                 firebase
                     .firestore()
                     .collection("categories")
                     .doc(category)
                     .set({
-                         lastJoinedAt: firebase.firestore.Timestamp.fromDate(new Date()),
-                     });
+                        lastJoinedAt: firebase.firestore.Timestamp.fromDate(
+                            new Date()
+                        ),
+                    });
             });
     };
 
     const calculateGroup = async (category) => {
         var count;
-         await firebase
+        var lastJoinedAt;
+        await firebase
             .firestore()
             .collection("categories")
             .doc(category)
             .collection("people")
             .onSnapshot((querySnapshot) => {
                 count = querySnapshot.size;
-                if (count < groupThreshold) {
-                    //not enough people to form group, send to waiting screen.
-                    navigation.navigate("WaitingScreen", {
-                        groupCategory: category
-                    });
-                } else {
+                firebase.firestore().collection("categories").doc(category).get().then(doc => lastJoinedAt = doc.data().lastJoinedAt);
+                console.log(lastJoinedAt);
+                if (count >= groupThreshold) {
                     //hit threshold, handle logic to form a group. currently only an alert.
                     firebase
                         .firestore()
                         .collection("users")
                         .doc(currentUserId)
-                        .update({ finding: false, groupCategory:null });
+                        .update({ finding: false, groupCategory: null });
                     firebase
                         .firestore()
                         .collection("categories")
                         .doc(category)
                         .collection("people")
                         .get()
-                        .then(querySnapshot => {
-                            querySnapshot.forEach(documentSnapshot => {
+                        .then((querySnapshot) => {
+                            querySnapshot.forEach((documentSnapshot) => {
                                 documentSnapshot.ref.delete();
-                            })
+                            });
                         });
                     Alert.alert("Group found!");
                     navigation.navigate("FindGroupScreen");
+                } else {
+                    //not enough people to form group, send to waiting screen.
+                    navigation.navigate("WaitingScreen", {
+                        groupCategory: category,
+                    });
                 }
             });
     };
