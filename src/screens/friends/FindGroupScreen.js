@@ -102,6 +102,7 @@ export default function FindGroupScreen({ navigation }) {
         for (let i = 0; i < list.length; i++) {
             // turn off finding
             firebase.firestore().collection("users").doc(list[i]).update({ finding: false, groupCategory: null });
+            firebase.firestore().collection("users").doc(list[i]).collection('groups').doc(groupId).set({});
         }
     }
 
