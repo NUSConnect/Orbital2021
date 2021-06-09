@@ -42,7 +42,7 @@ export default function FindGroupScreen({ navigation }) {
 
     const calculateGroup = async (category) => {
         var count;
-        await firebase
+        var unsubscribe = await firebase
             .firestore()
             .collection("categories")
             .doc(category)
@@ -76,6 +76,7 @@ export default function FindGroupScreen({ navigation }) {
                     navigation.navigate("FindGroupScreen");
                 }
             });
+            unsubscribe();
     };
 
     return (
