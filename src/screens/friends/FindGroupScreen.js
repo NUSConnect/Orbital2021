@@ -61,6 +61,17 @@ export default function FindGroupScreen({ navigation }) {
                         .collection("users")
                         .doc(currentUserId)
                         .update({ finding: false, groupCategory:null });
+                    firebase
+                        .firestore()
+                        .collection("categories")
+                        .doc(category)
+                        .collection("people")
+                        .get()
+                        .then(querySnapshot => {
+                            querySnapshot.forEach(documentSnapshot => {
+                                documentSnapshot.ref.delete();
+                            })
+                        });
                     Alert.alert("Group found!");
                     navigation.navigate("FindGroupScreen");
                 }
