@@ -36,6 +36,7 @@ export { default as CHSMajorsScreen } from "./profile/CHSMajorsScreen";
 export { default as ComputingMajorsScreen } from "./profile/ComputingMajorsScreen";
 export { default as DesignMajorsScreen } from "./profile/DesignMajorsScreen";
 export { default as EngineeringMajorsScreen } from "./profile/EngineeringMajorsScreen";
+export { default as ChangeNameScreen } from "./profile/ChangeNameScreen";
 
 //onboard
 export { default as OnBoardScreen } from "./onboarding/OnBoardScreen";

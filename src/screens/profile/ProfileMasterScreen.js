@@ -19,6 +19,7 @@ import AddBioScreen from "./AddBioScreen";
 import AddFacultyScreen from "./AddFacultyScreen";
 import UpdateEmailScreen from "./UpdateEmailScreen";
 import ChangePasswordScreen from "./ChangePasswordScreen";
+import ChangeNameScreen from "./ChangeNameScreen";
 import CommentScreen from "../home/CommentScreen";
 import BusinessMajorsScreen from "./BusinessMajorsScreen";
 import CHSMajorsScreen from "./CHSMajorsScreen";
@@ -69,6 +70,7 @@ const ProfileMasterScreen = ({ navigation }) => {
                 <Stack.Screen name="AddBioScreen" component={AddBioScreen} />
                 <Stack.Screen name="CommentScreen" component={CommentScreen} />
                 <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} />
+                <Stack.Screen name="ChangeNameScreen" component={ChangeNameScreen} />
             </Stack.Navigator>
         </SafeAreaView>
     );

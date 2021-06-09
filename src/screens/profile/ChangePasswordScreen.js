@@ -18,9 +18,6 @@ import { logoutUser } from "../../api/auth";
 import { passwordValidator } from "../../helpers/auth/passwordValidator";
 import * as firebase from "firebase";
 
-//issue with promise rejection due to long time since last login, refer to below site
-//https://firebase.google.com/docs/auth/web/manage-users
-
 export default class ChangePasswordScreen extends React.Component {
     constructor(props) {
         super(props);
