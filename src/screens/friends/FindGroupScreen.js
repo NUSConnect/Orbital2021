@@ -96,13 +96,13 @@ export default function FindGroupScreen({ navigation }) {
             firebase.firestore().collection("groups").doc(groupId).set({ category: category })
             for (let i = 0; i < list.length; i++) {
                 firebase.firestore().collection("groups").doc(groupId).collection("members").doc(list[i]).set({})
+                firebase.firestore().collection("users").doc(list[i]).collection('groups').doc(groupId).set({});
             }
         }
 
         for (let i = 0; i < list.length; i++) {
             // turn off finding
             firebase.firestore().collection("users").doc(list[i]).update({ finding: false, groupCategory: null });
-            firebase.firestore().collection("users").doc(list[i]).collection('groups').doc(groupId).set({});
         }
     }
 
@@ -125,7 +125,7 @@ export default function FindGroupScreen({ navigation }) {
                 }
             });
 
-        await firebase
+        const navigator = firebase
             .firestore()
             .collection("categories")
             .doc(category)
@@ -148,7 +148,8 @@ export default function FindGroupScreen({ navigation }) {
                     });
                 }
             });
-            unsubscribe();
+        unsubscribe();
+        navigator();
     };
 
     return (
