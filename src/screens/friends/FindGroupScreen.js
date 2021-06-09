@@ -119,9 +119,9 @@ export default function FindGroupScreen({ navigation }) {
             .collection("people")
             .onSnapshot(doc => {
                 count = doc.size;
-                if (!(count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 6)) {
+                if (count === 0) {
                     console.log(count);
-                    unsubscribe();
+                    unsubscribe()
                 }
             });
 
@@ -132,7 +132,10 @@ export default function FindGroupScreen({ navigation }) {
             .collection("people")
             .onSnapshot((querySnapshot) => {
                 count = querySnapshot.size;
-                if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 6) {
+                if (count === 0) {
+                    navigation.navigate("FindGroupScreen");
+                }
+                else if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 6) {
                     //hit threshold, handle logic to form a group. currently only an alert.
                     Alert.alert("Group found!");
                     const successfulFinding = count >= 2;
