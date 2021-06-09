@@ -125,7 +125,7 @@ export default function FindGroupScreen({ navigation }) {
                 }
             });
 
-        const navigator = firebase
+        await firebase
             .firestore()
             .collection("categories")
             .doc(category)
@@ -148,8 +148,7 @@ export default function FindGroupScreen({ navigation }) {
                     });
                 }
             });
-        unsubscribe();
-        navigator();
+            unsubscribe();
     };
 
     return (
