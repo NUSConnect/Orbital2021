@@ -11,15 +11,18 @@ export default function FindGroupScreen({ navigation }) {
     const currentUserId = firebase.auth().currentUser.uid;
 
     useEffect(() => {
-        firebase
+        const subscriber = firebase
             .firestore()
             .collection("users")
             .doc(currentUserId)
             .onSnapshot((documentSnapshot) => {
                 if (documentSnapshot.data().finding) {
                     calculateGroup(documentSnapshot.data().groupCategory);
+                    console.log('checking at ' + new Date())
                 }
             });
+
+        return () => subscriber();
     }, []);
 
     function getDifferenceInHours(date1, date2) {
@@ -64,6 +67,15 @@ export default function FindGroupScreen({ navigation }) {
         // maybe send notification to users here that group is found/no groups matched
     }
 
+    const concatList = (list) => {
+        let str = "";
+        list.sort()
+        for (let i = 0; i < list.length; i++) {
+            str = str + list[i].substring(0, 6)
+        }
+        return str;
+    };
+
     const clearUsers = async (success, category) => {
         console.log('Function called');
         const list = [];
@@ -80,7 +92,7 @@ export default function FindGroupScreen({ navigation }) {
                 });
             });
         if (success) {
-            const groupId = category + Date.now()
+            const groupId = category + concatList(list);
             firebase.firestore().collection("groups").doc(groupId).set({ category: category })
             for (let i = 0; i < list.length; i++) {
                 firebase.firestore().collection("groups").doc(groupId).collection("members").doc(list[i]).set({})
@@ -96,7 +108,7 @@ export default function FindGroupScreen({ navigation }) {
     const calculateGroup = async (category) => {
         var count;
         var lastJoinedAt;
-
+        console.log('Logged at ' + new Date())
         await firebase.firestore().collection("categories").doc(category).get().then(doc => lastJoinedAt = doc.data().lastJoinedAt);
 
         await firebase
@@ -106,10 +118,10 @@ export default function FindGroupScreen({ navigation }) {
             .collection("people")
             .onSnapshot((querySnapshot) => {
                 count = querySnapshot.size;
-                if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 6) {
+                if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 0) {
                     //hit threshold, handle logic to form a group. currently only an alert.
                     Alert.alert("Group found!");
-                    const successfulFinding = count >= 2;
+                    const successfulFinding = count >= 1;
                     clearUsers(successfulFinding, category);
                     navigation.navigate("FindGroupScreen");
                 } else {
