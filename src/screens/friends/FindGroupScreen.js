@@ -54,9 +54,51 @@ export default function FindGroupScreen({ navigation }) {
             });
     };
 
+    const stopFinding = async (userId) => {
+        // unused** this is also in clearUsers
+        await firebase
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .update({ finding: false, groupCategory: null });
+        // maybe send notification to users here that group is found/no groups matched
+    }
+
+    const clearUsers = async (success, category) => {
+        console.log('Function called');
+        const list = [];
+        await firebase
+            .firestore()
+            .collection("categories")
+            .doc(category)
+            .collection("people")
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((documentSnapshot) => {
+                    list.push(documentSnapshot.id)
+                    documentSnapshot.ref.delete();
+                });
+            });
+        if (success) {
+            const groupId = category + Date.now()
+            firebase.firestore().collection("groups").doc(groupId).set({ category: category })
+            for (let i = 0; i < list.length; i++) {
+                firebase.firestore().collection("groups").doc(groupId).collection("members").doc(list[i]).set({})
+            }
+        }
+
+        for (let i = 0; i < list.length; i++) {
+            // turn off finding
+            firebase.firestore().collection("users").doc(list[i]).update({ finding: false, groupCategory: null });
+        }
+    }
+
     const calculateGroup = async (category) => {
         var count;
         var lastJoinedAt;
+
+        await firebase.firestore().collection("categories").doc(category).get().then(doc => lastJoinedAt = doc.data().lastJoinedAt);
+
         await firebase
             .firestore()
             .collection("categories")
@@ -64,27 +106,11 @@ export default function FindGroupScreen({ navigation }) {
             .collection("people")
             .onSnapshot((querySnapshot) => {
                 count = querySnapshot.size;
-                firebase.firestore().collection("categories").doc(category).get().then(doc => lastJoinedAt = doc.data().lastJoinedAt);
-                console.log(lastJoinedAt);
-                if (count >= groupThreshold) {
+                if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 6) {
                     //hit threshold, handle logic to form a group. currently only an alert.
-                    firebase
-                        .firestore()
-                        .collection("users")
-                        .doc(currentUserId)
-                        .update({ finding: false, groupCategory: null });
-                    firebase
-                        .firestore()
-                        .collection("categories")
-                        .doc(category)
-                        .collection("people")
-                        .get()
-                        .then((querySnapshot) => {
-                            querySnapshot.forEach((documentSnapshot) => {
-                                documentSnapshot.ref.delete();
-                            });
-                        });
                     Alert.alert("Group found!");
+                    const successfulFinding = count >= 2;
+                    clearUsers(successfulFinding, category);
                     navigation.navigate("FindGroupScreen");
                 } else {
                     //not enough people to form group, send to waiting screen.

@@ -39,7 +39,7 @@ export default function FriendSearchScreen({ props, navigation }) {
                     });
                 });
             });
-        console.log("Users: ", users);
+//        console.log("Users: ", users);
         setMasterDataSource(users);
         setLoading(false);
     };
