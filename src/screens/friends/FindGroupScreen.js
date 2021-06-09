@@ -111,6 +111,19 @@ export default function FindGroupScreen({ navigation }) {
         console.log('Logged at ' + new Date())
         await firebase.firestore().collection("categories").doc(category).get().then(doc => lastJoinedAt = doc.data().lastJoinedAt);
 
+        const unsubscribe = firebase
+            .firestore()
+            .collection("categories")
+            .doc(category)
+            .collection("people")
+            .onSnapshot(doc => {
+                count = doc.size;
+                if (count === 0) {
+                    console.log(count);
+                    unsubscribe()
+                }
+            });
+
         await firebase
             .firestore()
             .collection("categories")
@@ -118,10 +131,13 @@ export default function FindGroupScreen({ navigation }) {
             .collection("people")
             .onSnapshot((querySnapshot) => {
                 count = querySnapshot.size;
-                if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 0) {
+                if (count === 0) {
+                    navigation.navigate("FindGroupScreen");
+                }
+                else if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 6) {
                     //hit threshold, handle logic to form a group. currently only an alert.
                     Alert.alert("Group found!");
-                    const successfulFinding = count >= 1;
+                    const successfulFinding = count >= 2;
                     clearUsers(successfulFinding, category);
                     navigation.navigate("FindGroupScreen");
                 } else {
@@ -131,6 +147,7 @@ export default function FindGroupScreen({ navigation }) {
                     });
                 }
             });
+            unsubscribe();
     };
 
     return (
