@@ -5,8 +5,10 @@ import {
     FlatList,
     TouchableOpacity,
     Text,
+    TextInput
 } from "react-native";
 import { List, Divider } from "react-native-paper";
+import moment from "moment";
 import MessageTopTab from "../../components/MessageTopTab";
 import * as firebase from "firebase";
 import {
@@ -25,6 +27,9 @@ export default function MessagesScreen({ navigation }) {
     const currentUserId = firebase.auth().currentUser.uid;
     var currentUserCreatedAt;
     const [threads, setThreads] = useState([]);
+    const [filteredDataSource, setFilteredDataSource] = useState([]);
+    const [search, setSearch] = useState("");
+    const [filtered, setFiltered] = useState(false);
 
     useEffect(() => {
         getThreads();
@@ -55,7 +60,11 @@ export default function MessagesScreen({ navigation }) {
 
             var users;
             await firebase.firestore().collection("THREADS").doc(threadId).get()
-                .then((doc) => users = doc.data().users);
+                .then((doc) => {
+                    users = doc.data().users
+                    threads[k].latest = doc.data().latestMessage.createdAt
+                    threads[k].message = doc.data().latestMessage.text
+                });
 
             for (let i = 0; i < users.length; i++) {
                 if (users[i] != currentUserId) {
@@ -76,6 +85,9 @@ export default function MessagesScreen({ navigation }) {
                 }
             }
         }
+        threads.sort((x, y) => {
+            return y.latest - x.latest
+        })
         setThreads(threads);
         console.log("Threads: ", threads);
     };
@@ -98,11 +110,35 @@ export default function MessagesScreen({ navigation }) {
         matchUserToThreads(openThreads);
     };
 
+    const searchFilterFunction = (text) => {
+        if (text) {
+            const newData = threads.filter(function (item) {
+                const itemData = item.name
+                    ? item.name.toUpperCase()
+                    : "".toUpperCase();
+                const textData = text.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+            });
+            setFiltered(true);
+            setFilteredDataSource(newData);
+            setSearch(text);
+        } else {
+            setFilteredDataSource(threads);
+            setSearch(text);
+        }
+    };
+
     return (
         <View style={styles.container}>
             <MessageTopTab onBack={() => navigation.goBack()} onPress={() => navigation.navigate('StartMessagesScreen')} />
+            <TextInput
+                style={styles.textInputStyle}
+                onChangeText={(text) => searchFilterFunction(text)}
+                value={search}
+                placeholder="Search Here"
+            />
             <FlatList
-                data={threads}
+                data={filtered ? filteredDataSource : threads}
                 keyExtractor={(item) => item.name}
                 ItemSeparatorComponent={() => <Divider />}
                 renderItem={({ item }) => (
@@ -118,7 +154,11 @@ export default function MessagesScreen({ navigation }) {
                             <TextSection>
                                 <UserInfoText>
                                     <UserName>{item.name}</UserName>
+                                    <PostTime>
+                                        {moment(item.latest).fromNow()}
+                                    </PostTime>
                                 </UserInfoText>
+                                <Text style={styles.text}>{item.message}</Text>
                             </TextSection>
                         </UserInfo>
                     </Card>
@@ -133,6 +173,14 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff",
         flex: 1,
     },
+    textInputStyle: {
+        height: 40,
+        borderWidth: 1,
+        paddingLeft: 20,
+        margin: 5,
+        borderColor: "#ff8c00",
+        backgroundColor: "#FFFFFF",
+    },
     listTitle: {
         fontSize: 22,
     },
@@ -146,4 +194,8 @@ const styles = StyleSheet.create({
         padding: 10,
         color: "#ffffff",
     },
+    text: {
+        color: 'black',
+        fontSize: 16,
+    }
 });

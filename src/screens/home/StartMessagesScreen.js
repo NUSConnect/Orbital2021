@@ -5,6 +5,7 @@ import {
     FlatList,
     TouchableOpacity,
     Text,
+    TextInput,
 } from "react-native";
 import { List, Divider } from "react-native-paper";
 import { FontAwesome5 } from "react-native-vector-icons";
@@ -26,6 +27,9 @@ export default function StartMessagesScreen({ navigation }) {
     const currentUserId = firebase.auth().currentUser.uid;
     var currentUserCreatedAt;
     const [threads, setThreads] = useState([]);
+    const [filteredDataSource, setFilteredDataSource] = useState([]);
+    const [search, setSearch] = useState("");
+    const [filtered, setFiltered] = useState(false);
 
     useEffect(() => {
         getUsers();
@@ -43,20 +47,6 @@ export default function StartMessagesScreen({ navigation }) {
             str = str + list[i].substring(0, 6)
         }
         return str;
-    };
-
-    const getUserInfo = async () => {
-        await firebase
-            .firestore()
-            .collection("users")
-            .doc(currentUserId)
-            .get()
-            .then((documentSnapshot) => {
-                if (documentSnapshot.exists) {
-                    const { createdAt } = documentSnapshot.data();
-                    currentUserCreatedAt = createdAt;
-                }
-            });
     };
 
     const getUsers = async () => {
@@ -82,7 +72,7 @@ export default function StartMessagesScreen({ navigation }) {
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     if (doc.id !== currentUserId) {
-                        const { name, createdAt, userImg } = doc.data();
+                        const { name, bio, userImg } = doc.data();
 
                         const users = [currentUserId, doc.id];
                         const threadID = concatList(users);
@@ -91,22 +81,51 @@ export default function StartMessagesScreen({ navigation }) {
                         friendsArr.push({
                             id: threadID,
                             name,
-                            createdAt,
                             userImg,
                             users: users,
+                            bio,
                         });
                     }
                 });
             });
         console.log(friendsArr);
+        friendsArr.sort((x, y) => {
+            if (x.name < y.name) { return -1; }
+            if (x.name > y.name) { return 1; }
+            return 0;
+        });
         setThreads(friendsArr);
+    };
+
+    const searchFilterFunction = (text) => {
+        if (text) {
+            const newData = threads.filter(function (item) {
+                const itemData = item.name
+                    ? item.name.toUpperCase()
+                    : "".toUpperCase();
+                const textData = text.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+            });
+            setFiltered(true);
+            setFilteredDataSource(newData);
+            setSearch(text);
+        } else {
+            setFilteredDataSource(threads);
+            setSearch(text);
+        }
     };
 
     return (
         <View style={styles.container}>
             <StartMessageTopTab onBack={() => navigation.goBack()} />
+            <TextInput
+                style={styles.textInputStyle}
+                onChangeText={(text) => searchFilterFunction(text)}
+                value={search}
+                placeholder="Search Here"
+            />
             <FlatList
-                data={threads}
+                data={filtered ? filteredDataSource : threads}
                 keyExtractor={(item) => item.name}
                 ItemSeparatorComponent={() => <Divider />}
                 ListHeaderComponent={
@@ -143,6 +162,7 @@ export default function StartMessagesScreen({ navigation }) {
                                 <UserInfoText>
                                     <UserName>{item.name}</UserName>
                                 </UserInfoText>
+                                <Text style={styles.text}>{item.bio}</Text>
                             </TextSection>
                         </UserInfo>
                     </Card>
@@ -157,6 +177,14 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff",
         flex: 1,
     },
+    textInputStyle: {
+        height: 40,
+        borderWidth: 1,
+        paddingLeft: 20,
+        margin: 5,
+        borderColor: "#ff8c00",
+        backgroundColor: "#FFFFFF",
+    },
     listTitle: {
         fontSize: 22,
     },
@@ -170,4 +198,8 @@ const styles = StyleSheet.create({
         padding: 10,
         color: "#ffffff",
     },
+    text: {
+        color: 'black',
+        fontSize: 14,
+    }
 });
