@@ -2,19 +2,17 @@ import * as ImagePicker from "expo-image-picker";
 import * as firebase from 'firebase';
 import React from "react";
 import {
-    Alert, Image,
-    StyleSheet, Text,
-
-
+    Alert,
+    Image,
+    StyleSheet,
+    Text,
     TextInput,
-
-    TouchableOpacity, View
+    TouchableOpacity,
+    View
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
-
-
 
 export default class ForumCreationScreen extends React.Component {
     constructor(props) {

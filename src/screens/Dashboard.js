@@ -5,9 +5,8 @@ import {
 } from "react-native-vector-icons";
 import {
     ForumScreen,
-    FriendsScreen, HomeScreen,
-
-
+    FriendsScreen,
+    HomeScreen,
     ProfileMasterScreen
 } from "./";
 

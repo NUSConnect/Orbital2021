@@ -1,7 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 
-
 const ForumIcon = ({ item, onPress }) => {
     return (
         <TouchableOpacity onPress={onPress} style={styles.container}>

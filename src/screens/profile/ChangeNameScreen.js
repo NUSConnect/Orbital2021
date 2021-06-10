@@ -1,10 +1,12 @@
 import * as firebase from "firebase";
 import React from "react";
 import {
-    Alert, SafeAreaView, StyleSheet, Text,
-
-
-    TextInput, View
+    Alert,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View
 } from "react-native";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";

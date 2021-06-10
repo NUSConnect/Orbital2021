@@ -1,18 +1,21 @@
 import * as firebase from "firebase";
 import React, { useState } from "react";
 import {
-    Alert, FlatList, StyleSheet,
-
-
+    Alert,
+    FlatList,
+    StyleSheet,
     Text,
-    TextInput, TouchableOpacity, View
+    TextInput,
+    TouchableOpacity,
+    View
 } from "react-native";
 import { Divider } from "react-native-paper";
 import GroupCreationTopTab from "../../components/GroupCreationTopTab";
 import {
-    TextSection, UserImg, UserImgWrapper, UserInfo,
-
-
+    TextSection,
+    UserImg,
+    UserImgWrapper,
+    UserInfo,
     UserInfoText,
     UserName
 } from "../../styles/MessageStyles";

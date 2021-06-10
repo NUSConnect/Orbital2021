@@ -1,14 +1,13 @@
 import * as firebase from "firebase";
 import React from "react";
 import {
-    Alert, FlatList, Image,
-
-
+    Alert,
+    FlatList,
+    Image,
     SafeAreaView,
     StyleSheet,
-
-
-    TouchableOpacity, View
+    TouchableOpacity,
+    View
 } from "react-native";
 import PostCard from "../../components/PostCard";
 

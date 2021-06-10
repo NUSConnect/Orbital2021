@@ -6,26 +6,18 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons, MaterialIcons } from "react-native-vector-icons";
 import {
     Card,
-
-
-
-
-
-
-
-
-
-
-    Divider, Interaction,
-    InteractionText, InteractionWrapper, PostText, PostTime, UserImg, UserInfo,
-
-
-    UserInfoText, UserName
+    Divider,
+    Interaction,
+    InteractionText,
+    InteractionWrapper,
+    PostText,
+    PostTime,
+    UserImg,
+    UserInfo,
+    UserInfoText,
+    UserName
 } from "../styles/FeedStyles";
 import ProgressiveImage from "./ProgressiveImage";
-
-
-
 
 const PostCard = ({
     route,

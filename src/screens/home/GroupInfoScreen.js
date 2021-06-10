@@ -1,16 +1,13 @@
 import * as firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import {
-    FlatList, Image,
-
-
-    SafeAreaView, StyleSheet, Text,
-
-
-
-
-
-    TouchableOpacity, View
+    FlatList,
+    Image,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
 } from "react-native";
 import TitleWithBack from "../../components/TitleWithBack";
 import {

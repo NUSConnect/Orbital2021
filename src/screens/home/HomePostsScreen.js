@@ -1,20 +1,15 @@
 import * as firebase from "firebase";
 import React from "react";
 import {
-    Alert, FlatList, Image,
-
-
+    Alert,
+    FlatList,
+    Image,
     SafeAreaView,
-    StyleSheet, Text,
+    StyleSheet,
+    Text,
     TextInput,
-
-
-
-
-
-
-
-    TouchableOpacity, View
+    TouchableOpacity,
+    View
 } from "react-native";
 import ModalSelector from 'react-native-modal-selector';
 import { MaterialCommunityIcons } from "react-native-vector-icons";
@@ -22,8 +17,6 @@ import { swipeDirections } from "rn-swipe-gestures";
 import { sortByLatest, sortByTrending } from '../../api/ranking';
 import HomeTopTab from "../../components/HomeTopTab";
 import PostCard from "../../components/PostCard";
-
-
 
 export default class HomePostsScreen extends React.Component {
     constructor(props) {

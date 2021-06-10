@@ -1,13 +1,13 @@
 import * as firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import {
-    ActivityIndicator, FlatList, SafeAreaView,
-
-    StyleSheet, Text,
-
-
-
-    TextInput, View
+    ActivityIndicator,
+    FlatList,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View
 } from "react-native";
 
 export default function FriendSearchScreen({ props, navigation }) {

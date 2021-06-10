@@ -1,18 +1,12 @@
 import React from "react";
 import {
-    FlatList, Image,
-
-
+    FlatList,
+    Image,
     SafeAreaView,
-    StyleSheet, Text,
-
-
-
-
-
-
-
-    TouchableOpacity, View
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
 } from "react-native";
 
 export default class ForumOthersScreen extends React.Component {

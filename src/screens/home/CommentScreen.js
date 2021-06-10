@@ -2,17 +2,17 @@ import * as firebase from "firebase";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
-    Alert, FlatList, SafeAreaView, StyleSheet, Text,
-
-
+    Alert,
+    FlatList,
+    SafeAreaView,
+    StyleSheet,
+    Text,
     TextInput,
-
-
-    TouchableOpacity, View
+    TouchableOpacity,
+    View
 } from "react-native";
 import { Ionicons, MaterialIcons } from "react-native-vector-icons";
 import TitleWithBack from "../../components/TitleWithBack";
-
 
 const CommentScreen = ({ navigation, route, onPress }) => {
     const currentUserId = firebase.auth().currentUser.uid;

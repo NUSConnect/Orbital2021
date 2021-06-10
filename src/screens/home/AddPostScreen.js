@@ -2,23 +2,20 @@ import * as ImagePicker from "expo-image-picker";
 import * as firebase from "firebase";
 import React from "react";
 import {
-    ActivityIndicator, Alert,
-
-
-    Animated, Image,
-
-
-    SafeAreaView, StyleSheet, Text,
-
-
-    TextInput, View
+    ActivityIndicator,
+    Alert,
+    Animated,
+    Image,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View
 } from "react-native";
 import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
-
-
 
 // Action button fix
 ActionButton.prototype.animateButton = function (animate = true) {

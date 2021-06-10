@@ -4,14 +4,14 @@ import * as React from "react";
 import { SafeAreaView, StatusBar, StyleSheet } from "react-native";
 import ViewProfileScreen from "../profile/ViewProfileScreen";
 import {
-    EditForumCommentScreen, EditForumPostScreen, ForumAddPostScreen, ForumCreationScreen, ForumOthersScreen,
-
-
-
-    ForumPostScreen, ForumSearchScreen,
+    EditForumCommentScreen,
+    EditForumPostScreen,
+    ForumAddPostScreen,
+    ForumCreationScreen,
+    ForumOthersScreen,
+    ForumPostScreen,
+    ForumSearchScreen,
     ForumSubscribedScreen,
-
-
     SubForumScreen
 } from "./";
 

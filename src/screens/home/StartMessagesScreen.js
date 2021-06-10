@@ -1,27 +1,21 @@
 import * as firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import {
-    FlatList, StyleSheet,
-
-
+    FlatList,
+    StyleSheet,
     Text,
-    TextInput, View
+    TextInput,
+    View
 } from "react-native";
 import { Divider } from "react-native-paper";
 import { FontAwesome5 } from "react-native-vector-icons";
 import StartMessageTopTab from "../../components/StartMessageTopTab";
 import {
     Card,
-
-
-
-
-
-
-
-    TextSection, UserImg, UserImgWrapper, UserInfo,
-
-
+    TextSection,
+    UserImg,
+    UserImgWrapper,
+    UserInfo,
     UserInfoText,
     UserName
 } from "../../styles/MessageStyles";

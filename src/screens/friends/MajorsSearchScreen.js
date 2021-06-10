@@ -1,13 +1,12 @@
 import * as firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import {
-    FlatList, SafeAreaView,
-
-    StyleSheet, Text,
-
-
-
-    TextInput, View
+    FlatList,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View
 } from "react-native";
 
 export default function MajorsSearchScreen({ props, navigation }) {

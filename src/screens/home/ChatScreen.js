@@ -2,14 +2,14 @@ import * as firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import {
     ActivityIndicator,
-
     StyleSheet,
     Text,
-    TouchableOpacity, View
+    TouchableOpacity,
+    View
 } from "react-native";
 import {
-    Bubble, GiftedChat,
-
+    Bubble,
+    GiftedChat,
     Send,
     SystemMessage
 } from "react-native-gifted-chat";

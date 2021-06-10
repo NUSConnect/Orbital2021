@@ -1,9 +1,9 @@
 import * as firebase from "firebase";
 import React from "react";
 import {
-    FlatList, SafeAreaView, StyleSheet,
-
-
+    FlatList,
+    SafeAreaView,
+    StyleSheet,
     View
 } from "react-native";
 import ForumIcon from "../../components/ForumIcon";

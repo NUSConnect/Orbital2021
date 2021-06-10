@@ -2,26 +2,21 @@ import * as firebase from "firebase";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
-    FlatList, StyleSheet,
-
-
+    FlatList,
+    StyleSheet,
     Text,
-    TextInput, View
+    TextInput,
+    View
 } from "react-native";
 import { Divider } from "react-native-paper";
 import MessageTopTab from "../../components/MessageTopTab";
 import {
     Card,
-
-
-
-
-
     PostTime,
-
-    TextSection, UserImg, UserImgWrapper, UserInfo,
-
-
+    TextSection,
+    UserImg,
+    UserImgWrapper,
+    UserInfo,
     UserInfoText,
     UserName
 } from "../../styles/MessageStyles";

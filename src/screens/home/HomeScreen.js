@@ -2,8 +2,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import {
     SafeAreaView,
-
-    StatusBar, StyleSheet
+    StatusBar,
+    StyleSheet
 } from "react-native";
 import ViewProfileScreen from "../profile/ViewProfileScreen";
 import AddPostScreen from "./AddPostScreen";

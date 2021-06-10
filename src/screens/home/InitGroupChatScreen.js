@@ -2,12 +2,11 @@ import * as ImagePicker from "expo-image-picker";
 import * as firebase from 'firebase';
 import React, { useState } from "react";
 import {
-    Alert, Image,
-    StyleSheet, Text,
-
-
+    Alert,
+    Image,
+    StyleSheet,
+    Text,
     TextInput,
-
     TouchableOpacity
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";

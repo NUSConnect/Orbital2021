@@ -1,10 +1,11 @@
 import * as firebase from "firebase";
 import React from "react";
 import {
-    Alert, FlatList, SafeAreaView,
-
-    StyleSheet, Text,
-
+    Alert,
+    FlatList,
+    SafeAreaView,
+    StyleSheet,
+    Text,
     View
 } from "react-native";
 

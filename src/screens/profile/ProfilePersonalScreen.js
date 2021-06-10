@@ -3,10 +3,10 @@ import * as firebase from "firebase";
 import React from "react";
 import {
     Image,
-    SafeAreaView, StyleSheet,
-    Text, TouchableOpacity,
-
-
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
     View
 } from "react-native";
 import { logoutUser } from "../../api/auth";

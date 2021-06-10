@@ -1,13 +1,11 @@
 import * as firebase from "firebase";
 import React from "react";
 import {
-    FlatList, SafeAreaView, StyleSheet,
-
-
-
-
-
-    TextInput, View
+    FlatList,
+    SafeAreaView,
+    StyleSheet,
+    TextInput,
+    View
 } from "react-native";
 import ForumIcon from "../../components/ForumIcon";
 

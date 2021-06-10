@@ -3,8 +3,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import {
     SafeAreaView,
-
-    StatusBar, StyleSheet
+    StatusBar,
+    StyleSheet
 } from "react-native";
 import ChatScreen from "../home/ChatScreen";
 import CommentScreen from "../home/CommentScreen";
