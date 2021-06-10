@@ -41,7 +41,11 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
             .doc(currentUserId)
             .get()
             .then((documentSnapshot) => {
-                setSortedBy(documentSnapshot.data().preferredSorting);
+                if (documentSnapshot.data().preferredSorting != null) {
+                    setSortedBy(documentSnapshot.data().preferredSorting);
+                } else {
+                    setSortedBy("Latest");
+                }
             });
     };
 
@@ -365,10 +369,11 @@ const styles = StyleSheet.create({
     pickerText: {
         fontSize: 16,
         color: 'blue',
-        paddingLeft: 5,
-        paddingRight: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
         borderWidth: 1,
-        borderRadius: 10,
+        borderRadius: 20,
+        borderColor: 'gray',
     },
     headerComponentStyle: {
         marginVertical: 7,

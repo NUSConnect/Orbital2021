@@ -7,7 +7,8 @@ import {
     Text,
 } from "react-native";
 import { List, Divider } from "react-native-paper";
-import MessageTopTab from "../../components/MessageTopTab";
+import { FontAwesome5 } from "react-native-vector-icons";
+import StartMessageTopTab from "../../components/StartMessageTopTab";
 import * as firebase from "firebase";
 import {
     Card,
@@ -21,19 +22,28 @@ import {
     TextSection,
 } from "../../styles/MessageStyles";
 
-export default function MessagesScreen({ navigation }) {
+export default function StartMessagesScreen({ navigation }) {
     const currentUserId = firebase.auth().currentUser.uid;
     var currentUserCreatedAt;
     const [threads, setThreads] = useState([]);
 
     useEffect(() => {
-        getThreads();
-        const _unsubscribe = navigation.addListener('focus', () => getThreads());
+        getUsers();
+        const _unsubscribe = navigation.addListener('focus', () => getUsers());
 
         return () => {
             _unsubscribe();
         }
     }, []);
+
+    const concatList = (list) => {
+        let str = "";
+        list.sort()
+        for (let i = 0; i < list.length; i++) {
+            str = str + list[i].substring(0, 6)
+        }
+        return str;
+    };
 
     const getUserInfo = async () => {
         await firebase
@@ -49,62 +59,76 @@ export default function MessagesScreen({ navigation }) {
             });
     };
 
-    const matchUserToThreads = async (threads) => {
-        for (let k = 0; k < threads.length; k++) {
-            const threadId = threads[k].id
-
-            var users;
-            await firebase.firestore().collection("THREADS").doc(threadId).get()
-                .then((doc) => users = doc.data().users);
-
-            for (let i = 0; i < users.length; i++) {
-                if (users[i] != currentUserId) {
-                    await firebase
-                        .firestore()
-                        .collection("users")
-                        .doc(users[i])
-                        .get()
-                        .then((doc) => {
-                            if (doc.exists) {
-                                threads[k].name = doc.data().name;
-                                threads[k].userImg = doc.data().userImg;
-                            } else {
-                                threads[k].name = "anon";
-                                threads[k].userImg = null;
-                            }
-                        });
-                }
-            }
-        }
-        setThreads(threads);
-        console.log("Threads: ", threads);
-    };
-
-    const getThreads = async () => {
-        // Get open threads
-        const openThreads = [];
+    const getUsers = async () => {
+        // Get curr user info
         await firebase
             .firestore()
             .collection("users")
             .doc(currentUserId)
-            .collection("openChats")
+            .get()
+            .then((documentSnapshot) => {
+                if (documentSnapshot.exists) {
+                    const { createdAt } = documentSnapshot.data();
+                    currentUserCreatedAt = createdAt;
+                }
+            });
+
+        // Get thread info
+        const friendsArr = [];
+        await firebase
+            .firestore()
+            .collection("users")
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    openThreads.push({ id: doc.id });
+                    if (doc.id !== currentUserId) {
+                        const { name, createdAt, userImg } = doc.data();
+
+                        const users = [currentUserId, doc.id];
+                        const threadID = concatList(users);
+
+                        console.log("ThreadID: ", threadID);
+                        friendsArr.push({
+                            id: threadID,
+                            name,
+                            createdAt,
+                            userImg,
+                            users: users,
+                        });
+                    }
                 });
             });
-
-        matchUserToThreads(openThreads);
+        console.log(friendsArr);
+        setThreads(friendsArr);
     };
 
     return (
         <View style={styles.container}>
-            <MessageTopTab onBack={() => navigation.goBack()} onPress={() => navigation.navigate('StartMessagesScreen')} />
+            <StartMessageTopTab onBack={() => navigation.goBack()} />
             <FlatList
                 data={threads}
                 keyExtractor={(item) => item.name}
                 ItemSeparatorComponent={() => <Divider />}
+                ListHeaderComponent={
+                    <Card
+                        onPress={() => alert('create group')}
+                    >
+                        <UserInfo>
+                            <FontAwesome5
+                                name='plus'
+                                size={40}
+                                color="#79D2E6"
+                                style={{ paddingLeft: 24, paddingTop: 8, marginRight: 8, }}
+                            />
+                            <TextSection>
+                                <UserInfoText>
+                                    <UserName>{'Create a new group'}</UserName>
+                                </UserInfoText>
+                            </TextSection>
+                        </UserInfo>
+                    </Card>
+                }
+                ListHeaderComponentStyle={styles.headerComponentStyle}
                 renderItem={({ item }) => (
                     <Card
                         onPress={() =>

@@ -24,10 +24,39 @@ export default function ChatScreen({ route, onPress, navigation }) {
 
     async function handleSend(messages) {
         const text = messages[0].text;
-        firebase
-            .firestore()
-            .collection("THREADS")
-            .doc(thread.id)
+        const threadRef = await firebase.firestore().collection('THREADS').doc(thread.id)
+
+        const doc = await threadRef.get();
+        if (doc.exists) {
+            threadRef
+                .collection("MESSAGES")
+                .add({
+                    text,
+                    createdAt: new Date().getTime(),
+                    user: {
+                        _id: currentUser,
+                    },
+                });
+
+            threadRef
+                .set(
+                    {
+                        latestMessage: {
+                            text,
+                            createdAt: new Date().getTime(),
+                        },
+                    },
+                    { merge: true }
+                );
+        } else {
+            handleFirstSend(messages);
+        }
+    }
+
+    async function handleFirstSend(messages) {
+        const text = messages[0].text;
+        const threadRef = await firebase.firestore().collection('THREADS').doc(thread.id)
+        threadRef
             .collection("MESSAGES")
             .add({
                 text,
@@ -37,19 +66,28 @@ export default function ChatScreen({ route, onPress, navigation }) {
                 },
             });
 
-        await firebase
-            .firestore()
-            .collection("THREADS")
-            .doc(thread.id)
+        threadRef
             .set(
                 {
                     latestMessage: {
                         text,
                         createdAt: new Date().getTime(),
                     },
+                    users: thread.users
                 },
                 { merge: true }
             );
+
+        const users = thread.users
+        for (let i = 0; i < users.length; i++) {
+            firebase
+                .firestore()
+                .collection('users')
+                .doc(users[i])
+                .collection('openChats')
+                .doc(thread.id)
+                .set({})
+        }
     }
 
     useEffect(() => {
