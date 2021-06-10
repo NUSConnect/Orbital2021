@@ -5,11 +5,11 @@ import {
     FlatList,
     TouchableOpacity,
     Text,
-    TextInput
+    TextInput,
 } from "react-native";
 import { List, Divider } from "react-native-paper";
-import moment from "moment";
-import MessageTopTab from "../../components/MessageTopTab";
+import { FontAwesome5 } from "react-native-vector-icons";
+import StartMessageTopTab from "../../components/StartMessageTopTab";
 import * as firebase from "firebase";
 import {
     Card,
@@ -23,7 +23,7 @@ import {
     TextSection,
 } from "../../styles/MessageStyles";
 
-export default function MessagesScreen({ navigation }) {
+export default function StartMessagesScreen({ navigation }) {
     const currentUserId = firebase.auth().currentUser.uid;
     var currentUserCreatedAt;
     const [threads, setThreads] = useState([]);
@@ -32,15 +32,25 @@ export default function MessagesScreen({ navigation }) {
     const [filtered, setFiltered] = useState(false);
 
     useEffect(() => {
-        getThreads();
-        const _unsubscribe = navigation.addListener('focus', () => getThreads());
+        getUsers();
+        const _unsubscribe = navigation.addListener('focus', () => getUsers());
 
         return () => {
             _unsubscribe();
         }
     }, []);
 
-    const getUserInfo = async () => {
+    const concatList = (list) => {
+        let str = "";
+        list.sort()
+        for (let i = 0; i < list.length; i++) {
+            str = str + list[i].substring(0, 6)
+        }
+        return str;
+    };
+
+    const getUsers = async () => {
+        // Get curr user info
         await firebase
             .firestore()
             .collection("users")
@@ -52,76 +62,40 @@ export default function MessagesScreen({ navigation }) {
                     currentUserCreatedAt = createdAt;
                 }
             });
-    };
 
-    const matchUserToThreads = async (threads) => {
-        for (let k = 0; k < threads.length; k++) {
-            const threadId = threads[k].id
-
-            var users;
-            var isGroup;
-            await firebase.firestore().collection("THREADS").doc(threadId).get()
-                .then((doc) => {
-                    users = doc.data().users
-                    threads[k].latest = doc.data().latestMessage.createdAt
-                    threads[k].message = doc.data().latestMessage.text
-                    isGroup = doc.data().group
-                });
-
-            if (isGroup) {
-                await firebase.firestore().collection("THREADS").doc(threadId).get()
-                    .then((doc) => {
-                        threads[k].name = doc.data().groupName.name;
-                        threads[k].avatar = doc.data().groupImage;
-                        threads[k].description = doc.data().groupDescription.description;
-                        threads[k].members = doc.data().users;
-                        threads[k].isGroup = true;
-                    })
-            } else {
-                for (let i = 0; i < users.length; i++) {
-                    if (users[i] != currentUserId) {
-                        await firebase
-                            .firestore()
-                            .collection("users")
-                            .doc(users[i])
-                            .get()
-                            .then((doc) => {
-                                if (doc.exists) {
-                                    threads[k].name = doc.data().name;
-                                    threads[k].avatar = doc.data().userImg;
-                                    threads[k].otherId = users[i]
-                                } else {
-                                    threads[k].name = "anon";
-                                    threads[k].avatar = null;
-                                }
-                            });
-                    }
-                }
-            }
-        }
-        threads.sort((x, y) => {
-            return y.latest - x.latest
-        })
-        setThreads(threads);
-//        console.log("Threads: ", threads);
-    };
-
-    const getThreads = async () => {
-        // Get open threads
-        const openThreads = [];
+        // Get thread info
+        const friendsArr = [];
         await firebase
             .firestore()
             .collection("users")
-            .doc(currentUserId)
-            .collection("openChats")
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    openThreads.push({ id: doc.id });
+                    if (doc.id !== currentUserId) {
+                        const { name, bio, userImg } = doc.data();
+
+                        const users = [currentUserId, doc.id];
+                        const threadID = concatList(users);
+
+//                        console.log("ThreadID: ", threadID);
+                        friendsArr.push({
+                            id: threadID,
+                            userId: doc.id,
+                            name,
+                            avatar: userImg,
+                            users: users,
+                            bio,
+                        });
+                    }
                 });
             });
-
-        matchUserToThreads(openThreads);
+//        console.log(friendsArr);
+        friendsArr.sort((x, y) => {
+            if (x.name < y.name) { return -1; }
+            if (x.name > y.name) { return 1; }
+            return 0;
+        });
+        setThreads(friendsArr);
     };
 
     const searchFilterFunction = (text) => {
@@ -144,7 +118,7 @@ export default function MessagesScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <MessageTopTab onBack={() => navigation.goBack()} onPress={() => navigation.navigate('StartMessagesScreen')} />
+            <StartMessageTopTab onBack={() => navigation.goBack()} />
             <TextInput
                 style={styles.textInputStyle}
                 onChangeText={(text) => searchFilterFunction(text)}
@@ -155,6 +129,26 @@ export default function MessagesScreen({ navigation }) {
                 data={filtered ? filteredDataSource : threads}
                 keyExtractor={(item) => item.name}
                 ItemSeparatorComponent={() => <Divider />}
+                ListHeaderComponent={
+                    <Card
+                        onPress={() => navigation.navigate("GroupCreationScreen", { threads })}
+                    >
+                        <UserInfo>
+                            <FontAwesome5
+                                name='plus'
+                                size={40}
+                                color="#79D2E6"
+                                style={{ paddingLeft: 24, paddingTop: 8, marginRight: 8, }}
+                            />
+                            <TextSection>
+                                <UserInfoText>
+                                    <UserName>{'Create a new group'}</UserName>
+                                </UserInfoText>
+                            </TextSection>
+                        </UserInfo>
+                    </Card>
+                }
+                ListHeaderComponentStyle={styles.headerComponentStyle}
                 renderItem={({ item }) => (
                     <Card
                         onPress={() =>
@@ -168,11 +162,8 @@ export default function MessagesScreen({ navigation }) {
                             <TextSection>
                                 <UserInfoText>
                                     <UserName>{item.name}</UserName>
-                                    <PostTime>
-                                        {moment(item.latest).fromNow()}
-                                    </PostTime>
                                 </UserInfoText>
-                                <Text style={styles.text}>{item.message}</Text>
+                                <Text style={styles.text}>{item.bio}</Text>
                             </TextSection>
                         </UserInfo>
                     </Card>
@@ -211,6 +202,6 @@ const styles = StyleSheet.create({
     },
     text: {
         color: 'black',
-        fontSize: 16,
+        fontSize: 14,
     }
 });

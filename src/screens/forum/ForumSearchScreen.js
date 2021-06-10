@@ -77,7 +77,6 @@ export default class ForumSearchScreen extends React.Component {
         <View
             style={{
                 height: 2,
-                backgroundColor: "rgba(0,0,0,0.5)",
                 marginLeft: 10,
                 marginRight: 10,
             }}

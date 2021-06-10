@@ -21,38 +21,93 @@ export default function ChatScreen({ route, onPress, navigation }) {
     const [messages, setMessages] = useState([]);
     const { thread } = route.params;
     const currentUser = firebase.auth().currentUser.uid;
+    const [userImg, setUserImg] = useState(null);
+
+    const getUser = async () => {
+        await firebase
+            .firestore()
+            .collection("users")
+            .doc(firebase.auth().currentUser.uid)
+            .get()
+            .then((documentSnapshot) => {
+                if (documentSnapshot.exists) {
+                    setUserImg(documentSnapshot.data().userImg)
+                }
+            });
+    };
 
     async function handleSend(messages) {
         const text = messages[0].text;
-        firebase
-            .firestore()
-            .collection("THREADS")
-            .doc(thread.id)
+        const threadRef = await firebase.firestore().collection('THREADS').doc(thread.id)
+
+        const doc = await threadRef.get();
+        if (doc.exists) {
+            threadRef
+                .collection("MESSAGES")
+                .add({
+                    text,
+                    createdAt: new Date().getTime(),
+                    user: {
+                        _id: currentUser,
+                        avatar: userImg,
+                    },
+                });
+
+            threadRef
+                .set(
+                    {
+                        latestMessage: {
+                            text,
+                            createdAt: new Date().getTime(),
+                        },
+                    },
+                    { merge: true }
+                );
+        } else {
+            handleFirstSend(messages);
+        }
+    }
+
+    async function handleFirstSend(messages) {
+        const text = messages[0].text;
+        const threadRef = await firebase.firestore().collection('THREADS').doc(thread.id)
+        threadRef
             .collection("MESSAGES")
             .add({
                 text,
                 createdAt: new Date().getTime(),
                 user: {
                     _id: currentUser,
+                    avatar: userImg,
                 },
             });
 
-        await firebase
-            .firestore()
-            .collection("THREADS")
-            .doc(thread.id)
+        threadRef
             .set(
                 {
                     latestMessage: {
                         text,
                         createdAt: new Date().getTime(),
                     },
+                    users: thread.users
                 },
                 { merge: true }
             );
+
+        const users = thread.users
+        for (let i = 0; i < users.length; i++) {
+            firebase
+                .firestore()
+                .collection('users')
+                .doc(users[i])
+                .collection('openChats')
+                .doc(thread.id)
+                .set({})
+        }
     }
 
     useEffect(() => {
+        getUser();
         const messagesListener = firebase
             .firestore()
             .collection("THREADS")
@@ -67,6 +122,7 @@ export default function ChatScreen({ route, onPress, navigation }) {
                         _id: doc.id,
                         text: "",
                         createdAt: new Date().getTime(),
+                        avatar: userImg,
                         ...firebaseData,
                     };
 
@@ -162,7 +218,14 @@ export default function ChatScreen({ route, onPress, navigation }) {
                         style={styles.icon}
                     />
                 </TouchableOpacity>
-                <Text style={styles.text}>{thread.name}</Text>
+                <Text
+                    style={styles.text}
+                    onPress={() => thread.isGroup
+                                ?  navigation.navigate('GroupInfoScreen', { item: thread })
+                                :  navigation.navigate('ViewProfileScreen', { item: { userId: thread.otherId }})}
+                >
+                    {thread.name}
+                </Text>
             </View>
             <GiftedChat
                 messages={messages}
@@ -170,7 +233,8 @@ export default function ChatScreen({ route, onPress, navigation }) {
                 user={{ _id: firebase.auth().currentUser.uid }}
                 placeholder="Type your message here..."
                 alwaysShowSend
-                showUserAvatar
+                showUserAvatar={true}
+                showAvatarForEveryMessage={true}
                 scrollToBottom
                 renderBubble={renderBubble}
                 renderLoading={renderLoading}

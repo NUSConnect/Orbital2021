@@ -17,6 +17,11 @@ import CommentScreen from "./CommentScreen";
 import EditCommentScreen from "./EditCommentScreen";
 import ChatScreen from "./ChatScreen";
 import MessagesScreen from "./MessagesScreen";
+import StartMessagesScreen from "./StartMessagesScreen";
+import GroupCreationScreen from "./GroupCreationScreen";
+import InitGroupChatScreen from "./InitGroupChatScreen";
+import GroupInfoScreen from './GroupInfoScreen';
+import EditGroupScreen from './EditGroupScreen';
 import ViewProfileScreen from "../profile/ViewProfileScreen";
 
 const Stack = createStackNavigator();
@@ -38,6 +43,11 @@ const HomeScreen = ({ navigation }) => {
                 <Stack.Screen name="ViewProfileScreen" component={ViewProfileScreen} />
                 <Stack.Screen name="ChatScreen" component={ChatScreen} />
                 <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
+                <Stack.Screen name="StartMessagesScreen" component={StartMessagesScreen} />
+                <Stack.Screen name="GroupCreationScreen" component={GroupCreationScreen} />
+                <Stack.Screen name="InitGroupChatScreen" component={InitGroupChatScreen} />
+                <Stack.Screen name="GroupInfoScreen" component={GroupInfoScreen} />
+                <Stack.Screen name="EditGroupScreen" component={EditGroupScreen} />
             </Stack.Navigator>
         </SafeAreaView>
     );
