@@ -21,6 +21,20 @@ export default function ChatScreen({ route, onPress, navigation }) {
     const [messages, setMessages] = useState([]);
     const { thread } = route.params;
     const currentUser = firebase.auth().currentUser.uid;
+    const [userImg, setUserImg] = useState(null);
+
+    const getUser = async () => {
+        await firebase
+            .firestore()
+            .collection("users")
+            .doc(firebase.auth().currentUser.uid)
+            .get()
+            .then((documentSnapshot) => {
+                if (documentSnapshot.exists) {
+                    setUserImg(documentSnapshot.data().userImg)
+                }
+            });
+    };
 
     async function handleSend(messages) {
         const text = messages[0].text;
@@ -35,6 +49,7 @@ export default function ChatScreen({ route, onPress, navigation }) {
                     createdAt: new Date().getTime(),
                     user: {
                         _id: currentUser,
+                        avatar: userImg,
                     },
                 });
 
@@ -63,6 +78,7 @@ export default function ChatScreen({ route, onPress, navigation }) {
                 createdAt: new Date().getTime(),
                 user: {
                     _id: currentUser,
+                    avatar: userImg,
                 },
             });
 
@@ -91,6 +107,7 @@ export default function ChatScreen({ route, onPress, navigation }) {
     }
 
     useEffect(() => {
+        getUser();
         const messagesListener = firebase
             .firestore()
             .collection("THREADS")
@@ -105,6 +122,7 @@ export default function ChatScreen({ route, onPress, navigation }) {
                         _id: doc.id,
                         text: "",
                         createdAt: new Date().getTime(),
+                        avatar: userImg,
                         ...firebaseData,
                     };
 
@@ -208,7 +226,8 @@ export default function ChatScreen({ route, onPress, navigation }) {
                 user={{ _id: firebase.auth().currentUser.uid }}
                 placeholder="Type your message here..."
                 alwaysShowSend
-                showUserAvatar
+                showUserAvatar={true}
+                showAvatarForEveryMessage={true}
                 scrollToBottom
                 renderBubble={renderBubble}
                 renderLoading={renderLoading}

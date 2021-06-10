@@ -81,14 +81,14 @@ export default function StartMessagesScreen({ navigation }) {
                         friendsArr.push({
                             id: threadID,
                             name,
-                            userImg,
+                            avatar: userImg,
                             users: users,
                             bio,
                         });
                     }
                 });
             });
-        console.log(friendsArr);
+//        console.log(friendsArr);
         friendsArr.sort((x, y) => {
             if (x.name < y.name) { return -1; }
             if (x.name > y.name) { return 1; }
@@ -156,7 +156,7 @@ export default function StartMessagesScreen({ navigation }) {
                     >
                         <UserInfo>
                             <UserImgWrapper>
-                                <UserImg source={{ uri: item.userImg }} />
+                                <UserImg source={{ uri: item.avatar }} />
                             </UserImgWrapper>
                             <TextSection>
                                 <UserInfoText>

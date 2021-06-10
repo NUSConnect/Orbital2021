@@ -76,10 +76,10 @@ export default function MessagesScreen({ navigation }) {
                         .then((doc) => {
                             if (doc.exists) {
                                 threads[k].name = doc.data().name;
-                                threads[k].userImg = doc.data().userImg;
+                                threads[k].avatar = doc.data().userImg;
                             } else {
                                 threads[k].name = "anon";
-                                threads[k].userImg = null;
+                                threads[k].avatar = null;
                             }
                         });
                 }
@@ -89,7 +89,7 @@ export default function MessagesScreen({ navigation }) {
             return y.latest - x.latest
         })
         setThreads(threads);
-        console.log("Threads: ", threads);
+//        console.log("Threads: ", threads);
     };
 
     const getThreads = async () => {
@@ -149,7 +149,7 @@ export default function MessagesScreen({ navigation }) {
                     >
                         <UserInfo>
                             <UserImgWrapper>
-                                <UserImg source={{ uri: item.userImg }} />
+                                <UserImg source={{ uri: item.avatar }} />
                             </UserImgWrapper>
                             <TextSection>
                                 <UserInfoText>
