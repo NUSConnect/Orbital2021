@@ -77,9 +77,10 @@ export default function StartMessagesScreen({ navigation }) {
                         const users = [currentUserId, doc.id];
                         const threadID = concatList(users);
 
-                        console.log("ThreadID: ", threadID);
+//                        console.log("ThreadID: ", threadID);
                         friendsArr.push({
                             id: threadID,
+                            userId: doc.id,
                             name,
                             avatar: userImg,
                             users: users,
@@ -130,7 +131,7 @@ export default function StartMessagesScreen({ navigation }) {
                 ItemSeparatorComponent={() => <Divider />}
                 ListHeaderComponent={
                     <Card
-                        onPress={() => alert('create group')}
+                        onPress={() => navigation.navigate("GroupCreationScreen", { threads })}
                     >
                         <UserInfo>
                             <FontAwesome5
@@ -167,6 +168,7 @@ export default function StartMessagesScreen({ navigation }) {
                         </UserInfo>
                     </Card>
                 )}
+                style={{ marginBottom: 40, }}
             />
         </View>
     );

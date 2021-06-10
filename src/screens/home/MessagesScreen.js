@@ -59,29 +59,40 @@ export default function MessagesScreen({ navigation }) {
             const threadId = threads[k].id
 
             var users;
+            var isGroup;
             await firebase.firestore().collection("THREADS").doc(threadId).get()
                 .then((doc) => {
                     users = doc.data().users
                     threads[k].latest = doc.data().latestMessage.createdAt
                     threads[k].message = doc.data().latestMessage.text
+                    isGroup = doc.data().group
                 });
 
-            for (let i = 0; i < users.length; i++) {
-                if (users[i] != currentUserId) {
-                    await firebase
-                        .firestore()
-                        .collection("users")
-                        .doc(users[i])
-                        .get()
-                        .then((doc) => {
-                            if (doc.exists) {
-                                threads[k].name = doc.data().name;
-                                threads[k].avatar = doc.data().userImg;
-                            } else {
-                                threads[k].name = "anon";
-                                threads[k].avatar = null;
-                            }
-                        });
+            if (isGroup) {
+                await firebase.firestore().collection("THREADS").doc(threadId).get()
+                    .then((doc) => {
+                        threads[k].name = doc.data().groupName.name;
+                        threads[k].avatar = doc.data().groupImage;
+                        threads[k].isGroup = true;
+                    })
+            } else {
+                for (let i = 0; i < users.length; i++) {
+                    if (users[i] != currentUserId) {
+                        await firebase
+                            .firestore()
+                            .collection("users")
+                            .doc(users[i])
+                            .get()
+                            .then((doc) => {
+                                if (doc.exists) {
+                                    threads[k].name = doc.data().name;
+                                    threads[k].avatar = doc.data().userImg;
+                                } else {
+                                    threads[k].name = "anon";
+                                    threads[k].avatar = null;
+                                }
+                            });
+                    }
                 }
             }
         }
@@ -163,6 +174,7 @@ export default function MessagesScreen({ navigation }) {
                         </UserInfo>
                     </Card>
                 )}
+                style={{ marginBottom: 40, }}
             />
         </View>
     );
