@@ -218,7 +218,14 @@ export default function ChatScreen({ route, onPress, navigation }) {
                         style={styles.icon}
                     />
                 </TouchableOpacity>
-                <Text style={styles.text}>{thread.name}</Text>
+                <Text
+                    style={styles.text}
+                    onPress={() => thread.isGroup
+                                ?  navigation.navigate('GroupInfoScreen', { item: thread })
+                                :  navigation.navigate('ViewProfileScreen', { item: { userId: thread.otherId }})}
+                >
+                    {thread.name}
+                </Text>
             </View>
             <GiftedChat
                 messages={messages}

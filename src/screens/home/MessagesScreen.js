@@ -73,6 +73,8 @@ export default function MessagesScreen({ navigation }) {
                     .then((doc) => {
                         threads[k].name = doc.data().groupName.name;
                         threads[k].avatar = doc.data().groupImage;
+                        threads[k].description = doc.data().groupDescription.description;
+                        threads[k].members = doc.data().users;
                         threads[k].isGroup = true;
                     })
             } else {
@@ -87,6 +89,7 @@ export default function MessagesScreen({ navigation }) {
                                 if (doc.exists) {
                                     threads[k].name = doc.data().name;
                                     threads[k].avatar = doc.data().userImg;
+                                    threads[k].otherId = users[i]
                                 } else {
                                     threads[k].name = "anon";
                                     threads[k].avatar = null;

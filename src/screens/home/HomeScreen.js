@@ -20,6 +20,7 @@ import MessagesScreen from "./MessagesScreen";
 import StartMessagesScreen from "./StartMessagesScreen";
 import GroupCreationScreen from "./GroupCreationScreen";
 import InitGroupChatScreen from "./InitGroupChatScreen";
+import GroupInfoScreen from './GroupInfoScreen';
 import ViewProfileScreen from "../profile/ViewProfileScreen";
 
 const Stack = createStackNavigator();
@@ -44,6 +45,7 @@ const HomeScreen = ({ navigation }) => {
                 <Stack.Screen name="StartMessagesScreen" component={StartMessagesScreen} />
                 <Stack.Screen name="GroupCreationScreen" component={GroupCreationScreen} />
                 <Stack.Screen name="InitGroupChatScreen" component={InitGroupChatScreen} />
+                <Stack.Screen name="GroupInfoScreen" component={GroupInfoScreen} />
             </Stack.Navigator>
         </SafeAreaView>
     );

@@ -85,22 +85,20 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         }
     };
 
+    const concatList = (list) => {
+        let str = "";
+        list.sort()
+        for (let i = 0; i < list.length; i++) {
+            str = str + list[i].substring(0, 6)
+        }
+        return str;
+    };
+
     const message = async () => {
-    await firebase
-          .firestore()
-          .collection('users')
-          .doc(currentUserId)
-          .get()
-          .then((documentSnapshot) => {
-              if (documentSnapshot.exists) {
-                  console.log(documentSnapshot.data())
-                  const { createdAt } = documentSnapshot.data();
-                  currentUserCreatedAt = createdAt;
-              }
-          });
-    var threadID = currentUserCreatedAt <= item.createdAt ? currentUserId + item.userId : item.userId + currentUserId;
-    var threadObj =  new Object({ id: threadID, name: userData.name });
-    navigation.navigate("ChatScreen", { thread: threadObj });
+        const list = [currentUserId, item.userId]
+        var threadID = concatList(list);
+        var threadObj =  new Object({ id: threadID, name: userData.name });
+        navigation.navigate("ChatScreen", { thread: threadObj });
     };
 
     const fetchUserPosts = async () => {
@@ -195,6 +193,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     };
 
     useEffect(() => {
+        console.log(item)
         getUser();
         getFollowing();
         fetchUserPosts();
