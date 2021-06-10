@@ -34,17 +34,17 @@ export default class ChangeNameScreen extends React.Component {
                 .collection("users")
                 .doc(firebase.auth().currentUser.uid)
                 .update({ name:name });
-            Alert.alert("Name changed successfully!");
+            Alert.alert("Username changed successfully!");
     }
 
     submitName = async (navigator, name) => {
         const list = [];
         if (firebase.auth().currentUser.displayName === name) {
-            Alert.alert("This is your current name!", "Please choose something else");
+            Alert.alert("This is your current username!", "Please choose something else");
             return;
         }
         if (nameValidator(name)) {
-            Alert.alert("Can't update with no name!", "Enter the new name you want to use.");
+            Alert.alert("Can't update with no input!", "Enter the new username you want to use.");
             return;
         }
         firebase
@@ -59,7 +59,7 @@ export default class ChangeNameScreen extends React.Component {
                     this.updateName(name);
                     navigator();
                 } else {
-                    Alert.alert("Someone else already has this name!", "Please choose another name");
+                    Alert.alert("Someone else already has this username!", "Please choose another username");
                 }
             });
 
@@ -71,10 +71,10 @@ export default class ChangeNameScreen extends React.Component {
             <SafeAreaView>
                 <View style={styles.container}>
                     <View style={styles.innerContainer}>
-                        <Text style={styles.title}>Enter your new name</Text>
+                        <Text style={styles.title}>Enter your new username</Text>
                         <View style={styles.wordspace} />
                         <Text style={styles.current}>
-                            Enter your new name here:
+                            Enter your new username here:
                         </Text>
                         <TextInput
                             style={styles.input}
@@ -95,8 +95,8 @@ export default class ChangeNameScreen extends React.Component {
                                               this.state.text
                                           )
                                         : Alert.alert(
-                                              "Can't update with no name!",
-                                              "Enter the new name you want to use."
+                                              "Can't update with no input!",
+                                              "Enter the new username you want to use."
                                           );
                                 }}
                                 string={"Update"}
