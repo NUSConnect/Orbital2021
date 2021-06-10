@@ -18,7 +18,7 @@ export default function FindGroupScreen({ navigation }) {
             .onSnapshot((documentSnapshot) => {
                 if (documentSnapshot.data().finding) {
                     calculateGroup(documentSnapshot.data().groupCategory);
-                    console.log('checking at ' + new Date())
+                    console.log("checking at " + new Date());
                 }
             });
 
@@ -65,19 +65,19 @@ export default function FindGroupScreen({ navigation }) {
             .doc(userId)
             .update({ finding: false, groupCategory: null });
         // maybe send notification to users here that group is found/no groups matched
-    }
+    };
 
     const concatList = (list) => {
         let str = "";
-        list.sort()
+        list.sort();
         for (let i = 0; i < list.length; i++) {
-            str = str + list[i].substring(0, 6)
+            str = str + list[i].substring(0, 6);
         }
         return str;
     };
 
     const clearUsers = async (success, category) => {
-        console.log('Function called');
+        console.log("Function called");
         const list = [];
         await firebase
             .firestore()
@@ -87,31 +87,92 @@ export default function FindGroupScreen({ navigation }) {
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((documentSnapshot) => {
-                    list.push(documentSnapshot.id)
+                    list.push(documentSnapshot.id);
                     documentSnapshot.ref.delete();
                 });
             });
         if (success) {
             const groupId = category + concatList(list);
-            firebase.firestore().collection("groups").doc(groupId).set({ category: category })
+            firebase
+                .firestore()
+                .collection("groups")
+                .doc(groupId)
+                .set({ category: category });
             for (let i = 0; i < list.length; i++) {
-                firebase.firestore().collection("groups").doc(groupId).collection("members").doc(list[i]).set({})
-                firebase.firestore().collection("users").doc(list[i]).collection('groups').doc(groupId).set({});
+                firebase
+                    .firestore()
+                    .collection("groups")
+                    .doc(groupId)
+                    .collection("members")
+                    .doc(list[i])
+                    .set({});
+                firebase
+                    .firestore()
+                    .collection("users")
+                    .doc(list[i])
+                    .collection("groups")
+                    .doc(groupId)
+                    .set({});
             }
         }
 
         for (let i = 0; i < list.length; i++) {
             // turn off finding
-            firebase.firestore().collection("users").doc(list[i]).update({ finding: false, groupCategory: null });
+            firebase
+                .firestore()
+                .collection("users")
+                .doc(list[i])
+                .update({ finding: false, groupCategory: null });
         }
-    }
+    };
 
     const calculateGroup = async (category) => {
         var count;
         var lastJoinedAt;
-        console.log('Logged at ' + new Date())
-        await firebase.firestore().collection("categories").doc(category).get().then(doc => lastJoinedAt = doc.data().lastJoinedAt);
+        //var finding;
+        console.log("Logged at " + new Date());
+        await firebase
+            .firestore()
+            .collection("categories")
+            .doc(category)
+            .get()
+            .then((doc) => (lastJoinedAt = doc.data().lastJoinedAt));
+        /*
+        await firebase
+            .firestore()
+            .collection("users")
+            .doc(currentUserId)
+            .get()
+            .then((doc) => (finding = doc.data().finding));
+        console.log(finding);
+        */
 
+        const unsubscribe = firebase
+            .firestore()
+            .collection("categories")
+            .doc(category)
+            .collection("people")
+            .onSnapshot((querySnapshot) => {
+                count = querySnapshot.size;
+            });
+        console.log(count);
+
+        if (count === 0) {
+            navigation.navigate("FindGroupScreen");
+        } else if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 6) {
+            //hit threshold, handle logic to form a group. currently only an alert.
+            Alert.alert("Group found!");
+            const successfulFinding = count >= 2;
+            clearUsers(successfulFinding, category);
+            navigation.navigate("FindGroupScreen");
+        } else {
+            //not enough people to form group, send to waiting screen.
+            navigation.navigate("WaitingScreen", {
+                groupCategory: category,
+            });
+        }
+        unsubscribe();
+        /*
         const unsubscribe = firebase
             .firestore()
             .collection("categories")
@@ -121,7 +182,6 @@ export default function FindGroupScreen({ navigation }) {
                 count = doc.size;
                 if (count === 0) {
                     console.log(count);
-                    unsubscribe()
                 }
             });
 
@@ -137,6 +197,7 @@ export default function FindGroupScreen({ navigation }) {
                 }
                 else if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 6) {
                     //hit threshold, handle logic to form a group. currently only an alert.
+                    unsubscribe();
                     Alert.alert("Group found!");
                     const successfulFinding = count >= 2;
                     clearUsers(successfulFinding, category);
@@ -148,7 +209,7 @@ export default function FindGroupScreen({ navigation }) {
                     });
                 }
             });
-            unsubscribe();
+            */
     };
 
     return (
