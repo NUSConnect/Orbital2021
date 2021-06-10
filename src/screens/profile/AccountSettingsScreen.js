@@ -20,6 +20,13 @@ export default function AccountSettingsScreen({ navigation }) {
                 </Button>
                 <Button
                     style={styles.button}
+                    onPress={() => navigation.navigate("ChangeNameScreen")}
+                >
+                    {" "}
+                    Change your username
+                </Button>
+                <Button
+                    style={styles.button}
                     onPress={() => navigation.navigate("ChangePasswordScreen")}
                 >
                     {" "}

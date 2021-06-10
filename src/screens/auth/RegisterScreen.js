@@ -55,7 +55,7 @@ export default function RegisterScreen({ navigation }) {
             <Logo />
             <Header>Create Account</Header>
             <TextInput
-                label="Name"
+                label="Username"
                 returnKeyType="next"
                 value={name.value}
                 onChangeText={(text) => setName({ value: text, error: "" })}
