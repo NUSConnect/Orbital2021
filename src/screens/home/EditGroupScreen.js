@@ -16,12 +16,18 @@ import * as ImagePicker from "expo-image-picker";
 import * as firebase from 'firebase';
 
 
-export default function InitGroupChatScreen({ route, navigation}) {
+export default function EditGroupScreen({ route, navigation}) {
+    const { item } = route.params;
+
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [image, setImage] = useState('https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/forum%2FWELCOME.png?alt=media&token=eb0f815b-0e18-4eca-b5a6-0cc170b0eb51');
+    const [image, setImage] = useState(null);
 
-    const { users } = route.params;
+    useEffect(() => {
+        setName(item.name)
+        setDescription(item.description)
+        setImage(item.avatar)
+    }, []);
 
     const choosePhotoFromLibrary = async () => {
         let permissionResult =
@@ -85,38 +91,22 @@ export default function InitGroupChatScreen({ route, navigation}) {
     }
 
     const handleSubmit = async (navigator) => {
-        const threadId = concatList(users);
+        const imageUrl = await uploadImage();
 
-        const imageUrl = await uploadImage(threadId);
-
-        for (let i = 0; i < users.length; i++) {
-            firebase
-                .firestore()
-                .collection('users')
-                .doc(users[i])
-                .collection('openChats')
-                .doc(threadId)
-                .set({})
-        }
+        const threadId = item.id
 
         const threadRef = await firebase.firestore().collection('THREADS').doc(threadId)
 
         threadRef
             .set({
-                latestMessage: {
-                    text: 'New group created',
-                    createdAt: new Date().getTime(),
-                },
-                users: users,
-                group: true,
                 groupImage: imageUrl,
                 groupName: name,
                 groupDescription: description,
             }, { merge: true })
             .then(() => {
                 Alert.alert(
-                    "Group created!",
-                    "The group has been created successfully!",
+                    "Group info updated!",
+                    "Information is updated successfully.",
                     [
                         {
                             text: "OK",
@@ -134,7 +124,7 @@ export default function InitGroupChatScreen({ route, navigation}) {
             });
     };
 
-    const uploadImage = async (name) => {
+    const uploadImage = async () => {
         if (image == null) {
             return null;
         }
@@ -143,7 +133,7 @@ export default function InitGroupChatScreen({ route, navigation}) {
         const blob = await response.blob();
 
         // Add timestamp to File Name
-        let filename = name + ".jpg";
+        let filename = item.id + ".jpg";
 
         const storageRef = firebase.storage().ref(`groups/${filename}`);
         const task = storageRef.put(blob);
@@ -167,7 +157,7 @@ export default function InitGroupChatScreen({ route, navigation}) {
             scrollEnabled={true}
         >
             <GroupCreationTopTab
-                text={'Create a group'}
+                text={'Edit group info'}
                 onBack={() => navigation.goBack()}
                 onPress={() => checkSubmit()} />
             <Text style={styles.subTitle}>Group Image</Text>

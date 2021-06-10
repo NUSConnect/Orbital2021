@@ -89,7 +89,7 @@ const GroupInfoScreen = ({ navigation, route, onPress }) => {
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity
                             style={styles.button}
-                            onPress={() => alert('edit group info')}
+                            onPress={() => navigation.navigate('EditGroupScreen', { item })}
                         >
                             <Text style={styles.text}>Edit Group</Text>
                         </TouchableOpacity>
