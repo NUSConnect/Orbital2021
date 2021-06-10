@@ -1,24 +1,19 @@
-import React, { useState, useEffect } from "react";
-import {
-    Text,
-    View,
-    FlatList,
-    SafeAreaView,
-    StyleSheet,
-    StatusBar,
-    RefreshControl,
-} from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import FriendSearchScreen from "./FriendSearchScreen";
-import CommentScreen from "../home/CommentScreen";
+import React from "react";
+import {
+    SafeAreaView,
+
+    StatusBar, StyleSheet
+} from "react-native";
 import ChatScreen from "../home/ChatScreen";
+import CommentScreen from "../home/CommentScreen";
 import ViewProfileScreen from "../profile/ViewProfileScreen";
-import WaitingScreen from "./WaitingScreen";
-import FindGroupScreen from './FindGroupScreen';
-import MajorsSearchScreen from "./MajorsSearchScreen";
 import FilteredMajorScreen from "./FilteredMajorScreen";
+import FindGroupScreen from './FindGroupScreen';
+import FriendSearchScreen from "./FriendSearchScreen";
+import MajorsSearchScreen from "./MajorsSearchScreen";
+import WaitingScreen from "./WaitingScreen";
 
 const Stack = createStackNavigator();
 const TopTab = createMaterialTopTabNavigator();

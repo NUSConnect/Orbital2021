@@ -1,24 +1,16 @@
+import * as firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import {
-    View,
-    Text,
-    TextInput,
-    Image,
-    StyleSheet,
-    SafeAreaView,
-    FlatList,
-    TouchableOpacity,
-    Alert,
+    Alert, FlatList, SafeAreaView, StyleSheet, Text,
+    TextInput, View
 } from "react-native";
 import ModalSelector from 'react-native-modal-selector';
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "react-native-vector-icons";
-import SubForumHeader from "../../components/SubForumHeader";
-import ForumPost from "../../components/ForumPost";
-import moment from "moment";
-
+import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { sortByLatestForum, sortByTrendingForum } from '../../api/ranking';
+import ForumPost from "../../components/ForumPost";
+import SubForumHeader from "../../components/SubForumHeader";
 
-import * as firebase from "firebase";
+
 
 const SubForumScreen = ({ navigation, route, onPress }) => {
     const currentUserId = firebase.auth().currentUser.uid;

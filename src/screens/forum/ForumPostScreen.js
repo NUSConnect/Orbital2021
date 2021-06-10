@@ -1,23 +1,13 @@
+import * as firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import {
-    View,
-    Text,
-    Image,
-    StyleSheet,
-    TextInput,
-    SafeAreaView,
-    FlatList,
-    TouchableOpacity,
-    Alert,
+    Alert, FlatList, SafeAreaView, StyleSheet, View
 } from "react-native";
-import { Ionicons, MaterialIcons } from "react-native-vector-icons";
-import ForumPostHeader from "../../components/ForumPostHeader";
-import ForumPost from "../../components/ForumPost";
 import CommentItem from "../../components/CommentItem";
 import CreateComment from '../../components/CreateComment';
-import moment from "moment";
+import ForumPost from "../../components/ForumPost";
+import ForumPostHeader from "../../components/ForumPostHeader";
 
-import * as firebase from "firebase";
 
 const ForumPostScreen = ({ navigation, route, onPress }) => {
     const currentUserId = firebase.auth().currentUser.uid;

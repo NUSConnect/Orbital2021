@@ -1,21 +1,14 @@
-import React, { useEffect, useState } from "react";
+import * as firebase from "firebase";
+import React, { useState } from "react";
 import {
-    View,
-    Text,
-    StyleSheet,
-    TextInput,
-    SafeAreaView,
-    TouchableOpacity,
-    Alert,
+    Alert, SafeAreaView, StyleSheet, Text,
+
+    TextInput, View
 } from "react-native";
-import { Ionicons, MaterialIcons } from "react-native-vector-icons";
-import TitleWithBack from "../../components/TitleWithBack";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
 
-import moment from "moment";
 
-import * as firebase from "firebase";
 
 const EditForumCommentScreen = ({ navigation, route }) => {
     const currentUserId = firebase.auth().currentUser.uid;

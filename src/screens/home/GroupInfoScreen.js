@@ -1,28 +1,32 @@
+import * as firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import {
-    View,
-    Text,
-    Image,
-    StyleSheet,
-    TextInput,
-    SafeAreaView,
-    FlatList,
-    TouchableOpacity,
-    Alert,
+    FlatList, Image,
+
+
+    SafeAreaView, StyleSheet, Text,
+
+
+
+
+
+    TouchableOpacity, View
 } from "react-native";
+import TitleWithBack from "../../components/TitleWithBack";
 import {
     Card,
-    UserInfo,
-    UserImgWrapper,
-    UserImg,
-    UserInfoText,
-    UserName,
-    TextSection,
-} from "../../styles/MessageStyles";
-import { Ionicons, MaterialIcons } from "react-native-vector-icons";
-import TitleWithBack from "../../components/TitleWithBack";
 
-import * as firebase from "firebase";
+
+
+
+
+    TextSection, UserImg, UserImgWrapper, UserInfo,
+
+
+    UserInfoText,
+    UserName
+} from "../../styles/MessageStyles";
+
 
 const GroupInfoScreen = ({ navigation, route, onPress }) => {
     const currentUserId = firebase.auth().currentUser.uid;

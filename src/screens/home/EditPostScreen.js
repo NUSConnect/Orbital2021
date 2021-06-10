@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from "react";
+import * as firebase from "firebase";
+import React, { useState } from "react";
 import {
-    View,
-    Text,
-    Image,
-    StyleSheet,
-    TextInput,
-    SafeAreaView,
-    TouchableOpacity,
-    Alert,
+    Alert, Image,
+
+
+    SafeAreaView, StyleSheet, Text,
+
+
+    TextInput, View
 } from "react-native";
-import { Ionicons, MaterialIcons } from "react-native-vector-icons";
-import TitleWithBack from "../../components/TitleWithBack";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
 
-import moment from "moment";
 
-import * as firebase from "firebase";
 
 const EditPostScreen = ({ navigation, route }) => {
     const currentUserId = firebase.auth().currentUser.uid;

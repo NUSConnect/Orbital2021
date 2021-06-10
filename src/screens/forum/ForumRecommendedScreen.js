@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
-    Text,
-    Image,
-    View,
-    FlatList,
+    FlatList, Image,
+
+
     SafeAreaView,
-    StyleSheet,
-    StatusBar,
-    RefreshControl,
-    TouchableOpacity,
+    StyleSheet, Text,
+
+
+
+
+
+
+
+    TouchableOpacity, View
 } from "react-native";
-import ForumCreationScreen from "./ForumCreationScreen";
 
 export default class ForumRecommendedScreen extends React.Component {
     constructor(props) {

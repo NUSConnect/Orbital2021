@@ -1,8 +1,8 @@
 import React from "react";
 import {
     ImageBackground,
-    StyleSheet,
-    KeyboardAvoidingView,
+
+    KeyboardAvoidingView, StyleSheet
 } from "react-native";
 import { theme } from "../core/theme";
 

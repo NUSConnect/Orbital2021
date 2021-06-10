@@ -1,16 +1,14 @@
-import * as React from "react";
-import { Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import * as React from "react";
 import {
-    MaterialCommunityIcons,
-    FontAwesome5,
+    FontAwesome5, MaterialCommunityIcons
 } from "react-native-vector-icons";
 import {
-    HomeScreen,
     ForumScreen,
-    FriendsScreen,
-    ProfileMasterScreen,
+    FriendsScreen, HomeScreen,
+
+
+    ProfileMasterScreen
 } from "./";
 
 const Tab = createMaterialBottomTabNavigator();

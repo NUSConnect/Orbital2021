@@ -1,7 +1,6 @@
 import React from "react";
-import RNActionButton from "react-native-action-button";
 import { Animated, StyleSheet } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import RNActionButton from "react-native-action-button";
 
 RNActionButton.prototype.animateButton = function (animate = true) {
     if (this.state.active) return this.reset();

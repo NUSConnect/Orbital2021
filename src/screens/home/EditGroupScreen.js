@@ -1,19 +1,18 @@
+import * as ImagePicker from "expo-image-picker";
+import * as firebase from 'firebase';
 import React, { useEffect, useState } from "react";
 import {
-    View,
-    Text,
-    Image,
-    StyleSheet,
+    Alert, Image,
+    StyleSheet, Text,
+
+
     TextInput,
-    SafeAreaView,
-    TouchableOpacity,
-    Alert,
+
+    TouchableOpacity
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import GroupCreationTopTab from '../../components/GroupCreationTopTab'
-import * as ImagePicker from "expo-image-picker";
+import GroupCreationTopTab from '../../components/GroupCreationTopTab';
 
-import * as firebase from 'firebase';
 
 
 export default function EditGroupScreen({ route, navigation}) {

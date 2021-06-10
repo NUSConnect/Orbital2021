@@ -1,22 +1,15 @@
-import React, { useEffect, useState, useContext } from "react";
-import {
-    View,
-    Text,
-    Image,
-    StyleSheet,
-    TextInput,
-    SafeAreaView,
-    Alert,
-    ActivityIndicator,
-    Platform,
-    Animated,
-} from "react-native";
-import SubmitButton from "../../components/SubmitButton";
-import CancelButton from "../../components/CancelButton";
-import { FIREBASE_CONFIG } from "../../core/config";
-import { logoutUser } from "../../api/auth";
-import { passwordValidator } from "../../helpers/auth/passwordValidator";
 import * as firebase from "firebase";
+import React from "react";
+import {
+    Alert, SafeAreaView, StyleSheet, Text,
+
+
+    TextInput, View
+} from "react-native";
+import { logoutUser } from "../../api/auth";
+import CancelButton from "../../components/CancelButton";
+import SubmitButton from "../../components/SubmitButton";
+import { passwordValidator } from "../../helpers/auth/passwordValidator";
 
 export default class ChangePasswordScreen extends React.Component {
     constructor(props) {

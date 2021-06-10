@@ -1,11 +1,10 @@
+import * as firebase from "firebase";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "react-native-vector-icons";
 
-import ProgressiveImage from "./ProgressiveImage";
 
-import moment from "moment";
-import * as firebase from "firebase";
 
 const ForumPost = ({
     route,

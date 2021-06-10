@@ -1,21 +1,19 @@
-import * as React from "react";
-import { Text, View, SafeAreaView, StyleSheet, StatusBar } from "react-native";
-import SearchBar from "../../components/SearchBar";
-import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import {
-    ForumSearchScreen,
-    ForumSubscribedScreen,
-    ForumOthersScreen,
-    ForumCreationScreen,
-    SubForumScreen,
-    ForumAddPostScreen,
-    ForumPostScreen,
-    EditForumPostScreen,
-    EditForumCommentScreen,
-} from "./";
+import * as React from "react";
+import { SafeAreaView, StatusBar, StyleSheet } from "react-native";
 import ViewProfileScreen from "../profile/ViewProfileScreen";
+import {
+    EditForumCommentScreen, EditForumPostScreen, ForumAddPostScreen, ForumCreationScreen, ForumOthersScreen,
+
+
+
+    ForumPostScreen, ForumSearchScreen,
+    ForumSubscribedScreen,
+
+
+    SubForumScreen
+} from "./";
 
 const Stack = createStackNavigator();
 const TopTab = createMaterialTopTabNavigator();

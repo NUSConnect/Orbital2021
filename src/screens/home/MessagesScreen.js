@@ -1,26 +1,29 @@
-import React, { useState, useEffect } from "react";
-import {
-    View,
-    StyleSheet,
-    FlatList,
-    TouchableOpacity,
-    Text,
-    TextInput
-} from "react-native";
-import { List, Divider } from "react-native-paper";
-import moment from "moment";
-import MessageTopTab from "../../components/MessageTopTab";
 import * as firebase from "firebase";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import {
+    FlatList, StyleSheet,
+
+
+    Text,
+    TextInput, View
+} from "react-native";
+import { Divider } from "react-native-paper";
+import MessageTopTab from "../../components/MessageTopTab";
 import {
     Card,
-    UserInfo,
-    UserImgWrapper,
-    UserImg,
-    UserInfoText,
-    UserName,
+
+
+
+
+
     PostTime,
-    MessageText,
-    TextSection,
+
+    TextSection, UserImg, UserImgWrapper, UserInfo,
+
+
+    UserInfoText,
+    UserName
 } from "../../styles/MessageStyles";
 
 export default function MessagesScreen({ navigation }) {

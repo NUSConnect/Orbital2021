@@ -1,27 +1,20 @@
-import React, { useState, useEffect } from "react";
-import {
-    View,
-    StyleSheet,
-    FlatList,
-    TouchableOpacity,
-    Text,
-    TextInput,
-    Alert,
-} from "react-native";
-import { List, Divider } from "react-native-paper";
-import { FontAwesome5 } from "react-native-vector-icons";
-import GroupCreationTopTab from "../../components/GroupCreationTopTab";
 import * as firebase from "firebase";
+import React, { useState } from "react";
 import {
-    Card,
-    UserInfo,
-    UserImgWrapper,
-    UserImg,
+    Alert, FlatList, StyleSheet,
+
+
+    Text,
+    TextInput, TouchableOpacity, View
+} from "react-native";
+import { Divider } from "react-native-paper";
+import GroupCreationTopTab from "../../components/GroupCreationTopTab";
+import {
+    TextSection, UserImg, UserImgWrapper, UserInfo,
+
+
     UserInfoText,
-    UserName,
-    PostTime,
-    MessageText,
-    TextSection,
+    UserName
 } from "../../styles/MessageStyles";
 
 export default function GroupCreationScreen({ props, route, navigation }) {

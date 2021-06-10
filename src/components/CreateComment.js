@@ -1,5 +1,5 @@
 import React from "react";
-import { TextInput, View, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
 
 const CreateComment = ({ onPress, setComment, comment, setIsFocused }) => {

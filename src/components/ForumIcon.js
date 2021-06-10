@@ -1,22 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import {
-    Container,
-    Card,
-    UserInfo,
-    UserImg,
-    UserName,
-    UserInfoText,
-    PostTime,
-    PostText,
-    PostImg,
-    InteractionWrapper,
-    Interaction,
-    InteractionText,
-    Divider,
-} from "../styles/FeedStyles";
+import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 
-import * as firebase from "firebase";
 
 const ForumIcon = ({ item, onPress }) => {
     return (

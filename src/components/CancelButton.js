@@ -1,6 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import { getStatusBarHeight } from "react-native-status-bar-height";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 export default function CancelButton({ goBack }) {
     return (

@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { MaterialIcons } from "react-native-vector-icons";
-
-import ProgressiveImage from "./ProgressiveImage";
-
-import moment from "moment";
 import * as firebase from "firebase";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+
+
 
 const CommentItem = ({
     route,
