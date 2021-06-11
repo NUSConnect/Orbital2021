@@ -1,21 +1,20 @@
-import React, { useState, useContext, useEffect } from "react";
-import {
-    GiftedChat,
-    Bubble,
-    Send,
-    SystemMessage,
-} from "react-native-gifted-chat";
+import * as firebase from "firebase";
+import React, { useEffect, useState } from "react";
 import {
     ActivityIndicator,
-    View,
     StyleSheet,
     Text,
     TouchableOpacity,
+    View
 } from "react-native";
+import {
+    Bubble,
+    GiftedChat,
+    Send,
+    SystemMessage
+} from "react-native-gifted-chat";
 import { IconButton } from "react-native-paper";
 import { Ionicons } from "react-native-vector-icons";
-import BackButton from "../../components/BackButton";
-import * as firebase from "firebase";
 
 export default function ChatScreen({ route, onPress, navigation }) {
     const [messages, setMessages] = useState([]);

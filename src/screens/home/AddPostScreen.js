@@ -1,24 +1,21 @@
-import React, { useEffect, useState, useContext } from "react";
+import * as ImagePicker from "expo-image-picker";
+import * as firebase from "firebase";
+import React from "react";
 import {
-    View,
-    Text,
-    Image,
-    StyleSheet,
-    TextInput,
-    SafeAreaView,
-    Alert,
     ActivityIndicator,
-    Platform,
+    Alert,
     Animated,
+    Image,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View
 } from "react-native";
-import CancelButton from "../../components/CancelButton";
-import SubmitButton from "../../components/SubmitButton";
-
 import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
-import * as ImagePicker from "expo-image-picker";
-
-import * as firebase from "firebase";
+import CancelButton from "../../components/CancelButton";
+import SubmitButton from "../../components/SubmitButton";
 
 // Action button fix
 ActionButton.prototype.animateButton = function (animate = true) {

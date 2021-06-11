@@ -1,15 +1,8 @@
 import React from "react";
-import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
-import { theme } from "../core/theme";
 
-export default function SubForumHeader({
-    title,
-    style,
-    goBack,
-    ...props
-}) {
+export default function SubForumHeader({ title, style, goBack, ...props }) {
     return (
         <View style={styles.container}>
             <TouchableOpacity
@@ -29,7 +22,7 @@ export default function SubForumHeader({
                 name="add"
                 color="white"
                 size={38}
-                style={{paddingLeft: 12}}
+                style={{ paddingLeft: 12 }}
             />
         </View>
     );

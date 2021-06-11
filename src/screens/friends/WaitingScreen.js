@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import * as firebase from "firebase";
+import React from "react";
 import { StyleSheet } from "react-native";
+import * as Animatable from "react-native-animatable";
 import Background from "../../components/Background";
 import Button from "../../components/Button";
-import * as Animatable from "react-native-animatable";
-import * as firebase from "firebase";
 
 export default function WaitingScreen({ navigation, route, goBack }) {
     const currentUserId = firebase.auth().currentUser.uid;

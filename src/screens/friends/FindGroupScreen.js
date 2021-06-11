@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Text, View, Dimensions, StyleSheet, Alert } from "react-native";
-import { MaterialCommunityIcons } from "react-native-vector-icons";
 import * as firebase from "firebase";
+import React, { useEffect } from "react";
+import { Alert, Dimensions, StyleSheet, Text, View } from "react-native";
+import { MaterialCommunityIcons } from "react-native-vector-icons";
 
 const DeviceWidth = Dimensions.get("window").width;
 const squareSide = 0.4 * DeviceWidth;

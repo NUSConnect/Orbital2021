@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { MaterialIcons } from "react-native-vector-icons";
-
-import ProgressiveImage from "./ProgressiveImage";
-
-import moment from "moment";
 import * as firebase from "firebase";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { MaterialIcons } from "react-native-vector-icons";
 
 const ForumPost = ({
     route,
@@ -64,7 +61,6 @@ const ForumPost = ({
                         setUpvoted(false);
                         setDownvoted(true);
                     }
-
                 } else {
                     setUpvoted(false);
                     setDownvoted(false);
@@ -163,19 +159,20 @@ const ForumPost = ({
         <View style={styles.container}>
             <View style={styles.headerContainer}>
                 <View style={styles.headerLeft}>
-                    <Text style={styles.regularFont}>{'Posted by '}</Text>
+                    <Text style={styles.regularFont}>{"Posted by "}</Text>
                     <Text
                         style={styles.username}
                         onPress={() => onViewProfile(currentUserId)}
                     >
-                        {userData ? userData.name || "Anonymous User" : "Anonymous User"}
+                        {userData
+                            ? userData.name || "Anonymous User"
+                            : "Anonymous User"}
                     </Text>
                     <Text style={styles.regularFont}>
-                        {' ·'} {moment(item.postTime.toDate()).fromNow()}
+                        {" ·"} {moment(item.postTime.toDate()).fromNow()}
                     </Text>
                 </View>
-                <View style={styles.headerRight}>
-                </View>
+                <View style={styles.headerRight}></View>
             </View>
 
             <Text style={styles.title} onPress={onPress}>
@@ -187,19 +184,23 @@ const ForumPost = ({
 
             <View style={styles.bottomContainer}>
                 <View style={styles.voteContainer}>
-                    <TouchableOpacity onPress={() => (upvoted ? unVote(): upVote())}>
+                    <TouchableOpacity
+                        onPress={() => (upvoted ? unVote() : upVote())}
+                    >
                         <MaterialIcons
-                            name='arrow-upward'
+                            name="arrow-upward"
                             size={32}
-                            color={upvoted ? 'lightgreen' : 'darkgray'}
+                            color={upvoted ? "lightgreen" : "darkgray"}
                         />
                     </TouchableOpacity>
                     <Text style={styles.score}>{item.votes}</Text>
-                    <TouchableOpacity onPress={() => (downvoted ? unVote(): downVote())}>
+                    <TouchableOpacity
+                        onPress={() => (downvoted ? unVote() : downVote())}
+                    >
                         <MaterialIcons
-                            name='arrow-downward'
+                            name="arrow-downward"
                             size={32}
-                            color={downvoted ? 'crimson' : 'darkgray'}
+                            color={downvoted ? "crimson" : "darkgray"}
                         />
                     </TouchableOpacity>
                 </View>
@@ -209,9 +210,9 @@ const ForumPost = ({
                     onPress={onPress}
                 >
                     <MaterialIcons
-                        name='messenger-outline'
+                        name="messenger-outline"
                         size={26}
-                        color={'darkgray'}
+                        color={"darkgray"}
                     />
                     <Text style={styles.commentText}>{item.commentCount}</Text>
                 </TouchableOpacity>
@@ -222,20 +223,17 @@ const ForumPost = ({
                             onPress={onDelete}
                         >
                             <MaterialIcons
-                                name='delete'
+                                name="delete"
                                 size={26}
-                                color={'darkgray'}
+                                color={"darkgray"}
                             />
                         </TouchableOpacity>
-                        <View style={{ width: 30 }}/>
-                        <TouchableOpacity
-                            activeOpacity={0.7}
-                            onPress={onEdit}
-                        >
+                        <View style={{ width: 30 }} />
+                        <TouchableOpacity activeOpacity={0.7} onPress={onEdit}>
                             <MaterialIcons
-                                name='edit'
+                                name="edit"
                                 size={26}
-                                color={'darkgray'}
+                                color={"darkgray"}
                             />
                         </TouchableOpacity>
                     </View>
@@ -246,9 +244,9 @@ const ForumPost = ({
                         onPress={onReport}
                     >
                         <MaterialIcons
-                            name='report'
+                            name="report"
                             size={26}
-                            color={'darkgray'}
+                            color={"darkgray"}
                         />
                     </TouchableOpacity>
                 )}
@@ -261,47 +259,47 @@ export default ForumPost;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
+        backgroundColor: "white",
         width: "100%",
         marginBottom: 20,
         borderRadius: 10,
     },
     headerContainer: {
-        flexDirection: 'row',
-        width: '100%',
-        justifyContent: 'space-between',
+        flexDirection: "row",
+        width: "100%",
+        justifyContent: "space-between",
         paddingLeft: 10,
     },
     headerLeft: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
     },
     headerRight: {},
     bottomContainer: {
-        flexDirection: 'row',
+        flexDirection: "row",
     },
     voteContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '33%',
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "33%",
     },
     centerAlign: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '33%',
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "33%",
     },
     buttons: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '33%',
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "33%",
         paddingRight: 10,
     },
     title: {
         fontSize: 22,
-        fontWeight: 'bold',
+        fontWeight: "bold",
         paddingLeft: 10,
     },
     text: {
@@ -312,18 +310,18 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingLeft: 4,
         paddingRight: 4,
-        color: 'darkgray',
+        color: "darkgray",
     },
     commentText: {
         fontSize: 16,
         paddingLeft: 4,
-        color: 'darkgray',
+        color: "darkgray",
     },
     regularFont: {
         fontSize: 14,
     },
     username: {
         fontSize: 14,
-        color: 'blue'
+        color: "blue",
     },
 });

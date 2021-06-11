@@ -1,7 +1,6 @@
 import React from "react";
-import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
-import { theme } from "../core/theme";
 
 export default function GroupCreationTopTab({ onBack, onPress, text, style, ...props }) {
     return (

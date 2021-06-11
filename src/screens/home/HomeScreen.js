@@ -1,28 +1,23 @@
-import React, { useState, useEffect } from "react";
-import {
-    Text,
-    View,
-    FlatList,
-    SafeAreaView,
-    StyleSheet,
-    StatusBar,
-    RefreshControl,
-} from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomePostsScreen from "./HomePostsScreen";
+import React from "react";
+import {
+    SafeAreaView,
+    StatusBar,
+    StyleSheet
+} from "react-native";
+import ViewProfileScreen from "../profile/ViewProfileScreen";
 import AddPostScreen from "./AddPostScreen";
-import EditPostScreen from "./EditPostScreen";
+import ChatScreen from "./ChatScreen";
 import CommentScreen from "./CommentScreen";
 import EditCommentScreen from "./EditCommentScreen";
-import ChatScreen from "./ChatScreen";
+import EditGroupScreen from './EditGroupScreen';
+import EditPostScreen from "./EditPostScreen";
+import GroupCreationScreen from "./GroupCreationScreen";
+import GroupInfoScreen from './GroupInfoScreen';
+import HomePostsScreen from "./HomePostsScreen";
+import InitGroupChatScreen from "./InitGroupChatScreen";
 import MessagesScreen from "./MessagesScreen";
 import StartMessagesScreen from "./StartMessagesScreen";
-import GroupCreationScreen from "./GroupCreationScreen";
-import InitGroupChatScreen from "./InitGroupChatScreen";
-import GroupInfoScreen from './GroupInfoScreen';
-import EditGroupScreen from './EditGroupScreen';
-import ViewProfileScreen from "../profile/ViewProfileScreen";
 
 const Stack = createStackNavigator();
 

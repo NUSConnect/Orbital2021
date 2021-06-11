@@ -1,24 +1,15 @@
-import React, { useEffect, useState, useContext } from "react";
-import {
-    View,
-    Text,
-    Image,
-    StyleSheet,
-    TextInput,
-    SafeAreaView,
-    Alert,
-    ActivityIndicator,
-    Platform,
-    Animated,
-} from "react-native";
-import SubmitButton from "../../components/SubmitButton";
-import CancelButton from "../../components/CancelButton";
-import { FIREBASE_CONFIG } from "../../core/config";
-import ProfilePersonalScreen from "./ProfilePersonalScreen";
-import ActionButton from "react-native-action-button";
-import Icon from "react-native-vector-icons/Ionicons";
-import * as ImagePicker from "expo-image-picker";
 import * as firebase from "firebase";
+import React from "react";
+import {
+    Alert,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View
+} from "react-native";
+import CancelButton from "../../components/CancelButton";
+import SubmitButton from "../../components/SubmitButton";
 
 export default class AddBioScreen extends React.Component {
     constructor(props) {

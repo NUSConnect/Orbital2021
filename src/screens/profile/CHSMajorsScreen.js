@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
-import {
-    SafeAreaView,
-    Text,
-    StyleSheet,
-    View,
-    FlatList,
-    TextInput,
-    ActivityIndicator,
-    StatusBar,
-    Alert
-} from "react-native";
 import * as firebase from "firebase";
+import React from "react";
+import {
+    Alert,
+    FlatList,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    View
+} from "react-native";
 
 export default function CHSMajorsScreen({ props, navigation, goBack }) {
     const currentUserId = firebase.auth().currentUser.uid;

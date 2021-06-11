@@ -1,28 +1,23 @@
+import * as firebase from "firebase";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons, MaterialIcons } from "react-native-vector-icons";
-
 import {
-    Container,
     Card,
-    UserInfo,
-    UserImg,
-    UserName,
-    UserInfoText,
-    PostTime,
-    PostText,
-    PostImg,
-    InteractionWrapper,
+    Divider,
     Interaction,
     InteractionText,
-    Divider,
+    InteractionWrapper,
+    PostText,
+    PostTime,
+    UserImg,
+    UserInfo,
+    UserInfoText,
+    UserName
 } from "../styles/FeedStyles";
-
 import ProgressiveImage from "./ProgressiveImage";
-
-import moment from "moment";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import * as firebase from "firebase";
 
 const PostCard = ({
     route,

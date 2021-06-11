@@ -1,8 +1,6 @@
 import React from "react";
-import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
-import { theme } from "../core/theme";
 
 export default function HomeTopTab({ style, onPress, onPress2, ...props }) {
     return (

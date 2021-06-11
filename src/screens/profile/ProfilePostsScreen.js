@@ -1,19 +1,15 @@
+import * as firebase from "firebase";
 import React from "react";
 import {
-    Text,
-    Image,
-    View,
+    Alert,
     FlatList,
+    Image,
     SafeAreaView,
     StyleSheet,
-    StatusBar,
-    RefreshControl,
     TouchableOpacity,
-    Alert,
+    View
 } from "react-native";
-import PostButton from "../../components/PostButton";
 import PostCard from "../../components/PostCard";
-import * as firebase from "firebase";
 
 export default class ProfilePostsScreen extends React.Component {
     constructor(props) {

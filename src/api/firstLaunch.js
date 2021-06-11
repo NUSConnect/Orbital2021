@@ -1,4 +1,6 @@
-import { AsyncStorage } from "react-native";
+import {
+    AsyncStorage
+} from "react-native";
 
 const HAS_LAUNCHED = "hasLaunched";
 

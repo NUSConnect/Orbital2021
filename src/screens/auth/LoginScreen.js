@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import { TouchableOpacity, StyleSheet, View, StatusBar } from "react-native";
+import { StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Text } from "react-native-paper";
-import Logo from "../../components/Logo";
-import Header from "../../components/Header";
-import Button from "../../components/Button";
-import TextInput from "../../components/TextInput";
+import { loginUser } from "../../api/auth";
 import BackButton from "../../components/BackButton";
-import { theme } from "../../core/theme";
+import Button from "../../components/Button";
+import Header from "../../components/Header";
+import Logo from "../../components/Logo";
+import TextInput from "../../components/TextInput";
+import Toast from "../../components/Toast";
 import { emailValidator } from "../../helpers/auth/emailValidator";
 import { passwordValidator } from "../../helpers/auth/passwordValidator";
-import { loginUser } from "../../api/auth";
-import Toast from "../../components/Toast";
 
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function LoginScreen({ navigation }) {
     const [email, setEmail] = useState({ value: "", error: "" });

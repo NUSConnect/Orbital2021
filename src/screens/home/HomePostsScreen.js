@@ -1,30 +1,22 @@
+import * as firebase from "firebase";
 import React from "react";
 import {
-    Text,
-    TextInput,
-    Image,
-    View,
+    Alert,
     FlatList,
+    Image,
     SafeAreaView,
     StyleSheet,
-    StatusBar,
-    RefreshControl,
+    Text,
+    TextInput,
     TouchableOpacity,
-    Alert,
+    View
 } from "react-native";
 import ModalSelector from 'react-native-modal-selector';
-import AddPostScreen from "./AddPostScreen";
-import CommentScreen from "./CommentScreen";
-import ViewProfileScreen from "../profile/ViewProfileScreen";
-import PostButton from "../../components/PostButton";
+import { MaterialCommunityIcons } from "react-native-vector-icons";
+import { swipeDirections } from "rn-swipe-gestures";
+import { sortByLatest, sortByTrending } from '../../api/ranking';
 import HomeTopTab from "../../components/HomeTopTab";
 import PostCard from "../../components/PostCard";
-import { MaterialCommunityIcons } from "react-native-vector-icons";
-import GestureRecognizer, { swipeDirections } from "rn-swipe-gestures";
-
-import { sortByLatest, sortByTrending } from '../../api/ranking';
-
-import * as firebase from "firebase";
 
 export default class HomePostsScreen extends React.Component {
     constructor(props) {

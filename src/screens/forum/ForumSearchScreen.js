@@ -1,15 +1,13 @@
+import * as firebase from "firebase";
 import React from "react";
 import {
-    StyleSheet,
-    SafeAreaView,
     FlatList,
-    View,
-    Image,
-    TouchableOpacity,
+    SafeAreaView,
+    StyleSheet,
     TextInput,
+    View
 } from "react-native";
 import ForumIcon from "../../components/ForumIcon";
-import * as firebase from "firebase";
 
 export default class ForumSearchScreen extends React.Component {
     constructor(props) {

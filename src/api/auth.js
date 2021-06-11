@@ -1,11 +1,17 @@
 import * as firebase from "firebase";
-import { Alert } from 'react-native'
+import {
+    Alert
+} from 'react-native';
 
 export const logoutUser = () => {
     firebase.auth().signOut();
 };
 
-export const signUpUser = async ({ name, email, password }) => {
+export const signUpUser = async ({
+    name,
+    email,
+    password
+}) => {
     try {
         const user = await firebase
             .auth()
@@ -58,10 +64,12 @@ export const signUpUser = async ({ name, email, password }) => {
 
             });
 
-        alert("Email sent.\nPlease verify your account before signing in." );
+        alert("Email sent.\nPlease verify your account before signing in.");
         firebase.auth().signOut();
 
-        return { user };
+        return {
+            user
+        };
     } catch (error) {
         return {
             error: error.message,
@@ -69,19 +77,23 @@ export const signUpUser = async ({ name, email, password }) => {
     }
 };
 
-export const loginUser = async ({ email, password }) => {
+export const loginUser = async ({
+    email,
+    password
+}) => {
     try {
         const user = await firebase
             .auth()
             .signInWithEmailAndPassword(email, password);
         if (firebase.auth().currentUser.emailVerified) {
-            return { user };
+            return {
+                user
+            };
         } else {
             Alert.alert(
                 "Email is not verified!",
                 "Resend verification email?",
-                [
-                    {
+                [{
                         text: "Resend",
                         onPress: () => {
                             user.user.sendEmailVerification()
@@ -91,11 +103,14 @@ export const loginUser = async ({ email, password }) => {
                         text: "Cancel",
                         onPress: () => console.log('cancel')
                     },
-                ],
-                { cancelable: false }
+                ], {
+                    cancelable: false
+                }
             );
             firebase.auth().signOut()
-            return { user };
+            return {
+                user
+            };
         }
 
     } catch (error) {
@@ -122,9 +137,8 @@ export const deleteUser = () => {
         Alert.alert(
             "Are you sure?",
             "Deleting your account is permanent",
-            [
-                {
-                    text:"Delete",
+            [{
+                    text: "Delete",
                     onPress: () => {
                         firebase
                             .firestore()
@@ -136,11 +150,12 @@ export const deleteUser = () => {
                     }
                 },
                 {
-                    text:"Cancel",
+                    text: "Cancel",
                     onPress: () => console.log('cancel')
                 }
-            ],
-                { cancelable: false }
+            ], {
+                cancelable: false
+            }
         )
     } catch (error) {
         return {

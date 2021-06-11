@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
-import BackButton from "../../components/BackButton";
-import Logo from "../../components/Logo";
-import Header from "../../components/Header";
-import TextInput from "../../components/TextInput";
-import Button from "../../components/Button";
-import { emailValidator } from "../../helpers/auth/emailValidator";
-import { sendEmailWithPassword } from "../../api/auth";
-import Toast from "../../components/Toast";
-
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { sendEmailWithPassword } from "../../api/auth";
+import BackButton from "../../components/BackButton";
+import Button from "../../components/Button";
+import Header from "../../components/Header";
+import Logo from "../../components/Logo";
+import TextInput from "../../components/TextInput";
+import Toast from "../../components/Toast";
+import { emailValidator } from "../../helpers/auth/emailValidator";
+
 
 export default function ResetPasswordScreen({ navigation }) {
     const [email, setEmail] = useState({ value: "", error: "" });
