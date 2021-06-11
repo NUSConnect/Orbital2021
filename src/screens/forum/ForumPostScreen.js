@@ -29,6 +29,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
             .collection("forumPosts")
             .doc(item.postId)
             .collection("comments")
+            .orderBy('postTime', 'desc')
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
