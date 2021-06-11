@@ -61,7 +61,7 @@ export default class ChangePasswordScreen extends React.Component {
                         </Text>
                         <TextInput
                             style={styles.input}
-                            placeholder="Type here..."
+                            placeholder="Type here (At least 6 characters)"
                             onChangeText={(text) => this.setState({ text })}
                             value={this.state.text}
                             multiline={false}

@@ -149,14 +149,6 @@ export default class ProfilePersonalScreen extends React.Component {
                             Account Settings
                         </Button>
                         <Button
-                            style={styles.accountset}
-                            onPress={() =>
-                                this.props.navigation.navigate("DummyScreen")
-                            }
-                        >
-                            Flairs
-                        </Button>
-                        <Button
                             style={styles.button}
                             color="#de1738"
                             onPress={logoutUser}

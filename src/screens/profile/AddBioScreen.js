@@ -61,10 +61,11 @@ export default class AddBioScreen extends React.Component {
                         <Text style={styles.title}>Tell us about yourself</Text>
                         <TextInput
                             style={styles.input}
-                            placeholder="Type your new bio here..."
+                            placeholder="Type here (maximum 100 characters)"
                             onChangeText={(text) => this.setState({ text })}
                             value={this.state.text}
                             multiline={true}
+                            maxLength={100}
                         />
 
                         <View style={styles.buttons}>
