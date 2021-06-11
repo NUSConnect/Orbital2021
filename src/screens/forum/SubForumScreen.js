@@ -149,7 +149,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                 },
                 {
                     text: "Confirm",
-                    onPress: () => navigation.navigate('EditForumPostScreen', { post, forumId }),
+                    onPress: () => navigation.navigate('EditForumPostScreen', { post, forumId, goBack: () => navigation.goBack() }),
                 },
             ],
             { cancelable: false }
@@ -337,7 +337,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                 keyExtractor={(item) => item.postId}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
-                style={{ marginBottom: 40, width: '100%' }}
+                style={{ marginBottom: 10, width: '100%' }}
             />
         </SafeAreaView>
     );
@@ -347,11 +347,11 @@ export default SubForumScreen;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 0,
+        flex: 1,
         width: "100%",
         alignItems: "center",
         justifyContent: "center",
-        marginBottom: 40,
+
     },
     sortBar: {
         flexDirection: 'row',

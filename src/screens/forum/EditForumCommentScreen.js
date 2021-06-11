@@ -8,6 +8,7 @@ import {
     TextInput,
     View
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
 
@@ -51,9 +52,12 @@ const EditForumCommentScreen = ({ navigation, route }) => {
     };
 
     return (
-        <SafeAreaView>
-            <View style={styles.container}>
-                <View style={styles.innerContainer}>
+        <KeyboardAwareScrollView
+                    style={styles.container}
+                    contentContainerStyle={styles.innerContainer}
+                    resetScrollToCoords={{ x: 0, y: 0 }}
+                    scrollEnabled={true}
+                >
                     <Text style={styles.title}>Edit Your Forum Comment</Text>
 
                     <TextInput
@@ -77,10 +81,8 @@ const EditForumCommentScreen = ({ navigation, route }) => {
                             }}
                             string={"Edit"}
                         />
-                    </View>
-                </View>
             </View>
-        </SafeAreaView>
+        </KeyboardAwareScrollView>
     );
 };
 
@@ -89,8 +91,6 @@ export default EditForumCommentScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 0,
-        //    alignItems: 'center',
-        //    justifyContent: 'center',
         flexDirection: "row",
     },
     innerContainer: {

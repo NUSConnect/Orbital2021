@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
         padding: 2,
         paddingHorizontal: 5,
         elevation: 3,
-        marginBottom: 40,
     },
     textInput: {
         flex: 1,

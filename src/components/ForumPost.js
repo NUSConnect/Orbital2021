@@ -3,6 +3,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "react-native-vector-icons";
+import { Menu, MenuOptions, MenuOption, MenuTrigger }  from 'react-native-popup-menu';
 
 const ForumPost = ({
     route,
@@ -217,26 +218,31 @@ const ForumPost = ({
                     <Text style={styles.commentText}>{item.commentCount}</Text>
                 </TouchableOpacity>
                 {currentUserId == item.userId ? (
-                    <View style={styles.buttons}>
-                        <TouchableOpacity
-                            activeOpacity={0.7}
-                            onPress={onDelete}
-                        >
-                            <MaterialIcons
-                                name="delete"
-                                size={26}
-                                color={"darkgray"}
-                            />
-                        </TouchableOpacity>
-                        <View style={{ width: 30 }} />
-                        <TouchableOpacity activeOpacity={0.7} onPress={onEdit}>
-                            <MaterialIcons
-                                name="edit"
-                                size={26}
-                                color={"darkgray"}
-                            />
-                        </TouchableOpacity>
-                    </View>
+                    <Menu style={styles.centerAlign}>
+                        <MenuTrigger>
+                            <MaterialIcons name='more-vert' size={26} color={'darkgray'}/>
+                        </MenuTrigger>
+                            <MenuOptions>
+                                <MenuOption onSelect={() => onEdit()}>
+                                    <View style={styles.menuItems}>
+                                        <MaterialIcons name='edit' size={26} color={'gray'}/>
+                                        <Text style={styles.menuText}>Edit</Text>
+                                    </View>
+                                </MenuOption>
+                                <MenuOption onSelect={() => onDelete()} >
+                                    <View style={styles.menuItems}>
+                                        <MaterialIcons name='delete' size={26} color={'gray'}/>
+                                        <Text style={styles.menuText}>Delete</Text>
+                                    </View>
+                                </MenuOption>
+                                <MenuOption onSelect={() => console.log('cancel')} >
+                                    <View style={styles.menuItems}>
+                                        <MaterialIcons name='cancel' size={26} color={'gray'}/>
+                                        <Text style={styles.menuText}>Cancel</Text>
+                                    </View>
+                                </MenuOption>
+                            </MenuOptions>
+                    </Menu>
                 ) : (
                     <TouchableOpacity
                         style={styles.centerAlign}
@@ -323,5 +329,14 @@ const styles = StyleSheet.create({
     username: {
         fontSize: 14,
         color: "blue",
+    },
+    menuText: {
+        fontSize: 16,
+        color: 'black',
+        paddingLeft: 4,
+    },
+    menuItems: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 });
