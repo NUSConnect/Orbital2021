@@ -1,8 +1,9 @@
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import * as React from "react";
-import {
-    FontAwesome5, MaterialCommunityIcons
-} from "react-native-vector-icons";
+import React, { useEffect } from "react";
+import * as Permissions from 'expo-permissions';
+import * as Notifications from 'expo-notifications';
+import * as firebase from 'firebase';
+import { FontAwesome5, MaterialCommunityIcons } from "react-native-vector-icons";
 import {
     ForumScreen,
     FriendsScreen,
@@ -84,5 +85,46 @@ function MyTabs() {
 }
 
 export default function Dashboard() {
+    const registerForPushNotificationsAsync = async () => {
+        const { status: existingStatus } = await Permissions.getAsync(
+          Permissions.NOTIFICATIONS
+        );
+        let finalStatus = existingStatus;
+
+        // only ask if permissions have not already been determined, because
+        // iOS won't necessarily prompt the user a second time.
+        if (existingStatus !== 'granted') {
+          // Android remote notification permissions are granted during the app
+          // install, so this will only ask on iOS
+          const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+          finalStatus = status;
+        }
+
+        // Stop here if the user did not grant permissions
+        if (finalStatus !== 'granted') {
+          return;
+        }
+
+        try {
+          // Get the token that uniquely identifies this device
+          let token = await Notifications.getExpoPushTokenAsync();
+
+          // POST the token to your backend server from where you can retrieve it to send push notifications.
+          firebase
+            .firestore()
+            .collection('users')
+            .doc(firebase.auth().currentUser.uid)
+            .update({
+                pushToken: token,
+            })
+        } catch (error) {
+          console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        registerForPushNotificationsAsync();
+    }, []);
+
     return <MyTabs />;
 }
