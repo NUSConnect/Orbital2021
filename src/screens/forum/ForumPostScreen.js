@@ -1,22 +1,19 @@
 import * as firebase from "firebase";
 import React, { useEffect, useState } from "react";
-import {
-    Alert,
-    FlatList,
-    SafeAreaView,
-    StyleSheet,
-    View
-} from "react-native";
+import { Alert, Dimensions, FlatList, SafeAreaView, StyleSheet, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CommentItem from "../../components/CommentItem";
-import CreateComment from '../../components/CreateComment';
+import CreateComment from "../../components/CreateComment";
 import ForumPost from "../../components/ForumPost";
 import ForumPostHeader from "../../components/ForumPostHeader";
+
+const DeviceWidth = Dimensions.get("window").width;
 
 const ForumPostScreen = ({ navigation, route, onPress }) => {
     const currentUserId = firebase.auth().currentUser.uid;
     const [comments, setComments] = useState([]);
     const [refreshing, setRefreshing] = useState(true);
-    const [comment, setComment] = useState('');
+    const [comment, setComment] = useState("");
     const [isFocused, setIsFocused] = useState(null);
 
     const { item, forumId, forumName } = route.params;
@@ -31,7 +28,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
             .doc(forumId)
             .collection("forumPosts")
             .doc(item.postId)
-            .collection('comments')
+            .collection("comments")
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -51,7 +48,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         }
 
         setComments(list);
-        console.log('Post comments: ', comments)
+        console.log("Post comments: ", comments);
     };
 
     const onCommentSend = () => {
@@ -86,7 +83,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
             .collection("forumPosts")
             .doc(item.postId)
             .update({ commentCount: item.commentCount });
-    }
+    };
 
     const navigateProfile = (creatorId, ownNavigation, otherNavigation) => {
         return (currUserId) => {
@@ -118,7 +115,11 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                     },
                     {
                         text: "Edit",
-                        onPress: () => navigation.navigate('EditForumCommentScreen', { comment, forumId }),
+                        onPress: () =>
+                            navigation.navigate("EditForumCommentScreen", {
+                                comment,
+                                forumId,
+                            }),
                     },
                 ],
                 { cancelable: true }
@@ -136,12 +137,11 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                         text: "OK",
                         onPress: () => handleReport(comment),
                     },
-
                 ],
                 { cancelable: true }
             );
         }
-    }
+    };
 
     const handleDelete = (comment) => {
         Alert.alert(
@@ -236,15 +236,22 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
 
     useEffect(() => {
         fetchComments();
-        const _unsubscribe = navigation.addListener('focus', () => fetchComments());
+        const _unsubscribe = navigation.addListener("focus", () =>
+            fetchComments()
+        );
 
         return () => {
             _unsubscribe();
-        }
+        };
     }, []);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <KeyboardAwareScrollView
+            style={styles.container}
+            contentContainerStyle={styles.inner}
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            scrollEnabled={true}
+        >
             <ForumPostHeader
                 goBack={() => navigation.goBack()}
                 title={forumName}
@@ -255,12 +262,12 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                     <ForumPost
                         item={item}
                         onViewProfile={navigateProfile(
-                             item.userId,
-                             () => navigation.navigate("Profile"),
-                             () =>
-                                 navigation.navigate("ViewProfileScreen", {
-                                     item,
-                                 })
+                            item.userId,
+                            () => navigation.navigate("Profile"),
+                            () =>
+                                navigation.navigate("ViewProfileScreen", {
+                                    item,
+                                })
                         )}
                     />
                 }
@@ -269,12 +276,12 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                     <CommentItem
                         item={item}
                         onViewProfile={navigateProfile(
-                             item.userId,
-                             () => navigation.navigate("Profile"),
-                             () =>
-                                 navigation.navigate("ViewProfileScreen", {
-                                     item,
-                                 })
+                            item.userId,
+                            () => navigation.navigate("Profile"),
+                            () =>
+                                navigation.navigate("ViewProfileScreen", {
+                                    item,
+                                })
                         )}
                         onPressHandle={() => onPressComment(item)}
                     />
@@ -282,16 +289,16 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                 keyExtractor={(item) => item.commentId}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
-                style={{ marginBottom: 40, width: '100%' }}
+                style={{ marginBottom: 40, width: "100%" }}
             />
             <CreateComment
                 onPress={() => {
-                    if (comment != '') {
+                    if (comment != "") {
                         onCommentSend();
                     } else {
                         Alert.alert(
-                        "Cannot submit an empty comment!",
-                        "Fill in comment body to post."
+                            "Cannot submit an empty comment!",
+                            "Fill in comment body to post."
                         );
                     }
                 }}
@@ -299,7 +306,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                 setIsFocused={setIsFocused}
                 comment={comment}
             />
-        </SafeAreaView>
+        </KeyboardAwareScrollView>
     );
 };
 
@@ -309,11 +316,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 0,
         width: "100%",
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom: 40,
     },
     headerComponentStyle: {
         marginVertical: 7,
+    },
+    inner: {
+        flex: 1,
+        width: "100%",
+        maxWidth: DeviceWidth,
+        alignSelf: "center",
+        alignItems: "center",
+        justifyContent: "center",
     },
 });
