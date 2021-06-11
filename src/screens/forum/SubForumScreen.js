@@ -149,7 +149,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                 },
                 {
                     text: "Confirm",
-                    onPress: () => navigation.navigate('EditForumPostScreen', { post, forumId }),
+                    onPress: () => navigation.navigate('EditForumPostScreen', { post, forumId, goBack: () => navigation.goBack() }),
                 },
             ],
             { cancelable: false }

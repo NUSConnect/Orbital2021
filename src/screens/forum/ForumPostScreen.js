@@ -228,6 +228,87 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         />
     );
 
+    const handleEdit = (post) => {
+        Alert.alert(
+            "Edit post",
+            "Are you sure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed!"),
+                    style: "cancel",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () => navigation.navigate('EditForumPostScreen', { post, forumId, goBack: () => navigation.pop(2) }),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
+    const handleDeletePost = (post) => {
+        Alert.alert(
+            "Delete post",
+            "Are you sure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed!"),
+                    style: "cancel",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () => deletePost(post),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
+    const deletePost = (post) => {
+        console.log("Current Post Id: ", post.postId);
+
+        firebase
+            .firestore()
+            .collection("forums")
+            .doc(forumId)
+            .collection("forumPosts")
+            .doc(post.postId)
+            .delete()
+            .then(() => {
+                Alert.alert(
+                    "Post deleted",
+                    "Your post has been deleted successfully!"
+                );
+                navigation.goBack()
+            })
+            .catch((e) => console.log("Error deleting post.", e));
+    };
+
+    const handleReportPost = (post) => {
+        Alert.alert(
+            "Report Post",
+            "Are you sure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed!"),
+                    style: "cancel",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () =>
+                        Alert.alert(
+                            "Post Reported!",
+                            "This post has been reported successfully!"
+                        ),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
     const handleRefresh = () => {
         setRefreshing(false);
         fetchComments();
@@ -269,6 +350,9 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                                     item,
                                 })
                         )}
+                        onEdit={() => handleEdit(item)}
+                        onDelete={() => handleDeletePost(item)}
+                        onReport={() => handleReportPost(item)}
                     />
                 }
                 ListHeaderComponentStyle={styles.headerComponentStyle}
