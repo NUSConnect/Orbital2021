@@ -289,7 +289,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                 keyExtractor={(item) => item.commentId}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
-                style={{ marginBottom: 40, width: "100%" }}
+                style={{ width: "100%" }}
             />
             <CreateComment
                 onPress={() => {
