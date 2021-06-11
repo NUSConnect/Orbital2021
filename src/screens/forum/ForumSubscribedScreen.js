@@ -94,7 +94,7 @@ export default class ForumFavouritesScreen extends React.Component {
     render() {
         const { navigation } = this.props;
         return (
-            <SafeAreaView>
+            <SafeAreaView style={{flex:1}}>
                 <FlatList
                     numColumns={3}
                     data={this.state.data}

@@ -90,7 +90,7 @@ export default class ForumSearchScreen extends React.Component {
     render() {
         const { navigation } = this.props;
         return (
-            <SafeAreaView>
+            <SafeAreaView style={{flex:1}}>
                 <TextInput
                     style={styles.textInputStyle}
                     onChangeText={(text) => this.searchFilterFunction(text)}

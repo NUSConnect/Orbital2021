@@ -347,7 +347,7 @@ export default SubForumScreen;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 0,
+        flex: 1,
         width: "100%",
         alignItems: "center",
         justifyContent: "center",
