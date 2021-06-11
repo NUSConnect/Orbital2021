@@ -37,13 +37,6 @@ export default function AccountSettingsScreen({ navigation }) {
                     onPress={() => navigation.navigate("DummyScreen")}
                 >
                     {" "}
-                    Manage Blocked Accounts{" "}
-                </Button>
-                <Button
-                    style={styles.button}
-                    onPress={() => navigation.navigate("DummyScreen")}
-                >
-                    {" "}
                     Privacy Settings{" "}
                 </Button>
                 <Button
