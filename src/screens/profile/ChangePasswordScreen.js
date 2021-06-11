@@ -23,7 +23,7 @@ export default class ChangePasswordScreen extends React.Component {
 
     submitPassword = async (navigator, password) => {
         if (passwordValidator(password)) {
-            Alert.alert("Password must be at least 6 characters, please try again.");
+            Alert.alert("Password too short!", "Password must be at least 6 characters, please try again.");
             return;
         }
         await firebase
@@ -31,8 +31,8 @@ export default class ChangePasswordScreen extends React.Component {
             .currentUser.updatePassword(password)
             .then(() => {
                 Alert.alert(
-                    "Password successfully changed",
-                    "Please login again",
+                    "Password successfully changed!",
+                    "Please login again.",
                     [
                         {
                             text: "OK",
@@ -54,7 +54,7 @@ export default class ChangePasswordScreen extends React.Component {
             <SafeAreaView>
                 <View style={styles.container}>
                     <View style={styles.innerContainer}>
-                        <Text style={styles.title}>Enter your new password</Text>
+                        <Text style={styles.title}>Change your password</Text>
                         <View style={styles.wordspace} />
                         <Text style={styles.current}>
                             Enter your new password here:

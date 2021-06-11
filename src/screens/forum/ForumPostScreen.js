@@ -1,6 +1,14 @@
 import * as firebase from "firebase";
 import React, { useEffect, useState } from "react";
-import { Alert, Dimensions, FlatList, SafeAreaView, StyleSheet, View } from "react-native";
+import {
+    Alert,
+    Dimensions,
+    FlatList,
+    Platform,
+    SafeAreaView,
+    StyleSheet,
+    View,
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CommentItem from "../../components/CommentItem";
 import CreateComment from "../../components/CreateComment";
@@ -17,6 +25,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
     const [isFocused, setIsFocused] = useState(null);
 
     const { item, forumId, forumName } = route.params;
+    const os = Platform.OS;
 
     const fetchComments = async () => {
         const list = [];
@@ -29,7 +38,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
             .collection("forumPosts")
             .doc(item.postId)
             .collection("comments")
-            .orderBy('postTime', 'desc')
+            .orderBy("postTime", "desc")
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -102,29 +111,57 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         console.log(currentUserId);
         console.log(comment.userId);
         if (currentUserId == comment.userId) {
-            Alert.alert(
-                "Your comment has been selected",
-                "What do you want to do with it?",
-                [
-                    {
-                        text: "Cancel",
-                        onPress: () => console.log("cancel pressed"),
-                    },
-                    {
-                        text: "Delete",
-                        onPress: () => handleDelete(comment),
-                    },
-                    {
-                        text: "Edit",
-                        onPress: () =>
-                            navigation.navigate("EditForumCommentScreen", {
-                                comment,
-                                forumId,
-                            }),
-                    },
-                ],
-                { cancelable: true }
-            );
+            if (os === "ios") {
+                Alert.alert(
+                    "Your comment has been selected",
+                    "What do you want to do with it?",
+                    [
+                        {
+                            text: "Edit",
+                            onPress: () =>
+                                navigation.navigate("EditForumCommentScreen", {
+                                    comment,
+                                    forumId,
+                                }),
+                        },
+                        {
+                            text: "Delete",
+                            onPress: () => handleDelete(comment),
+                        },
+                        {
+                            text: "Cancel",
+                            onPress: () => console.log("cancel pressed"),
+                            style: "cancel",
+                        },
+                    ],
+                    { cancelable: true }
+                );
+            } else {
+                Alert.alert(
+                    "Your comment has been selected",
+                    "What do you want to do with it?",
+                    [
+                        {
+                            text: "Cancel",
+                            onPress: () => console.log("cancel pressed"),
+                            style: "cancel",
+                        },
+                        {
+                            text: "Delete",
+                            onPress: () => handleDelete(comment),
+                        },
+                        {
+                            text: "Edit",
+                            onPress: () =>
+                                navigation.navigate("EditForumCommentScreen", {
+                                    comment,
+                                    forumId,
+                                }),
+                        },
+                    ],
+                    { cancelable: true }
+                );
+            }
         } else {
             Alert.alert(
                 "Report comment",
@@ -241,7 +278,12 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                 },
                 {
                     text: "Confirm",
-                    onPress: () => navigation.navigate('EditForumPostScreen', { post, forumId, goBack: () => navigation.pop(2) }),
+                    onPress: () =>
+                        navigation.navigate("EditForumPostScreen", {
+                            post,
+                            forumId,
+                            goBack: () => navigation.pop(2),
+                        }),
                 },
             ],
             { cancelable: false }
@@ -282,7 +324,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                     "Post deleted",
                     "Your post has been deleted successfully!"
                 );
-                navigation.goBack()
+                navigation.goBack();
             })
             .catch((e) => console.log("Error deleting post.", e));
     };

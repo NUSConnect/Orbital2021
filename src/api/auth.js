@@ -136,7 +136,7 @@ export const deleteUser = () => {
         const currentUserId = firebase.auth().currentUser.uid;
         Alert.alert(
             "Are you sure?",
-            "Deleting your account is permanent",
+            "This action cannot be undone",
             [{
                     text: "Delete",
                     onPress: () => {
@@ -151,11 +151,10 @@ export const deleteUser = () => {
                 },
                 {
                     text: "Cancel",
-                    onPress: () => console.log('cancel')
+                    onPress: () => console.log('cancel'),
+                    style: "cancel"
                 }
-            ], {
-                cancelable: false
-            }
+            ],
         )
     } catch (error) {
         return {
