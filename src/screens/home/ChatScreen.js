@@ -15,11 +15,13 @@ import {
 } from "react-native-gifted-chat";
 import { IconButton } from "react-native-paper";
 import { Ionicons } from "react-native-vector-icons";
+import { sendPushNotification } from '../../api/notifications';
 
 export default function ChatScreen({ route, onPress, navigation }) {
     const [messages, setMessages] = useState([]);
     const { thread } = route.params;
     const currentUser = firebase.auth().currentUser.uid;
+    const currentUserName = firebase.auth().currentUser.displayName;
     const [userImg, setUserImg] = useState(null);
 
     const getUser = async () => {
@@ -33,6 +35,35 @@ export default function ChatScreen({ route, onPress, navigation }) {
                     setUserImg(documentSnapshot.data().userImg)
                 }
             });
+    };
+
+    const sendNotifications = async (text) => {
+        const sender = thread.isGroup ? (thread.name + ' - ' + currentUserName) : currentUserName;
+
+        if (thread.isGroup) {
+            const users = thread.members;
+            for (let i = 0; i < users.length; i++) {
+                if (users[i] != firebase.currentUser) {
+                    await firebase.firestore().collection('users').doc(users[i]).get()
+                        .then((doc) => {
+                            console.log('Checking if pushToken available');
+                            if (doc.data().pushToken != null) {
+                                sendPushNotification(doc.data().pushToken.data, sender, text)
+                            }
+                        })
+                }
+            }
+        } else {
+            const user = thread.otherId;
+
+            await firebase.firestore().collection('users').doc(user).get()
+                .then((doc) => {
+                    console.log('Checking if pushToken available');
+                    if (doc.data().pushToken != null) {
+                        sendPushNotification(doc.data().pushToken.data, sender, text)
+                    }
+                })
+        }
     };
 
     async function handleSend(messages) {
@@ -62,6 +93,9 @@ export default function ChatScreen({ route, onPress, navigation }) {
                     },
                     { merge: true }
                 );
+
+            sendNotifications(text);
+
         } else {
             handleFirstSend(messages);
         }
@@ -93,7 +127,8 @@ export default function ChatScreen({ route, onPress, navigation }) {
                 { merge: true }
             );
 
-        const users = thread.users
+        const users = thread.isGroup ? thread.members : [currentUser, thread.otherId];
+
         for (let i = 0; i < users.length; i++) {
             firebase
                 .firestore()
@@ -103,6 +138,8 @@ export default function ChatScreen({ route, onPress, navigation }) {
                 .doc(thread.id)
                 .set({})
         }
+
+        sendNotifications(text);
     }
 
     useEffect(() => {
