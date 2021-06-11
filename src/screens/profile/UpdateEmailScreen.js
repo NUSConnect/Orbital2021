@@ -57,7 +57,7 @@ export default class UpdateEmailScreen extends React.Component {
             <SafeAreaView>
                 <View style={styles.container}>
                     <View style={styles.innerContainer}>
-                        <Text style={styles.title}>Enter your new email</Text>
+                        <Text style={styles.title}>Update your email</Text>
                         <Text style={styles.current}>
                             Current email: {firebase.auth().currentUser.email}
                         </Text>

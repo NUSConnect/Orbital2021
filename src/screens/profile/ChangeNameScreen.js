@@ -28,13 +28,13 @@ export default class ChangeNameScreen extends React.Component {
                 .collection("users")
                 .doc(firebase.auth().currentUser.uid)
                 .update({ name:name });
-            Alert.alert("Username changed successfully!");
+            Alert.alert("Success!", "Username changed successfully.");
     }
 
     submitName = async (navigator, name) => {
         const list = [];
         if (firebase.auth().currentUser.displayName === name) {
-            Alert.alert("This is your current username!", "Please choose something else");
+            Alert.alert("This is your current username!", "Please choose something else.");
             return;
         }
         if (nameValidator(name)) {
@@ -53,7 +53,7 @@ export default class ChangeNameScreen extends React.Component {
                     this.updateName(name);
                     navigator();
                 } else {
-                    Alert.alert("Someone else already has this username!", "Please choose another username");
+                    Alert.alert("Someone else already has this username!", "Please choose another username.");
                 }
             });
 
@@ -65,7 +65,7 @@ export default class ChangeNameScreen extends React.Component {
             <SafeAreaView>
                 <View style={styles.container}>
                     <View style={styles.innerContainer}>
-                        <Text style={styles.title}>Enter your new username</Text>
+                        <Text style={styles.title}>Change your username</Text>
                         <View style={styles.wordspace} />
                         <Text style={styles.current}>
                             Enter your new username here:
