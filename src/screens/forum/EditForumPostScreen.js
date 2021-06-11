@@ -14,7 +14,7 @@ import SubmitButton from "../../components/SubmitButton";
 
 const EditForumPostScreen = ({ navigation, route }) => {
     const currentUserId = firebase.auth().currentUser.uid;
-    const { post, forumId } = route.params;
+    const { post, forumId, goBack } = route.params;
     const [text, setText] = useState(post.postBody);
 
     const updatePost = async (navigator) => {
@@ -71,7 +71,7 @@ const EditForumPostScreen = ({ navigation, route }) => {
                 <SubmitButton
                     goBack={() => {
                         text != ""
-                            ? updatePost(() => navigation.goBack())
+                            ? updatePost(() => goBack())
                             : Alert.alert(
                                   "Cannot submit an empty comment!",
                                   "Write something into the comment box to post."
