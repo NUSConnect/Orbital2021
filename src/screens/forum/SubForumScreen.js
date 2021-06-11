@@ -337,7 +337,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                 keyExtractor={(item) => item.postId}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
-                style={{ marginBottom: 40, width: '100%' }}
+                style={{ marginBottom: 10, width: '100%' }}
             />
         </SafeAreaView>
     );
@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
         width: "100%",
         alignItems: "center",
         justifyContent: "center",
-        marginBottom: 40,
+
     },
     sortBar: {
         flexDirection: 'row',
