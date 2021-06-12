@@ -44,7 +44,7 @@ export default function MessagesScreen({ navigation }) {
         };
     }, []);
 
-    const deletePressed = () => {
+    const deletePressed = id => {
         console.log("Pressed");
         Alert.alert(
             "Are you sure?",
@@ -60,12 +60,20 @@ export default function MessagesScreen({ navigation }) {
                     onPress: () => {
                         console.log("Delete");
                         firebase
-                        .firestore()
-                        .collection("users")
-                        .doc(currentUserId)
-                        .collection("openChats")
-                        .doc("7lPhX8jHgl45")
-                        .delete();
+                            .firestore()
+                            .collection("users")
+                            .doc(currentUserId)
+                            .collection("deletedChats")
+                            .doc(id)
+                            .set({});
+                        firebase
+                            .firestore()
+                            .collection("users")
+                            .doc(currentUserId)
+                            .collection("openChats")
+                            .doc(id)
+                            .delete();
+                        Alert.alert("Success", "Chat deleted!");
                     },
                 },
             ],
@@ -73,14 +81,14 @@ export default function MessagesScreen({ navigation }) {
         );
     };
 
-    const rightSwipe = (progress, dragX) => {
+    const rightSwipe = id => (progress, dragX) => {
         const scale = dragX.interpolate({
             inputRange: [0, 100],
             outputRange: [1, 0],
             extrapolate: "clamp",
         });
         return (
-            <TouchableOpacity onPress={deletePressed} activeOpacity={0.6}>
+            <TouchableOpacity onPress={() => deletePressed(id)} activeOpacity={0.6}>
                 <View style={styles.deleteBox}>
                     <Animated.Text style={{ transform: [{ scale: scale }] }}>
                         Delete
@@ -218,7 +226,7 @@ export default function MessagesScreen({ navigation }) {
                 keyExtractor={(item) => item.name}
                 ItemSeparatorComponent={() => <Divider />}
                 renderItem={({ item }) => (
-                    <Swipeable renderRightActions={rightSwipe}>
+                    <Swipeable renderRightActions={rightSwipe(item.id)}>
                         <Card
                             onPress={() =>
                                 navigation.navigate("ChatScreen", {
