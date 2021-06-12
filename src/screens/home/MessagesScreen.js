@@ -34,6 +34,7 @@ export default function MessagesScreen({ navigation }) {
     const [filtered, setFiltered] = useState(false);
 
     useEffect(() => {
+        checkUnreadMessages();
         getThreads();
         const _unsubscribe = navigation.addListener("focus", () =>
             getThreads()
@@ -43,6 +44,48 @@ export default function MessagesScreen({ navigation }) {
             _unsubscribe();
         };
     }, []);
+
+    const checkUnreadMessages = () => {
+        const MessageLastOpened = new Date().getTime();
+        firebase
+            .firestore()
+            .collection("users")
+            .doc(currentUserId)
+            .collection("openChats")
+            .get()
+            .then(querySnapshot => {
+                const threadsList = [];
+                querySnapshot.forEach(documentSnapshot => threadsList.push(documentSnapshot.id) );
+                //console.log(threadsList);
+                threadsList.forEach(thread => {
+                    firebase
+                        .firestore()
+                        .collection("THREADS")
+                        .doc(thread)
+                        .onSnapshot(documentSnapshot => {
+                            const latestMessageTime = documentSnapshot.data().latestMessage.createdAt;
+                            console.log(latestMessageTime);
+                            console.log(MessageLastOpened);
+                            if (latestMessageTime > MessageLastOpened) {
+                                //new message came in after last time message screen was opened
+                                firebase
+                                    .firestore()
+                                    .collection("users")
+                                    .doc(currentUserId)
+                                    .update({ haveNewMessage:true });
+                                return;
+                            }
+                        });
+                });
+                //finished checking all openChats, no new messages came in
+                firebase
+                    .firestore()
+                    .collection("users")
+                    .doc(currentUserId)
+                    .update({ haveNewMessage:false });
+                return;
+            })
+    }
 
     const deletePressed = id => {
         console.log("Pressed");
@@ -116,7 +159,7 @@ export default function MessagesScreen({ navigation }) {
     };
 
     const matchUserToThreads = async (threads) => {
-        console.log('Matching Threads:', threads);
+        //console.log('Matching Threads:', threads);
         for (let k = 0; k < threads.length; k++) {
             const threadId = threads[k].id;
 
@@ -196,7 +239,7 @@ export default function MessagesScreen({ navigation }) {
 
     const checkIfNewMessage = async (deletedThreads, openThreads) => {
         // Reopen chat if new message received
-        console.log('Deleted Threads', deletedThreads)
+       // console.log('Deleted Threads', deletedThreads)
         const reopenedThreads = [];
 
         for (let i = 0;  i < deletedThreads.length; i++) {
@@ -210,7 +253,7 @@ export default function MessagesScreen({ navigation }) {
                     }
                 })
         }
-        console.log(reopenedThreads);
+       // console.log(reopenedThreads);
         const allOpenThreads = reopenedThreads.concat(openThreads);
         matchUserToThreads(allOpenThreads);
     }
