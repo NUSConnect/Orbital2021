@@ -57,29 +57,46 @@ export default function MessagesScreen({ navigation }) {
                 },
                 {
                     text: "Delete",
-                    onPress: () => {
-                        console.log("Delete");
-                        firebase
-                            .firestore()
-                            .collection("users")
-                            .doc(currentUserId)
-                            .collection("deletedChats")
-                            .doc(id)
-                            .set({});
-                        firebase
-                            .firestore()
-                            .collection("users")
-                            .doc(currentUserId)
-                            .collection("openChats")
-                            .doc(id)
-                            .delete();
-                        Alert.alert("Success", "Chat deleted!");
-                    },
+                    onPress: () => moveToDeleted(id),
                 },
             ],
             { cancelable: false }
         );
     };
+
+    const moveToDeleted = (id) => {
+        console.log("Delete");
+        firebase
+            .firestore()
+            .collection("THREADS")
+            .doc(id)
+            .get()
+            .then((querySnapshot) => {
+                const lastSent = querySnapshot.data().latestMessage.createdAt
+                firebase
+                    .firestore()
+                    .collection("users")
+                    .doc(currentUserId)
+                    .collection("deletedChats")
+                    .doc(id)
+                    .set({ lastSent });
+                firebase
+                    .firestore()
+                    .collection("users")
+                    .doc(currentUserId)
+                    .collection("openChats")
+                    .doc(id)
+                    .delete();
+            })
+
+        Alert.alert("Success", "Chat deleted!",
+            [
+                {
+                    text: "OK",
+                    onPress: () => getThreads(),
+                },
+            ], { cancelable: false });
+    }
 
     const rightSwipe = id => (progress, dragX) => {
         const scale = dragX.interpolate({
@@ -98,21 +115,8 @@ export default function MessagesScreen({ navigation }) {
         );
     };
 
-    const getUserInfo = async () => {
-        await firebase
-            .firestore()
-            .collection("users")
-            .doc(currentUserId)
-            .get()
-            .then((documentSnapshot) => {
-                if (documentSnapshot.exists) {
-                    const { createdAt } = documentSnapshot.data();
-                    currentUserCreatedAt = createdAt;
-                }
-            });
-    };
-
     const matchUserToThreads = async (threads) => {
+        console.log('Matching Threads:', threads);
         for (let k = 0; k < threads.length; k++) {
             const threadId = threads[k].id;
 
@@ -173,9 +177,48 @@ export default function MessagesScreen({ navigation }) {
         //        console.log("Threads: ", threads);
     };
 
+    const reopenThread = (id) => {
+        firebase
+            .firestore()
+            .collection("users")
+            .doc(currentUserId)
+            .collection("deletedChats")
+            .doc(id)
+            .delete();
+        firebase
+            .firestore()
+            .collection("users")
+            .doc(currentUserId)
+            .collection("openChats")
+            .doc(id)
+            .set({});
+    }
+
+    const checkIfNewMessage = async (deletedThreads, openThreads) => {
+        // Reopen chat if new message received
+        console.log('Deleted Threads', deletedThreads)
+        const reopenedThreads = [];
+
+        for (let i = 0;  i < deletedThreads.length; i++) {
+            const threadId = deletedThreads[i].id
+            const lastSent = deletedThreads[i].lastSent
+            await firebase.firestore().collection("THREADS").doc(threadId).get()
+                .then((doc) => {
+                    if (doc.data().latestMessage.createdAt > lastSent) {
+                        reopenedThreads.push({ id: doc.id })
+                        reopenThread(doc.id);
+                    }
+                })
+        }
+        console.log(reopenedThreads);
+        const allOpenThreads = reopenedThreads.concat(openThreads);
+        matchUserToThreads(allOpenThreads);
+    }
+
     const getThreads = async () => {
         // Get open threads
         const openThreads = [];
+        const deletedThreads = [];
         await firebase
             .firestore()
             .collection("users")
@@ -187,8 +230,23 @@ export default function MessagesScreen({ navigation }) {
                     openThreads.push({ id: doc.id });
                 });
             });
+        await firebase
+            .firestore()
+            .collection("users")
+            .doc(currentUserId)
+            .collection("deletedChats")
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    deletedThreads.push({ id: doc.id, lastSent: doc.data().lastSent });
+                });
+            });
 
-        matchUserToThreads(openThreads);
+        if (deletedThreads.length >= 1) {
+            checkIfNewMessage(deletedThreads, openThreads);
+        } else {
+            matchUserToThreads(openThreads);
+        }
     };
 
     const searchFilterFunction = (text) => {
