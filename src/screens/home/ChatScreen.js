@@ -127,8 +127,8 @@ export default function ChatScreen({ route, onPress, navigation }) {
     async function handleFirstSend(messages) {
         const text = messages[0].text;
         const users = thread.isGroup ? thread.members : [currentUser, thread.otherId];
-        const threadRef = await firebase.firestore().collection('THREADS').doc(thread.id)
-
+        const threadRef = await firebase.firestore().collection('THREADS').doc(thread.id);
+      
         threadRef
             .collection("MESSAGES")
             .add({
