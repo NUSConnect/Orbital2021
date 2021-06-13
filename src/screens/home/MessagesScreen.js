@@ -39,6 +39,12 @@ export default function MessagesScreen({ navigation }) {
         const _unsubscribe = navigation.addListener("focus", () =>
             getThreads()
         );
+        const backNav = navigation.addListener('beforeRemove', (e) => {
+            e.preventDefault();
+            backNav();
+            toggleHaveNewMessage();
+            navigation.goBack();
+        });
 
         return () => {
             _unsubscribe();

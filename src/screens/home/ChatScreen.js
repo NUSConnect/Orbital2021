@@ -199,13 +199,14 @@ export default function ChatScreen({ route, onPress, navigation }) {
 
                 setMessages(messages);
             });
-        /*
-        navigation.addListener('beforeRemove', (e) => {
+
+        const backNav = navigation.addListener('beforeRemove', (e) => {
             e.preventDefault();
+            backNav();
             toggleHaveNewMessage();
             navigation.goBack();
         });
-        */
+
         // Stop listening for updates whenever the component unmounts
         return () => messagesListener();
     }, []);
