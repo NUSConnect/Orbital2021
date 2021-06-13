@@ -34,8 +34,8 @@ export default function MessagesScreen({ navigation }) {
     const [filtered, setFiltered] = useState(false);
 
     useEffect(() => {
-        checkUnreadMessages();
         getThreads();
+        toggleHaveNewMessage();
         const _unsubscribe = navigation.addListener("focus", () =>
             getThreads()
         );
@@ -45,46 +45,12 @@ export default function MessagesScreen({ navigation }) {
         };
     }, []);
 
-    const checkUnreadMessages = () => {
-        const MessageLastOpened = new Date().getTime();
+    const toggleHaveNewMessage = () => {
         firebase
             .firestore()
             .collection("users")
             .doc(currentUserId)
-            .collection("openChats")
-            .get()
-            .then(querySnapshot => {
-                const threadsList = [];
-                querySnapshot.forEach(documentSnapshot => threadsList.push(documentSnapshot.id) );
-                //console.log(threadsList);
-                threadsList.forEach(thread => {
-                    firebase
-                        .firestore()
-                        .collection("THREADS")
-                        .doc(thread)
-                        .onSnapshot(documentSnapshot => {
-                            const latestMessageTime = documentSnapshot.data().latestMessage.createdAt;
-                            console.log(latestMessageTime);
-                            console.log(MessageLastOpened);
-                            if (latestMessageTime > MessageLastOpened) {
-                                //new message came in after last time message screen was opened
-                                firebase
-                                    .firestore()
-                                    .collection("users")
-                                    .doc(currentUserId)
-                                    .update({ haveNewMessage:true });
-                                return;
-                            }
-                        });
-                });
-                //finished checking all openChats, no new messages came in
-                firebase
-                    .firestore()
-                    .collection("users")
-                    .doc(currentUserId)
-                    .update({ haveNewMessage:false });
-                return;
-            })
+            .update({ haveNewMessage: false });
     }
 
     const deletePressed = id => {

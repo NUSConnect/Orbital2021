@@ -66,6 +66,47 @@ export default function ChatScreen({ route, onPress, navigation }) {
         }
     };
 
+    const haveNewMessage = () => {
+        const lastSent = new Date().getTime();
+            firebase
+                .firestore()
+                .collection("users")
+                .doc(currentUser)
+                .collection("openChats")
+                .get()
+                .then(querySnapshot => {
+                    const threadsList = [];
+                    querySnapshot.forEach(documentSnapshot => threadsList.push(documentSnapshot.id) );
+                    //console.log(threadsList);
+                    threadsList.forEach(threadId => {
+                        firebase
+                            .firestore()
+                            .collection("THREADS")
+                            .doc(threadId)
+                            .get()
+                            .then(documentSnapshot => {
+                                const latestMessageTime = documentSnapshot.data().latestMessage.createdAt;
+                                console.log(latestMessageTime);
+                                console.log(lastSent);
+                                if (latestMessageTime > lastSent && currentUser !== thread.otherId) {
+                                    //new message came in after last time message screen was opened
+                                    firebase
+                                        .firestore()
+                                        .collection("users")
+                                        .doc(thread.otherId)
+                                        .update({ haveNewMessage:true });
+                                }
+                            });
+                    });
+                    //finished checking all openChats, no new messages came in
+                    firebase
+                        .firestore()
+                        .collection("users")
+                        .doc(thread.otherId)
+                        .update({ haveNewMessage:false });
+                })
+    }
+
     async function handleSend(messages) {
         const text = messages[0].text;
         const threadRef = await firebase.firestore().collection('THREADS').doc(thread.id)
@@ -82,6 +123,8 @@ export default function ChatScreen({ route, onPress, navigation }) {
                         avatar: userImg,
                     },
                 });
+
+            haveNewMessage();
 
             threadRef
                 .set(
