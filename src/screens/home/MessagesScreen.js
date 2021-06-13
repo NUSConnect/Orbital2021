@@ -279,7 +279,7 @@ export default function MessagesScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <MessageTopTab
-                onBack={() => navigation.goBack()}
+                onBack={() => {navigation.goBack(); toggleHaveNewMessage();}}
                 onPress={() => navigation.navigate("StartMessagesScreen")}
             />
             <TextInput

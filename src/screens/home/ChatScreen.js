@@ -37,6 +37,14 @@ export default function ChatScreen({ route, onPress, navigation }) {
             });
     };
 
+    const toggleHaveNewMessage = () => {
+            firebase
+                .firestore()
+                .collection("users")
+                .doc(currentUser)
+                .update({ haveNewMessage: false });
+        }
+
     const sendNotifications = async (text) => {
         const sender = thread.isGroup ? (thread.name + ' - ' + currentUserName) : currentUserName;
 
@@ -255,7 +263,7 @@ export default function ChatScreen({ route, onPress, navigation }) {
                 <TouchableOpacity
                     style={styles.button}
                     activeOpacity={0.4}
-                    onPress={() => navigation.goBack(null)}
+                    onPress={() => {navigation.goBack(); toggleHaveNewMessage();}}
                 >
                     <Ionicons
                         name="arrow-back"
