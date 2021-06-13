@@ -121,7 +121,9 @@ export default function ChatScreen({ route, onPress, navigation }) {
 
     async function handleFirstSend(messages) {
         const text = messages[0].text;
+        const users = thread.isGroup ? thread.members : [currentUser, thread.otherId];
         const threadRef = await firebase.firestore().collection('THREADS').doc(thread.id)
+
         threadRef
             .collection("MESSAGES")
             .add({
@@ -140,12 +142,10 @@ export default function ChatScreen({ route, onPress, navigation }) {
                         text,
                         createdAt: new Date().getTime(),
                     },
-                    users: thread.users
+                    users: users
                 },
                 { merge: true }
             );
-
-        const users = thread.isGroup ? thread.members : [currentUser, thread.otherId];
 
         for (let i = 0; i < users.length; i++) {
             firebase
@@ -154,7 +154,11 @@ export default function ChatScreen({ route, onPress, navigation }) {
                 .doc(users[i])
                 .collection('openChats')
                 .doc(thread.id)
-                .set({})
+                .set({});
+            if (users[i] !== currentUser) {
+                console.log("Reached");
+                haveNewMessage(users[i]);
+            }
         }
 
         sendNotifications(text);

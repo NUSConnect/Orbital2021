@@ -77,7 +77,7 @@ export default function StartMessagesScreen({ navigation }) {
 //                        console.log("ThreadID: ", threadID);
                         friendsArr.push({
                             id: threadID,
-                            userId: doc.id,
+                            otherId: doc.id,
                             name,
                             avatar: userImg,
                             users: users,
