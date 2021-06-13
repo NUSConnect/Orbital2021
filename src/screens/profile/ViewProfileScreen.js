@@ -93,7 +93,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     const message = async () => {
         const list = [currentUserId, item.userId]
         var threadID = concatList(list);
-        var threadObj =  new Object({ id: threadID, name: userData.name });
+        var threadObj =  new Object({ id: threadID, name: userData.name, otherId: item.userId,  });
         navigation.navigate("ChatScreen", { thread: threadObj });
     };
 
