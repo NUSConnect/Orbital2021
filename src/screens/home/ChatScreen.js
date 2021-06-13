@@ -74,11 +74,11 @@ export default function ChatScreen({ route, onPress, navigation }) {
         }
     };
 
-    const haveNewMessage = () => {
+    const haveNewMessage = id => {
         firebase
             .firestore()
             .collection("users")
-            .doc(thread.otherId)
+            .doc(id)
             .update({ haveNewMessage:true });
     }
 
@@ -99,7 +99,7 @@ export default function ChatScreen({ route, onPress, navigation }) {
                     },
                 });
 
-            haveNewMessage();
+            haveNewMessage(thread.otherId);
 
             threadRef
                 .set(
@@ -191,7 +191,13 @@ export default function ChatScreen({ route, onPress, navigation }) {
 
                 setMessages(messages);
             });
-
+        /*
+        navigation.addListener('beforeRemove', (e) => {
+            e.preventDefault();
+            toggleHaveNewMessage();
+            navigation.goBack();
+        });
+        */
         // Stop listening for updates whenever the component unmounts
         return () => messagesListener();
     }, []);
