@@ -35,6 +35,7 @@ export default function MessagesScreen({ navigation }) {
 
     useEffect(() => {
         getThreads();
+        toggleHaveNewMessage();
         const _unsubscribe = navigation.addListener("focus", () =>
             getThreads()
         );
@@ -43,6 +44,14 @@ export default function MessagesScreen({ navigation }) {
             _unsubscribe();
         };
     }, []);
+
+    const toggleHaveNewMessage = () => {
+        firebase
+            .firestore()
+            .collection("users")
+            .doc(currentUserId)
+            .update({ haveNewMessage: false });
+    }
 
     const deletePressed = id => {
         console.log("Pressed");
@@ -116,7 +125,7 @@ export default function MessagesScreen({ navigation }) {
     };
 
     const matchUserToThreads = async (threads) => {
-        console.log('Matching Threads:', threads);
+        //console.log('Matching Threads:', threads);
         for (let k = 0; k < threads.length; k++) {
             const threadId = threads[k].id;
 
@@ -196,7 +205,7 @@ export default function MessagesScreen({ navigation }) {
 
     const checkIfNewMessage = async (deletedThreads, openThreads) => {
         // Reopen chat if new message received
-        console.log('Deleted Threads', deletedThreads)
+       // console.log('Deleted Threads', deletedThreads)
         const reopenedThreads = [];
 
         for (let i = 0;  i < deletedThreads.length; i++) {
@@ -210,7 +219,7 @@ export default function MessagesScreen({ navigation }) {
                     }
                 })
         }
-        console.log(reopenedThreads);
+       // console.log(reopenedThreads);
         const allOpenThreads = reopenedThreads.concat(openThreads);
         matchUserToThreads(allOpenThreads);
     }
@@ -270,7 +279,7 @@ export default function MessagesScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <MessageTopTab
-                onBack={() => navigation.goBack()}
+                onBack={() => {navigation.goBack(); toggleHaveNewMessage();}}
                 onPress={() => navigation.navigate("StartMessagesScreen")}
             />
             <TextInput

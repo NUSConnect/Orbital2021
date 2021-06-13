@@ -9,12 +9,12 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    View
+    View,
 } from "react-native";
-import ModalSelector from 'react-native-modal-selector';
+import ModalSelector from "react-native-modal-selector";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { swipeDirections } from "rn-swipe-gestures";
-import { sortByLatest, sortByTrending } from '../../api/ranking';
+import { sortByLatest, sortByTrending } from "../../api/ranking";
 import HomeTopTab from "../../components/HomeTopTab";
 import PostCard from "../../components/PostCard";
 
@@ -27,9 +27,14 @@ export default class HomePostsScreen extends React.Component {
             refreshing: true,
             deleted: false,
             sortedBy: null,
-            sortingOptions: [{ key:0, section: true, label: 'Sort posts by:'}, { key: 1, label: 'Latest'}, { key: 2, label: 'Trending' }],
+            sortingOptions: [
+                { key: 0, section: true, label: "Sort posts by:" },
+                { key: 1, label: "Latest" },
+                { key: 2, label: "Trending" },
+            ],
             myText: "Ready to get swiped!",
             gestureName: "none",
+            haveNewMessage: false,
         };
     }
 
@@ -64,12 +69,24 @@ export default class HomePostsScreen extends React.Component {
 
     componentDidMount() {
         this.getUser();
+        this.fetchHaveNewMessage();
         this.fetchPosts();
-        this._unsubscribe = this.props.navigation.addListener('focus', () => this.fetchPosts());
+        this._unsubscribe = this.props.navigation.addListener("focus", () =>
+            this.fetchPosts()
+        );
     }
 
     componentWillUnmount() {
         this._unsubscribe();
+    }
+
+    fetchHaveNewMessage = () => {
+        firebase
+            .firestore()
+            .collection("users")
+            .doc(this.state.currentUserId)
+            .onSnapshot((documentSnapshot) => this.setState({ haveNewMessage: documentSnapshot.data().haveNewMessage }));
+        console.log(this.state.haveNewMessage);
     }
 
     getUser = async () => {
@@ -80,7 +97,9 @@ export default class HomePostsScreen extends React.Component {
             .get()
             .then((documentSnapshot) => {
                 if (documentSnapshot.data().preferredSorting != null) {
-                    this.setState({ sortedBy: documentSnapshot.data().preferredSorting });
+                    this.setState({
+                        sortedBy: documentSnapshot.data().preferredSorting,
+                    });
                 } else {
                     this.setState({ sortedBy: "Latest" });
                 }
@@ -102,7 +121,7 @@ export default class HomePostsScreen extends React.Component {
                     });
                 });
 
-            console.log("Following: ", following);
+            //console.log("Following: ", following);
             const list = [];
             this.setState({ refreshing: true });
 
@@ -143,7 +162,7 @@ export default class HomePostsScreen extends React.Component {
                     });
             }
 
-            switch(this.state.sortedBy) {
+            switch (this.state.sortedBy) {
                 case "Latest":
                     list.sort(sortByLatest);
                     break;
@@ -159,23 +178,23 @@ export default class HomePostsScreen extends React.Component {
                 this.setState({ refreshing: false });
             }
 
-//            console.log("Posts: ", this.state.data);
+            //            console.log("Posts: ", this.state.data);
         } catch (e) {
             console.log(e);
         }
     };
 
     changeSorting = async (sorter) => {
-        this.setState({ sortedBy: sorter })
+        this.setState({ sortedBy: sorter });
         await firebase
             .firestore()
             .collection("users")
             .doc(this.state.currentUserId)
             .update({
-                 preferredSorting: sorter,
-             })
+                preferredSorting: sorter,
+            });
         this.fetchPosts();
-    }
+    };
 
     handleDelete = (postId) => {
         Alert.alert(
@@ -197,7 +216,7 @@ export default class HomePostsScreen extends React.Component {
     };
 
     deletePost = (postId) => {
-        console.log("Current Post Id: ", postId);
+        //console.log("Current Post Id: ", postId);
 
         firebase
             .firestore()
@@ -214,7 +233,7 @@ export default class HomePostsScreen extends React.Component {
                         const storageRef = firebase
                             .storage()
                             .refFromURL(postImg);
-                        console.log("storageRef", storageRef.fullPath);
+                        //console.log("storageRef", storageRef.fullPath);
                         const imageRef = firebase
                             .storage()
                             .ref(storageRef.fullPath);
@@ -308,8 +327,8 @@ export default class HomePostsScreen extends React.Component {
 
     navigateProfile = (creatorId, ownNavigation, otherNavigation) => {
         return (currUserId) => {
-            console.log("Current User: ", currUserId);
-            console.log("Creator User: ", creatorId);
+            //console.log("Current User: ", currUserId);
+            //console.log("Creator User: ", creatorId);
             if (currUserId == creatorId) {
                 ownNavigation();
             } else {
@@ -328,32 +347,51 @@ export default class HomePostsScreen extends React.Component {
         };
         return (
             <SafeAreaView>
-                <HomeTopTab
-                    onPress={() => navigation.navigate("MessagesScreen")}
-                    onPress2={() => navigation.navigate("AddPostScreen")}
-                />
+                {!this.state.haveNewMessage
+                ? (
+                    <HomeTopTab
+                        onPress={() => navigation.navigate("MessagesScreen")}
+                        onPress2={() => navigation.navigate("AddPostScreen")}
+                        icon="chatbubbles-outline"
+                    />
+                )
+                : (
+                    <HomeTopTab
+                        onPress={() => navigation.navigate("MessagesScreen")}
+                        onPress2={() => navigation.navigate("AddPostScreen")}
+                        icon="alert-circle-outline"
+                    />
+                )}
                 <FlatList
                     data={this.state.data}
                     ListHeaderComponent={
-                         <View style={styles.sortBar}>
+                        <View style={styles.sortBar}>
                             <MaterialCommunityIcons
                                 name="sort"
-                                color={'blue'}
+                                color={"blue"}
                                 size={26}
                             />
-                            <Text style={styles.text}>
-                                {'Sorted by: '}
-                            </Text>
+                            <Text style={styles.text}>{"Sorted by: "}</Text>
                             <ModalSelector
                                 data={this.state.sortingOptions}
                                 initValue={this.state.sortedBy}
-                                onChange={(option) => this.changeSorting(option.label)}
-                                animationType={'fade'}
+                                onChange={(option) =>
+                                    this.changeSorting(option.label)
+                                }
+                                animationType={"fade"}
                                 backdropPressToClose={true}
-                                overlayStyle={{ flex: 1, padding: '5%', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.9)' }}
+                                overlayStyle={{
+                                    flex: 1,
+                                    padding: "5%",
+                                    justifyContent: "center",
+                                    backgroundColor: "rgba(0,0,0,0.9)",
+                                }}
                                 sectionTextStyle={{ fontSize: 20 }}
-                                cancelTextStyle={{ color: 'crimson', fontSize: 20 }}
-                                cancelText={'Cancel'}
+                                cancelTextStyle={{
+                                    color: "crimson",
+                                    fontSize: 20,
+                                }}
+                                cancelText={"Cancel"}
                                 optionTextStyle={{ fontSize: 20 }}
                             >
                                 <TextInput
@@ -363,7 +401,7 @@ export default class HomePostsScreen extends React.Component {
                                     value={this.state.sortedBy}
                                 />
                             </ModalSelector>
-                         </View>
+                        </View>
                     }
                     ListHeaderComponentStyle={styles.headerComponentStyle}
                     renderItem={({ item }) => (
@@ -406,8 +444,8 @@ const styles = StyleSheet.create({
         borderRadius: 6,
     },
     sortBar: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
         paddingLeft: 10,
     },
     text: {
@@ -415,12 +453,12 @@ const styles = StyleSheet.create({
     },
     pickerText: {
         fontSize: 16,
-        color: 'blue',
+        color: "blue",
         paddingLeft: 10,
         paddingRight: 10,
         borderWidth: 1,
         borderRadius: 20,
-        borderColor: 'gray',
+        borderColor: "gray",
     },
     headerComponentStyle: {
         marginVertical: 7,

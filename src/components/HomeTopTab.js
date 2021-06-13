@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
 
-export default function HomeTopTab({ style, onPress, onPress2, ...props }) {
+export default function HomeTopTab({ style, onPress, onPress2, icon, ...props }) {
     return (
         <View style={styles.container}>
             <TouchableOpacity
@@ -11,7 +11,7 @@ export default function HomeTopTab({ style, onPress, onPress2, ...props }) {
                 onPress={onPress}
             >
                 <Ionicons
-                    name="chatbubbles-outline"
+                    name={icon}
                     color="#79D2E6"
                     size={38}
                     style={styles.icon}

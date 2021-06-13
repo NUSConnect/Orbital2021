@@ -63,12 +63,12 @@ export default function GroupCreationScreen({ props, route, navigation }) {
     const selectItem = (key) => {
         let selectedUsers = users;
         for (let item of selectedUsers) {
-            if (item.userId == key) {
+            if (item.otherId == key) {
                 item.isSelected = (item.isSelected == null) ? true : !item.isSelected;
                 if (item.isSelected) {
-                    setMembers(oldArray => [...oldArray, { userId: item.userId, name: item.name }])
+                    setMembers(oldArray => [...oldArray, { userId: item.otherId, name: item.name }])
                 } else {
-                    setMembers(members.filter(mem => mem.userId != item.userId))
+                    setMembers(members.filter(mem => mem.userId != item.otherId))
                 }
                 setItemChecked((prevState) => !prevState);
                 break;
@@ -131,7 +131,7 @@ export default function GroupCreationScreen({ props, route, navigation }) {
                 ItemSeparatorComponent={() => <Divider />}
                 renderItem={({ item }) => (
                     <TouchableOpacity
-                        onPress={() => selectItem(item.userId) }
+                        onPress={() => selectItem(item.otherId) }
                         style={{ width: '100%', backgroundColor: item.isSelected ? '#DDD' : '#FFF'}}
                     >
                         <UserInfo>

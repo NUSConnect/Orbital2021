@@ -37,6 +37,14 @@ export default function ChatScreen({ route, onPress, navigation }) {
             });
     };
 
+    const toggleHaveNewMessage = () => {
+            firebase
+                .firestore()
+                .collection("users")
+                .doc(currentUser)
+                .update({ haveNewMessage: false });
+        }
+
     const sendNotifications = async (text) => {
         const sender = thread.isGroup ? (thread.name + ' - ' + currentUserName) : currentUserName;
 
@@ -66,9 +74,18 @@ export default function ChatScreen({ route, onPress, navigation }) {
         }
     };
 
+    const haveNewMessage = id => {
+        firebase
+            .firestore()
+            .collection("users")
+            .doc(id)
+            .update({ haveNewMessage:true });
+    }
+
     async function handleSend(messages) {
         const text = messages[0].text;
-        const threadRef = await firebase.firestore().collection('THREADS').doc(thread.id)
+        const threadRef = await firebase.firestore().collection('THREADS').doc(thread.id);
+        const users = thread.isGroup ? thread.members : [currentUser, thread.otherId];
 
         const doc = await threadRef.get();
         if (doc.exists) {
@@ -82,6 +99,12 @@ export default function ChatScreen({ route, onPress, navigation }) {
                         avatar: userImg,
                     },
                 });
+
+            for (let i = 0; i < users.length; i++) {
+                if (users[i] !== currentUser) {
+                    haveNewMessage(users[i]);
+                }
+            }
 
             threadRef
                 .set(
@@ -105,7 +128,7 @@ export default function ChatScreen({ route, onPress, navigation }) {
         const text = messages[0].text;
         const users = thread.isGroup ? thread.members : [currentUser, thread.otherId];
         const threadRef = await firebase.firestore().collection('THREADS').doc(thread.id);
-        console.log(users)
+      
         threadRef
             .collection("MESSAGES")
             .add({
@@ -136,7 +159,10 @@ export default function ChatScreen({ route, onPress, navigation }) {
                 .doc(users[i])
                 .collection('openChats')
                 .doc(thread.id)
-                .set({})
+                .set({});
+            if (users[i] !== currentUser) {
+                haveNewMessage(users[i]);
+            }
         }
 
         sendNotifications(text);
@@ -173,7 +199,13 @@ export default function ChatScreen({ route, onPress, navigation }) {
 
                 setMessages(messages);
             });
-
+        /*
+        navigation.addListener('beforeRemove', (e) => {
+            e.preventDefault();
+            toggleHaveNewMessage();
+            navigation.goBack();
+        });
+        */
         // Stop listening for updates whenever the component unmounts
         return () => messagesListener();
     }, []);
@@ -245,7 +277,7 @@ export default function ChatScreen({ route, onPress, navigation }) {
                 <TouchableOpacity
                     style={styles.button}
                     activeOpacity={0.4}
-                    onPress={() => navigation.goBack(null)}
+                    onPress={() => {navigation.goBack(); toggleHaveNewMessage();}}
                 >
                     <Ionicons
                         name="arrow-back"
