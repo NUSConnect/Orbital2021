@@ -1,8 +1,8 @@
 import * as React from "react";
-import SkipButton from "../SkipButton";
+import SearchBar from "../SearchBar";
 import renderer from "react-test-renderer";
 
 it(`renders correctly`, () => {
-    const tree = renderer.create(<SkipButton />);
+    const tree = renderer.create(<SearchBar />);
     expect(tree).toMatchSnapshot();
 });

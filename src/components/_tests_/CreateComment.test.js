@@ -1,8 +1,8 @@
 import * as React from "react";
-import SkipButton from "../SkipButton";
+import CreateComment from "../CreateComment";
 import renderer from "react-test-renderer";
 
 it(`renders correctly`, () => {
-    const tree = renderer.create(<SkipButton />);
+    const tree = renderer.create(<CreateComment />);
     expect(tree).toMatchSnapshot();
 });
