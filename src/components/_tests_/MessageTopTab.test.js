@@ -7,15 +7,15 @@ it(`renders correctly`, () => {
     const tree = renderer.create(<MessageTopTab />);
     expect(tree).toMatchSnapshot();
 });
-/* not working, unsure why
-it(`on press button`, () => {
+
+it(`on press back`, () => {
     const mockOnPressFn = jest.fn();
-    const {getByTestId} = render(<MessageTopTab onPress={mockOnPressFn} />);
+    const {getByTestId} = render(<MessageTopTab onBack={mockOnPressFn} />);
     fireEvent.press(getByTestId('onBack'));
     expect(mockOnPressFn).toHaveBeenCalled();
 });
-*/
-it(`on press button`, () => {
+
+it(`on press people`, () => {
     const mockOnPressFn = jest.fn();
     const {getByTestId} = render(<MessageTopTab onPress={mockOnPressFn} />);
     fireEvent.press(getByTestId('onPress'));
