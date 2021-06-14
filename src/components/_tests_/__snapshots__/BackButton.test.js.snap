@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  accessible={true}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "left": 4,
+      "opacity": 1,
+      "position": "absolute",
+      "top": 30,
+    }
+  }
+  testID="back"
+>
+  <Image
+    source={1}
+    style={
+      Object {
+        "height": 24,
+        "width": 24,
+      }
+    }
+  />
+</View>
+`;
