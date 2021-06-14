@@ -24,6 +24,7 @@ import { FIREBASE_CONFIG } from "./src/core/config";
 import checkIfFirstLaunch from "./src/api/firstLaunch";
 import { MenuProvider } from 'react-native-popup-menu'
 
+
 // https://stackoverflow.com/questions/44603362/setting-a-timer-for-a-long-period-of-time-i-e-multiple-minutes
 import { LogBox } from "react-native";
 import _ from "lodash";
