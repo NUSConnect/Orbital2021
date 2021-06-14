@@ -10,6 +10,7 @@ export default function PostButton({ style, onPress, ...props }) {
                 style={styles.button}
                 activeOpacity={0.4}
                 onPress={onPress}
+                testID="onPress"
             >
                 <Ionicons
                     name="add"

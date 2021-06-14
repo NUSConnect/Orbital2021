@@ -31,6 +31,7 @@ exports[`renders correctly 1`] = `
         "width": "15%",
       }
     }
+    testID="back"
   >
     <Text />
   </View>

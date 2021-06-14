@@ -45,6 +45,7 @@ exports[`renders correctly 1`] = `
         "width": "15%",
       }
     }
+    testID="onPress"
   >
     <Text />
   </View>

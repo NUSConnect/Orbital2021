@@ -21,6 +21,7 @@ exports[`renders correctly 1`] = `
       "width": 180,
     }
   }
+  testID="cancel"
 >
   <Text
     style={
