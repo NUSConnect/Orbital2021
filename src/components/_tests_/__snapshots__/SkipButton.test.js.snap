@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  accessible={true}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "marginHorizontal": 10,
+      "opacity": 1,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "fontSize": 16,
+      }
+    }
+  >
+    Skip
+  </Text>
+</View>
+`;
