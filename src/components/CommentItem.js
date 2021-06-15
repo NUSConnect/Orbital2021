@@ -32,19 +32,20 @@ const CommentItem = ({ route, item, onViewProfile, onPressHandle }) => {
                     <Text
                         style={styles.username}
                         onPress={() => onViewProfile(currentUserId)}
+                        testID='username'
                     >
                         {userData
                             ? userData.name || "Anonymous User"
                             : "Anonymous User"}
                     </Text>
-                    <Text style={styles.regularFont}>
+                    <Text style={styles.regularFont} testID='time'>
                         {" ·"} {moment(item.postTime.toDate()).fromNow()}
                     </Text>
                 </View>
                 <View style={styles.headerRight}></View>
             </View>
 
-            <Text style={styles.text} onPress={onPressHandle}>
+            <Text style={styles.text} onPress={onPressHandle} testID='comment'>
                 {item.commentBody}
             </Text>
         </View>
