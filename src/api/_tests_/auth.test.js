@@ -36,13 +36,34 @@ jest.mock("firebase", () => {
                                 });
                             }
                         ),
+                        sendPasswordResetEmail: jest.fn(
+                            (email) => {
+                                return new Promise(function(resolve, reject) {
+                                    reject({ message: "error!" });
+                                });
+                            }
+                        )
                     };
                 })
             }
 });
 
-it("calls sign out successfully", async () => {
+it("calls sign out successfully on logoutUser", async () => {
     await authentication.logoutUser();
-    expect(firebase.auth().signOut()).resolves.toHaveBeenCalled();
+    expect(firebase.auth().signOut()).resolves.toHaveBeenCalledTimes(1);
 });
 
+it("creates user successfully on signUpUser", async () => {
+    await authentication.signUpUser("testName", "test@test.com", "testPassword");
+    expect(firebase.auth().createUserWithEmailAndPassword()).resolves.toHaveBeenCalledTimes(1);
+});
+
+it("successful login on loginUser", async () => {
+    await authentication.loginUser("test@test.com", "testPassword");
+    expect(firebase.auth().signInWithEmailAndPassword()).resolves.toHaveBeenCalledTimes(1);
+});
+
+it("successful email sent on sendEmailWithPassword", async () => {
+    await authentication.sendEmailWithPassword("test@test.com");
+    expect(firebase.auth().sendPasswordResetEmail()).resolves.toHaveBeenCalledTimes(1);
+});
