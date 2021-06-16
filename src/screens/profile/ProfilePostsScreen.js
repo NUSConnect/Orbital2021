@@ -189,7 +189,7 @@ export default class ProfilePostsScreen extends React.Component {
     render() {
         const { navigation } = this.props;
         return (
-            <SafeAreaView>
+            <SafeAreaView style={{flex: 1}}>
                 <FlatList
                     data={this.state.data}
                     renderItem={({ item }) => (
