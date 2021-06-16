@@ -346,7 +346,7 @@ export default class HomePostsScreen extends React.Component {
             detectSwipeDown: false,
         };
         return (
-            <SafeAreaView style={{flex: 1}}>
+            <SafeAreaView>
                 {!this.state.haveNewMessage
                 ? (
                     <HomeTopTab
