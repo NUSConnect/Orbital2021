@@ -43,6 +43,6 @@ jest.mock("firebase", () => {
 
 it("calls sign out successfully", async () => {
     await authentication.logoutUser();
-    expect(signOut).toHaveBeenCalled();
+    expect(firebase.auth().signOut()).resolves.toHaveBeenCalled();
 });
 
