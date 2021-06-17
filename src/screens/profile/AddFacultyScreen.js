@@ -180,4 +180,7 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: "row",
     },
+    icon: {
+        marginTop: 10,
+    },
 });
