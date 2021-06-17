@@ -126,7 +126,7 @@ export default function FindGroupScreen({ navigation }) {
                 else if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 6) {
                     //hit threshold, handle logic to form a group. currently only an alert.
                     Alert.alert("Group found!");
-                    const successfulFinding = count >= 2;
+                    const successfulFinding = count >= groupThreshold;
                     clearUsers(successfulFinding, category);
                     navigation.navigate("FindGroupScreen");
                     unsubscribe();
