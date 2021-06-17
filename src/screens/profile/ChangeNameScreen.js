@@ -11,6 +11,7 @@ import {
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
 import { nameValidator } from "../../helpers/auth/nameValidator";
+import { textChecker } from '../../api/textChecker';
 
 export default class ChangeNameScreen extends React.Component {
 
@@ -83,7 +84,7 @@ export default class ChangeNameScreen extends React.Component {
                             <View style={styles.space} />
                             <SubmitButton
                                 goBack={() => {
-                                    this.state.text != null
+                                    textChecker(this.state.text)
                                         ? this.submitName(
                                               () => this.props.navigation.goBack(),
                                               this.state.text

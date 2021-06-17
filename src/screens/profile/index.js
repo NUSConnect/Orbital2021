@@ -10,7 +10,5 @@ export { default as ComputingMajorsScreen } from "./profile/ComputingMajorsScree
 export { default as DesignMajorsScreen } from "./profile/DesignMajorsScreen";
 export { default as EngineeringMajorsScreen } from "./profile/EngineeringMajorsScreen";
 export { default as UpdateEmailScreen } from "./profile/UpdateEmailScreen";
-export { default as ProfileCommentsScreen } from "./ProfileCommentsScreen";
 export { default as ProfileMasterScreen } from "./ProfileMasterScreen";
-export { default as ProfilePostsScreen } from "./ProfilePostsScreen";
-
+export { default as ProfilePostsScreen } from "./ProfilePostsScreen"

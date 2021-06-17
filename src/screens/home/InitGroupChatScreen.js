@@ -11,8 +11,7 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import GroupCreationTopTab from '../../components/GroupCreationTopTab';
-
-
+import { textChecker } from '../../api/textChecker'
 
 export default function InitGroupChatScreen({ route, navigation}) {
     const [name, setName] = useState('');
@@ -72,7 +71,7 @@ export default function InitGroupChatScreen({ route, navigation}) {
     };
 
     const checkSubmit = () => {
-        if (name != '' & description != '') {
+        if (textChecker(name) && textChecker(description)) {
             handleSubmit(() => navigation.navigate('MessagesScreen'))
         } else {
             Alert.alert(
@@ -108,8 +107,8 @@ export default function InitGroupChatScreen({ route, navigation}) {
                 users: users,
                 group: true,
                 groupImage: imageUrl,
-                groupName: name,
-                groupDescription: description,
+                groupName: { name: name },
+                groupDescription: { description: description },
             }, { merge: true })
             .then(() => {
                 Alert.alert(
@@ -181,14 +180,14 @@ export default function InitGroupChatScreen({ route, navigation}) {
             <TextInput
                 style={styles.nameInput}
                 returnKeyType="next"
-                onChangeText={(name) => setName({ name })}
+                onChangeText={setName}
                 value={name}
                 placeholder="Enter a name"
             />
             <Text style={styles.subTitle}>Group Description</Text>
             <TextInput
                 style={styles.descriptionInput}
-                onChangeText={(description) => setDescription({ description })}
+                onChangeText={setDescription}
                 value={description}
                 placeholder="Enter a description"
                 multiline={true}

@@ -13,6 +13,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
+import { textChecker } from '../../api/textChecker';
 
 export default class ForumCreationScreen extends React.Component {
     constructor(props) {
@@ -181,8 +182,8 @@ export default class ForumCreationScreen extends React.Component {
                     <View style={styles.space} />
                     <SubmitButton
                         goBack={() => {
-                            if (this.state.nameText != '' && this.state.descriptionText != '' &&
-                                this.state.reasonText != '') {
+                            if (textChecker(this.state.nameText) && textChecker(this.state.descriptionText) &&
+                                textChecker(this.state.reasonText)) {
                                 this.submitPost(() => navigation.goBack());
                             } else {
                                 Alert.alert(

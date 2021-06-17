@@ -11,6 +11,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
+import { textChecker } from '../../api/textChecker';
 
 const EditForumPostScreen = ({ navigation, route }) => {
     const currentUserId = firebase.auth().currentUser.uid;
@@ -70,7 +71,7 @@ const EditForumPostScreen = ({ navigation, route }) => {
                 <View style={styles.space} />
                 <SubmitButton
                     goBack={() => {
-                        text != ""
+                        textChecker(text)
                             ? updatePost(() => goBack())
                             : Alert.alert(
                                   "Cannot submit an empty post!",

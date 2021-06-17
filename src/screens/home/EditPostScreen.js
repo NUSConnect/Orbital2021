@@ -11,8 +11,7 @@ import {
 } from "react-native";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
-
-
+import { textChecker } from '../../api/textChecker';
 
 const EditPostScreen = ({ navigation, route }) => {
     const currentUserId = firebase.auth().currentUser.uid;
@@ -78,7 +77,7 @@ const EditPostScreen = ({ navigation, route }) => {
                         <View style={styles.space} />
                         <SubmitButton
                             goBack={() => {
-                                text != null
+                                textChecker(text)
                                     ? updatePost(() => navigation.goBack())
                                     : Alert.alert(
                                           "Cannot submit an empty post!",
@@ -99,8 +98,6 @@ export default EditPostScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 0,
-        //    alignItems: 'center',
-        //    justifyContent: 'center',
         flexDirection: "row",
     },
     innerContainer: {
@@ -126,7 +123,7 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 0,
-        height: 100,
+        height: 400,
         width: "90%",
         margin: 12,
         borderWidth: 1,
@@ -134,6 +131,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         justifyContent: "flex-start",
         alignItems: "flex-start",
+        textAlignVertical: "top",
     },
     buttons: {
         flex: 1,

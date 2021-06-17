@@ -296,7 +296,7 @@ export default function MessagesScreen({ navigation }) {
             />
             <FlatList
                 data={filtered ? filteredDataSource : threads}
-                keyExtractor={(item) => item.name}
+                keyExtractor={(item) => item.id}
                 ItemSeparatorComponent={() => <Divider />}
                 renderItem={({ item }) => (
                     <Swipeable renderRightActions={rightSwipe(item.id)}>

@@ -18,6 +18,7 @@ import CommentItem  from '../../components/CommentItem'
 import CreateComment  from '../../components/CreateComment'
 import PostCardView from '../../components/PostCardView'
 import { sortByLatest } from "../../api/ranking";
+import { textChecker } from '../../api/textChecker';
 
 const DeviceWidth = Dimensions.get("window").width;
 
@@ -362,7 +363,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
 
             <CreateComment
                 onPress={() => {
-                    if (text != "") {
+                    if (textChecker(text)) {
                         onCommentSend();
                     } else {
                         Alert.alert(
