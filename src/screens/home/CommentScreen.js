@@ -151,7 +151,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
 
     const handleDelete = (commentId) => {
         Alert.alert(
-            "Delete post",
+            "Delete comment",
             "Are you sure?",
             [
                 {
