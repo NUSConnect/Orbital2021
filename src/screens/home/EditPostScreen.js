@@ -98,8 +98,6 @@ export default EditPostScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 0,
-        //    alignItems: 'center',
-        //    justifyContent: 'center',
         flexDirection: "row",
     },
     innerContainer: {

@@ -65,6 +65,7 @@ export default class ChangePasswordScreen extends React.Component {
                             onChangeText={(text) => this.setState({ text })}
                             value={this.state.text}
                             multiline={false}
+                            autoCapitalize="none"
                             secureTextEntry
                         />
 

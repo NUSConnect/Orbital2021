@@ -16,6 +16,7 @@ import ActionButton from "react-native-action-button";
 import Icon from "react-native-vector-icons/Ionicons";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
+import { textChecker } from '../../api/textChecker';
 
 // Action button fix
 ActionButton.prototype.animateButton = function (animate = true) {
@@ -60,7 +61,7 @@ export default class AddPostScreen extends React.Component {
             blob: null,
             uploading: false,
             transferred: 0,
-            text: null,
+            text: '',
         };
     }
 
@@ -252,7 +253,7 @@ export default class AddPostScreen extends React.Component {
                                 <View style={styles.space} />
                                 <SubmitButton
                                     goBack={() => {
-                                        this.state.text != null
+                                        textChecker(this.state.text)
                                             ? this.submitPost(() =>
                                                   navigation.goBack()
                                               )
