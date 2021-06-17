@@ -8,6 +8,8 @@ import {
     Text,
     TextInput,
     View,
+    TouchableOpacity,
+    Image,
 } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
 
@@ -124,6 +126,20 @@ export default function FilteredMajorScreen({
                         value={search}
                         placeholder="Search Here"
                     />
+                    {search !== "" ? (
+                        <TouchableOpacity
+                            style={styles.closeButtonParent}
+                            onPress={() => {
+                                setFilteredDataSource(masterDataSource);
+                                setSearch("");
+                            }}
+                        >
+                            <Image
+                                style={styles.closeButton}
+                                source={require("../../assets/close-circle-outline.png")}
+                            />
+                        </TouchableOpacity>
+                    ) : null}
                 </View>
                 <FlatList
                     data={filtered ? filteredDataSource : masterDataSource}
@@ -159,6 +175,15 @@ const styles = StyleSheet.create({
     },
     icon: {
         alignItems: "center",
-        marginTop: 10
+        marginTop: 10,
+    },
+    closeButtonParent: {
+        justifyContent: "flex-end",
+        alignItems: "flex-end",
+        marginRight: 10,
+    },
+    closeButton: {
+        height: 16,
+        width: 16,
     },
 });

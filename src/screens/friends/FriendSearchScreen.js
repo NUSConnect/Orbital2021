@@ -7,7 +7,9 @@ import {
     StyleSheet,
     Text,
     TextInput,
-    View
+    View,
+    Image,
+    TouchableOpacity,
 } from "react-native";
 
 export default function FriendSearchScreen({ props, navigation }) {
@@ -100,12 +102,28 @@ export default function FriendSearchScreen({ props, navigation }) {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <TextInput
-                    style={styles.textInputStyle}
-                    onChangeText={(text) => searchFilterFunction(text)}
-                    value={search}
-                    placeholder="Search Here"
-                />
+                <View styles={styles.searchBar}>
+                    <TextInput
+                        style={styles.textInputStyle}
+                        onChangeText={(text) => searchFilterFunction(text)}
+                        value={search}
+                        placeholder="Search Here"
+                    />
+                    {search !== "" ? (
+                        <TouchableOpacity
+                            style={styles.closeButtonParent}
+                            onPress={() => {
+                                setFilteredDataSource(masterDataSource);
+                                setSearch("");
+                            }}
+                        >
+                            <Image
+                                style={styles.closeButton}
+                                source={require("../../assets/close-circle-outline.png")}
+                            />
+                        </TouchableOpacity>
+                    ) : null}
+                </View>
                 <FlatList
                     data={filtered ? filteredDataSource : masterDataSource}
                     keyExtractor={(item, index) => index.toString()}
@@ -133,5 +151,17 @@ const styles = StyleSheet.create({
         margin: 5,
         borderColor: "#ff8c00",
         backgroundColor: "#FFFFFF",
+    },
+    searchBar: {
+        flexDirection: "row",
+    },
+    closeButtonParent: {
+        justifyContent: "flex-end",
+        alignItems: "flex-end",
+        marginRight: 10,
+    },
+    closeButton: {
+        height: 16,
+        width: 16,
     },
 });
