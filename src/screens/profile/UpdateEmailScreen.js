@@ -22,6 +22,8 @@ export default class UpdateEmailScreen extends React.Component {
     }
 
     submitEmail = async (navigator, email) => {
+        var list = [];
+
         if (firebase.auth().currentUser.email === email) {
             Alert.alert("This is your current email!");
             return;
@@ -30,6 +32,23 @@ export default class UpdateEmailScreen extends React.Component {
             Alert.alert("This is an invalid email, please try again.");
             return;
         }
+
+        await firebase
+            .firestore()
+            .collection("users")
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    list.push(doc.data().email);
+                });
+                console.log(list);
+            });
+
+        if (list.includes(email)) {
+            Alert.alert("This email is currently in use!");
+            return;
+        }
+
         await firebase
             .auth()
             .currentUser.updateEmail(email)

@@ -6,8 +6,9 @@ import {
     SafeAreaView,
     StyleSheet,
     Text,
-    View
+    View,
 } from "react-native";
+import AddMajorTopTab from "../../components/AddMajorTopTab";
 
 export default function CHSMajorsScreen({ props, navigation, goBack }) {
     const currentUserId = firebase.auth().currentUser.uid;
@@ -23,26 +24,26 @@ export default function CHSMajorsScreen({ props, navigation, goBack }) {
     const returnToPersonal = () => {
         navigation.goBack();
         navigation.goBack();
-    }
+    };
 
     const ItemView = ({ item }) => {
-            return (
-                <Text
-                    style={styles.itemStyle}
-                    onPress={() => {
-                        firebase
-                            .firestore()
-                            .collection("users")
-                            .doc(currentUserId)
-                            .update({ major: item.name });
-                        Alert.alert("Thank you!", "Your major has been chosen");
-                        returnToPersonal();
-                    }}
-                >
-                    {item.name}
-                </Text>
-            );
-        };
+        return (
+            <Text
+                style={styles.itemStyle}
+                onPress={() => {
+                    firebase
+                        .firestore()
+                        .collection("users")
+                        .doc(currentUserId)
+                        .update({ major: item.name });
+                    Alert.alert("Thank you!", "Your major has been chosen");
+                    returnToPersonal();
+                }}
+            >
+                {item.name}
+            </Text>
+        );
+    };
     const ItemSeparatorView = () => {
         return (
             // Flat List Item Separator
@@ -58,15 +59,15 @@ export default function CHSMajorsScreen({ props, navigation, goBack }) {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-                    <View style={styles.container}>
-                        <Text style={styles.title}> Which major are you from? </Text>
-                        <FlatList
-                            data={majors}
-                            ItemSeparatorComponent={ItemSeparatorView}
-                            renderItem={ItemView}
-                        />
-                    </View>
-                </SafeAreaView>
+            <View style={styles.container}>
+                <AddMajorTopTab onPress={() => navigation.goBack()} />
+                <FlatList
+                    data={majors}
+                    ItemSeparatorComponent={ItemSeparatorView}
+                    renderItem={ItemView}
+                />
+            </View>
+        </SafeAreaView>
     );
 }
 
@@ -91,8 +92,8 @@ const styles = StyleSheet.create({
         height: 60,
         lineHeight: 60,
         width: "100%",
-        backgroundColor: "#ff8c00",
-        color: "#ffffff",
+        backgroundColor: "#ffffff",
+        color: "#ff8c00",
         fontSize: 30,
         paddingLeft: 15,
         marginBottom: 10,

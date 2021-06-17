@@ -73,8 +73,8 @@ const EditForumPostScreen = ({ navigation, route }) => {
                         text != ""
                             ? updatePost(() => goBack())
                             : Alert.alert(
-                                  "Cannot submit an empty comment!",
-                                  "Write something into the comment box to post."
+                                  "Cannot submit an empty post!",
+                                  "Write something into the box to post."
                               );
                     }}
                     string={"Edit"}
