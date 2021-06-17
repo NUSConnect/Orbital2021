@@ -19,29 +19,15 @@ import {
 } from "../styles/FeedStyles";
 import ProgressiveImage from "./ProgressiveImage";
 
-const PostCard = ({
+const PostCardView = ({
     route,
     item,
     onViewProfile,
-    onDelete,
-    onPress,
-    onReport,
-    onEdit,
 }) => {
     const currentUserId = firebase.auth().currentUser.uid;
     const [userData, setUserData] = useState(null);
     const [userLiked, setUserLiked] = useState(null);
     const [likeNumber, setLikeNumber] = useState(null);
-
-    var commentText;
-
-    if (item.commentCount == 1) {
-        commentText = "1 Comment";
-    } else if (item.commentCount > 1) {
-        commentText = item.commentCount + " Comments";
-    } else {
-        commentText = "Comment";
-    }
 
     const getUser = async () => {
         await firebase
@@ -156,15 +142,6 @@ const PostCard = ({
                         </UserInfoText>
                     </UserInfo>
                 </TouchableOpacity>
-                {currentUserId == item.userId ? (
-                    <TouchableOpacity
-                        style={styles.button}
-                        activeOpacity={0.4}
-                        onPress={onEdit}
-                    >
-                        <MaterialIcons name="edit" size={25} />
-                    </TouchableOpacity>
-                ) : null}
             </View>
             <PostText>{item.post}</PostText>
             {item.postImg != null ? (
@@ -193,25 +170,12 @@ const PostCard = ({
                             : item.likeCount + " Likes"}
                     </InteractionText>
                 </Interaction>
-                <Interaction onPress={onPress}>
-                    <Ionicons name="md-chatbubble-outline" size={25} />
-                    <InteractionText>{commentText}</InteractionText>
-                </Interaction>
-                {currentUserId == item.userId ? (
-                    <Interaction onPress={() => onDelete(item.id)}>
-                        <Ionicons name="md-trash-bin" size={25} />
-                    </Interaction>
-                ) : (
-                    <Interaction onPress={() => onReport(item.id)}>
-                        <MaterialIcons name="report-problem" size={25} />
-                    </Interaction>
-                )}
             </InteractionWrapper>
         </Card>
     );
 };
 
-export default PostCard;
+export default PostCardView;
 
 const styles = StyleSheet.create({
     container: {

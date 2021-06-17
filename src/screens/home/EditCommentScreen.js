@@ -14,7 +14,7 @@ import SubmitButton from "../../components/SubmitButton";
 const EditCommentScreen = ({ navigation, route }) => {
     const currentUserId = firebase.auth().currentUser.uid;
     const { comment } = route.params;
-    const [text, setText] = useState(comment.text);
+    const [text, setText] = useState(comment.commentBody);
 
     const updatePost = async (navigator) => {
         firebase
