@@ -4,15 +4,22 @@ import React, { useEffect, useState } from "react";
 import {
     Alert,
     FlatList,
-    SafeAreaView,
+    Dimensions,
     StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
     View
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Ionicons, MaterialIcons } from "react-native-vector-icons";
 import TitleWithBack from "../../components/TitleWithBack";
+import CommentItem  from '../../components/CommentItem'
+import CreateComment  from '../../components/CreateComment'
+import PostCardView from '../../components/PostCardView'
+import { sortByLatest } from "../../api/ranking";
+
+const DeviceWidth = Dimensions.get("window").width;
 
 const CommentScreen = ({ navigation, route, onPress }) => {
     const currentUserId = firebase.auth().currentUser.uid;
@@ -21,8 +28,10 @@ const CommentScreen = ({ navigation, route, onPress }) => {
     const [postId, setPostId] = useState("");
     const [text, setText] = useState("");
     const [refreshing, setRefreshing] = useState(true);
+    const [isFocused, setIsFocused] = useState(null);
 
     const { item } = route.params;
+    const os = Platform.OS;
 
     const getUser = async () => {
         await firebase
@@ -38,27 +47,6 @@ const CommentScreen = ({ navigation, route, onPress }) => {
             });
     };
 
-    const matchUserToComment = async (comments) => {
-        for (let k = 0; k < comments.length; k++) {
-            const commenterId = comments[k].creator;
-
-            await firebase
-                .firestore()
-                .collection("users")
-                .doc(commenterId)
-                .get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        comments[k].user = doc.data().name;
-                    } else {
-                        comments[k].user = "anon";
-                    }
-                });
-        }
-        setComments(comments);
-        console.log("Comments: ", comments);
-    };
-
     const fetchComments = async () => {
         const list = [];
         setRefreshing(true);
@@ -71,7 +59,6 @@ const CommentScreen = ({ navigation, route, onPress }) => {
             .collection("userPosts")
             .doc(item.postId)
             .collection("comments")
-            .orderBy("postTime", "asc")
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -80,14 +67,16 @@ const CommentScreen = ({ navigation, route, onPress }) => {
                         overallCreator: item.userId,
                         postId: item.postId,
                         commentId: doc.id,
-                        creator: creator,
+                        userId: creator,
                         postTime: postTime,
-                        text: text,
+                        commentBody: text,
                     });
                 });
             });
 
-        matchUserToComment(list);
+        list.sort(sortByLatest)
+        setComments(list);
+        console.log("Comments: ", comments);
 
         if (refreshing) {
             setRefreshing(false);
@@ -116,6 +105,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
                 fetchComments();
                 setRefreshing(false);
                 setText("");
+
             });
 
         item.commentCount = item.commentCount + 1;
@@ -128,8 +118,72 @@ const CommentScreen = ({ navigation, route, onPress }) => {
             .update({ commentCount: item.commentCount });
     };
 
+    const onPressComment = (comment) => {
+        if (currentUserId == comment.userId) {
+            if (os === "ios") {
+                Alert.alert(
+                    "Your comment has been selected",
+                    "What do you want to do with it?",
+                    [
+                        {
+                            text: "Edit",
+                            onPress: () => onPressEdit(comment),
+                        },
+                        {
+                            text: "Delete",
+                            onPress: () => handleDelete(comment.commentId),
+                        },
+                        {
+                            text: "Cancel",
+                            onPress: () => console.log("cancel pressed"),
+                            style: "cancel",
+                        },
+                    ],
+                    { cancelable: true }
+                );
+            } else {
+                Alert.alert(
+                    "Your comment has been selected",
+                    "What do you want to do with it?",
+                    [
+                        {
+                            text: "Cancel",
+                            onPress: () => console.log("cancel pressed"),
+                            style: "cancel",
+                        },
+                        {
+                            text: "Delete",
+                            onPress: () => handleDelete(comment.commentId),
+                        },
+                        {
+                            text: "Edit",
+                            onPress: () => onPressEdit(comment),
+                        },
+                    ],
+                    { cancelable: true }
+                );
+            }
+        } else {
+            Alert.alert(
+                "Report comment",
+                "Are you sure?",
+                [
+                    {
+                        text: "Cancel",
+                        onPress: () => console.log("cancel pressed"),
+                    },
+                    {
+                        text: "OK",
+                        onPress: () => handleReport(comment),
+                    },
+                ],
+                { cancelable: true }
+            );
+        }
+    };
+
     const onPressEdit = (comment) => {
-        if (currentUserId == comment.creator) {
+        if (currentUserId == comment.userId) {
             Alert.alert(
                 "Edit comment",
                 "Are you sure?",
@@ -234,6 +288,16 @@ const CommentScreen = ({ navigation, route, onPress }) => {
         />
     );
 
+    const navigateProfile = (creatorId, ownNavigation, otherNavigation) => {
+        return (currUserId) => {
+            if (currUserId == creatorId) {
+                ownNavigation();
+            } else {
+                otherNavigation();
+            }
+        };
+    };
+
     const handleRefresh = () => {
         setRefreshing(false);
         fetchComments();
@@ -251,105 +315,67 @@ const CommentScreen = ({ navigation, route, onPress }) => {
     }, []);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <KeyboardAwareScrollView
+            style={styles.container}
+            contentContainerStyle={styles.inner}
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            scrollEnabled={true}
+        >
             <TitleWithBack onPress={() => navigation.goBack()} />
-            <View style={styles.commentContainer}>
-                <View style={styles.postInfo}>
-                    <View style={styles.userComment}>
-                        <Text style={styles.username}>
-                            {userData
-                                ? userData.name + ":" || "Anonymous User:"
-                                : "Anonymous User:"}
-                        </Text>
-                        <Text style={styles.comment}>{item.post}</Text>
-                    </View>
-                    <Text style={styles.time}>
-                        {" "}
-                        {moment(item.postTime.toDate()).fromNow()}{" "}
-                    </Text>
-                </View>
-            </View>
-            <View
-                style={{
-                    height: 2,
-                    backgroundColor: "rgba(0,0,0,0.5)",
-                    marginLeft: 10,
-                    marginRight: 10,
-                }}
-            />
             <FlatList
                 numColumns={1}
                 horizontal={false}
                 data={comments}
-                renderItem={({ item }) => (
-                    <View style={styles.commentContainer}>
-                        <TouchableOpacity
-                            style={styles.textContainer}
-                            onPress={() => onPressEdit(item)}
-                            activeOpacity={1}
-                        >
-                            <View style={styles.userComment}>
-                                <Text style={styles.username}>{item.user}</Text>
-                                <Text style={styles.comment}>
-                                    {item.text}
-                                </Text>
-                            </View>
-                            <Text style={styles.time}>
-                                {" "}
-                                {moment(item.postTime.toDate()).fromNow()}{" "}
-                            </Text>
-                        </TouchableOpacity>
-                        {currentUserId === item.creator ? (
-                            <TouchableOpacity
-                                onPress={() => handleDelete(item.id)}
-                                style={styles.deleter}
-                            >
-                                <Ionicons name="md-trash-bin" size={25} />
-                            </TouchableOpacity>
-                        ) : (
-                            <TouchableOpacity
-                                onPress={() => handleReport(item.id)}
-                                style={styles.deleter}
-                            >
-                                <MaterialIcons
-                                    name="report-problem"
-                                    size={25}
-                                />
-                            </TouchableOpacity>
+                ListHeaderComponent={
+                    <PostCardView
+                        item={item}
+                        onViewProfile={navigateProfile(
+                            item.userId,
+                            () => navigation.navigate("Profile"),
+                            () =>
+                                navigation.navigate("ViewProfileScreen", {
+                                    item,
+                                })
                         )}
-                    </View>
+                    />
+                }
+                ListHeaderComponentStyle={styles.headerComponentStyle}
+                renderItem={({ item }) => (
+                    <CommentItem
+                        item={item}
+                        onViewProfile={navigateProfile(
+                            item.userId,
+                            () => navigation.navigate("Profile"),
+                            () =>
+                                navigation.navigate("ViewProfileScreen", {
+                                    item,
+                                })
+                        )}
+                        onPressHandle={() => onPressComment(item)}
+                    />
                 )}
-                keyExtractor={(item) => item.id}
-                ItemSeparatorComponent={ItemSeparator}
+                keyExtractor={(item) => item.commentId}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
                 style={{ width: "100%", marginBottom: 2 }}
             />
 
-            <View style={styles.inputContainer}>
-                <TextInput
-                    placeholder="Comment..."
-                    onChangeText={(text) => setText(text)}
-                    style={styles.inputBox}
-                    multiline={true}
-                />
-                <TouchableOpacity
-                    onPress={() => {
-                        if (text != '') {
-                            onCommentSend();
-                        } else {
-                            Alert.alert(
+            <CreateComment
+                onPress={() => {
+                    if (text != "") {
+                        onCommentSend();
+                    } else {
+                        Alert.alert(
                             "Cannot submit an empty comment!",
                             "Fill in comment body to post."
-                            );
-                        }
-                    }}
-                    style={styles.sendButton}
-                >
-                    <Ionicons name={"send-sharp"} size={25} color={"#79D2E6"} />
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
+                        );
+                    }
+                }}
+                setComment={setText}
+                setIsFocused={setIsFocused}
+                comment={text}
+            />
+        </KeyboardAwareScrollView>
     );
 };
 
@@ -357,55 +383,18 @@ export default CommentScreen;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 0,
+        flex: 1,
+        width: "100%"
+    },
+    headerComponentStyle: {
+        marginVertical: 0,
+    },
+    inner: {
+        flex: 1,
         width: "100%",
+        maxWidth: DeviceWidth,
+        alignSelf: "center",
         alignItems: "center",
         justifyContent: "center",
-        marginBottom: 40,
-    },
-    commentContainer: {
-        flexDirection: "row",
-        width: "100%",
-        padding: 10,
-        backgroundColor: "white",
-        alignItems: "center",
-        justifyContent: "flex-start",
-    },
-    postInfo: {
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-    },
-    userComment: {
-        flexDirection: "row",
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-    },
-    username: {
-        fontSize: 16,
-        fontWeight: "bold",
-        marginRight: 5,
-    },
-    commentText: {
-        fontSize: 16,
-    },
-    time: {
-        fontSize: 14,
-        color: "#666",
-    },
-    textContainer: {
-        width: "90%",
-    },
-    deleter: {},
-    inputContainer: {
-        width: "100%",
-        height: 50,
-        flexDirection: "row",
-        backgroundColor: "white",
-        marginBottom: 40,
-        alignItems: "center",
-    },
-    inputBox: {
-        width: "90%",
-        paddingLeft: 15,
     },
 });
