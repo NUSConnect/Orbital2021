@@ -6,8 +6,9 @@ import {
     SafeAreaView,
     StyleSheet,
     Text,
-    View
+    View,
 } from "react-native";
+import AddMajorTopTab from "../../components/AddMajorTopTab";
 
 export default function EngineeringMajorsScreen({ props, navigation, goBack }) {
     const currentUserId = firebase.auth().currentUser.uid;
@@ -64,7 +65,7 @@ export default function EngineeringMajorsScreen({ props, navigation, goBack }) {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <Text style={styles.title}> Which major are you from? </Text>
+                <AddMajorTopTab onPress={() => navigation.goBack()} />
                 <FlatList
                     data={majors}
                     ItemSeparatorComponent={ItemSeparatorView}

@@ -8,6 +8,7 @@ import {
     Text,
     View
 } from "react-native";
+import { Ionicons } from "react-native-vector-icons";
 
 export default function AddFacultyScreen({ props, navigation, goBack }) {
     const currentUserId = firebase.auth().currentUser.uid;
@@ -129,7 +130,16 @@ export default function AddFacultyScreen({ props, navigation, goBack }) {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <Text style={styles.title}> Which faculty are you from? </Text>
+            <View style={styles.header}>
+                <Ionicons
+                                    name="arrow-back"
+                                    color="#79D2E6"
+                                    size={38}
+                                    style={styles.icon}
+                                    onPress={() => navigation.goBack()}
+                                />
+                <Text style={styles.title}> Add your faculty </Text>
+                </View>
                 <FlatList
                     data={faculties}
                     ItemSeparatorComponent={ItemSeparatorView}
@@ -161,10 +171,13 @@ const styles = StyleSheet.create({
         height: 60,
         lineHeight: 60,
         width: "100%",
-        backgroundColor: "#ff8c00",
-        color: "#ffffff",
+        backgroundColor: "#ffffff",
+        color: "#ff8c00",
         fontSize: 30,
         paddingLeft: 15,
         marginBottom: 10,
+    },
+    header: {
+        flexDirection: "row",
     },
 });
