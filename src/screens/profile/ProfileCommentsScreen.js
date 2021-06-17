@@ -1,11 +1,11 @@
 import React from "react";
 import {
-    StyleSheet,
-    SafeAreaView,
     FlatList,
-    View,
     Image,
+    SafeAreaView,
+    StyleSheet,
     TouchableOpacity,
+    View
 } from "react-native";
 
 export default class ProfileCommentsScreen extends React.Component {

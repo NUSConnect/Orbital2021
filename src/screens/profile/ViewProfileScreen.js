@@ -1,23 +1,19 @@
+import * as firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import {
-    View,
-    Text,
-    Image,
-    StyleSheet,
-    TextInput,
-    SafeAreaView,
-    FlatList,
-    TouchableOpacity,
     Alert,
+    FlatList,
+    Image,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
 } from "react-native";
-import { Ionicons, MaterialIcons } from "react-native-vector-icons";
-import TitleWithBack from "../../components/TitleWithBack";
 import PostCard from "../../components/PostCard";
-import CommentScreen from "../home/CommentScreen";
+import TitleWithBack from "../../components/TitleWithBack";
 
-import moment from "moment";
 
-import * as firebase from "firebase";
 
 const ViewProfileScreen = ({ navigation, route, onPress }) => {
     const currentUserId = firebase.auth().currentUser.uid;
@@ -85,22 +81,20 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         }
     };
 
+    const concatList = (list) => {
+        let str = "";
+        list.sort()
+        for (let i = 0; i < list.length; i++) {
+            str = str + list[i].substring(0, 6)
+        }
+        return str;
+    };
+
     const message = async () => {
-    await firebase
-          .firestore()
-          .collection('users')
-          .doc(currentUserId)
-          .get()
-          .then((documentSnapshot) => {
-              if (documentSnapshot.exists) {
-                  console.log(documentSnapshot.data())
-                  const { createdAt } = documentSnapshot.data();
-                  currentUserCreatedAt = createdAt;
-              }
-          });
-    var threadID = currentUserCreatedAt <= item.createdAt ? currentUserId + item.userId : item.userId + currentUserId;
-    var threadObj =  new Object({ id: threadID, name: userData.name });
-    navigation.navigate("ChatScreen", { thread: threadObj });
+        const list = [currentUserId, item.userId]
+        var threadID = concatList(list);
+        var threadObj =  new Object({ id: threadID, name: userData.name, otherId: item.userId,  });
+        navigation.navigate("ChatScreen", { thread: threadObj });
     };
 
     const fetchUserPosts = async () => {
@@ -195,6 +189,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     };
 
     useEffect(() => {
+        console.log(item)
         getUser();
         getFollowing();
         fetchUserPosts();

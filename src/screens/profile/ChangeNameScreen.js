@@ -8,12 +8,12 @@ import {
     TextInput,
     View
 } from "react-native";
-import { logoutUser } from "../../api/auth";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
-import { emailValidator } from "../../helpers/auth/emailValidator";
+import { nameValidator } from "../../helpers/auth/nameValidator";
 
-export default class UpdateEmailScreen extends React.Component {
+export default class ChangeNameScreen extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -21,34 +21,42 @@ export default class UpdateEmailScreen extends React.Component {
         };
     }
 
-    submitEmail = async (navigator, email) => {
-        if (firebase.auth().currentUser.email === email) {
-            Alert.alert("This is your current email!");
+    updateName = (name) => {
+        firebase.auth().currentUser.updateProfile({ displayName:name });
+            firebase
+                .firestore()
+                .collection("users")
+                .doc(firebase.auth().currentUser.uid)
+                .update({ name:name });
+            Alert.alert("Success!", "Username changed successfully.");
+    }
+
+    submitName = async (navigator, name) => {
+        const list = [];
+        if (firebase.auth().currentUser.displayName === name) {
+            Alert.alert("This is your current username!", "Please choose something else.");
             return;
         }
-        if (emailValidator(email)) {
-            Alert.alert("This is an invalid email, please try again.");
+        if (nameValidator(name)) {
+            Alert.alert("Can't update with no input!", "Enter the new username you want to use.");
             return;
         }
-        await firebase
-            .auth()
-            .currentUser.updateEmail(email)
-            .then(() => {
-                Alert.alert(
-                    "Email successfully changed",
-                    "Please login again",
-                    [
-                        {
-                            text: "OK",
-                            onPress: navigator,
-                        },
-                    ],
-                    { cancelable: false }
-                );
-            }).catch(err => {
-                Alert.alert("Your login credentials have expired.", "Please login and try again.");
-                logoutUser();
+        firebase
+            .firestore()
+            .collection("users")
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(documentSnapshot => {
+                    list.push(documentSnapshot.data().name);
+                });
+                if (list.indexOf(name) <= -1) {
+                    this.updateName(name);
+                    navigator();
+                } else {
+                    Alert.alert("Someone else already has this username!", "Please choose another username.");
+                }
             });
+
     };
 
     render() {
@@ -57,13 +65,10 @@ export default class UpdateEmailScreen extends React.Component {
             <SafeAreaView>
                 <View style={styles.container}>
                     <View style={styles.innerContainer}>
-                        <Text style={styles.title}>Update your email</Text>
-                        <Text style={styles.current}>
-                            Current email: {firebase.auth().currentUser.email}
-                        </Text>
+                        <Text style={styles.title}>Change your username</Text>
                         <View style={styles.wordspace} />
                         <Text style={styles.current}>
-                            Enter your new email here:
+                            Enter your new username here:
                         </Text>
                         <TextInput
                             style={styles.input}
@@ -79,13 +84,13 @@ export default class UpdateEmailScreen extends React.Component {
                             <SubmitButton
                                 goBack={() => {
                                     this.state.text != null
-                                        ? this.submitEmail(
-                                              () => logoutUser(),
+                                        ? this.submitName(
+                                              () => this.props.navigation.goBack(),
                                               this.state.text
                                           )
                                         : Alert.alert(
-                                              "Can't update with no email!",
-                                              "Enter the new email you want to use."
+                                              "Can't update with no input!",
+                                              "Enter the new username you want to use."
                                           );
                                 }}
                                 string={"Update"}

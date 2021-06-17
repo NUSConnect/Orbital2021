@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text, View } from "react-native";
+import { trendingScore } from '../../api/ranking';
 import BackButton from "../../components/BackButton";
-import { trendingScore, newScore } from '../../api/ranking';
 
 export default function DummyScreen({ navigation }) {
     console.log(trendingScore(100,100,40000));

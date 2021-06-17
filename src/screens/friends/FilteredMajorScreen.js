@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from "react";
-import {
-    SafeAreaView,
-    Text,
-    StyleSheet,
-    View,
-    FlatList,
-    TextInput,
-    ActivityIndicator,
-    StatusBar,
-} from "react-native";
-import BackButton from "../../components/BackButton";
-import ViewProfileScreen from "../profile/ViewProfileScreen";
 import * as firebase from "firebase";
+import React, { useEffect, useState } from "react";
+import {
+    ActivityIndicator,
+    FlatList,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View
+} from "react-native";
 
 export default function FilteredMajorScreen({ props, navigation, route, goBack }) {
     const currentUserId = firebase.auth().currentUser.uid;

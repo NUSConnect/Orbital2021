@@ -1,31 +1,26 @@
-import React, { useState, useEffect } from "react";
-import {
-    Text,
-    View,
-    FlatList,
-    SafeAreaView,
-    StyleSheet,
-    StatusBar,
-    RefreshControl,
-} from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import ProfilePersonalScreen from "./ProfilePersonalScreen";
+import React from "react";
+import {
+    SafeAreaView,
+    StatusBar,
+    StyleSheet
+} from "react-native";
+import CommentScreen from "../home/CommentScreen";
 import AccountSettingsScreen from "./AccountSettingsScreen";
-import ProfilePostsScreen from "./ProfilePostsScreen";
-import ProfileCommentsScreen from "./ProfileCommentsScreen";
-import DummyScreen from "./DummyScreen";
 import AddBioScreen from "./AddBioScreen";
 import AddFacultyScreen from "./AddFacultyScreen";
-import UpdateEmailScreen from "./UpdateEmailScreen";
-import ChangePasswordScreen from "./ChangePasswordScreen";
-import CommentScreen from "../home/CommentScreen";
 import BusinessMajorsScreen from "./BusinessMajorsScreen";
+import ChangeNameScreen from "./ChangeNameScreen";
+import ChangePasswordScreen from "./ChangePasswordScreen";
 import CHSMajorsScreen from "./CHSMajorsScreen";
 import ComputingMajorsScreen from "./ComputingMajorsScreen";
 import DesignMajorsScreen from "./DesignMajorsScreen";
+import DummyScreen from "./DummyScreen";
 import EngineeringMajorsScreen from "./EngineeringMajorsScreen";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import ProfilePersonalScreen from "./ProfilePersonalScreen";
+import ProfilePostsScreen from "./ProfilePostsScreen";
+import UpdateEmailScreen from "./UpdateEmailScreen";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -69,6 +64,7 @@ const ProfileMasterScreen = ({ navigation }) => {
                 <Stack.Screen name="AddBioScreen" component={AddBioScreen} />
                 <Stack.Screen name="CommentScreen" component={CommentScreen} />
                 <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} />
+                <Stack.Screen name="ChangeNameScreen" component={ChangeNameScreen} />
             </Stack.Navigator>
         </SafeAreaView>
     );

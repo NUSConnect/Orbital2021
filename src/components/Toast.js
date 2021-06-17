@@ -1,6 +1,6 @@
 import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { Snackbar } from "react-native-paper";
-import { StyleSheet, View, Text } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { theme } from "../core/theme";
 

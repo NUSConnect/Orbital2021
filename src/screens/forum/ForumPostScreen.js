@@ -1,32 +1,31 @@
+import * as firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import {
-    View,
-    Text,
-    Image,
-    StyleSheet,
-    TextInput,
-    SafeAreaView,
-    FlatList,
-    TouchableOpacity,
     Alert,
+    Dimensions,
+    FlatList,
+    Platform,
+    SafeAreaView,
+    StyleSheet,
+    View,
 } from "react-native";
-import { Ionicons, MaterialIcons } from "react-native-vector-icons";
-import ForumPostHeader from "../../components/ForumPostHeader";
-import ForumPost from "../../components/ForumPost";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CommentItem from "../../components/CommentItem";
-import CreateComment from '../../components/CreateComment';
-import moment from "moment";
+import CreateComment from "../../components/CreateComment";
+import ForumPost from "../../components/ForumPost";
+import ForumPostHeader from "../../components/ForumPostHeader";
 
-import * as firebase from "firebase";
+const DeviceWidth = Dimensions.get("window").width;
 
 const ForumPostScreen = ({ navigation, route, onPress }) => {
     const currentUserId = firebase.auth().currentUser.uid;
     const [comments, setComments] = useState([]);
     const [refreshing, setRefreshing] = useState(true);
-    const [comment, setComment] = useState('');
+    const [comment, setComment] = useState("");
     const [isFocused, setIsFocused] = useState(null);
 
     const { item, forumId, forumName } = route.params;
+    const os = Platform.OS;
 
     const fetchComments = async () => {
         const list = [];
@@ -38,7 +37,8 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
             .doc(forumId)
             .collection("forumPosts")
             .doc(item.postId)
-            .collection('comments')
+            .collection("comments")
+            .orderBy("postTime", "desc")
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -58,7 +58,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         }
 
         setComments(list);
-        console.log('Post comments: ', comments)
+        console.log("Post comments: ", comments);
     };
 
     const onCommentSend = () => {
@@ -93,7 +93,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
             .collection("forumPosts")
             .doc(item.postId)
             .update({ commentCount: item.commentCount });
-    }
+    };
 
     const navigateProfile = (creatorId, ownNavigation, otherNavigation) => {
         return (currUserId) => {
@@ -111,25 +111,57 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         console.log(currentUserId);
         console.log(comment.userId);
         if (currentUserId == comment.userId) {
-            Alert.alert(
-                "Your comment has been selected",
-                "What do you want to do with it?",
-                [
-                    {
-                        text: "Cancel",
-                        onPress: () => console.log("cancel pressed"),
-                    },
-                    {
-                        text: "Delete",
-                        onPress: () => handleDelete(comment),
-                    },
-                    {
-                        text: "Edit",
-                        onPress: () => navigation.navigate('EditForumCommentScreen', { comment, forumId }),
-                    },
-                ],
-                { cancelable: true }
-            );
+            if (os === "ios") {
+                Alert.alert(
+                    "Your comment has been selected",
+                    "What do you want to do with it?",
+                    [
+                        {
+                            text: "Edit",
+                            onPress: () =>
+                                navigation.navigate("EditForumCommentScreen", {
+                                    comment,
+                                    forumId,
+                                }),
+                        },
+                        {
+                            text: "Delete",
+                            onPress: () => handleDelete(comment),
+                        },
+                        {
+                            text: "Cancel",
+                            onPress: () => console.log("cancel pressed"),
+                            style: "cancel",
+                        },
+                    ],
+                    { cancelable: true }
+                );
+            } else {
+                Alert.alert(
+                    "Your comment has been selected",
+                    "What do you want to do with it?",
+                    [
+                        {
+                            text: "Cancel",
+                            onPress: () => console.log("cancel pressed"),
+                            style: "cancel",
+                        },
+                        {
+                            text: "Delete",
+                            onPress: () => handleDelete(comment),
+                        },
+                        {
+                            text: "Edit",
+                            onPress: () =>
+                                navigation.navigate("EditForumCommentScreen", {
+                                    comment,
+                                    forumId,
+                                }),
+                        },
+                    ],
+                    { cancelable: true }
+                );
+            }
         } else {
             Alert.alert(
                 "Report comment",
@@ -143,12 +175,11 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                         text: "OK",
                         onPress: () => handleReport(comment),
                     },
-
                 ],
                 { cancelable: true }
             );
         }
-    }
+    };
 
     const handleDelete = (comment) => {
         Alert.alert(
@@ -235,6 +266,92 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         />
     );
 
+    const handleEdit = (post) => {
+        Alert.alert(
+            "Edit post",
+            "Are you sure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed!"),
+                    style: "cancel",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () =>
+                        navigation.navigate("EditForumPostScreen", {
+                            post,
+                            forumId,
+                            goBack: () => navigation.pop(2),
+                        }),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
+    const handleDeletePost = (post) => {
+        Alert.alert(
+            "Delete post",
+            "Are you sure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed!"),
+                    style: "cancel",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () => deletePost(post),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
+    const deletePost = (post) => {
+        console.log("Current Post Id: ", post.postId);
+
+        firebase
+            .firestore()
+            .collection("forums")
+            .doc(forumId)
+            .collection("forumPosts")
+            .doc(post.postId)
+            .delete()
+            .then(() => {
+                Alert.alert(
+                    "Post deleted",
+                    "Your post has been deleted successfully!"
+                );
+                navigation.goBack();
+            })
+            .catch((e) => console.log("Error deleting post.", e));
+    };
+
+    const handleReportPost = (post) => {
+        Alert.alert(
+            "Report Post",
+            "Are you sure?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed!"),
+                    style: "cancel",
+                },
+                {
+                    text: "Confirm",
+                    onPress: () =>
+                        Alert.alert(
+                            "Post Reported!",
+                            "This post has been reported successfully!"
+                        ),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
     const handleRefresh = () => {
         setRefreshing(false);
         fetchComments();
@@ -243,15 +360,22 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
 
     useEffect(() => {
         fetchComments();
-        const _unsubscribe = navigation.addListener('focus', () => fetchComments());
+        const _unsubscribe = navigation.addListener("focus", () =>
+            fetchComments()
+        );
 
         return () => {
             _unsubscribe();
-        }
+        };
     }, []);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <KeyboardAwareScrollView
+            style={styles.container}
+            contentContainerStyle={styles.inner}
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            scrollEnabled={true}
+        >
             <ForumPostHeader
                 goBack={() => navigation.goBack()}
                 title={forumName}
@@ -262,13 +386,16 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                     <ForumPost
                         item={item}
                         onViewProfile={navigateProfile(
-                             item.userId,
-                             () => navigation.navigate("Profile"),
-                             () =>
-                                 navigation.navigate("ViewProfileScreen", {
-                                     item,
-                                 })
+                            item.userId,
+                            () => navigation.navigate("Profile"),
+                            () =>
+                                navigation.navigate("ViewProfileScreen", {
+                                    item,
+                                })
                         )}
+                        onEdit={() => handleEdit(item)}
+                        onDelete={() => handleDeletePost(item)}
+                        onReport={() => handleReportPost(item)}
                     />
                 }
                 ListHeaderComponentStyle={styles.headerComponentStyle}
@@ -276,12 +403,12 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                     <CommentItem
                         item={item}
                         onViewProfile={navigateProfile(
-                             item.userId,
-                             () => navigation.navigate("Profile"),
-                             () =>
-                                 navigation.navigate("ViewProfileScreen", {
-                                     item,
-                                 })
+                            item.userId,
+                            () => navigation.navigate("Profile"),
+                            () =>
+                                navigation.navigate("ViewProfileScreen", {
+                                    item,
+                                })
                         )}
                         onPressHandle={() => onPressComment(item)}
                     />
@@ -289,16 +416,16 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                 keyExtractor={(item) => item.commentId}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
-                style={{ marginBottom: 40, width: '100%' }}
+                style={{ width: "100%" }}
             />
             <CreateComment
                 onPress={() => {
-                    if (comment != '') {
+                    if (comment != "") {
                         onCommentSend();
                     } else {
                         Alert.alert(
-                        "Cannot submit an empty comment!",
-                        "Fill in comment body to post."
+                            "Cannot submit an empty comment!",
+                            "Fill in comment body to post."
                         );
                     }
                 }}
@@ -306,7 +433,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                 setIsFocused={setIsFocused}
                 comment={comment}
             />
-        </SafeAreaView>
+        </KeyboardAwareScrollView>
     );
 };
 
@@ -314,13 +441,18 @@ export default ForumPostScreen;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 0,
+        flex: 1,
         width: "100%",
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom: 40,
     },
     headerComponentStyle: {
         marginVertical: 7,
+    },
+    inner: {
+        flex: 1,
+        width: "100%",
+        maxWidth: DeviceWidth,
+        alignSelf: "center",
+        alignItems: "center",
+        justifyContent: "center",
     },
 });

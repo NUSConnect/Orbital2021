@@ -22,6 +22,7 @@ import {
 } from "./src/screens";
 import { FIREBASE_CONFIG } from "./src/core/config";
 import checkIfFirstLaunch from "./src/api/firstLaunch";
+import { MenuProvider } from 'react-native-popup-menu'
 
 // https://stackoverflow.com/questions/44603362/setting-a-timer-for-a-long-period-of-time-i-e-multiple-minutes
 import { LogBox } from "react-native";
@@ -54,61 +55,65 @@ export default function App() {
 
     return !isFirstLaunch ? (
         <Provider theme={theme}>
-            <NavigationContainer>
-                <Stack.Navigator
-                    initialRouteName="AuthLoadingScreen"
-                    screenOptions={{
-                        headerShown: false,
-                    }}
-                >
-                    <Stack.Screen
-                        name="AuthLoadingScreen"
-                        component={AuthLoadingScreen}
-                    />
-                    <Stack.Screen name="StartScreen" component={StartScreen} />
-                    <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                    <Stack.Screen
-                        name="RegisterScreen"
-                        component={RegisterScreen}
-                    />
-                    <Stack.Screen name="Dashboard" component={Dashboard} />
-                    <Stack.Screen
-                        name="ResetPasswordScreen"
-                        component={ResetPasswordScreen}
-                    />
-                </Stack.Navigator>
-            </NavigationContainer>
+            <MenuProvider>
+                <NavigationContainer>
+                    <Stack.Navigator
+                        initialRouteName="AuthLoadingScreen"
+                        screenOptions={{
+                            headerShown: false,
+                        }}
+                    >
+                        <Stack.Screen
+                            name="AuthLoadingScreen"
+                            component={AuthLoadingScreen}
+                        />
+                        <Stack.Screen name="StartScreen" component={StartScreen} />
+                        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+                        <Stack.Screen
+                            name="RegisterScreen"
+                            component={RegisterScreen}
+                        />
+                        <Stack.Screen name="Dashboard" component={Dashboard} />
+                        <Stack.Screen
+                            name="ResetPasswordScreen"
+                            component={ResetPasswordScreen}
+                        />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </MenuProvider>
         </Provider>
     ) : (
         <Provider theme={theme}>
-            <NavigationContainer>
-                <Stack.Navigator
-                    initialRouteName="OnBoardScreen"
-                    screenOptions={{
-                        headerShown: false,
-                    }}
-                >
-                    <Stack.Screen
-                        name="OnBoardScreen"
-                        component={OnBoardScreen}
-                    />
-                    <Stack.Screen
-                        name="AuthLoadingScreen"
-                        component={AuthLoadingScreen}
-                    />
-                    <Stack.Screen name="StartScreen" component={StartScreen} />
-                    <Stack.Screen name="LoginScreen" component={LoginScreen} />
-                    <Stack.Screen
-                        name="RegisterScreen"
-                        component={RegisterScreen}
-                    />
-                    <Stack.Screen name="Dashboard" component={Dashboard} />
-                    <Stack.Screen
-                        name="ResetPasswordScreen"
-                        component={ResetPasswordScreen}
-                    />
-                </Stack.Navigator>
-            </NavigationContainer>
+            <MenuProvider>
+                <NavigationContainer>
+                    <Stack.Navigator
+                        initialRouteName="OnBoardScreen"
+                        screenOptions={{
+                            headerShown: false,
+                        }}
+                    >
+                        <Stack.Screen
+                            name="OnBoardScreen"
+                            component={OnBoardScreen}
+                        />
+                        <Stack.Screen
+                            name="AuthLoadingScreen"
+                            component={AuthLoadingScreen}
+                        />
+                        <Stack.Screen name="StartScreen" component={StartScreen} />
+                        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+                        <Stack.Screen
+                            name="RegisterScreen"
+                            component={RegisterScreen}
+                        />
+                        <Stack.Screen name="Dashboard" component={Dashboard} />
+                        <Stack.Screen
+                            name="ResetPasswordScreen"
+                            component={ResetPasswordScreen}
+                        />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </MenuProvider>
         </Provider>
     );
 }

@@ -1,13 +1,14 @@
 import React from "react";
-import { TextInput, View, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
 
 const CreateComment = ({ onPress, setComment, comment, setIsFocused }) => {
-    const textInputRef = React.useRef()
+    const textInputRef = React.useRef();
 
     return (
         <View style={styles.container}>
-            <TextInput style={styles.textInput}
+            <TextInput
+                style={styles.textInput}
                 ref={textInputRef}
                 placeholder="Add a comment"
                 onFocus={() => setIsFocused(true)}
@@ -20,15 +21,15 @@ const CreateComment = ({ onPress, setComment, comment, setIsFocused }) => {
             />
             <TouchableOpacity
                 onPress={() => {
-                    textInputRef.current.blur()
-                    onPress()
+                    textInputRef.current.blur();
+                    onPress();
                 }}
             >
-                <Ionicons name='send' size={25} color={"#79D2E6"} />
+                <Ionicons name="send" size={25} color={"#79D2E6"} />
             </TouchableOpacity>
         </View>
     );
-}
+};
 
 export default CreateComment;
 
@@ -41,7 +42,6 @@ const styles = StyleSheet.create({
         padding: 2,
         paddingHorizontal: 5,
         elevation: 3,
-        marginBottom: 40,
     },
     textInput: {
         flex: 1,
@@ -49,6 +49,6 @@ const styles = StyleSheet.create({
         height: 40,
         borderRadius: 10,
         paddingHorizontal: 15,
-        fontSize:16,
+        fontSize: 16,
     },
 });

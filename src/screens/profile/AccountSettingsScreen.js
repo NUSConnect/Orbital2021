@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { View } from "react-native";
+import { deleteUser, logoutUser } from "../../api/auth";
 import BackButton from "../../components/BackButton";
 import Background from "../../components/Background";
 import Button from "../../components/Button";
-import { logoutUser, deleteUser } from "../../api/auth";
 
 export default function AccountSettingsScreen({ navigation }) {
     return (
@@ -20,17 +20,17 @@ export default function AccountSettingsScreen({ navigation }) {
                 </Button>
                 <Button
                     style={styles.button}
+                    onPress={() => navigation.navigate("ChangeNameScreen")}
+                >
+                    {" "}
+                    Change your username
+                </Button>
+                <Button
+                    style={styles.button}
                     onPress={() => navigation.navigate("ChangePasswordScreen")}
                 >
                     {" "}
                     Change Password{" "}
-                </Button>
-                <Button
-                    style={styles.button}
-                    onPress={() => navigation.navigate("DummyScreen")}
-                >
-                    {" "}
-                    Manage Blocked Accounts{" "}
                 </Button>
                 <Button
                     style={styles.button}

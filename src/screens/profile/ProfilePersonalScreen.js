@@ -1,20 +1,17 @@
-import React, { Component } from "react";
+import * as ImagePicker from "expo-image-picker";
+import * as firebase from "firebase";
+import React from "react";
 import {
-    TouchableOpacity,
-    StyleSheet,
-    Text,
-    View,
     Image,
     SafeAreaView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
 } from "react-native";
 import { logoutUser } from "../../api/auth";
 import Button from "../../components/Button";
 import { theme } from "../../core/theme";
-import * as firebase from "firebase";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import AccountSettingsScreen from "./AccountSettingsScreen";
-import * as ImagePicker from "expo-image-picker";
 
 export default class ProfilePersonalScreen extends React.Component {
     state = {
@@ -150,14 +147,6 @@ export default class ProfilePersonalScreen extends React.Component {
                             }
                         >
                             Account Settings
-                        </Button>
-                        <Button
-                            style={styles.accountset}
-                            onPress={() =>
-                                this.props.navigation.navigate("DummyScreen")
-                            }
-                        >
-                            Flairs
                         </Button>
                         <Button
                             style={styles.button}

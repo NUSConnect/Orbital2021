@@ -1,9 +1,9 @@
 import React from "react";
-import SkipButton from "../../components/SkipButton";
+import { Image, StyleSheet } from "react-native";
+import Onboarding from "react-native-onboarding-swiper";
 import DoneButton from "../../components/DoneButton";
 import NextButton from "../../components/NextButton";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import Onboarding from "react-native-onboarding-swiper";
+import SkipButton from "../../components/SkipButton";
 
 export default function OnBoardScreen({ navigation }) {
     return (

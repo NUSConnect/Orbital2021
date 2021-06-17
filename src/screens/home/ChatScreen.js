@@ -1,58 +1,175 @@
-import React, { useState, useContext, useEffect } from "react";
-import {
-    GiftedChat,
-    Bubble,
-    Send,
-    SystemMessage,
-} from "react-native-gifted-chat";
+import * as firebase from "firebase";
+import React, { useEffect, useState } from "react";
 import {
     ActivityIndicator,
-    View,
     StyleSheet,
     Text,
     TouchableOpacity,
+    View
 } from "react-native";
+import {
+    Bubble,
+    GiftedChat,
+    Send,
+    SystemMessage
+} from "react-native-gifted-chat";
 import { IconButton } from "react-native-paper";
 import { Ionicons } from "react-native-vector-icons";
-import BackButton from "../../components/BackButton";
-import * as firebase from "firebase";
+import { sendPushNotification } from '../../api/notifications';
 
 export default function ChatScreen({ route, onPress, navigation }) {
     const [messages, setMessages] = useState([]);
     const { thread } = route.params;
     const currentUser = firebase.auth().currentUser.uid;
+    const currentUserName = firebase.auth().currentUser.displayName;
+    const [userImg, setUserImg] = useState(null);
+
+    const getUser = async () => {
+        await firebase
+            .firestore()
+            .collection("users")
+            .doc(firebase.auth().currentUser.uid)
+            .get()
+            .then((documentSnapshot) => {
+                if (documentSnapshot.exists) {
+                    setUserImg(documentSnapshot.data().userImg)
+                }
+            });
+    };
+
+    const toggleHaveNewMessage = () => {
+            firebase
+                .firestore()
+                .collection("users")
+                .doc(currentUser)
+                .update({ haveNewMessage: false });
+        }
+
+    const sendNotifications = async (text) => {
+        const sender = thread.isGroup ? (thread.name + ' - ' + currentUserName) : currentUserName;
+
+        if (thread.isGroup) {
+            const users = thread.members;
+            for (let i = 0; i < users.length; i++) {
+                if (users[i] != firebase.currentUser) {
+                    await firebase.firestore().collection('users').doc(users[i]).get()
+                        .then((doc) => {
+                            console.log('Checking if pushToken available');
+                            if (doc.data().pushToken != null) {
+                                sendPushNotification(doc.data().pushToken.data, sender, text)
+                            }
+                        })
+                }
+            }
+        } else {
+            const user = thread.otherId;
+
+            await firebase.firestore().collection('users').doc(user).get()
+                .then((doc) => {
+                    console.log('Checking if pushToken available');
+                    if (doc.data().pushToken != null) {
+                        sendPushNotification(doc.data().pushToken.data, sender, text)
+                    }
+                })
+        }
+    };
+
+    const haveNewMessage = id => {
+        firebase
+            .firestore()
+            .collection("users")
+            .doc(id)
+            .update({ haveNewMessage:true });
+    }
 
     async function handleSend(messages) {
         const text = messages[0].text;
-        firebase
-            .firestore()
-            .collection("THREADS")
-            .doc(thread.id)
+        const threadRef = await firebase.firestore().collection('THREADS').doc(thread.id);
+        const users = thread.isGroup ? thread.members : [currentUser, thread.otherId];
+
+        const doc = await threadRef.get();
+        if (doc.exists) {
+            threadRef
+                .collection("MESSAGES")
+                .add({
+                    text,
+                    createdAt: new Date().getTime(),
+                    user: {
+                        _id: currentUser,
+                        avatar: userImg,
+                    },
+                });
+
+            for (let i = 0; i < users.length; i++) {
+                if (users[i] !== currentUser) {
+                    haveNewMessage(users[i]);
+                }
+            }
+
+            threadRef
+                .set(
+                    {
+                        latestMessage: {
+                            text,
+                            createdAt: new Date().getTime(),
+                        },
+                    },
+                    { merge: true }
+                );
+
+            sendNotifications(text);
+
+        } else {
+            handleFirstSend(messages);
+        }
+    }
+
+    async function handleFirstSend(messages) {
+        const text = messages[0].text;
+        const users = thread.isGroup ? thread.members : [currentUser, thread.otherId];
+        const threadRef = await firebase.firestore().collection('THREADS').doc(thread.id);
+      
+        threadRef
             .collection("MESSAGES")
             .add({
                 text,
                 createdAt: new Date().getTime(),
                 user: {
                     _id: currentUser,
+                    avatar: userImg,
                 },
             });
 
-        await firebase
-            .firestore()
-            .collection("THREADS")
-            .doc(thread.id)
+        threadRef
             .set(
                 {
                     latestMessage: {
                         text,
                         createdAt: new Date().getTime(),
                     },
+                    users: users
                 },
                 { merge: true }
             );
+
+        for (let i = 0; i < users.length; i++) {
+            firebase
+                .firestore()
+                .collection('users')
+                .doc(users[i])
+                .collection('openChats')
+                .doc(thread.id)
+                .set({});
+            if (users[i] !== currentUser) {
+                haveNewMessage(users[i]);
+            }
+        }
+
+        sendNotifications(text);
     }
 
     useEffect(() => {
+        getUser();
         const messagesListener = firebase
             .firestore()
             .collection("THREADS")
@@ -67,6 +184,7 @@ export default function ChatScreen({ route, onPress, navigation }) {
                         _id: doc.id,
                         text: "",
                         createdAt: new Date().getTime(),
+                        avatar: userImg,
                         ...firebaseData,
                     };
 
@@ -81,6 +199,13 @@ export default function ChatScreen({ route, onPress, navigation }) {
 
                 setMessages(messages);
             });
+
+        const backNav = navigation.addListener('beforeRemove', (e) => {
+            e.preventDefault();
+            backNav();
+            toggleHaveNewMessage();
+            navigation.goBack();
+        });
 
         // Stop listening for updates whenever the component unmounts
         return () => messagesListener();
@@ -153,7 +278,7 @@ export default function ChatScreen({ route, onPress, navigation }) {
                 <TouchableOpacity
                     style={styles.button}
                     activeOpacity={0.4}
-                    onPress={() => navigation.goBack(null)}
+                    onPress={() => {navigation.goBack(); toggleHaveNewMessage();}}
                 >
                     <Ionicons
                         name="arrow-back"
@@ -162,7 +287,14 @@ export default function ChatScreen({ route, onPress, navigation }) {
                         style={styles.icon}
                     />
                 </TouchableOpacity>
-                <Text style={styles.text}>{thread.name}</Text>
+                <Text
+                    style={styles.text}
+                    onPress={() => thread.isGroup
+                                ?  navigation.navigate('GroupInfoScreen', { item: thread })
+                                :  navigation.navigate('ViewProfileScreen', { item: { userId: thread.otherId }})}
+                >
+                    {thread.name}
+                </Text>
             </View>
             <GiftedChat
                 messages={messages}
@@ -170,7 +302,8 @@ export default function ChatScreen({ route, onPress, navigation }) {
                 user={{ _id: firebase.auth().currentUser.uid }}
                 placeholder="Type your message here..."
                 alwaysShowSend
-                showUserAvatar
+                showUserAvatar={true}
+                showAvatarForEveryMessage={true}
                 scrollToBottom
                 renderBubble={renderBubble}
                 renderLoading={renderLoading}

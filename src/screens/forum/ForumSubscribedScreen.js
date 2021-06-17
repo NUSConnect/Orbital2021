@@ -1,14 +1,12 @@
+import * as firebase from "firebase";
 import React from "react";
 import {
-    StyleSheet,
-    SafeAreaView,
     FlatList,
-    View,
-    Image,
-    TouchableOpacity,
+    SafeAreaView,
+    StyleSheet,
+    View
 } from "react-native";
 import ForumIcon from "../../components/ForumIcon";
-import * as firebase from "firebase";
 
 export default class ForumFavouritesScreen extends React.Component {
     constructor(props) {
@@ -81,7 +79,6 @@ export default class ForumFavouritesScreen extends React.Component {
         <View
             style={{
                 height: 2,
-                backgroundColor: "rgba(0,0,0,0.5)",
                 marginLeft: 10,
                 marginRight: 10,
             }}
@@ -97,7 +94,7 @@ export default class ForumFavouritesScreen extends React.Component {
     render() {
         const { navigation } = this.props;
         return (
-            <SafeAreaView>
+            <SafeAreaView style={{flex:1}}>
                 <FlatList
                     numColumns={3}
                     data={this.state.data}

@@ -1,24 +1,19 @@
+import * as firebase from "firebase";
 import React, { useEffect, useState } from "react";
 import {
-    View,
+    Alert,
+    FlatList,
+    SafeAreaView,
+    StyleSheet,
     Text,
     TextInput,
-    Image,
-    StyleSheet,
-    SafeAreaView,
-    FlatList,
-    TouchableOpacity,
-    Alert,
+    View
 } from "react-native";
 import ModalSelector from 'react-native-modal-selector';
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "react-native-vector-icons";
-import SubForumHeader from "../../components/SubForumHeader";
-import ForumPost from "../../components/ForumPost";
-import moment from "moment";
-
+import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { sortByLatestForum, sortByTrendingForum } from '../../api/ranking';
-
-import * as firebase from "firebase";
+import ForumPost from "../../components/ForumPost";
+import SubForumHeader from "../../components/SubForumHeader";
 
 const SubForumScreen = ({ navigation, route, onPress }) => {
     const currentUserId = firebase.auth().currentUser.uid;
@@ -41,7 +36,11 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
             .doc(currentUserId)
             .get()
             .then((documentSnapshot) => {
-                setSortedBy(documentSnapshot.data().preferredSorting);
+                if (documentSnapshot.data().preferredSorting != null) {
+                    setSortedBy(documentSnapshot.data().preferredSorting);
+                } else {
+                    setSortedBy("Latest");
+                }
             });
     };
 
@@ -150,7 +149,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                 },
                 {
                     text: "Confirm",
-                    onPress: () => navigation.navigate('EditForumPostScreen', { post, forumId }),
+                    onPress: () => navigation.navigate('EditForumPostScreen', { post, forumId, goBack: () => navigation.goBack() }),
                 },
             ],
             { cancelable: false }
@@ -338,7 +337,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                 keyExtractor={(item) => item.postId}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
-                style={{ marginBottom: 40, width: '100%' }}
+                style={{ marginBottom: 10, width: '100%' }}
             />
         </SafeAreaView>
     );
@@ -348,11 +347,11 @@ export default SubForumScreen;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 0,
+        flex: 1,
         width: "100%",
         alignItems: "center",
         justifyContent: "center",
-        marginBottom: 40,
+
     },
     sortBar: {
         flexDirection: 'row',
@@ -365,10 +364,11 @@ const styles = StyleSheet.create({
     pickerText: {
         fontSize: 16,
         color: 'blue',
-        paddingLeft: 5,
-        paddingRight: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
         borderWidth: 1,
-        borderRadius: 10,
+        borderRadius: 20,
+        borderColor: 'gray',
     },
     headerComponentStyle: {
         marginVertical: 7,

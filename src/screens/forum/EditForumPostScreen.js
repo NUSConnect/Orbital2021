@@ -1,25 +1,20 @@
-import React, { useEffect, useState } from "react";
+import * as firebase from "firebase";
+import React, { useState } from "react";
 import {
-    View,
-    Text,
-    StyleSheet,
-    TextInput,
-    SafeAreaView,
-    TouchableOpacity,
     Alert,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
 } from "react-native";
-import { Ionicons, MaterialIcons } from "react-native-vector-icons";
-import TitleWithBack from "../../components/TitleWithBack";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
 
-import moment from "moment";
-
-import * as firebase from "firebase";
-
 const EditForumPostScreen = ({ navigation, route }) => {
     const currentUserId = firebase.auth().currentUser.uid;
-    const { post, forumId } = route.params;
+    const { post, forumId, goBack } = route.params;
     const [text, setText] = useState(post.postBody);
 
     const updatePost = async (navigator) => {
@@ -55,36 +50,37 @@ const EditForumPostScreen = ({ navigation, route }) => {
     };
 
     return (
-        <SafeAreaView>
-            <View style={styles.container}>
-                <View style={styles.innerContainer}>
-                    <Text style={styles.title}>Edit Your Forum Post</Text>
+        <KeyboardAwareScrollView
+            style={styles.container}
+            contentContainerStyle={styles.innerContainer}
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            scrollEnabled={true}
+        >
+            <Text style={styles.title}>Edit Your Forum Post</Text>
 
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={(text) => setText(text)}
-                        value={text}
-                        multiline={true}
-                    />
+            <TextInput
+                style={styles.input}
+                onChangeText={(text) => setText(text)}
+                value={text}
+                multiline={true}
+            />
 
-                    <View style={styles.buttons}>
-                        <CancelButton goBack={() => navigation.goBack()} />
-                        <View style={styles.space} />
-                        <SubmitButton
-                            goBack={() => {
-                                text != ''
-                                    ? updatePost(() => navigation.goBack())
-                                    : Alert.alert(
-                                          "Cannot submit an empty comment!",
-                                          "Write something into the comment box to post."
-                                      );
-                            }}
-                            string={"Edit"}
-                        />
-                    </View>
-                </View>
+            <View style={styles.buttons}>
+                <CancelButton goBack={() => navigation.goBack()} />
+                <View style={styles.space} />
+                <SubmitButton
+                    goBack={() => {
+                        text != ""
+                            ? updatePost(() => goBack())
+                            : Alert.alert(
+                                  "Cannot submit an empty comment!",
+                                  "Write something into the comment box to post."
+                              );
+                    }}
+                    string={"Edit"}
+                />
             </View>
-        </SafeAreaView>
+        </KeyboardAwareScrollView>
     );
 };
 
@@ -93,8 +89,6 @@ export default EditForumPostScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 0,
-        //    alignItems: 'center',
-        //    justifyContent: 'center',
         flexDirection: "row",
     },
     innerContainer: {
@@ -120,10 +114,10 @@ const styles = StyleSheet.create({
         margin: 12,
         borderWidth: 1,
         fontSize: 18,
-        padding:10,
+        padding: 10,
         justifyContent: "flex-start",
         alignItems: "flex-start",
-        textAlignVertical: 'top',
+        textAlignVertical: "top",
     },
     buttons: {
         flex: 1,

@@ -1,6 +1,6 @@
-import React from "react";
-import { ActivityIndicator, StackActions } from "react-native";
 import firebase from "firebase/app";
+import React from "react";
+import { ActivityIndicator } from "react-native";
 import Background from "../../components/Background";
 import { theme } from "../../core/theme";
 

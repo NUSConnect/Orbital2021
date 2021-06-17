@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "react-native-vector-icons";
 
-export default function MessageTopTab({ onBack, onPress, style, ...props }) {
+export default function GroupCreationTopTab({ onBack, onPress, text, style, ...props }) {
     return (
         <View style={styles.container}>
             <TouchableOpacity
@@ -17,14 +17,14 @@ export default function MessageTopTab({ onBack, onPress, style, ...props }) {
                     style={styles.icon}
                 />
             </TouchableOpacity>
-            <Text style={styles.text}>Messages</Text>
+            <Text style={styles.text}>{text}</Text>
             <TouchableOpacity
                 style={styles.buttonRight}
                 activeOpacity={0.4}
                 onPress={onPress}
             >
                 <Ionicons
-                    name="people"
+                    name="md-checkmark"
                     color="#79D2E6"
                     size={38}
                     style={styles.icon}

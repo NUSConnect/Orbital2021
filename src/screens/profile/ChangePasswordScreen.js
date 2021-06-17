@@ -1,25 +1,17 @@
-import React, { useEffect, useState, useContext } from "react";
-import {
-    View,
-    Text,
-    Image,
-    StyleSheet,
-    TextInput,
-    SafeAreaView,
-    Alert,
-    ActivityIndicator,
-    Platform,
-    Animated,
-} from "react-native";
-import SubmitButton from "../../components/SubmitButton";
-import CancelButton from "../../components/CancelButton";
-import { FIREBASE_CONFIG } from "../../core/config";
-import { logoutUser } from "../../api/auth";
-import { passwordValidator } from "../../helpers/auth/passwordValidator";
 import * as firebase from "firebase";
-
-//issue with promise rejection due to long time since last login, refer to below site
-//https://firebase.google.com/docs/auth/web/manage-users
+import React from "react";
+import {
+    Alert,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TextInput,
+    View
+} from "react-native";
+import { logoutUser } from "../../api/auth";
+import CancelButton from "../../components/CancelButton";
+import SubmitButton from "../../components/SubmitButton";
+import { passwordValidator } from "../../helpers/auth/passwordValidator";
 
 export default class ChangePasswordScreen extends React.Component {
     constructor(props) {
@@ -31,7 +23,7 @@ export default class ChangePasswordScreen extends React.Component {
 
     submitPassword = async (navigator, password) => {
         if (passwordValidator(password)) {
-            Alert.alert("Password must be at least 6 characters, please try again.");
+            Alert.alert("Password too short!", "Password must be at least 6 characters, please try again.");
             return;
         }
         await firebase
@@ -39,8 +31,8 @@ export default class ChangePasswordScreen extends React.Component {
             .currentUser.updatePassword(password)
             .then(() => {
                 Alert.alert(
-                    "Password successfully changed",
-                    "Please login again",
+                    "Password successfully changed!",
+                    "Please login again.",
                     [
                         {
                             text: "OK",
@@ -62,14 +54,14 @@ export default class ChangePasswordScreen extends React.Component {
             <SafeAreaView>
                 <View style={styles.container}>
                     <View style={styles.innerContainer}>
-                        <Text style={styles.title}>Enter your new password</Text>
+                        <Text style={styles.title}>Change your password</Text>
                         <View style={styles.wordspace} />
                         <Text style={styles.current}>
                             Enter your new password here:
                         </Text>
                         <TextInput
                             style={styles.input}
-                            placeholder="Type here..."
+                            placeholder="Type here (At least 6 characters)"
                             onChangeText={(text) => this.setState({ text })}
                             value={this.state.text}
                             multiline={false}

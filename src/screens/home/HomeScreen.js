@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
-import {
-    Text,
-    View,
-    FlatList,
-    SafeAreaView,
-    StyleSheet,
-    StatusBar,
-    RefreshControl,
-} from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomePostsScreen from "./HomePostsScreen";
+import React from "react";
+import {
+    SafeAreaView,
+    StatusBar,
+    StyleSheet
+} from "react-native";
+import ViewProfileScreen from "../profile/ViewProfileScreen";
 import AddPostScreen from "./AddPostScreen";
-import EditPostScreen from "./EditPostScreen";
+import ChatScreen from "./ChatScreen";
 import CommentScreen from "./CommentScreen";
 import EditCommentScreen from "./EditCommentScreen";
-import ChatScreen from "./ChatScreen";
+import EditGroupScreen from './EditGroupScreen';
+import EditPostScreen from "./EditPostScreen";
+import GroupCreationScreen from "./GroupCreationScreen";
+import GroupInfoScreen from './GroupInfoScreen';
+import HomePostsScreen from "./HomePostsScreen";
+import InitGroupChatScreen from "./InitGroupChatScreen";
 import MessagesScreen from "./MessagesScreen";
-import ViewProfileScreen from "../profile/ViewProfileScreen";
+import StartMessagesScreen from "./StartMessagesScreen";
 
 const Stack = createStackNavigator();
 
@@ -38,6 +38,11 @@ const HomeScreen = ({ navigation }) => {
                 <Stack.Screen name="ViewProfileScreen" component={ViewProfileScreen} />
                 <Stack.Screen name="ChatScreen" component={ChatScreen} />
                 <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
+                <Stack.Screen name="StartMessagesScreen" component={StartMessagesScreen} />
+                <Stack.Screen name="GroupCreationScreen" component={GroupCreationScreen} />
+                <Stack.Screen name="InitGroupChatScreen" component={InitGroupChatScreen} />
+                <Stack.Screen name="GroupInfoScreen" component={GroupInfoScreen} />
+                <Stack.Screen name="EditGroupScreen" component={EditGroupScreen} />
             </Stack.Navigator>
         </SafeAreaView>
     );

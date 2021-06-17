@@ -1,19 +1,18 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, StatusBar } from "react-native";
-import { Text } from "react-native-paper";
-import Logo from "../../components/Logo";
-import Header from "../../components/Header";
-import Button from "../../components/Button";
-import TextInput from "../../components/TextInput";
-import BackButton from "../../components/BackButton";
-import { theme } from "../../core/theme";
-import { emailValidator } from "../../helpers/auth/emailValidator";
-import { passwordValidator } from "../../helpers/auth/passwordValidator";
-import { nameValidator } from "../../helpers/auth/nameValidator";
-import { signUpUser } from "../../api/auth";
-import Toast from "../../components/Toast";
-
+import { StatusBar, StyleSheet, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Text } from "react-native-paper";
+import { signUpUser } from "../../api/auth";
+import BackButton from "../../components/BackButton";
+import Button from "../../components/Button";
+import Header from "../../components/Header";
+import Logo from "../../components/Logo";
+import TextInput from "../../components/TextInput";
+import Toast from "../../components/Toast";
+import { emailValidator } from "../../helpers/auth/emailValidator";
+import { nameValidator } from "../../helpers/auth/nameValidator";
+import { passwordValidator } from "../../helpers/auth/passwordValidator";
+
 
 export default function RegisterScreen({ navigation }) {
     const [name, setName] = useState({ value: "", error: "" });
@@ -55,7 +54,7 @@ export default function RegisterScreen({ navigation }) {
             <Logo />
             <Header>Create Account</Header>
             <TextInput
-                label="Name"
+                label="Username"
                 returnKeyType="next"
                 value={name.value}
                 onChangeText={(text) => setName({ value: text, error: "" })}

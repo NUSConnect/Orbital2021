@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TextInput, SafeAreaView, Alert } from "react-native";
+import * as firebase from "firebase";
+import React, { useState } from "react";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
 
-import * as firebase from "firebase";
 
 const ForumAddPostScreen = ({ navigation, route, onPress }) => {
     const userID = firebase.auth().currentUser.uid;
