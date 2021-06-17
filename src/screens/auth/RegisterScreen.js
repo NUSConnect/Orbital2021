@@ -40,7 +40,7 @@ export default function RegisterScreen({ navigation }) {
         if (response.error) {
             setError(response.error);
         }
-        () => setLoading(false);
+        setLoading(false);
     };
 
     return (
