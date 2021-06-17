@@ -7,10 +7,16 @@ import {
     StyleSheet,
     Text,
     TextInput,
-    View
+    View,
 } from "react-native";
+import { Ionicons } from "react-native-vector-icons";
 
-export default function FilteredMajorScreen({ props, navigation, route, goBack }) {
+export default function FilteredMajorScreen({
+    props,
+    navigation,
+    route,
+    goBack,
+}) {
     const currentUserId = firebase.auth().currentUser.uid;
     const [search, setSearch] = useState("");
     const [filteredDataSource, setFilteredDataSource] = useState([]);
@@ -30,7 +36,8 @@ export default function FilteredMajorScreen({ props, navigation, route, goBack }
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    const { name, bio, userImg, email, createdAt, major } = doc.data();
+                    const { name, bio, userImg, email, createdAt, major } =
+                        doc.data();
                     if (major === majorToFilter) {
                         users.push({
                             userId: doc.id,
@@ -104,12 +111,20 @@ export default function FilteredMajorScreen({ props, navigation, route, goBack }
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <TextInput
-                    style={styles.textInputStyle}
-                    onChangeText={(text) => searchFilterFunction(text)}
-                    value={search}
-                    placeholder="Search Here"
-                />
+                <View style={styles.searchBar}>
+                    <Ionicons
+                        name="chevron-back-outline"
+                        size={24}
+                        style={styles.icon}
+                        onPress={() => navigation.goBack()}
+                    />
+                    <TextInput
+                        style={styles.textInputStyle}
+                        onChangeText={(text) => searchFilterFunction(text)}
+                        value={search}
+                        placeholder="Search Here"
+                    />
+                </View>
                 <FlatList
                     data={filtered ? filteredDataSource : masterDataSource}
                     keyExtractor={(item, index) => index.toString()}
@@ -137,5 +152,13 @@ const styles = StyleSheet.create({
         margin: 5,
         borderColor: "#ff8c00",
         backgroundColor: "#FFFFFF",
+        flex: 1,
+    },
+    searchBar: {
+        flexDirection: "row",
+    },
+    icon: {
+        alignItems: "center",
+        marginTop: 10
     },
 });

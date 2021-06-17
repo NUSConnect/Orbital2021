@@ -105,7 +105,6 @@ export default function FriendSearchScreen({ props, navigation }) {
                     onChangeText={(text) => searchFilterFunction(text)}
                     value={search}
                     placeholder="Search Here"
-                    clearButtonMode={"always"}
                 />
                 <FlatList
                     data={filtered ? filteredDataSource : masterDataSource}
