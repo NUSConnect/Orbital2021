@@ -11,6 +11,7 @@ import {
     TouchableOpacity,
     Image,
 } from "react-native";
+import { Ionicons } from "react-native-vector-icons";
 import SearchBar from '../../components/SearchBar';
 
 export default function FilteredMajorScreen({
@@ -27,7 +28,7 @@ export default function FilteredMajorScreen({
     const [filtered, setFiltered] = useState(false);
 
     var majorToFilter = route.params.major;
-    console.log(majorToFilter);
+//    console.log(majorToFilter);
 
     const getAllUsers = async () => {
         const users = [];
@@ -113,12 +114,23 @@ export default function FilteredMajorScreen({
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
+                <View style={styles.subHeader}>
+                    <Ionicons
+                        name="chevron-back-outline"
+                        size={24}
+                        style={styles.icon}
+                        onPress={() => navigation.goBack()}
+                    />
+                    <Text style={{ fontSize: 18, alignItems: 'center', }}>
+                        {majorToFilter}
+                    </Text>
+                </View>
                 <SearchBar
-                     search={search}
-                     setSearch={setSearch}
-                     searchFilterFunction={searchFilterFunction}
-                     resetFilter={() => setFilteredDataSource(masterDataSource)}
-                 />
+                    search={search}
+                    setSearch={setSearch}
+                    searchFilterFunction={searchFilterFunction}
+                    resetFilter={() => setFilteredDataSource(masterDataSource)}
+                />
                 <FlatList
                     data={filtered ? filteredDataSource : masterDataSource}
                     keyExtractor={(item, index) => index.toString()}
@@ -139,4 +151,17 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 20,
     },
+    subHeader: {
+        flexDirection: "row",
+        alignItems: 'center',
+        marginTop: 10,
+        marginBottom: 6,
+    },
+    icon: {
+        alignItems: "center",
+        marginLeft: 8,
+        marginRight: 8,
+        color: 'black'
+    },
+
 });
