@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 16,
         paddingLeft: 10,
-        paddingRight: 10,
+        paddingRight: 15,
     },
     score: {
         fontSize: 16,
