@@ -18,21 +18,6 @@ export default class ForumOthersScreen extends React.Component {
         };
     }
 
-    componentDidMount() {
-        this.fetchCats();
-    }
-
-    fetchCats() {
-        this.setState({ refreshing: true });
-        fetch("https://api.thecatapi.com/v1/images/search?limit=10&page=1")
-            .then((res) => res.json())
-            .then((resJson) => {
-                this.setState({ data: resJson });
-                this.setState({ refreshing: false });
-            })
-            .catch((e) => console.log(e));
-    }
-
     renderItemComponent = (data) => (
         <TouchableOpacity style={styles.container}>
             <Image style={styles.image} source={{ uri: data.item.url }} />
@@ -71,18 +56,10 @@ export default class ForumOthersScreen extends React.Component {
                         }
                     >
                         <Text style={styles.buttonText}>
-                            CREATE A NEW FORUM
+                            OPEN A NEW PORTAL
                         </Text>
                     </TouchableOpacity>
                 </View>
-                <FlatList
-                    data={this.state.data}
-                    renderItem={(item) => this.renderItemComponent(item)}
-                    keyExtractor={(item) => item.id.toString()}
-                    ItemSeparatorComponent={this.ItemSeparator}
-                    refreshing={this.state.refreshing}
-                    onRefresh={this.handleRefresh}
-                />
             </SafeAreaView>
         );
     }

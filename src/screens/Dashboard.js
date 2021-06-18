@@ -37,10 +37,10 @@ function MyTabs() {
                 }}
             />
             <Tab.Screen
-                name="Forum"
+                name="Portals"
                 component={ForumScreen}
                 options={{
-                    tabBarLabel: "Forum",
+                    tabBarLabel: "Portals",
                     tabBarIcon: ({ color }) => (
                         <MaterialCommunityIcons
                             name="forum"

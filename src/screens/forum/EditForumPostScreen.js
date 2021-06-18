@@ -57,7 +57,7 @@ const EditForumPostScreen = ({ navigation, route }) => {
             resetScrollToCoords={{ x: 0, y: 0 }}
             scrollEnabled={true}
         >
-            <Text style={styles.title}>Edit Your Forum Post</Text>
+            <Text style={styles.title}>Edit Your Post</Text>
 
             <TextInput
                 style={styles.input}

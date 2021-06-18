@@ -56,7 +56,7 @@ const ForumAddPostScreen = ({ navigation, route, onPress }) => {
     };
     return (
         <KeyboardAwareScrollView style={styles.container}>
-            <Text style={styles.title}>Create a Forum Post</Text>
+            <Text style={styles.title}>Add A Post</Text>
             <Text style={styles.subTitle}>Post Title</Text>
             <TextInput
                 style={styles.inputTitle}
