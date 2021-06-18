@@ -71,7 +71,7 @@ export default class ForumOthersScreen extends React.Component {
                         }
                     >
                         <Text style={styles.buttonText}>
-                            CREATE A NEW FORUM
+                            OPEN A NEW PORTAL
                         </Text>
                     </TouchableOpacity>
                 </View>
