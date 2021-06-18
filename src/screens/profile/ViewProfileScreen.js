@@ -267,7 +267,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
                 ItemSeparatorComponent={ItemSeparator}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
-                style={{ width: "100%", paddingBottom: 40 }}
+                style={{ width: "100%", paddingBottom: 200 }}
             />
         </SafeAreaView>
     );
