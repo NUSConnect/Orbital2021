@@ -10,6 +10,7 @@ import {
     Image,
 } from "react-native";
 import ForumIcon from "../../components/ForumIcon";
+import SearchBar from '../../components/SearchBar';
 
 export default class ForumSearchScreen extends React.Component {
     constructor(props) {
@@ -99,30 +100,12 @@ export default class ForumSearchScreen extends React.Component {
         const { navigation } = this.props;
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                <View style={styles.searchBar}>
-                    <TextInput
-                        style={styles.textInputStyle}
-                        onChangeText={(text) => this.searchFilterFunction(text)}
-                        value={this.state.search}
-                        placeholder="Search Here"
-                    />
-                    {this.state.search !== "" ? (
-                        <TouchableOpacity
-                            style={styles.closeButtonParent}
-                            onPress={() => {
-                                this.setState({
-                                    filteredData: this.state.data,
-                                    search: "",
-                                });
-                            }}
-                        >
-                            <Image
-                                style={styles.closeButton}
-                                source={require("../../assets/close-circle-outline.png")}
-                            />
-                        </TouchableOpacity>
-                    ) : null}
-                </View>
+                <SearchBar
+                    search={this.state.search}
+                    setSearch={(text) => this.setState({ search: text })}
+                    searchFilterFunction={this.searchFilterFunction}
+                    resetFilter={() => this.setState({ filteredData: this.state.data })}
+                />
                 <FlatList
                     numColumns={3}
                     data={
@@ -149,26 +132,4 @@ export default class ForumSearchScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    textInputStyle: {
-        height: 40,
-        borderWidth: 1,
-        paddingLeft: 20,
-        margin: 5,
-        borderColor: "#ff8c00",
-        backgroundColor: "#FFFFFF",
-        flex: 1,
-    },
-    searchBar: {
-        flexDirection: "row",
-    },
-    closeButtonParent: {
-        justifyContent: "flex-end",
-        alignItems: "flex-end",
-        marginRight: 10,
-        marginBottom: 16,
-    },
-    closeButton: {
-        height: 20,
-        width: 20,
-    },
 });

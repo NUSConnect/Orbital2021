@@ -15,6 +15,7 @@ import {
 import { Divider } from "react-native-paper";
 import { Swipeable } from "react-native-gesture-handler";
 import MessageTopTab from "../../components/MessageTopTab";
+import SearchBar from '../../components/SearchBar'
 import {
     Card,
     PostTime,
@@ -306,28 +307,12 @@ export default function MessagesScreen({ navigation }) {
                 }}
                 onPress={() => navigation.navigate("StartMessagesScreen")}
             />
-            <View style={styles.searchBar}>
-                <TextInput
-                    style={styles.textInputStyle}
-                    onChangeText={(text) => searchFilterFunction(text)}
-                    value={search}
-                    placeholder="Search Here"
-                />
-                {search !== "" ? (
-                    <TouchableOpacity
-                        style={styles.closeButtonParent}
-                        onPress={() => {
-                            setFilteredDataSource(threads);
-                            setSearch("");
-                        }}
-                    >
-                        <Image
-                            style={styles.closeButton}
-                            source={require("../../assets/close-circle-outline.png")}
-                        />
-                    </TouchableOpacity>
-                ) : null}
-            </View>
+            <SearchBar
+                search={search}
+                setSearch={setSearch}
+                searchFilterFunction={searchFilterFunction}
+                resetFilter={() => setFilteredDataSource(threads)}
+            />
             <FlatList
                 data={filtered ? filteredDataSource : threads}
                 keyExtractor={(item) => item.name}
@@ -371,15 +356,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff",
         flex: 1,
     },
-    textInputStyle: {
-        height: 40,
-        borderWidth: 1,
-        paddingLeft: 20,
-        margin: 5,
-        borderColor: "#ff8c00",
-        backgroundColor: "#FFFFFF",
-        flex: 1,
-    },
     listTitle: {
         fontSize: 22,
     },
@@ -403,18 +379,5 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: 100,
         height: 80,
-    },
-    searchBar: {
-        flexDirection: "row",
-    },
-    closeButtonParent: {
-        justifyContent: "flex-end",
-        alignItems: "flex-end",
-        marginRight: 10,
-        marginBottom: 16,
-    },
-    closeButton: {
-        height: 20,
-        width: 20,
     },
 });

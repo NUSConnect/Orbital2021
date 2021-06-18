@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     Image,
 } from "react-native";
+import SearchBar from '../../components/SearchBar';
 
 export default function MajorsSearchScreen({ props, navigation }) {
     const currentUserId = firebase.auth().currentUser.uid;
@@ -108,28 +109,12 @@ export default function MajorsSearchScreen({ props, navigation }) {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <View styles={styles.searchBar}>
-                    <TextInput
-                        style={styles.textInputStyle}
-                        onChangeText={(text) => searchFilterFunction(text)}
-                        value={search}
-                        placeholder="Search Here"
-                    />
-                    {search !== "" ? (
-                        <TouchableOpacity
-                            style={styles.closeButtonParent}
-                            onPress={() => {
-                                setFilteredDataSource(masterDataSource);
-                                setSearch("");
-                            }}
-                        >
-                            <Image
-                                style={styles.closeButton}
-                                source={require("../../assets/close-circle-outline.png")}
-                            />
-                        </TouchableOpacity>
-                    ) : null}
-                </View>
+                <SearchBar
+                    search={search}
+                    setSearch={setSearch}
+                    searchFilterFunction={searchFilterFunction}
+                    resetFilter={() => setFilteredDataSource(masterDataSource)}
+                />
                 <FlatList
                     data={filtered ? filteredDataSource : masterDataSource}
                     keyExtractor={(item, index) => index.toString()}
@@ -149,27 +134,5 @@ const styles = StyleSheet.create({
     itemStyle: {
         padding: 10,
         fontSize: 20,
-    },
-    textInputStyle: {
-        height: 40,
-        borderWidth: 1,
-        paddingLeft: 20,
-        margin: 5,
-        borderColor: "#ff8c00",
-        backgroundColor: "#FFFFFF",
-    },
-    searchBar: {
-        flexDirection: "row",
-    },
-    closeButtonParent: {
-        justifyContent: "flex-end",
-        alignItems: "flex-end",
-        marginRight: 10,
-        flex: 1,
-    },
-    closeButton: {
-        height: 20,
-        width: 20,
-        marginBottom: 16,
     },
 });
