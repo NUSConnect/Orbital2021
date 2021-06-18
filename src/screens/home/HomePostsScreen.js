@@ -429,7 +429,7 @@ export default class HomePostsScreen extends React.Component {
                     ItemSeparatorComponent={this.ItemSeparator}
                     refreshing={this.state.refreshing}
                     onRefresh={this.handleRefresh}
-                    style={{ marginBottom: 40 }}
+                    style={{ marginBottom: 40}}
                 />
             </SafeAreaView>
         );

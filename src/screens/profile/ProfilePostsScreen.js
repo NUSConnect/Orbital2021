@@ -212,6 +212,7 @@ export default class ProfilePostsScreen extends React.Component {
                     ItemSeparatorComponent={this.ItemSeparator}
                     refreshing={this.state.refreshing}
                     onRefresh={this.handleRefresh}
+                    style={{ width: "100%", paddingBottom: 40 }}
                 />
             </SafeAreaView>
         );
