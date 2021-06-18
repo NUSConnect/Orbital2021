@@ -11,7 +11,7 @@ import {
     TouchableOpacity,
     Image,
 } from "react-native";
-import { Ionicons } from "react-native-vector-icons";
+import SearchBar from '../../components/SearchBar';
 
 export default function FilteredMajorScreen({
     props,
@@ -113,34 +113,12 @@ export default function FilteredMajorScreen({
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <View style={styles.searchBar}>
-                    <Ionicons
-                        name="chevron-back-outline"
-                        size={24}
-                        style={styles.icon}
-                        onPress={() => navigation.goBack()}
-                    />
-                    <TextInput
-                        style={styles.textInputStyle}
-                        onChangeText={(text) => searchFilterFunction(text)}
-                        value={search}
-                        placeholder="Search Here"
-                    />
-                    {search !== "" ? (
-                        <TouchableOpacity
-                            style={styles.closeButtonParent}
-                            onPress={() => {
-                                setFilteredDataSource(masterDataSource);
-                                setSearch("");
-                            }}
-                        >
-                            <Image
-                                style={styles.closeButton}
-                                source={require("../../assets/close-circle-outline.png")}
-                            />
-                        </TouchableOpacity>
-                    ) : null}
-                </View>
+                <SearchBar
+                     search={search}
+                     setSearch={setSearch}
+                     searchFilterFunction={searchFilterFunction}
+                     resetFilter={() => setFilteredDataSource(masterDataSource)}
+                 />
                 <FlatList
                     data={filtered ? filteredDataSource : masterDataSource}
                     keyExtractor={(item, index) => index.toString()}
@@ -160,31 +138,5 @@ const styles = StyleSheet.create({
     itemStyle: {
         padding: 10,
         fontSize: 20,
-    },
-    textInputStyle: {
-        height: 40,
-        borderWidth: 1,
-        paddingLeft: 20,
-        margin: 5,
-        borderColor: "#ff8c00",
-        backgroundColor: "#FFFFFF",
-        flex: 1,
-    },
-    searchBar: {
-        flexDirection: "row",
-    },
-    icon: {
-        alignItems: "center",
-        marginTop: 10,
-    },
-    closeButtonParent: {
-        justifyContent: "flex-end",
-        alignItems: "flex-end",
-        marginRight: 10,
-        marginBottom: 16,
-    },
-    closeButton: {
-        height: 20,
-        width: 20,
     },
 });
