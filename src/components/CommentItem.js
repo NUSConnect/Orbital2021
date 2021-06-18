@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         padding: 5,
         paddingLeft: 10,
+        paddingRight: 5,
         marginBottom: 10,
     },
     regularFont: {
