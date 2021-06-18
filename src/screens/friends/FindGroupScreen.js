@@ -125,10 +125,16 @@ export default function FindGroupScreen({ navigation }) {
                 }
                 else if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 6) {
                     //hit threshold, handle logic to form a group. currently only an alert.
-                    Alert.alert("Group found!");
+                    const currentUser = firebase.auth().currentUser;
+                    console.log(currentUser);
                     const successfulFinding = count >= groupThreshold;
                     clearUsers(successfulFinding, category);
-                    navigation.navigate("FindGroupScreen");
+                    if (currentUser) {
+                        Alert.alert("Group found!");
+                        navigation.navigate("FindGroupScreen");
+                    } else {
+                        Alert.alert("Logged out group found");
+                    }
                     unsubscribe();
                 } else {
                     //not enough people to form group, send to waiting screen.

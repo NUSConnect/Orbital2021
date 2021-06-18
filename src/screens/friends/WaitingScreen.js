@@ -57,7 +57,8 @@ export default function WaitingScreen({ navigation, route, goBack }) {
                 Finding you a group...️
             </Animatable.Text>
             <Text style={styles.text}>
-                {size} {size <= 1 ? 'person' : 'people'} {'in queue...'}
+                {'     '}{size} {size <= 1 ? 'person' : 'people'} {'in queue...'}
+                {'\nFeel free to go, I\'ll stay :)'}
             </Text>
             <Button style={styles.stop}
                 color="#de1738"
