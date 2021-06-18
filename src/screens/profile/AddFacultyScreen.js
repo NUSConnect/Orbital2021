@@ -38,11 +38,6 @@ export default function AddFacultyScreen({ props, navigation, goBack }) {
     }
 
     const multipleMajors = (screen) => {
-        firebase
-            .firestore()
-            .collection("users")
-            .doc(currentUserId)
-            .update({ major:null })
         navigation.navigate(screen);
     }
 
@@ -52,11 +47,6 @@ export default function AddFacultyScreen({ props, navigation, goBack }) {
             <Text
                 style={styles.itemStyle}
                 onPress={() => {
-                    firebase
-                        .firestore()
-                        .collection("users")
-                        .doc(currentUserId)
-                        .update({ faculty: item.name });
                     switch (item.name) {
                         case "College of Humanities and Sciences": {
                             multipleMajors("CHSMajorsScreen");
