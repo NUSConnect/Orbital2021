@@ -256,6 +256,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
                     <PostCard
                         item={item}
                         onReport={handlePostsReport}
+                        onViewProfile={x => x}
                         onPress={() =>
                             navigation.navigate("CommentScreen", { item })
                         }
