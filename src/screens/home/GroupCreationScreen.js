@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Divider } from "react-native-paper";
 import GroupCreationTopTab from "../../components/GroupCreationTopTab";
+import SearchBar from '../../components/SearchBar';
 import {
     TextSection,
     UserImg,
@@ -119,11 +120,11 @@ export default function GroupCreationScreen({ props, route, navigation }) {
                     extraData={itemChecked}
                 />
             </View>
-            <TextInput
-                style={styles.textInputStyle}
-                onChangeText={(text) => searchFilterFunction(text)}
-                value={search}
-                placeholder="Search Here"
+            <SearchBar
+                search={search}
+                setSearch={setSearch}
+                searchFilterFunction={searchFilterFunction}
+                resetFilter={() => setFilteredDataSource(threads)}
             />
             <FlatList
                 data={filtered ? filteredDataSource : users}
@@ -148,7 +149,6 @@ export default function GroupCreationScreen({ props, route, navigation }) {
                     </TouchableOpacity>
                 )}
                 extraData={itemChecked}
-                style={{ marginBottom: 40, }}
             />
         </View>
     );
@@ -163,14 +163,6 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 16,
         paddingLeft:8,
-    },
-    textInputStyle: {
-        height: 40,
-        borderWidth: 1,
-        paddingLeft: 20,
-        margin: 5,
-        borderColor: "#ff8c00",
-        backgroundColor: "#FFFFFF",
     },
     listTitle: {
         fontSize: 22,

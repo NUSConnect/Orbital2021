@@ -5,9 +5,12 @@ import {
     SafeAreaView,
     StyleSheet,
     TextInput,
-    View
+    View,
+    TouchableOpacity,
+    Image,
 } from "react-native";
 import ForumIcon from "../../components/ForumIcon";
+import SearchBar from '../../components/SearchBar';
 
 export default class ForumSearchScreen extends React.Component {
     constructor(props) {
@@ -15,7 +18,7 @@ export default class ForumSearchScreen extends React.Component {
         this.state = {
             data: [],
             refreshing: true,
-            search: '',
+            search: "",
             filteredData: [],
             filtered: false,
         };
@@ -23,7 +26,9 @@ export default class ForumSearchScreen extends React.Component {
 
     componentDidMount() {
         this.fetchForums();
-        this._unsubscribe = this.props.navigation.addListener('focus', () => this.fetchForums());
+        this._unsubscribe = this.props.navigation.addListener("focus", () =>
+            this.fetchForums()
+        );
     }
 
     componentWillUnmount() {
@@ -65,7 +70,11 @@ export default class ForumSearchScreen extends React.Component {
                 const textData = text.toUpperCase();
                 return itemData.indexOf(textData) > -1;
             });
-            this.setState({ filtered: true, filteredData: newData, search: text });
+            this.setState({
+                filtered: true,
+                filteredData: newData,
+                search: text,
+            });
         } else {
             this.setState({ filteredData: this.state.data, search: text });
         }
@@ -90,16 +99,20 @@ export default class ForumSearchScreen extends React.Component {
     render() {
         const { navigation } = this.props;
         return (
-            <SafeAreaView style={{flex:1}}>
-                <TextInput
-                    style={styles.textInputStyle}
-                    onChangeText={(text) => this.searchFilterFunction(text)}
-                    value={this.state.search}
-                    placeholder="Search Here"
+            <SafeAreaView style={{ flex: 1 }}>
+                <SearchBar
+                    search={this.state.search}
+                    setSearch={(text) => this.setState({ search: text })}
+                    searchFilterFunction={this.searchFilterFunction}
+                    resetFilter={() => this.setState({ filteredData: this.state.data })}
                 />
                 <FlatList
                     numColumns={3}
-                    data={this.state.filtered ? this.state.filteredData : this.state.data}
+                    data={
+                        this.state.filtered
+                            ? this.state.filteredData
+                            : this.state.data
+                    }
                     renderItem={({ item }) => (
                         <ForumIcon
                             item={item}
@@ -119,12 +132,4 @@ export default class ForumSearchScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    textInputStyle: {
-        height: 40,
-        borderWidth: 1,
-        paddingLeft: 20,
-        margin: 5,
-        borderColor: "#ff8c00",
-        backgroundColor: "#FFFFFF",
-    },
 });

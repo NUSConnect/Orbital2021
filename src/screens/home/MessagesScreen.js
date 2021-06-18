@@ -10,10 +10,12 @@ import {
     TextInput,
     TouchableOpacity,
     View,
+    Image,
 } from "react-native";
 import { Divider } from "react-native-paper";
 import { Swipeable } from "react-native-gesture-handler";
 import MessageTopTab from "../../components/MessageTopTab";
+import SearchBar from '../../components/SearchBar'
 import {
     Card,
     PostTime,
@@ -39,7 +41,7 @@ export default function MessagesScreen({ navigation }) {
         const _unsubscribe = navigation.addListener("focus", () =>
             getThreads()
         );
-        const backNav = navigation.addListener('beforeRemove', (e) => {
+        const backNav = navigation.addListener("beforeRemove", (e) => {
             e.preventDefault();
             backNav();
             toggleHaveNewMessage();
@@ -57,9 +59,9 @@ export default function MessagesScreen({ navigation }) {
             .collection("users")
             .doc(currentUserId)
             .update({ haveNewMessage: false });
-    }
+    };
 
-    const deletePressed = id => {
+    const deletePressed = (id) => {
         console.log("Pressed");
         Alert.alert(
             "Are you sure?",
@@ -87,7 +89,7 @@ export default function MessagesScreen({ navigation }) {
             .doc(id)
             .get()
             .then((querySnapshot) => {
-                const lastSent = querySnapshot.data().latestMessage.createdAt
+                const lastSent = querySnapshot.data().latestMessage.createdAt;
                 firebase
                     .firestore()
                     .collection("users")
@@ -102,25 +104,32 @@ export default function MessagesScreen({ navigation }) {
                     .collection("openChats")
                     .doc(id)
                     .delete();
-            })
+            });
 
-        Alert.alert("Success", "Chat deleted!",
+        Alert.alert(
+            "Success",
+            "Chat deleted!",
             [
                 {
                     text: "OK",
                     onPress: () => getThreads(),
                 },
-            ], { cancelable: false });
-    }
+            ],
+            { cancelable: false }
+        );
+    };
 
-    const rightSwipe = id => (progress, dragX) => {
+    const rightSwipe = (id) => (progress, dragX) => {
         const scale = dragX.interpolate({
             inputRange: [0, 100],
             outputRange: [1, 0],
             extrapolate: "clamp",
         });
         return (
-            <TouchableOpacity onPress={() => deletePressed(id)} activeOpacity={0.6}>
+            <TouchableOpacity
+                onPress={() => deletePressed(id)}
+                activeOpacity={0.6}
+            >
                 <View style={styles.deleteBox}>
                     <Animated.Text style={{ transform: [{ scale: scale }] }}>
                         Delete
@@ -207,28 +216,32 @@ export default function MessagesScreen({ navigation }) {
             .collection("openChats")
             .doc(id)
             .set({});
-    }
+    };
 
     const checkIfNewMessage = async (deletedThreads, openThreads) => {
         // Reopen chat if new message received
-       // console.log('Deleted Threads', deletedThreads)
+        // console.log('Deleted Threads', deletedThreads)
         const reopenedThreads = [];
 
-        for (let i = 0;  i < deletedThreads.length; i++) {
-            const threadId = deletedThreads[i].id
-            const lastSent = deletedThreads[i].lastSent
-            await firebase.firestore().collection("THREADS").doc(threadId).get()
+        for (let i = 0; i < deletedThreads.length; i++) {
+            const threadId = deletedThreads[i].id;
+            const lastSent = deletedThreads[i].lastSent;
+            await firebase
+                .firestore()
+                .collection("THREADS")
+                .doc(threadId)
+                .get()
                 .then((doc) => {
                     if (doc.data().latestMessage.createdAt > lastSent) {
-                        reopenedThreads.push({ id: doc.id })
+                        reopenedThreads.push({ id: doc.id });
                         reopenThread(doc.id);
                     }
-                })
+                });
         }
-       // console.log(reopenedThreads);
+        // console.log(reopenedThreads);
         const allOpenThreads = reopenedThreads.concat(openThreads);
         matchUserToThreads(allOpenThreads);
-    }
+    };
 
     const getThreads = async () => {
         // Get open threads
@@ -253,7 +266,10 @@ export default function MessagesScreen({ navigation }) {
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    deletedThreads.push({ id: doc.id, lastSent: doc.data().lastSent });
+                    deletedThreads.push({
+                        id: doc.id,
+                        lastSent: doc.data().lastSent,
+                    });
                 });
             });
 
@@ -285,14 +301,17 @@ export default function MessagesScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <MessageTopTab
-                onBack={() => {navigation.goBack(); toggleHaveNewMessage();}}
+                onBack={() => {
+                    navigation.goBack();
+                    toggleHaveNewMessage();
+                }}
                 onPress={() => navigation.navigate("StartMessagesScreen")}
             />
-            <TextInput
-                style={styles.textInputStyle}
-                onChangeText={(text) => searchFilterFunction(text)}
-                value={search}
-                placeholder="Search Here"
+            <SearchBar
+                search={search}
+                setSearch={setSearch}
+                searchFilterFunction={searchFilterFunction}
+                resetFilter={() => setFilteredDataSource(threads)}
             />
             <FlatList
                 data={filtered ? filteredDataSource : threads}
@@ -336,14 +355,6 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#ffffff",
         flex: 1,
-    },
-    textInputStyle: {
-        height: 40,
-        borderWidth: 1,
-        paddingLeft: 20,
-        margin: 5,
-        borderColor: "#ff8c00",
-        backgroundColor: "#FFFFFF",
     },
     listTitle: {
         fontSize: 22,
