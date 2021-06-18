@@ -159,10 +159,11 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         alignItems: "flex-end",
         marginRight: 10,
-        marginBottom: 15,
+        flex: 1,
     },
     closeButton: {
         height: 20,
         width: 20,
+        marginBottom: 16,
     },
 });
