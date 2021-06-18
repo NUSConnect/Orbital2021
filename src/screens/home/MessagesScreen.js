@@ -411,7 +411,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         alignItems: "flex-end",
         marginRight: 10,
-        marginBottom: 15,
+        marginBottom: 16,
     },
     closeButton: {
         height: 20,

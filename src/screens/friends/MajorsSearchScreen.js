@@ -108,7 +108,7 @@ export default function MajorsSearchScreen({ props, navigation }) {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <View style={styles.searchBar}>
+                <View styles={styles.searchBar}>
                     <TextInput
                         style={styles.textInputStyle}
                         onChangeText={(text) => searchFilterFunction(text)}
@@ -157,7 +157,6 @@ const styles = StyleSheet.create({
         margin: 5,
         borderColor: "#ff8c00",
         backgroundColor: "#FFFFFF",
-        flex: 1,
     },
     searchBar: {
         flexDirection: "row",
@@ -166,10 +165,11 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         alignItems: "flex-end",
         marginRight: 10,
-        marginBottom: 15,
+        flex: 1,
     },
     closeButton: {
         height: 20,
         width: 20,
+        marginBottom: 16,
     },
 });
