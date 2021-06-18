@@ -186,6 +186,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     const handleRefresh = () => {
         setRefreshing(false);
         fetchUserPosts();
+        setRefreshing(false);
     };
 
     useEffect(() => {
@@ -266,7 +267,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
                 ItemSeparatorComponent={ItemSeparator}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
-                style={{ width: "100%" }}
+                style={{ width: "100%", paddingBottom: 40 }}
             />
         </SafeAreaView>
     );

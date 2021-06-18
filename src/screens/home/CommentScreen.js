@@ -358,7 +358,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
                 keyExtractor={(item) => item.commentId}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
-                style={{ width: "100%", marginBottom: 2 }}
+                style={{ width: "100%", paddingBottom: 20 }}
             />
 
             <CreateComment
