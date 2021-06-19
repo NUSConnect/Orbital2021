@@ -125,7 +125,7 @@ export default function FindGroupScreen({ navigation }) {
                 }
                 else if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 6) {
                     //hit threshold, handle logic to form a group. currently only an alert.
-                    const currentUser = firebase.auth().currentUser;
+                    
                     const successfulFinding = count >= groupThreshold;
                     clearUsers(successfulFinding, category);
                     const loggedInListener = firebase.auth().onAuthStateChanged(user => {
