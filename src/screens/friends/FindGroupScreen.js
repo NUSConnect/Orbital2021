@@ -130,6 +130,7 @@ export default function FindGroupScreen({ navigation }) {
                     clearUsers(successfulFinding, category);
                     const loggedInListener = firebase.auth().onAuthStateChanged(user => {
                         if (user) {
+                            navigation.navigate("FindGroupScreen");
                             Alert.alert("Group found!");
                             loggedInListener();
                         } else {
