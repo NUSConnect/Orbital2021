@@ -163,6 +163,8 @@ export default class ProfilePostsScreen extends React.Component {
                 this.setState({ deleted: true });
             })
             .catch((e) => console.log("Error deleting post.", e));
+
+        this.fetchPosts();
     };
 
     renderItemComponent = (data) => (

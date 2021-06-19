@@ -12,6 +12,7 @@ import {
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
 import { textChecker } from '../../api/textChecker';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const EditPostScreen = ({ navigation, route }) => {
     const currentUserId = firebase.auth().currentUser.uid;
@@ -52,9 +53,12 @@ const EditPostScreen = ({ navigation, route }) => {
     };
 
     return (
-        <SafeAreaView>
-            <View style={styles.container}>
-                <View style={styles.innerContainer}>
+        <KeyboardAwareScrollView
+                    style={styles.container}
+                    contentContainerStyle={styles.innerContainer}
+                    resetScrollToCoords={{ x: 0, y: 0 }}
+                    scrollEnabled={true}
+                >
                     <Text style={styles.title}>Edit Your Post</Text>
 
                     {image != null ? (
@@ -87,9 +91,7 @@ const EditPostScreen = ({ navigation, route }) => {
                             string={"Edit"}
                         />
                     </View>
-                </View>
-            </View>
-        </SafeAreaView>
+        </KeyboardAwareScrollView>
     );
 };
 
