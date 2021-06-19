@@ -129,12 +129,13 @@ export default function FindGroupScreen({ navigation }) {
                     console.log(currentUser);
                     const successfulFinding = count >= groupThreshold;
                     clearUsers(successfulFinding, category);
-                    if (currentUser) {
-                        Alert.alert("Group found!");
-                        navigation.navigate("FindGroupScreen");
-                    } else {
-                        Alert.alert("Logged out group found");
-                    }
+                    const loggedInListener = firebase.auth().onAuthStateChanged(user => {
+                        if (user) {
+                            Alert.alert("Group found!");
+                            loggedInListener();
+                        } else {
+                        }
+                    });
                     unsubscribe();
                 } else {
                     //not enough people to form group, send to waiting screen.
