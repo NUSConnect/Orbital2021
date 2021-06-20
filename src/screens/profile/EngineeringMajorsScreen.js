@@ -41,7 +41,7 @@ export default function EngineeringMajorsScreen({ props, navigation, goBack }) {
                         .collection("users")
                         .doc(currentUserId)
                         .update({ major: item.name });
-                    Alert.alert("Thank you!", "Your major has been chosen");
+                    Alert.alert("Thank you!", "Your major has been chosen.");
                     returnToPersonal();
                 }}
             >

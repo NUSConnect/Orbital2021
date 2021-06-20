@@ -25,11 +25,11 @@ export default class UpdateEmailScreen extends React.Component {
         var list = [];
 
         if (firebase.auth().currentUser.email === email) {
-            Alert.alert("This is your current email!");
+            Alert.alert("This is your current email!", "Please choose another email address.");
             return;
         }
         if (emailValidator(email)) {
-            Alert.alert("This is an invalid email, please try again.");
+            Alert.alert("This is an invalid email!", "Please try again.");
             return;
         }
 
@@ -45,7 +45,7 @@ export default class UpdateEmailScreen extends React.Component {
             });
 
         if (list.includes(email)) {
-            Alert.alert("This email is currently in use!");
+            Alert.alert("This email is currently in use!", "Please choose another email address.");
             return;
         }
 
@@ -103,7 +103,7 @@ export default class UpdateEmailScreen extends React.Component {
                                               this.state.text
                                           )
                                         : Alert.alert(
-                                              "Can't update with no email!",
+                                              "No email!",
                                               "Enter the new email you want to use."
                                           );
                                 }}
