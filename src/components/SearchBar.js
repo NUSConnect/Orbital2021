@@ -16,6 +16,7 @@ const SearchBar = ({search, setSearch, searchFilterFunction, resetFilter}) => {
                 onChangeText={(text) => searchFilterFunction(text)}
                 value={search}
                 placeholder="Search Here"
+                testID='input'
             />
             {search !== "" ? (
                 <TouchableOpacity
@@ -24,6 +25,7 @@ const SearchBar = ({search, setSearch, searchFilterFunction, resetFilter}) => {
                         resetFilter();
                         setSearch("");
                     }}
+                    testID='reset'
                 >
                     <Image
                         style={styles.closeButton}
