@@ -39,7 +39,7 @@ export default class ChangeNameScreen extends React.Component {
             return;
         }
         if (nameValidator(name)) {
-            Alert.alert("Can't update with no input!", "Enter the new username you want to use.");
+            Alert.alert("Username can't be empty!", "Enter the new username you want to use.");
             return;
         }
         firebase
@@ -90,7 +90,7 @@ export default class ChangeNameScreen extends React.Component {
                                               this.state.text
                                           )
                                         : Alert.alert(
-                                              "Can't update with no input!",
+                                              "Username can't be empty!",
                                               "Enter the new username you want to use."
                                           );
                                 }}
