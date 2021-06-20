@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#ffffff",
+      "elevation": 3,
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "padding": 2,
+      "paddingHorizontal": 5,
+    }
+  }
+>
+  <TextInput
+    allowFontScaling={true}
+    autoCorrect={false}
+    maxLength={2000}
+    multiline={true}
+    onBlur={[Function]}
+    onFocus={[Function]}
+    placeholder="Add a comment"
+    rejectResponderTermination={true}
+    style={
+      Object {
+        "borderRadius": 10,
+        "flex": 1,
+        "fontSize": 16,
+        "height": 40,
+        "margin": 5,
+        "paddingHorizontal": 15,
+      }
+    }
+    underlineColorAndroid="transparent"
+  />
+  <View
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <Text />
+  </View>
+</View>
+`;

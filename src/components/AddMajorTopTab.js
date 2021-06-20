@@ -11,6 +11,7 @@ export default function AddMajorTopTab({ onPress }) {
                 size={38}
                 style={styles.icon}
                 onPress={onPress}
+                testID='back'
             />
             <Text style={styles.title}> Add your major </Text>
         </View>

@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  accessible={true}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "alignItems": "center",
+      "flex": 0,
+      "height": 150,
+      "justifyContent": "center",
+      "opacity": 1,
+      "width": 130,
+    }
+  }
+  testID="icon"
+>
+  <Image
+    source={
+      Object {
+        "uri": "MockForumImg",
+      }
+    }
+    style={
+      Object {
+        "borderColor": "black",
+        "borderRadius": 50,
+        "borderWidth": 4,
+        "height": 100,
+        "width": 100,
+      }
+    }
+    testID="image"
+  />
+  <Text
+    style={
+      Object {
+        "color": "black",
+        "fontSize": 16,
+      }
+    }
+    testID="text"
+  >
+    TestName
+  </Text>
+</View>
+`;

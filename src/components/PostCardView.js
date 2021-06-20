@@ -120,6 +120,7 @@ const PostCardView = ({
                 <TouchableOpacity
                     onPress={() => onViewProfile(currentUserId)}
                     style={styles.user}
+                    testID='user'
                 >
                     <UserInfo>
                         <UserImg
@@ -136,20 +137,21 @@ const PostCardView = ({
                                     ? userData.name || "Anonymous User"
                                     : "Anonymous User"}
                             </UserName>
-                            <PostTime>
+                            <PostTime testID='time'>
                                 {moment(item.postTime.toDate()).fromNow()}
                             </PostTime>
                         </UserInfoText>
                     </UserInfo>
                 </TouchableOpacity>
             </View>
-            <PostText>{item.post}</PostText>
+            <PostText testID='post'>{item.post}</PostText>
             {item.postImg != null ? (
                 <ProgressiveImage
                     defaultImageSource={require("../assets/default-img.jpg")}
                     source={{ uri: item.postImg }}
                     style={{ width: "100%", height: 350 }}
                     resizeMode="contain"
+                    testID='image'
                 />
             ) : (
                 <Divider />

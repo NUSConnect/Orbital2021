@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#ffffff",
+      "borderColor": "#dcdcdc",
+      "borderWidth": 1,
+      "flexDirection": "row",
+      "height": 60,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    accessible={true}
+    focusable={false}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+        "paddingLeft": 12,
+        "width": "15%",
+      }
+    }
+    testID="onPress"
+  >
+    <Text />
+  </View>
+  <Text
+    style={
+      Object {
+        "color": "#ff7f50",
+        "flex": 1,
+        "fontSize": 30,
+        "paddingLeft": 0,
+        "textAlign": "center",
+        "width": "85%",
+      }
+    }
+  >
+    Portal.io
+  </Text>
+  <View
+    accessible={true}
+    focusable={false}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+        "paddingLeft": 12,
+        "width": "15%",
+      }
+    }
+    testID="onPress2"
+  >
+    <Text />
+  </View>
+</View>
+`;

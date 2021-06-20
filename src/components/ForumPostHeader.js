@@ -9,6 +9,7 @@ export default function SubForumHeader({ title, style, goBack, ...props }) {
                 style={styles.button}
                 activeOpacity={0.4}
                 onPress={goBack}
+                testID="back"
             >
                 <Ionicons
                     name="arrow-back"

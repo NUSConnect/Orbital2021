@@ -134,6 +134,7 @@ const PostCard = ({
                 <TouchableOpacity
                     onPress={() => onViewProfile(currentUserId)}
                     style={styles.user}
+                    testID='user'
                 >
                     <UserInfo>
                         <UserImg
@@ -150,7 +151,7 @@ const PostCard = ({
                                     ? userData.name || "Anonymous User"
                                     : "Anonymous User"}
                             </UserName>
-                            <PostTime>
+                            <PostTime testID='time'>
                                 {moment(item.postTime.toDate()).fromNow()}
                             </PostTime>
                         </UserInfoText>
@@ -161,18 +162,20 @@ const PostCard = ({
                         style={styles.button}
                         activeOpacity={0.4}
                         onPress={onEdit}
+                        testID='edit'
                     >
                         <MaterialIcons name="edit" size={25} />
                     </TouchableOpacity>
                 ) : null}
             </View>
-            <PostText>{item.post}</PostText>
+            <PostText testID='post'>{item.post}</PostText>
             {item.postImg != null ? (
                 <ProgressiveImage
                     defaultImageSource={require("../assets/default-img.jpg")}
                     source={{ uri: item.postImg }}
                     style={{ width: "100%", height: 350 }}
                     resizeMode="contain"
+                    testID='image'
                 />
             ) : (
                 <Divider />
@@ -185,7 +188,7 @@ const PostCard = ({
                         size={25}
                         color={userLiked ? "#dc143c" : "#333"}
                     />
-                    <InteractionText>
+                    <InteractionText testID='likes'>
                         {item.likeCount === 0
                             ? "Like"
                             : item.likeCount === 1
@@ -193,16 +196,16 @@ const PostCard = ({
                             : item.likeCount + " Likes"}
                     </InteractionText>
                 </Interaction>
-                <Interaction onPress={onPress}>
+                <Interaction onPress={onPress} testID='commentPress'>
                     <Ionicons name="md-chatbubble-outline" size={25} />
-                    <InteractionText>{commentText}</InteractionText>
+                    <InteractionText testID='comments'>{commentText}</InteractionText>
                 </Interaction>
                 {currentUserId == item.userId ? (
-                    <Interaction onPress={() => onDelete(item.id)}>
+                    <Interaction onPress={() => onDelete(item.id)} testID='delete'>
                         <Ionicons name="md-trash-bin" size={25} />
                     </Interaction>
                 ) : (
-                    <Interaction onPress={() => onReport(item.id)}>
+                    <Interaction onPress={() => onReport(item.id)} testID='report'>
                         <MaterialIcons name="report-problem" size={25} />
                     </Interaction>
                 )}
