@@ -1,4 +1,3 @@
-import * as firebase from 'firebase'
 import React, { useEffect, useState } from 'react'
 import {
   FlatList,
@@ -8,6 +7,7 @@ import {
   View
 } from 'react-native'
 import SearchBar from '../../components/SearchBar'
+import { sortByName } from '../../api/ranking'
 
 export default function MajorsSearchScreen ({ props, navigation }) {
   const [search, setSearch] = useState('')
@@ -97,6 +97,7 @@ export default function MajorsSearchScreen ({ props, navigation }) {
   }
 
   useEffect(() => {
+    majors.sort(sortByName)
     setMasterDataSource(majors)
   }, [])
 

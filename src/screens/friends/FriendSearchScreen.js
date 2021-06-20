@@ -9,6 +9,7 @@ import {
   View
 } from 'react-native'
 import SearchBar from '../../components/SearchBar'
+import { sortByName } from '../../api/ranking'
 
 export default function FriendSearchScreen ({ props, navigation }) {
   const currentUserId = firebase.auth().currentUser.uid
@@ -27,7 +28,7 @@ export default function FriendSearchScreen ({ props, navigation }) {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          const { name, bio, userImg, email, createdAt } = doc.data()
+          const { name, bio, email, createdAt } = doc.data()
           users.push({
             userId: doc.id,
             name,
@@ -37,7 +38,7 @@ export default function FriendSearchScreen ({ props, navigation }) {
           })
         })
       })
-    //        console.log("Users: ", users);
+    users.sort(sortByName)
     setMasterDataSource(users)
     setLoading(false)
   }

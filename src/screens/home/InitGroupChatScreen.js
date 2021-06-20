@@ -42,25 +42,6 @@ export default function InitGroupChatScreen ({ route, navigation }) {
     setImage(pickerResult.uri)
   }
 
-  const submitPost = async (goBack) => {
-    Alert.alert(
-      'Submit request for creation of forum',
-      'Are you sure?',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed!'),
-          style: 'cancel'
-        },
-        {
-          text: 'Confirm',
-          onPress: () => handleSubmit(goBack)
-        }
-      ],
-      { cancelable: false }
-    )
-  }
-
   const concatList = (list) => {
     let str = ''
     list.sort()

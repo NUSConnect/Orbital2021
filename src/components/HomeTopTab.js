@@ -9,6 +9,7 @@ export default function HomeTopTab ({ style, onPress, onPress2, icon, ...props }
         style={styles.button}
         activeOpacity={0.4}
         onPress={onPress}
+        testID='onPress'
       >
         <Ionicons
           name={icon}
@@ -22,6 +23,7 @@ export default function HomeTopTab ({ style, onPress, onPress2, icon, ...props }
         style={styles.button}
         activeOpacity={0.4}
         onPress={onPress2}
+        testID='onPress2'
       >
         <Ionicons
           name='add'

@@ -32,3 +32,9 @@ export const sortByTrendingForum = (x, y) => {
   return trendingScore(y.votes, y.commentCount, currentTime - y.postTime, 3000000) -
         trendingScore(x.votes, x.commentCount, currentTime - x.postTime, 3000000)
 }
+
+export const sortByName = (x, y) => {
+  if (x.name < y.name) { return -1 }
+  if (x.name > y.name) { return 1 }
+  return 0
+}

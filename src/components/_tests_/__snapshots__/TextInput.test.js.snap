@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "marginVertical": 12,
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={Object {}}
+  >
+    <View>
+      <View
+        pointerEvents="none"
+        style={
+          Array [
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 6,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "borderColor": "rgba(0, 0, 0, 0.54)",
+              "borderRadius": 4,
+              "borderWidth": 1,
+            },
+          ]
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "paddingBottom": 0,
+            },
+            Object {
+              "minHeight": 64,
+              "paddingTop": 8,
+            },
+          ]
+        }
+      >
+        <TextInput
+          allowFontScaling={true}
+          editable={true}
+          multiline={false}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          placeholderTextColor="rgba(0, 0, 0, 0.54)"
+          rejectResponderTermination={true}
+          selectionColor="#121330"
+          style={
+            Array [
+              Object {
+                "flexGrow": 1,
+                "margin": 0,
+                "paddingHorizontal": 14,
+                "zIndex": 1,
+              },
+              Object {
+                "height": 56,
+              },
+              Object {
+                "paddingBottom": 0,
+                "paddingTop": 0,
+              },
+              Object {
+                "color": "#000000",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": undefined,
+                "textAlign": "left",
+                "textAlignVertical": "center",
+              },
+              false,
+              Array [
+                Object {},
+              ],
+            ]
+          }
+          underlineColorAndroid="transparent"
+        />
+      </View>
+    </View>
+  </View>
+</View>
+`;

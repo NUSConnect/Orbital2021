@@ -19,10 +19,10 @@ import {
   UserInfoText,
   UserName
 } from '../../styles/MessageStyles'
+import { sortByName } from '../../api/ranking'
 
 export default function StartMessagesScreen ({ navigation }) {
   const currentUserId = firebase.auth().currentUser.uid
-  let currentUserCreatedAt
   const [threads, setThreads] = useState([])
   const [filteredDataSource, setFilteredDataSource] = useState([])
   const [search, setSearch] = useState('')
@@ -47,19 +47,6 @@ export default function StartMessagesScreen ({ navigation }) {
   }
 
   const getUsers = async () => {
-    // Get curr user info
-    await firebase
-      .firestore()
-      .collection('users')
-      .doc(currentUserId)
-      .get()
-      .then((documentSnapshot) => {
-        if (documentSnapshot.exists) {
-          const { createdAt } = documentSnapshot.data()
-          currentUserCreatedAt = createdAt
-        }
-      })
-
     // Get thread info
     const friendsArr = []
     await firebase
@@ -87,11 +74,7 @@ export default function StartMessagesScreen ({ navigation }) {
         })
       })
     //        console.log(friendsArr);
-    friendsArr.sort((x, y) => {
-      if (x.name < y.name) { return -1 }
-      if (x.name > y.name) { return 1 }
-      return 0
-    })
+    friendsArr.sort(sortByName)
     setThreads(friendsArr)
   }
 

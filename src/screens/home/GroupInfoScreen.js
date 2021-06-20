@@ -16,8 +16,6 @@ import {
 
 const GroupInfoScreen = ({ navigation, route, onPress }) => {
   const currentUserId = firebase.auth().currentUser.uid
-  const defaultUri =
-        'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
   const [members, setMembers] = useState([])
   const { item } = route.params
 
@@ -32,17 +30,6 @@ const GroupInfoScreen = ({ navigation, route, onPress }) => {
     }
     setMembers(list)
   }
-
-  const ItemSeparator = () => (
-    <View
-      style={{
-        height: 2,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        marginLeft: 10,
-        marginRight: 10
-      }}
-    />
-  )
 
   const viewProfile = (user) => {
     if (user.userId === currentUserId) {

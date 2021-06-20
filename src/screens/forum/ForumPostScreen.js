@@ -5,8 +5,7 @@ import {
   Dimensions,
   FlatList,
   Platform,
-  StyleSheet,
-  View
+  StyleSheet
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import ForumCommentItem from '../../components/ForumCommentItem'
@@ -255,17 +254,6 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
     )
   }
 
-  const ItemSeparator = () => (
-    <View
-      style={{
-        height: 2,
-        backgroundColor: '#dcdcdc',
-        marginLeft: 10,
-        marginRight: 10
-      }}
-    />
-  )
-
   const handleEdit = (post) => {
     Alert.alert(
       'Edit post',
@@ -432,6 +420,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         setComment={setComment}
         setIsFocused={setIsFocused}
         comment={comment}
+        isFocused={isFocused}
       />
     </KeyboardAwareScrollView>
   )

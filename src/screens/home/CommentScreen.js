@@ -5,7 +5,7 @@ import {
   FlatList,
   Dimensions,
   StyleSheet,
-  View
+  Platform
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import TitleWithBack from '../../components/TitleWithBack'
@@ -19,29 +19,13 @@ const DeviceWidth = Dimensions.get('window').width
 
 const CommentScreen = ({ navigation, route, onPress }) => {
   const currentUserId = firebase.auth().currentUser.uid
-  const [userData, setUserData] = useState(null)
   const [comments, setComments] = useState([])
-  const [postId, setPostId] = useState('')
   const [text, setText] = useState('')
   const [refreshing, setRefreshing] = useState(true)
   const [isFocused, setIsFocused] = useState(null)
 
   const { item } = route.params
   const os = Platform.OS
-
-  const getUser = async () => {
-    await firebase
-      .firestore()
-      .collection('users')
-      .doc(item.userId)
-      .get()
-      .then((documentSnapshot) => {
-        if (documentSnapshot.exists) {
-          console.log('User Data', documentSnapshot.data())
-          setUserData(documentSnapshot.data())
-        }
-      })
-  }
 
   const fetchComments = async () => {
     const list = []
@@ -272,17 +256,6 @@ const CommentScreen = ({ navigation, route, onPress }) => {
     )
   }
 
-  const ItemSeparator = () => (
-    <View
-      style={{
-        height: 2,
-        backgroundColor: '#dcdcdc',
-        marginLeft: 10,
-        marginRight: 10
-      }}
-    />
-  )
-
   const navigateProfile = (creatorId, ownNavigation, otherNavigation) => {
     return (currUserId) => {
       if (currUserId === creatorId) {
@@ -300,7 +273,6 @@ const CommentScreen = ({ navigation, route, onPress }) => {
   }
 
   useEffect(() => {
-    getUser()
     fetchComments()
     const _unsubscribe = navigation.addListener('focus', () => fetchComments())
 
@@ -369,6 +341,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
         setComment={setText}
         setIsFocused={setIsFocused}
         comment={text}
+        isFocused={isFocused}
       />
     </KeyboardAwareScrollView>
   )

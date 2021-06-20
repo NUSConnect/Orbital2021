@@ -18,8 +18,6 @@ import SubForumHeader from '../../components/SubForumHeader'
 const SubForumScreen = ({ navigation, route, onPress }) => {
   const currentUserId = firebase.auth().currentUser.uid
   const [posts, setPosts] = useState([])
-  const [userLiked, setUserLiked] = useState(null)
-  const [likeNumber, setLikeNumber] = useState(null)
   const [refreshing, setRefreshing] = useState(true)
   const [subscribed, setSubscribed] = useState(null)
   const [sortedBy, setSortedBy] = useState(null)
@@ -243,17 +241,6 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
     fetchPosts()
     setRefreshing(false)
   }
-
-  const ItemSeparator = () => (
-    <View
-      style={{
-        height: 2,
-        backgroundColor: '#dcdcdc',
-        marginLeft: 10,
-        marginRight: 10
-      }}
-    />
-  )
 
   const handleRefresh = () => {
     setRefreshing(false)

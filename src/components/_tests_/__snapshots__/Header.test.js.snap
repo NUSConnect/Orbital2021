@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<Text
+  style={
+    Array [
+      Object {
+        "color": "#000000",
+        "fontFamily": "System",
+        "fontWeight": "400",
+      },
+      Object {
+        "textAlign": "left",
+      },
+      Object {
+        "color": "#121330",
+        "fontSize": 28,
+        "fontWeight": "bold",
+        "paddingVertical": 12,
+      },
+    ]
+  }
+/>
+`;

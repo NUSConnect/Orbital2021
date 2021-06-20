@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import { Ionicons } from 'react-native-vector-icons'
 import SearchBar from '../../components/SearchBar'
+import { sortByName } from '../../api/ranking'
 
 export default function FilteredMajorScreen ({
   props,
@@ -36,7 +37,7 @@ export default function FilteredMajorScreen ({
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          const { name, bio, userImg, email, createdAt, major } =
+          const { name, bio, email, createdAt, major } =
                         doc.data()
           if (major === majorToFilter) {
             users.push({
@@ -49,6 +50,7 @@ export default function FilteredMajorScreen ({
           }
         })
       })
+    users.sort(sortByName)
     setMasterDataSource(users)
     setLoading(false)
   }

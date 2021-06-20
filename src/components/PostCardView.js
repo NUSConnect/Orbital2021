@@ -27,7 +27,6 @@ const PostCardView = ({
   const currentUserId = firebase.auth().currentUser.uid
   const [userData, setUserData] = useState(null)
   const [userLiked, setUserLiked] = useState(null)
-  const [likeNumber, setLikeNumber] = useState(null)
 
   const getUser = async () => {
     await firebase
@@ -82,7 +81,6 @@ const PostCardView = ({
         .doc(item.postId)
         .update({ likeCount: item.likeCount })
       console.log('Unlike')
-      setLikeNumber(item.likeCount)
       setUserLiked(false)
     } else {
       item.likeCount = item.likeCount + 1
@@ -103,7 +101,6 @@ const PostCardView = ({
         .doc(item.postId)
         .update({ likeCount: item.likeCount })
       console.log('Like')
-      setLikeNumber(item.likeCount)
       setUserLiked(true)
     }
   }
@@ -111,7 +108,6 @@ const PostCardView = ({
   useEffect(() => {
     getUser()
     checkLiked()
-    setLikeNumber(item.likeCount)
   }, [])
 
   return (
@@ -120,6 +116,7 @@ const PostCardView = ({
         <TouchableOpacity
           onPress={() => onViewProfile(currentUserId)}
           style={styles.user}
+          testID='user'
         >
           <UserInfo>
             <UserImg
@@ -136,14 +133,14 @@ const PostCardView = ({
                   ? userData.name || 'Anonymous User'
                   : 'Anonymous User'}
               </UserName>
-              <PostTime>
+              <PostTime testID='time'>
                 {moment(item.postTime.toDate()).fromNow()}
               </PostTime>
             </UserInfoText>
           </UserInfo>
         </TouchableOpacity>
       </View>
-      <PostText>{item.post}</PostText>
+      <PostText testID='post'>{item.post}</PostText>
       {item.postImg != null
         ? (
           <ProgressiveImage
@@ -151,6 +148,7 @@ const PostCardView = ({
             source={{ uri: item.postImg }}
             style={{ width: '100%', height: 350 }}
             resizeMode='contain'
+            testID='image'
           />
           )
         : (

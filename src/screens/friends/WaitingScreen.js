@@ -21,7 +21,7 @@ export default function WaitingScreen ({ navigation, route, goBack }) {
       })
   }
 
-  handleDelete = async () => {
+  const handleDelete = async () => {
     await firebase
       .firestore()
       .collection('categories')

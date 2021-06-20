@@ -18,17 +18,6 @@ const ForumPost = ({
   const [userData, setUserData] = useState(null)
   const [upvoted, setUpvoted] = useState(null)
   const [downvoted, setDownvoted] = useState(null)
-  const [votes, setVotes] = useState(null)
-
-  let commentText
-
-  if (item.commentCount === 1) {
-    commentText = '1 Comment'
-  } else if (item.commentCount > 1) {
-    commentText = item.commentCount + ' Comments'
-  } else {
-    commentText = 'Comment'
-  }
 
   const getUser = async () => {
     await firebase
@@ -91,7 +80,6 @@ const ForumPost = ({
       .collection('forumPosts')
       .doc(item.postId)
       .update({ votes: item.votes })
-    setVotes(item.votes)
     setUpvoted(true)
     setDownvoted(false)
   }
@@ -118,7 +106,6 @@ const ForumPost = ({
       .collection('forumPosts')
       .doc(item.postId)
       .update({ votes: item.votes })
-    setVotes(item.votes)
     setUpvoted(false)
     setDownvoted(true)
   }
@@ -145,7 +132,6 @@ const ForumPost = ({
       .collection('forumPosts')
       .doc(item.postId)
       .update({ votes: item.votes })
-    setVotes(item.votes)
     setUpvoted(false)
     setDownvoted(false)
   }
@@ -153,7 +139,6 @@ const ForumPost = ({
   useEffect(() => {
     getUser()
     checkVoted()
-    setVotes(item.votes)
   }, [])
 
   return (
@@ -164,22 +149,23 @@ const ForumPost = ({
           <Text
             style={styles.username}
             onPress={() => onViewProfile(currentUserId)}
+            testID='username'
           >
             {userData
               ? userData.name || 'Anonymous User'
               : 'Anonymous User'}
           </Text>
-          <Text style={styles.regularFont}>
+          <Text style={styles.regularFont} testID='time'>
             {' ·'} {moment(item.postTime.toDate()).fromNow()}
           </Text>
         </View>
         <View style={styles.headerRight} />
       </View>
 
-      <Text style={styles.title} onPress={onPress}>
+      <Text style={styles.title} onPress={onPress} testID='title'>
         {item.postTitle}
       </Text>
-      <Text style={styles.text} onPress={onPress}>
+      <Text style={styles.text} onPress={onPress} testID='body'>
         {item.postBody}
       </Text>
 
@@ -194,7 +180,7 @@ const ForumPost = ({
               color={upvoted ? 'lightgreen' : 'darkgray'}
             />
           </TouchableOpacity>
-          <Text style={styles.score}>{item.votes}</Text>
+          <Text style={styles.score} testID='votes'>{item.votes}</Text>
           <TouchableOpacity
             onPress={() => (downvoted ? unVote() : downVote())}
           >
@@ -209,13 +195,14 @@ const ForumPost = ({
           style={styles.centerAlign}
           activeOpacity={0.7}
           onPress={onPress}
+          testID='commentIcon'
         >
           <MaterialIcons
             name='messenger-outline'
             size={26}
             color='darkgray'
           />
-          <Text style={styles.commentText}>{item.commentCount}</Text>
+          <Text style={styles.commentText} testID='comments'>{item.commentCount}</Text>
         </TouchableOpacity>
         {currentUserId === item.userId
           ? (
@@ -250,6 +237,7 @@ const ForumPost = ({
               style={styles.centerAlign}
               activeOpacity={0.7}
               onPress={onReport}
+              testID='report'
             >
               <MaterialIcons
                 name='report'

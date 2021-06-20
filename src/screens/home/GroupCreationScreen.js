@@ -31,15 +31,6 @@ export default function GroupCreationScreen ({ props, route, navigation }) {
   const [itemChecked, setItemChecked] = useState(false)
   const [members, setMembers] = useState([])
 
-  const concatList = (list) => {
-    let str = ''
-    list.sort()
-    for (let i = 0; i < list.length; i++) {
-      str = str + list[i].substring(0, 6)
-    }
-    return str
-  }
-
   const searchFilterFunction = (text) => {
     if (text) {
       const newData = users.filter(function (item) {

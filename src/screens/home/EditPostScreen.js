@@ -16,7 +16,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 const EditPostScreen = ({ navigation, route }) => {
   const { item } = route.params
   const [text, setText] = useState(item.post)
-  const [image, setImage] = useState(item.postImg)
+  const image = item.postImg
 
   const updatePost = async (navigator) => {
     firebase

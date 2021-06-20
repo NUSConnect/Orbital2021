@@ -89,14 +89,13 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
   const message = async () => {
     const list = [currentUserId, item.userId]
     const threadID = concatList(list)
-    const threadObj = new Object({ id: threadID, name: userData.name, otherId: item.userId })
+    const threadObj = { id: threadID, name: userData.name, otherId: item.userId }
     navigation.navigate('ChatScreen', { thread: threadObj })
   }
 
   const fetchUserPosts = async () => {
     try {
       const allPosts = []
-      const counter = 0
       setRefreshing(true)
 
       await firebase

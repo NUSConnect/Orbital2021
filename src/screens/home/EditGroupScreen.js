@@ -42,34 +42,6 @@ export default function EditGroupScreen ({ route, navigation }) {
     setImage(pickerResult.uri)
   }
 
-  const submitPost = async (goBack) => {
-    Alert.alert(
-      'Submit request for creation of forum',
-      'Are you sure?',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed!'),
-          style: 'cancel'
-        },
-        {
-          text: 'Confirm',
-          onPress: () => handleSubmit(goBack)
-        }
-      ],
-      { cancelable: false }
-    )
-  }
-
-  const concatList = (list) => {
-    let str = ''
-    list.sort()
-    for (let i = 0; i < list.length; i++) {
-      str = str + list[i].substring(0, 6)
-    }
-    return str
-  }
-
   const checkSubmit = () => {
     if (textChecker(name) & textChecker(description)) {
       handleSubmit(() => navigation.navigate('MessagesScreen'))

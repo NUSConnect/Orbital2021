@@ -15,4 +15,5 @@ export const sendPushNotification = (pushToken, sender, message) => {
       body: message
     })
   })
+  console.log(response)
 }

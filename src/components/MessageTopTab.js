@@ -9,6 +9,7 @@ export default function MessageTopTab ({ onBack, onPress, style, ...props }) {
         style={styles.buttonLeft}
         activeOpacity={0.4}
         onPress={onBack}
+        testID='onBack'
       >
         <Ionicons
           name='arrow-back'
@@ -22,6 +23,7 @@ export default function MessageTopTab ({ onBack, onPress, style, ...props }) {
         style={styles.buttonRight}
         activeOpacity={0.4}
         onPress={onPress}
+        testID='onPress'
       >
         <Ionicons
           name='people'

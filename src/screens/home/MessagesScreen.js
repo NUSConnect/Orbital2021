@@ -341,7 +341,6 @@ export default function MessagesScreen ({ navigation }) {
             </Card>
           </Swipeable>
         )}
-        style={{ marginBottom: 40 }}
       />
     </View>
   )

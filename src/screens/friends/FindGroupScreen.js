@@ -57,15 +57,15 @@ export default function FindGroupScreen ({ navigation }) {
       })
   }
 
-  const stopFinding = async (userId) => {
-    // unused** this is also in clearUsers
-    await firebase
-      .firestore()
-      .collection('users')
-      .doc(userId)
-      .update({ finding: false, groupCategory: null })
-    // maybe send notification to users here that group is found/no groups matched
-  }
+  //  const stopFinding = async (userId) => {
+  //    // unused** this is also in clearUsers
+  //    await firebase
+  //      .firestore()
+  //      .collection('users')
+  //      .doc(userId)
+  //      .update({ finding: false, groupCategory: null })
+  //    // maybe send notification to users here that group is found/no groups matched
+  //  }
 
   const concatList = (list) => {
     let str = ''
@@ -110,7 +110,7 @@ export default function FindGroupScreen ({ navigation }) {
     let count
     let lastJoinedAt
     console.log('Logged at ' + new Date())
-    await firebase.firestore().collection('categories').doc(category).get().then(doc => lastJoinedAt = doc.data().lastJoinedAt)
+    await firebase.firestore().collection('categories').doc(category).get().then(doc => { lastJoinedAt = doc.data().lastJoinedAt })
 
     const unsubscribe = firebase
       .firestore()

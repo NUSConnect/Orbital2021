@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 
 export default function CancelButton ({ goBack }) {
   return (
-    <TouchableOpacity onPress={goBack} style={styles.container}>
+    <TouchableOpacity onPress={goBack} style={styles.container} testID='cancel'>
       <Text style={styles.text}>Cancel</Text>
     </TouchableOpacity>
   )
