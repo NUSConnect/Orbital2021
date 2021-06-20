@@ -114,7 +114,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
   }
 
   const onPressComment = (comment) => {
-    if (currentUserId == comment.userId) {
+    if (currentUserId === comment.userId) {
       if (os === 'ios') {
         Alert.alert(
           'Your comment has been selected',
@@ -178,7 +178,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
   }
 
   const onPressEdit = (comment) => {
-    if (currentUserId == comment.userId) {
+    if (currentUserId === comment.userId) {
       Alert.alert(
         'Edit comment',
         'Are you sure?',
@@ -195,7 +195,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
         ],
         { cancelable: true }
       )
-    } else {}
+    }
   }
 
   const handleDelete = (commentId) => {

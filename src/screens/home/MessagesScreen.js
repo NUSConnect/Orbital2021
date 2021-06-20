@@ -7,10 +7,8 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
-  View,
-  Image
+  View
 } from 'react-native'
 import { Divider } from 'react-native-paper'
 import { Swipeable } from 'react-native-gesture-handler'
@@ -29,7 +27,6 @@ import {
 
 export default function MessagesScreen ({ navigation }) {
   const currentUserId = firebase.auth().currentUser.uid
-  let currentUserCreatedAt
   const [threads, setThreads] = useState([])
   const [filteredDataSource, setFilteredDataSource] = useState([])
   const [search, setSearch] = useState('')
@@ -144,8 +141,8 @@ export default function MessagesScreen ({ navigation }) {
     for (let k = 0; k < threads.length; k++) {
       const threadId = threads[k].id
 
-      var users
-      var isGroup
+      let users
+      let isGroup
       await firebase
         .firestore()
         .collection('THREADS')
@@ -174,7 +171,7 @@ export default function MessagesScreen ({ navigation }) {
           })
       } else {
         for (let i = 0; i < users.length; i++) {
-          if (users[i] != currentUserId) {
+          if (users[i] !== currentUserId) {
             await firebase
               .firestore()
               .collection('users')

@@ -60,14 +60,14 @@ const EditPostScreen = ({ navigation, route }) => {
       <Text style={styles.title}>Edit Your Post</Text>
 
       {image != null
-      ? (
-        <Image
-          style={styles.image}
-          source={{ uri: image }}
-          resizeMode='contain'
-        />
-      )
-      : null}
+        ? (
+          <Image
+            style={styles.image}
+            source={{ uri: image }}
+            resizeMode='contain'
+          />
+          )
+        : null}
 
       <TextInput
         style={styles.input}

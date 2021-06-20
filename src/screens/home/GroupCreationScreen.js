@@ -61,12 +61,12 @@ export default function GroupCreationScreen ({ props, route, navigation }) {
   const selectItem = (key) => {
     const selectedUsers = users
     for (const item of selectedUsers) {
-      if (item.otherId == key) {
+      if (item.otherId === key) {
         item.isSelected = (item.isSelected == null) ? true : !item.isSelected
         if (item.isSelected) {
           setMembers(oldArray => [...oldArray, { userId: item.otherId, name: item.name }])
         } else {
-          setMembers(members.filter(mem => mem.userId != item.otherId))
+          setMembers(members.filter(mem => mem.userId !== item.otherId))
         }
         setItemChecked((prevState) => !prevState)
         break

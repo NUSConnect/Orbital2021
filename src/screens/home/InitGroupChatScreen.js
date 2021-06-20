@@ -25,7 +25,7 @@ export default function InitGroupChatScreen ({ route, navigation }) {
             await ImagePicker.requestMediaLibraryPermissionsAsync()
 
     if (permissionResult.granted === false) {
-      alert('Permission to access camera roll is required!')
+      Alert.alert('Permission to access camera roll is required!')
       return
     }
 

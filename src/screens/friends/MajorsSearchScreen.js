@@ -5,7 +5,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  View,
+  View
 } from 'react-native'
 import SearchBar from '../../components/SearchBar'
 

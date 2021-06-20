@@ -4,7 +4,6 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  TextInput,
   View
 } from 'react-native'
 import { Divider } from 'react-native-paper'

@@ -15,8 +15,6 @@ import TitleWithBack from '../../components/TitleWithBack'
 
 const ViewProfileScreen = ({ navigation, route, onPress }) => {
   const currentUserId = firebase.auth().currentUser.uid
-  const currentUser = firebase.auth().currentUser
-  let currentUserCreatedAt
   const defaultUri =
         'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
   const [userData, setUserData] = useState(null)

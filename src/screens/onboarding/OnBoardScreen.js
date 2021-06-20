@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, StyleSheet } from 'react-native'
+import { Image } from 'react-native'
 import Onboarding from 'react-native-onboarding-swiper'
 import DoneButton from '../../components/DoneButton'
 import NextButton from '../../components/NextButton'
@@ -51,11 +51,3 @@ export default function OnBoardScreen ({ navigation }) {
     />
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-})
