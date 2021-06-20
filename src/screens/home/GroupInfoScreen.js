@@ -11,17 +11,7 @@ import {
 } from "react-native";
 import TitleWithBack from "../../components/TitleWithBack";
 import {
-    Card,
-
-
-
-
-
-    TextSection, UserImg, UserImgWrapper, UserInfo,
-
-
-    UserInfoText,
-    UserName
+    Card, TextSection, UserImg, UserImgWrapper, UserInfo, UserInfoText, UserName
 } from "../../styles/MessageStyles";
 
 

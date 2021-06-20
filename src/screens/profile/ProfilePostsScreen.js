@@ -7,7 +7,7 @@ import {
     SafeAreaView,
     StyleSheet,
     TouchableOpacity,
-    View
+    View,
 } from "react-native";
 import PostCard from "../../components/PostCard";
 
@@ -24,7 +24,9 @@ export default class ProfilePostsScreen extends React.Component {
 
     componentDidMount() {
         this.fetchPosts();
-        this._unsubscribe = this.props.navigation.addListener('focus', () => this.fetchPosts());
+        this._unsubscribe = this.props.navigation.addListener("focus", () =>
+            this.fetchPosts()
+        );
     }
 
     componentWillUnmount() {
@@ -161,6 +163,8 @@ export default class ProfilePostsScreen extends React.Component {
                 this.setState({ deleted: true });
             })
             .catch((e) => console.log("Error deleting post.", e));
+
+        this.fetchPosts();
     };
 
     renderItemComponent = (data) => (
@@ -189,14 +193,17 @@ export default class ProfilePostsScreen extends React.Component {
     render() {
         const { navigation } = this.props;
         return (
-            <SafeAreaView>
+            <SafeAreaView style={{ flex: 1 }}>
                 <FlatList
                     data={this.state.data}
                     renderItem={({ item }) => (
                         <PostCard
                             item={item}
                             onDelete={this.handleDelete}
-                            onViewProfile={() => console.log('user pressed')}
+                            onEdit={() =>
+                                navigation.navigate("EditPostScreen", { item })
+                            }
+                            onViewProfile={() => console.log("user pressed")}
                             onPress={() =>
                                 navigation.navigate("CommentScreen", { item })
                             }
@@ -207,6 +214,7 @@ export default class ProfilePostsScreen extends React.Component {
                     ItemSeparatorComponent={this.ItemSeparator}
                     refreshing={this.state.refreshing}
                     onRefresh={this.handleRefresh}
+                    style={{ width: "100%", paddingBottom: 40 }}
                 />
             </SafeAreaView>
         );

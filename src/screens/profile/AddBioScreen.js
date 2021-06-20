@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
+import { textChecker } from '../../api/textChecker';
 
 export default class AddBioScreen extends React.Component {
     constructor(props) {
@@ -73,7 +74,7 @@ export default class AddBioScreen extends React.Component {
                             <View style={styles.space} />
                             <SubmitButton
                                 goBack={() => {
-                                    this.state.text != null
+                                    textChecker(this.state.text)
                                         ? this.submitPost(
                                             () => navigation.goBack()
                                           )

@@ -10,10 +10,11 @@ import {
     View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import CommentItem from "../../components/CommentItem";
+import ForumCommentItem from "../../components/ForumCommentItem";
 import CreateComment from "../../components/CreateComment";
 import ForumPost from "../../components/ForumPost";
 import ForumPostHeader from "../../components/ForumPostHeader";
+import { textChecker } from '../../api/textChecker';
 
 const DeviceWidth = Dimensions.get("window").width;
 
@@ -400,7 +401,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                 }
                 ListHeaderComponentStyle={styles.headerComponentStyle}
                 renderItem={({ item }) => (
-                    <CommentItem
+                    <ForumCommentItem
                         item={item}
                         onViewProfile={navigateProfile(
                             item.userId,
@@ -420,7 +421,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
             />
             <CreateComment
                 onPress={() => {
-                    if (comment != "") {
+                    if (textChecker(comment)) {
                         onCommentSend();
                     } else {
                         Alert.alert(

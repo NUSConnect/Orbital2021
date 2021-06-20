@@ -11,21 +11,14 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import GroupCreationTopTab from '../../components/GroupCreationTopTab';
-
-
+import { textChecker } from '../../api/textChecker';
 
 export default function EditGroupScreen({ route, navigation}) {
     const { item } = route.params;
 
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [image, setImage] = useState(null);
-
-    useEffect(() => {
-        setName(item.name)
-        setDescription(item.description)
-        setImage(item.avatar)
-    }, []);
+    const [name, setName] = useState(String(item.name));
+    const [description, setDescription] = useState(String(item.description));
+    const [image, setImage] = useState(item.avatar);
 
     const choosePhotoFromLibrary = async () => {
         let permissionResult =
@@ -78,7 +71,7 @@ export default function EditGroupScreen({ route, navigation}) {
     };
 
     const checkSubmit = () => {
-        if (name != '' & description != '') {
+        if (textChecker(name) & textChecker(description)) {
             handleSubmit(() => navigation.navigate('MessagesScreen'))
         } else {
             Alert.alert(
@@ -98,8 +91,8 @@ export default function EditGroupScreen({ route, navigation}) {
         threadRef
             .set({
                 groupImage: imageUrl,
-                groupName: name,
-                groupDescription: description,
+                groupName: { name: name },
+                groupDescription: { description: description },
             }, { merge: true })
             .then(() => {
                 Alert.alert(
@@ -170,18 +163,16 @@ export default function EditGroupScreen({ route, navigation}) {
             <Text style={styles.subTitle}>Group Name</Text>
             <TextInput
                 style={styles.nameInput}
-                returnKeyType="next"
-                onChangeText={(name) => setName({ name })}
+                onChangeText={setName}
                 value={name}
                 placeholder="Enter a name"
             />
             <Text style={styles.subTitle}>Group Description</Text>
             <TextInput
                 style={styles.descriptionInput}
-                onChangeText={(description) => setDescription({ description })}
+                onChangeText={setDescription}
                 value={description}
                 placeholder="Enter a description"
-                multiline={true}
             />
         </KeyboardAwareScrollView>
     );

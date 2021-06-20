@@ -19,29 +19,15 @@ import {
 } from "../styles/FeedStyles";
 import ProgressiveImage from "./ProgressiveImage";
 
-const PostCard = ({
+const PostCardView = ({
     route,
     item,
     onViewProfile,
-    onDelete,
-    onPress,
-    onReport,
-    onEdit,
 }) => {
     const currentUserId = firebase.auth().currentUser.uid;
     const [userData, setUserData] = useState(null);
     const [userLiked, setUserLiked] = useState(null);
     const [likeNumber, setLikeNumber] = useState(null);
-
-    var commentText;
-
-    if (item.commentCount == 1) {
-        commentText = "1 Comment";
-    } else if (item.commentCount > 1) {
-        commentText = item.commentCount + " Comments";
-    } else {
-        commentText = "Comment";
-    }
 
     const getUser = async () => {
         await firebase
@@ -134,7 +120,6 @@ const PostCard = ({
                 <TouchableOpacity
                     onPress={() => onViewProfile(currentUserId)}
                     style={styles.user}
-                    testID='user'
                 >
                     <UserInfo>
                         <UserImg
@@ -151,31 +136,20 @@ const PostCard = ({
                                     ? userData.name || "Anonymous User"
                                     : "Anonymous User"}
                             </UserName>
-                            <PostTime testID='time'>
+                            <PostTime>
                                 {moment(item.postTime.toDate()).fromNow()}
                             </PostTime>
                         </UserInfoText>
                     </UserInfo>
                 </TouchableOpacity>
-                {currentUserId == item.userId ? (
-                    <TouchableOpacity
-                        style={styles.button}
-                        activeOpacity={0.4}
-                        onPress={onEdit}
-                        testID='edit'
-                    >
-                        <MaterialIcons name="edit" size={25} />
-                    </TouchableOpacity>
-                ) : null}
             </View>
-            <PostText testID='post'>{item.post}</PostText>
+            <PostText>{item.post}</PostText>
             {item.postImg != null ? (
                 <ProgressiveImage
                     defaultImageSource={require("../assets/default-img.jpg")}
                     source={{ uri: item.postImg }}
                     style={{ width: "100%", height: 350 }}
                     resizeMode="contain"
-                    testID='image'
                 />
             ) : (
                 <Divider />
@@ -188,7 +162,7 @@ const PostCard = ({
                         size={25}
                         color={userLiked ? "#dc143c" : "#333"}
                     />
-                    <InteractionText testID='likes'>
+                    <InteractionText>
                         {item.likeCount === 0
                             ? "Like"
                             : item.likeCount === 1
@@ -196,25 +170,12 @@ const PostCard = ({
                             : item.likeCount + " Likes"}
                     </InteractionText>
                 </Interaction>
-                <Interaction onPress={onPress} testID='commentPress'>
-                    <Ionicons name="md-chatbubble-outline" size={25} />
-                    <InteractionText testID='comments'>{commentText}</InteractionText>
-                </Interaction>
-                {currentUserId == item.userId ? (
-                    <Interaction onPress={() => onDelete(item.id)} testID='delete'>
-                        <Ionicons name="md-trash-bin" size={25} />
-                    </Interaction>
-                ) : (
-                    <Interaction onPress={() => onReport(item.id)} testID='report'>
-                        <MaterialIcons name="report-problem" size={25} />
-                    </Interaction>
-                )}
             </InteractionWrapper>
         </Card>
     );
 };
 
-export default PostCard;
+export default PostCardView;
 
 const styles = StyleSheet.create({
     container: {

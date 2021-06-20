@@ -11,6 +11,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
+import { textChecker } from '../../api/textChecker';
 
 const EditForumCommentScreen = ({ navigation, route }) => {
     const currentUserId = firebase.auth().currentUser.uid;
@@ -58,7 +59,7 @@ const EditForumCommentScreen = ({ navigation, route }) => {
                     resetScrollToCoords={{ x: 0, y: 0 }}
                     scrollEnabled={true}
                 >
-                    <Text style={styles.title}>Edit Your Forum Comment</Text>
+                    <Text style={styles.title}>Edit Your Comment</Text>
 
                     <TextInput
                         style={styles.input}
@@ -72,7 +73,7 @@ const EditForumCommentScreen = ({ navigation, route }) => {
                         <View style={styles.space} />
                         <SubmitButton
                             goBack={() => {
-                                text != ''
+                                textChecker(text)
                                     ? updatePost(() => navigation.goBack())
                                     : Alert.alert(
                                           "Cannot submit an empty comment!",

@@ -11,8 +11,8 @@ import {
 } from "react-native";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
-
-
+import { textChecker } from '../../api/textChecker';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const EditPostScreen = ({ navigation, route }) => {
     const currentUserId = firebase.auth().currentUser.uid;
@@ -53,9 +53,12 @@ const EditPostScreen = ({ navigation, route }) => {
     };
 
     return (
-        <SafeAreaView>
-            <View style={styles.container}>
-                <View style={styles.innerContainer}>
+        <KeyboardAwareScrollView
+                    style={styles.container}
+                    contentContainerStyle={styles.innerContainer}
+                    resetScrollToCoords={{ x: 0, y: 0 }}
+                    scrollEnabled={true}
+                >
                     <Text style={styles.title}>Edit Your Post</Text>
 
                     {image != null ? (
@@ -78,7 +81,7 @@ const EditPostScreen = ({ navigation, route }) => {
                         <View style={styles.space} />
                         <SubmitButton
                             goBack={() => {
-                                text != null
+                                textChecker(text)
                                     ? updatePost(() => navigation.goBack())
                                     : Alert.alert(
                                           "Cannot submit an empty post!",
@@ -88,9 +91,7 @@ const EditPostScreen = ({ navigation, route }) => {
                             string={"Edit"}
                         />
                     </View>
-                </View>
-            </View>
-        </SafeAreaView>
+        </KeyboardAwareScrollView>
     );
 };
 
@@ -99,8 +100,6 @@ export default EditPostScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 0,
-        //    alignItems: 'center',
-        //    justifyContent: 'center',
         flexDirection: "row",
     },
     innerContainer: {
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 0,
-        height: 100,
+        height: 400,
         width: "90%",
         margin: 12,
         borderWidth: 1,
@@ -134,6 +133,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         justifyContent: "flex-start",
         alignItems: "flex-start",
+        textAlignVertical: "top",
     },
     buttons: {
         flex: 1,

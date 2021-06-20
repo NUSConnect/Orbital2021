@@ -4,7 +4,7 @@ import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
-
+import { textChecker } from '../../api/textChecker';
 
 const ForumAddPostScreen = ({ navigation, route, onPress }) => {
     const userID = firebase.auth().currentUser.uid;
@@ -56,7 +56,7 @@ const ForumAddPostScreen = ({ navigation, route, onPress }) => {
     };
     return (
         <KeyboardAwareScrollView style={styles.container}>
-            <Text style={styles.title}>Create a Forum Post</Text>
+            <Text style={styles.title}>Add A Post</Text>
             <Text style={styles.subTitle}>Post Title</Text>
             <TextInput
                 style={styles.inputTitle}
@@ -78,7 +78,7 @@ const ForumAddPostScreen = ({ navigation, route, onPress }) => {
                 <View style={styles.space} />
                 <SubmitButton
                     goBack={() => {
-                        if (title != '' && text != '') {
+                        if (textChecker(title) && textChecker(text)) {
                             submitPost(() => navigation.goBack());
                         } else {
                             Alert.alert(

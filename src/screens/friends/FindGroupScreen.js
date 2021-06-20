@@ -1,6 +1,6 @@
 import * as firebase from "firebase";
 import React, { useEffect } from "react";
-import { Alert, Dimensions, StyleSheet, Text, View } from "react-native";
+import { Alert, Dimensions, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 
 const DeviceWidth = Dimensions.get("window").width;
@@ -11,16 +11,24 @@ export default function FindGroupScreen({ navigation }) {
     const currentUserId = firebase.auth().currentUser.uid;
 
     useEffect(() => {
-        firebase
+        const subscriber = firebase
             .firestore()
             .collection("users")
             .doc(currentUserId)
             .onSnapshot((documentSnapshot) => {
                 if (documentSnapshot.data().finding) {
                     calculateGroup(documentSnapshot.data().groupCategory);
+                    console.log('checking at ' + new Date())
                 }
             });
+
+        return () => subscriber();
     }, []);
+
+    function getDifferenceInHours(date1, date2) {
+        const diffInMs = Math.abs(date2 - date1);
+        return diffInMs / (1000 * 60 * 60);
+    }
 
     const addToCategory = async (category) => {
         //add uid to corresponding category
@@ -31,90 +39,157 @@ export default function FindGroupScreen({ navigation }) {
             .collection("people")
             .doc(currentUserId)
             .set({})
-            .then(() =>
+            .then(() => {
                 firebase
                     .firestore()
                     .collection("users")
                     .doc(currentUserId)
-                    .update({ finding: true, groupCategory:category })
-            );
+                    .update({ finding: true, groupCategory: category });
+                firebase
+                    .firestore()
+                    .collection("categories")
+                    .doc(category)
+                    .set({
+                        lastJoinedAt: firebase.firestore.Timestamp.fromDate(
+                            new Date()
+                        ),
+                    });
+            });
     };
+
+    const stopFinding = async (userId) => {
+        // unused** this is also in clearUsers
+        await firebase
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .update({ finding: false, groupCategory: null });
+        // maybe send notification to users here that group is found/no groups matched
+    }
+
+    const concatList = (list) => {
+        let str = "";
+        list.sort()
+        for (let i = 0; i < list.length; i++) {
+            str = str + list[i].substring(0, 6)
+        }
+        return str;
+    };
+
+    const clearUsers = async (success, category) => {
+        console.log('Function called');
+        const list = [];
+        await firebase
+            .firestore()
+            .collection("categories")
+            .doc(category)
+            .collection("people")
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((documentSnapshot) => {
+                    list.push(documentSnapshot.id)
+                    documentSnapshot.ref.delete();
+                });
+            });
+        if (success) {
+            const groupId = category + concatList(list);
+            firebase.firestore().collection("groups").doc(groupId).set({ category: category })
+            for (let i = 0; i < list.length; i++) {
+                firebase.firestore().collection("groups").doc(groupId).collection("members").doc(list[i]).set({})
+                firebase.firestore().collection("users").doc(list[i]).collection('groups').doc(groupId).set({});
+            }
+        }
+
+        for (let i = 0; i < list.length; i++) {
+            // turn off finding
+            firebase.firestore().collection("users").doc(list[i]).update({ finding: false, groupCategory: null });
+        }
+    }
 
     const calculateGroup = async (category) => {
         var count;
-        await firebase
+        var lastJoinedAt;
+        console.log('Logged at ' + new Date())
+        await firebase.firestore().collection("categories").doc(category).get().then(doc => lastJoinedAt = doc.data().lastJoinedAt);
+
+        const unsubscribe = firebase
             .firestore()
             .collection("categories")
             .doc(category)
             .collection("people")
             .onSnapshot((querySnapshot) => {
                 count = querySnapshot.size;
-                if (count < groupThreshold) {
+                if (count === 0) {
+                    navigation.navigate("FindGroupScreen");
+                    unsubscribe();
+                }
+                else if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 6) {
+                    //hit threshold, handle logic to form a group. currently only an alert.
+                    
+                    const successfulFinding = count >= groupThreshold;
+                    clearUsers(successfulFinding, category);
+                    const loggedInListener = firebase.auth().onAuthStateChanged(user => {
+                        if (user) {
+                            navigation.navigate("FindGroupScreen");
+                            Alert.alert("Group found!");
+                            loggedInListener();
+                        } else {
+                        }
+                    });
+                    unsubscribe();
+                } else {
                     //not enough people to form group, send to waiting screen.
                     navigation.navigate("WaitingScreen", {
-                        groupCategory: category
+                        groupCategory: category,
                     });
-                } else {
-                    //hit threshold, handle logic to form a group. currently only an alert.
-                    firebase
-                        .firestore()
-                        .collection("users")
-                        .doc(currentUserId)
-                        .update({ finding: false, groupCategory:null });
-                    Alert.alert("Group found!");
-                    navigation.navigate("FindGroupScreen");
                 }
             });
     };
 
     return (
         <View style={styles.center}>
-            <Text> Choose a category </Text>
+            <Text style={styles.header}> Choose a category </Text>
             <View
                 style={{
                     flexDirection: "row",
-                    backgroundColor: "grey",
+                    backgroundColor: "orange",
                 }}
             >
                 <View>
-                    <View style={styles.square1}>
+                    <TouchableOpacity style={styles.square1} onPress={() => addToCategory("Sports")}>
                         <MaterialCommunityIcons
                             name="run"
                             size={130}
                             style={styles.icon}
-                            onPress={() => addToCategory("Sports")}
                         />
                         <Text> Sports </Text>
-                    </View>
-                    <View style={styles.square2}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.square2} onPress={() => addToCategory("Music")}>
                         <MaterialCommunityIcons
                             name="account-music"
                             size={130}
                             style={styles.icon}
-                            onPress={() => addToCategory("Music")}
                         />
                         <Text> Music </Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
                 <View>
-                    <View style={styles.square1}>
+                    <TouchableOpacity style={styles.square1} onPress={() => addToCategory("Study")}>
                         <MaterialCommunityIcons
                             name="book-open"
                             size={130}
                             style={styles.icon}
-                            onPress={() => addToCategory("Study")}
                         />
                         <Text> Study </Text>
-                    </View>
-                    <View style={styles.square2}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.square2} onPress={() => addToCategory("For Fun")}>
                         <MaterialCommunityIcons
                             name="controller-classic"
                             size={130}
                             style={styles.icon}
-                            onPress={() => addToCategory("For Fun")}
                         />
                         <Text> For Fun </Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
@@ -127,22 +202,29 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    header: {
+        fontSize: 20,
+        marginBottom: 10,
+    },
     square1: {
         width: squareSide,
         height: squareSide,
-        marginBottom: 1,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "powderblue",
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 10,
     },
     square2: {
         width: squareSide,
         height: squareSide,
-        marginBottom: 1,
-        marginLeft: 1,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "skyblue",
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 10,
     },
     icon: {},
 });

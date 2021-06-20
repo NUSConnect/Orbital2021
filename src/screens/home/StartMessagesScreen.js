@@ -10,6 +10,7 @@ import {
 import { Divider } from "react-native-paper";
 import { FontAwesome5 } from "react-native-vector-icons";
 import StartMessageTopTab from "../../components/StartMessageTopTab";
+import SearchBar from '../../components/SearchBar';
 import {
     Card,
     TextSection,
@@ -116,11 +117,11 @@ export default function StartMessagesScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <StartMessageTopTab onBack={() => navigation.goBack()} />
-            <TextInput
-                style={styles.textInputStyle}
-                onChangeText={(text) => searchFilterFunction(text)}
-                value={search}
-                placeholder="Search Here"
+            <SearchBar
+                search={search}
+                setSearch={setSearch}
+                searchFilterFunction={searchFilterFunction}
+                resetFilter={() => setFilteredDataSource(threads)}
             />
             <FlatList
                 data={filtered ? filteredDataSource : threads}
@@ -165,7 +166,6 @@ export default function StartMessagesScreen({ navigation }) {
                         </UserInfo>
                     </Card>
                 )}
-                style={{ marginBottom: 40, }}
             />
         </View>
     );
@@ -175,14 +175,6 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#ffffff",
         flex: 1,
-    },
-    textInputStyle: {
-        height: 40,
-        borderWidth: 1,
-        paddingLeft: 20,
-        margin: 5,
-        borderColor: "#ff8c00",
-        backgroundColor: "#FFFFFF",
     },
     listTitle: {
         fontSize: 22,

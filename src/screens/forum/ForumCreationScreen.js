@@ -13,6 +13,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
+import { textChecker } from '../../api/textChecker';
 
 export default class ForumCreationScreen extends React.Component {
     constructor(props) {
@@ -49,7 +50,7 @@ export default class ForumCreationScreen extends React.Component {
 
     submitPost = async (goBack) => {
         Alert.alert(
-            "Submit request for creation of forum",
+            "Submit request to open portal",
             "Are you sure?",
             [
                 {
@@ -82,8 +83,8 @@ export default class ForumCreationScreen extends React.Component {
             })
             .then(() => {
                 Alert.alert(
-                    "Forum created!",
-                    "The forum has been created successfully! It will be reviewed by the moderators shortly",
+                    "Portal opened!",
+                    "The portal has successfully opened! It will be reviewed by the moderators shortly",
                     [
                         {
                             text: "OK",
@@ -140,8 +141,8 @@ export default class ForumCreationScreen extends React.Component {
                 resetScrollToCoords={{ x: 0, y: 0 }}
                 scrollEnabled={true}
             >
-                <Text style={styles.title}>Create a new Forum</Text>
-                <Text style={styles.subTitle}>Forum Image</Text>
+                <Text style={styles.title}>Open a new portal</Text>
+                <Text style={styles.subTitle}>Portal Image</Text>
                 <TouchableOpacity style={styles.imageContainer} onPress={this.choosePhotoFromLibrary}>
                     <Image
                         source={{
@@ -150,7 +151,7 @@ export default class ForumCreationScreen extends React.Component {
                         style={styles.image}
                     />
                 </TouchableOpacity>
-                <Text style={styles.subTitle}>Forum Name</Text>
+                <Text style={styles.subTitle}>Name</Text>
                 <TextInput
                     style={styles.nameInput}
                     returnKeyType="next"
@@ -158,7 +159,7 @@ export default class ForumCreationScreen extends React.Component {
                     value={this.state.nameText}
                     placeholder="Enter a name"
                 />
-                <Text style={styles.subTitle}>Forum Description</Text>
+                <Text style={styles.subTitle}>Description</Text>
                 <TextInput
                     style={styles.descriptionInput}
                     onChangeText={(descriptionText) =>
@@ -168,12 +169,12 @@ export default class ForumCreationScreen extends React.Component {
                     placeholder="Enter a description"
                     multiline={true}
                 />
-                <Text style={styles.subTitle}>Reason for new Forum</Text>
+                <Text style={styles.subTitle}>Reason for new portal</Text>
                 <TextInput
                     style={styles.reasonInput}
                     onChangeText={(reasonText) => this.setState({ reasonText })}
                     value={this.state.reasonText}
-                    placeholder="Give a few reasons why this is different from existing forums"
+                    placeholder="How is this portal different from what is already open?"
                     multiline={true}
                 />
                 <View style={styles.buttons}>
@@ -181,8 +182,8 @@ export default class ForumCreationScreen extends React.Component {
                     <View style={styles.space} />
                     <SubmitButton
                         goBack={() => {
-                            if (this.state.nameText != '' && this.state.descriptionText != '' &&
-                                this.state.reasonText != '') {
+                            if (textChecker(this.state.nameText) && textChecker(this.state.descriptionText) &&
+                                textChecker(this.state.reasonText)) {
                                 this.submitPost(() => navigation.goBack());
                             } else {
                                 Alert.alert(

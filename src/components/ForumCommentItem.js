@@ -3,7 +3,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const CommentItem = ({ route, item, onViewProfile, onPressHandle }) => {
+const ForumCommentItem = ({ route, item, onViewProfile, onPressHandle }) => {
     const currentUserId = firebase.auth().currentUser.uid;
     const [userData, setUserData] = useState(null);
 
@@ -28,37 +28,36 @@ const CommentItem = ({ route, item, onViewProfile, onPressHandle }) => {
         <View style={styles.container}>
             <View style={styles.headerContainer}>
                 <View style={styles.headerLeft}>
+                    <Text style={styles.regularFont}>{"Posted by "}</Text>
                     <Text
                         style={styles.username}
                         onPress={() => onViewProfile(currentUserId)}
-                        testID='username'
                     >
                         {userData
-                            ? userData.name || "Deleted User"
-                            : "Deleted User"}
+                            ? userData.name || "Anonymous User"
+                            : "Anonymous User"}
                     </Text>
-                    <Text style={styles.moments} testID='time'>
+                    <Text style={styles.regularFont}>
                         {" ·"} {moment(item.postTime.toDate()).fromNow()}
                     </Text>
                 </View>
                 <View style={styles.headerRight}></View>
             </View>
 
-            <Text style={styles.text} onPress={onPressHandle} testID='comment'>
+            <Text style={styles.text} onPress={onPressHandle}>
                 {item.commentBody}
             </Text>
-
         </View>
     );
 };
 
-export default CommentItem;
+export default ForumCommentItem;
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "white",
         width: "100%",
-        marginBottom: 2,
+        marginBottom: 20,
         borderRadius: 10,
     },
     headerContainer: {
@@ -82,18 +81,13 @@ const styles = StyleSheet.create({
         fontSize: 16,
         padding: 5,
         paddingLeft: 10,
-        paddingRight: 5,
         marginBottom: 10,
     },
     regularFont: {
         fontSize: 14,
     },
     username: {
-        fontSize: 16,
-        color: "blue",
-    },
-    moments: {
         fontSize: 14,
-        color: 'gray',
+        color: "blue",
     },
 });

@@ -6,8 +6,11 @@ import {
     StyleSheet,
     Text,
     TextInput,
-    View
+    View,
+    TouchableOpacity,
+    Image,
 } from "react-native";
+import SearchBar from '../../components/SearchBar';
 
 export default function MajorsSearchScreen({ props, navigation }) {
     const currentUserId = firebase.auth().currentUser.uid;
@@ -76,7 +79,9 @@ export default function MajorsSearchScreen({ props, navigation }) {
             <Text
                 style={styles.itemStyle}
                 onPress={() =>
-                    navigation.navigate("FilteredMajorScreen", { major:item.name })
+                    navigation.navigate("FilteredMajorScreen", {
+                        major: item.name,
+                    })
                 }
             >
                 {item.name}
@@ -104,11 +109,11 @@ export default function MajorsSearchScreen({ props, navigation }) {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <TextInput
-                    style={styles.textInputStyle}
-                    onChangeText={(text) => searchFilterFunction(text)}
-                    value={search}
-                    placeholder="Search Here"
+                <SearchBar
+                    search={search}
+                    setSearch={setSearch}
+                    searchFilterFunction={searchFilterFunction}
+                    resetFilter={() => setFilteredDataSource(masterDataSource)}
                 />
                 <FlatList
                     data={filtered ? filteredDataSource : masterDataSource}
@@ -129,13 +134,5 @@ const styles = StyleSheet.create({
     itemStyle: {
         padding: 10,
         fontSize: 20,
-    },
-    textInputStyle: {
-        height: 40,
-        borderWidth: 1,
-        paddingLeft: 20,
-        margin: 5,
-        borderColor: "#ff8c00",
-        backgroundColor: "#FFFFFF",
     },
 });

@@ -1,9 +1,8 @@
 # NUS Orbital 2021 (Team Name: NUSConnect)
 
-Orbital (Independent Software Development Project) is NUS School of Computing self-directed, independent work course. This programme gives students the opportunity to pick up software development skills on their own, using sources on the web.
+Orbital (Independent Software Development Project) is NUS School of Computing self-directed, independent work course. This programme gives students the opportunity to pick up software development skills on their own, using sources on the web. Our team members consist of Lua Yida and Benedict Chua.
 
 **Proposed Level of Achievement:** Apollo 11
-
 
 ## Introducing Portal.io
 
@@ -29,26 +28,29 @@ We plan to make it a cross-platform mobile app, which users can download and reg
 
 ### Key Features:
 * Social media features
-* Direct Messaging (Group messaging to be implemented)
+* Messaging (supports Direct Messaging and Group Messaging)
+* Forum (known as Portals in our application)
 * Group-based Matching Algorithm (to be implemented)
-* Forum (to be implemented)
 * Pulling news of events happening in universities (to be implemented)
 
 ### Milestones:
 
 **Milestone 1:** [Link to report](https://docs.google.com/document/d/1kk2xyrJco7O6uScoS3XqIbGLOcx2QNYJV4IhLyRGNxg/edit?usp=sharing)
+**Milestone 2:** [Link to report](https://docs.google.com/document/d/1x6VheE0PXcwjMB-_03SBfArbyHGMapKNLqP0gecd_4c/edit?usp=sharing)
 
 ### Documentation:
 
-[Documentation can be found here](https://docs.google.com/document/d/1KQt-ke-O7QabJMdp9oJYTGkmXdK-TGQFx0Jig3PgIJ0/edit?usp=sharing)
+[Documentation can be found here](https://docs.google.com/document/d/1iCbU7dv6kQtr8h0xFe01NmVnVUM1NtYrTSJWbmPHA-I/edit?usp=sharing)
 
 ### Deployment:
 
-As of Milestone 1, Portal.io has been deployed for users to have a sneak preview of what the app entails.
+Portal.io has been deployed for users to have a sneak preview of what the app entails. We will update the deployment as each milestone arrives so do keep an eye out for them! 
 
 Simply download Expo Go on your mobile devices and scan the QR code blow to test out our app!
 
 Note: iOS users will not be able to run the application out of the box due to restrictions on Expo put in place by Apple. If you want to test out the app, please contact us on Telegram for access.
+
+**Updated for Milestone 2**
 
 ![QR Code](https://raw.githubusercontent.com/benedictchuajj/Orbital2021/main/assets/deploymentQR.png)
 

@@ -10,11 +10,12 @@ import {
 } from "react-native";
 import CancelButton from "../../components/CancelButton";
 import SubmitButton from "../../components/SubmitButton";
+import { textChecker } from '../../api/textChecker';
 
 const EditCommentScreen = ({ navigation, route }) => {
     const currentUserId = firebase.auth().currentUser.uid;
     const { comment } = route.params;
-    const [text, setText] = useState(comment.text);
+    const [text, setText] = useState(comment.commentBody);
 
     const updatePost = async (navigator) => {
         firebase
@@ -68,7 +69,7 @@ const EditCommentScreen = ({ navigation, route }) => {
                         <View style={styles.space} />
                         <SubmitButton
                             goBack={() => {
-                                text != ''
+                                textChecker(text)
                                     ? updatePost(() => navigation.goBack())
                                     : Alert.alert(
                                           "Cannot submit an empty comment!",

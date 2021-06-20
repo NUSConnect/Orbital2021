@@ -186,6 +186,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     const handleRefresh = () => {
         setRefreshing(false);
         fetchUserPosts();
+        setRefreshing(false);
     };
 
     useEffect(() => {
@@ -256,6 +257,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
                     <PostCard
                         item={item}
                         onReport={handlePostsReport}
+                        onViewProfile={x => x}
                         onPress={() =>
                             navigation.navigate("CommentScreen", { item })
                         }
@@ -265,7 +267,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
                 ItemSeparatorComponent={ItemSeparator}
                 refreshing={refreshing}
                 onRefresh={handleRefresh}
-                style={{ width: "100%" }}
+                style={{ width: "100%", paddingBottom: 200 }}
             />
         </SafeAreaView>
     );

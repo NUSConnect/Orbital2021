@@ -7,10 +7,19 @@ import {
     StyleSheet,
     Text,
     TextInput,
-    View
+    View,
+    TouchableOpacity,
+    Image,
 } from "react-native";
+import { Ionicons } from "react-native-vector-icons";
+import SearchBar from '../../components/SearchBar';
 
-export default function FilteredMajorScreen({ props, navigation, route, goBack }) {
+export default function FilteredMajorScreen({
+    props,
+    navigation,
+    route,
+    goBack,
+}) {
     const currentUserId = firebase.auth().currentUser.uid;
     const [search, setSearch] = useState("");
     const [filteredDataSource, setFilteredDataSource] = useState([]);
@@ -19,7 +28,7 @@ export default function FilteredMajorScreen({ props, navigation, route, goBack }
     const [filtered, setFiltered] = useState(false);
 
     var majorToFilter = route.params.major;
-    console.log(majorToFilter);
+//    console.log(majorToFilter);
 
     const getAllUsers = async () => {
         const users = [];
@@ -30,7 +39,8 @@ export default function FilteredMajorScreen({ props, navigation, route, goBack }
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
-                    const { name, bio, userImg, email, createdAt, major } = doc.data();
+                    const { name, bio, userImg, email, createdAt, major } =
+                        doc.data();
                     if (major === majorToFilter) {
                         users.push({
                             userId: doc.id,
@@ -104,11 +114,22 @@ export default function FilteredMajorScreen({ props, navigation, route, goBack }
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.container}>
-                <TextInput
-                    style={styles.textInputStyle}
-                    onChangeText={(text) => searchFilterFunction(text)}
-                    value={search}
-                    placeholder="Search Here"
+                <View style={styles.subHeader}>
+                    <Ionicons
+                        name="chevron-back-outline"
+                        size={24}
+                        style={styles.icon}
+                        onPress={() => navigation.goBack()}
+                    />
+                    <Text style={{ fontSize: 18, alignItems: 'center', }}>
+                        {majorToFilter}
+                    </Text>
+                </View>
+                <SearchBar
+                    search={search}
+                    setSearch={setSearch}
+                    searchFilterFunction={searchFilterFunction}
+                    resetFilter={() => setFilteredDataSource(masterDataSource)}
                 />
                 <FlatList
                     data={filtered ? filteredDataSource : masterDataSource}
@@ -130,12 +151,17 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 20,
     },
-    textInputStyle: {
-        height: 40,
-        borderWidth: 1,
-        paddingLeft: 20,
-        margin: 5,
-        borderColor: "#ff8c00",
-        backgroundColor: "#FFFFFF",
+    subHeader: {
+        flexDirection: "row",
+        alignItems: 'center',
+        marginTop: 10,
+        marginBottom: 6,
     },
+    icon: {
+        alignItems: "center",
+        marginLeft: 8,
+        marginRight: 8,
+        color: 'black'
+    },
+
 });
