@@ -4,129 +4,53 @@ exports[`renders correctly 1`] = `
 <View
   style={
     Object {
-      "backgroundColor": "#393e42",
-      "borderBottomColor": "#000",
-      "borderBottomWidth": 1,
-      "borderTopColor": "#000",
-      "borderTopWidth": 1,
-      "padding": 8,
+      "backgroundColor": "#FFFFFF",
+      "borderColor": "#ff8c00",
+      "borderWidth": 1,
+      "flexDirection": "row",
+      "margin": 5,
     }
   }
 >
-  <View
+  <TextInput
+    allowFontScaling={true}
+    onChangeText={[Function]}
+    placeholder="Search Here"
+    rejectResponderTermination={true}
     style={
       Object {
-        "paddingHorizontal": 0,
-        "width": "100%",
+        "flex": 1,
+        "height": 40,
+        "paddingLeft": 20,
+      }
+    }
+    underlineColorAndroid="transparent"
+  />
+  <View
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "justifyContent": "center",
+        "marginRight": 10,
+        "opacity": 1,
       }
     }
   >
-    <View
+    <Image
+      source={1}
       style={
         Object {
-          "alignItems": "center",
-          "backgroundColor": "#303337",
-          "borderBottomWidth": 0,
-          "borderColor": "#86939e",
-          "borderRadius": 3,
-          "flexDirection": "row",
-          "minHeight": 30,
-          "overflow": "hidden",
-          "transform": Array [
-            Object {
-              "translateX": 0,
-            },
-          ],
-        }
-      }
-    >
-      <View
-        style={
-          Object {
-            "alignItems": "center",
-            "height": 40,
-            "justifyContent": "center",
-            "marginLeft": 8,
-            "marginVertical": 4,
-            "paddingRight": 4,
-          }
-        }
-      >
-        <View
-          style={
-            Object {
-              "overflow": "hidden",
-            }
-          }
-        >
-          <View>
-            <View
-              style={
-                Object {
-                  "alignItems": "center",
-                  "backgroundColor": "transparent",
-                  "justifyContent": "center",
-                }
-              }
-            >
-              <Text />
-            </View>
-          </View>
-        </View>
-      </View>
-      <TextInput
-        allowFontScaling={true}
-        editable={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        placeholder="Find a forum..."
-        placeholderTextColor="#86939e"
-        platform="default"
-        rejectResponderTermination={true}
-        style={
-          Object {
-            "alignSelf": "center",
-            "color": "#86939e",
-            "flex": 1,
-            "fontSize": 18,
-            "marginLeft": 10,
-            "minHeight": 40,
-          }
-        }
-        testID="searchInput"
-        underlineColorAndroid="transparent"
-        value=""
-      />
-      <View
-        style={
-          Object {
-            "alignItems": "center",
-            "height": 40,
-            "justifyContent": "center",
-            "marginRight": 8,
-            "marginVertical": 4,
-            "paddingRight": 4,
-          }
-        }
-      >
-        <View
-          style={
-            Object {
-              "flexDirection": "row",
-            }
-          }
-        />
-      </View>
-    </View>
-    <Text
-      style={
-        Object {
-          "color": "#ff190c",
-          "fontSize": 12,
-          "height": 0,
-          "margin": 0,
-          "padding": 0,
+          "height": 20,
+          "width": 20,
         }
       }
     />
