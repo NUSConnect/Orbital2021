@@ -1,101 +1,101 @@
-import * as firebase from "firebase";
-import React from "react";
+import * as firebase from 'firebase'
+import React from 'react'
 import {
-    Alert,
-    FlatList,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    View,
-} from "react-native";
-import AddMajorTopTab from "../../components/AddMajorTopTab";
+  Alert,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native'
+import AddMajorTopTab from '../../components/AddMajorTopTab'
 
-export default function DesignMajorsScreen({ props, navigation, goBack }) {
-    const currentUserId = firebase.auth().currentUser.uid;
+export default function DesignMajorsScreen ({ props, navigation, goBack }) {
+  const currentUserId = firebase.auth().currentUser.uid
 
-    const majors = [
-        { name: "Architecture" },
-        { name: "Industrial Design" },
-        { name: "Landscape Architecture" },
-        { name: "Project and Facilities Management" },
-        { name: "Real Estate" },
-    ];
+  const majors = [
+    { name: 'Architecture' },
+    { name: 'Industrial Design' },
+    { name: 'Landscape Architecture' },
+    { name: 'Project and Facilities Management' },
+    { name: 'Real Estate' }
+  ]
 
-    const returnToPersonal = () => {
-        navigation.goBack();
-        navigation.goBack();
-    };
+  const returnToPersonal = () => {
+    navigation.goBack()
+    navigation.goBack()
+  }
 
-    const ItemView = ({ item }) => {
-        return (
-            <Text
-                style={styles.itemStyle}
-                onPress={() => {
-                    firebase
-                        .firestore()
-                        .collection("users")
-                        .doc(currentUserId)
-                        .update({ major: item.name });
-                    Alert.alert("Thank you!", "Your major has been chosen.");
-                    returnToPersonal();
-                }}
-            >
-                {item.name}
-            </Text>
-        );
-    };
-    const ItemSeparatorView = () => {
-        return (
-            // Flat List Item Separator
-            <View
-                style={{
-                    height: 0.5,
-                    width: "100%",
-                    backgroundColor: "#C8C8C8",
-                }}
-            />
-        );
-    };
-
+  const ItemView = ({ item }) => {
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <View style={styles.container}>
-                <AddMajorTopTab onPress={() => navigation.goBack()} />
-                <FlatList
-                    data={majors}
-                    ItemSeparatorComponent={ItemSeparatorView}
-                    renderItem={ItemView}
-                />
-            </View>
-        </SafeAreaView>
-    );
+      <Text
+        style={styles.itemStyle}
+        onPress={() => {
+          firebase
+            .firestore()
+            .collection('users')
+            .doc(currentUserId)
+            .update({ major: item.name })
+          Alert.alert('Thank you!', 'Your major has been chosen.')
+          returnToPersonal()
+        }}
+      >
+        {item.name}
+      </Text>
+    )
+  }
+  const ItemSeparatorView = () => {
+    return (
+    // Flat List Item Separator
+      <View
+        style={{
+          height: 0.5,
+          width: '100%',
+          backgroundColor: '#C8C8C8'
+        }}
+      />
+    )
+  }
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <AddMajorTopTab onPress={() => navigation.goBack()} />
+        <FlatList
+          data={majors}
+          ItemSeparatorComponent={ItemSeparatorView}
+          renderItem={ItemView}
+        />
+      </View>
+    </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: "white",
-        flex: 1,
-    },
-    itemStyle: {
-        padding: 10,
-        fontSize: 20,
-    },
-    textInputStyle: {
-        height: 40,
-        borderWidth: 1,
-        paddingLeft: 20,
-        margin: 5,
-        borderColor: "#ff8c00",
-        backgroundColor: "#FFFFFF",
-    },
-    title: {
-        height: 60,
-        lineHeight: 60,
-        width: "100%",
-        backgroundColor: "#ff8c00",
-        color: "#ffffff",
-        fontSize: 30,
-        paddingLeft: 15,
-        marginBottom: 10,
-    },
-});
+  container: {
+    backgroundColor: 'white',
+    flex: 1
+  },
+  itemStyle: {
+    padding: 10,
+    fontSize: 20
+  },
+  textInputStyle: {
+    height: 40,
+    borderWidth: 1,
+    paddingLeft: 20,
+    margin: 5,
+    borderColor: '#ff8c00',
+    backgroundColor: '#FFFFFF'
+  },
+  title: {
+    height: 60,
+    lineHeight: 60,
+    width: '100%',
+    backgroundColor: '#ff8c00',
+    color: '#ffffff',
+    fontSize: 30,
+    paddingLeft: 15,
+    marginBottom: 10
+  }
+})
