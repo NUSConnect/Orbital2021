@@ -1,6 +1,6 @@
 import * as firebase from "firebase";
 import React, { useEffect } from "react";
-import { Alert, Dimensions, StyleSheet, Text, View } from "react-native";
+import { Alert, Dimensions, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 
 const DeviceWidth = Dimensions.get("window").width;
@@ -148,52 +148,48 @@ export default function FindGroupScreen({ navigation }) {
 
     return (
         <View style={styles.center}>
-            <Text> Choose a category </Text>
+            <Text style={styles.header}> Choose a category </Text>
             <View
                 style={{
                     flexDirection: "row",
-                    backgroundColor: "grey",
+                    backgroundColor: "orange",
                 }}
             >
                 <View>
-                    <View style={styles.square1}>
+                    <TouchableOpacity style={styles.square1} onPress={() => addToCategory("Sports")}>
                         <MaterialCommunityIcons
                             name="run"
                             size={130}
                             style={styles.icon}
-                            onPress={() => addToCategory("Sports")}
                         />
                         <Text> Sports </Text>
-                    </View>
-                    <View style={styles.square2}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.square2} onPress={() => addToCategory("Music")}>
                         <MaterialCommunityIcons
                             name="account-music"
                             size={130}
                             style={styles.icon}
-                            onPress={() => addToCategory("Music")}
                         />
                         <Text> Music </Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
                 <View>
-                    <View style={styles.square1}>
+                    <TouchableOpacity style={styles.square1} onPress={() => addToCategory("Study")}>
                         <MaterialCommunityIcons
                             name="book-open"
                             size={130}
                             style={styles.icon}
-                            onPress={() => addToCategory("Study")}
                         />
                         <Text> Study </Text>
-                    </View>
-                    <View style={styles.square2}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.square2} onPress={() => addToCategory("For Fun")}>
                         <MaterialCommunityIcons
                             name="controller-classic"
                             size={130}
                             style={styles.icon}
-                            onPress={() => addToCategory("For Fun")}
                         />
                         <Text> For Fun </Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
@@ -206,22 +202,29 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    header: {
+        fontSize: 20,
+        marginBottom: 10,
+    },
     square1: {
         width: squareSide,
         height: squareSide,
-        marginBottom: 1,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "powderblue",
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 10,
     },
     square2: {
         width: squareSide,
         height: squareSide,
-        marginBottom: 1,
-        marginLeft: 1,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "skyblue",
+        borderColor: 'white',
+        borderWidth: 1,
+        borderRadius: 10,
     },
     icon: {},
 });

@@ -34,7 +34,7 @@ export default function WaitingScreen({ navigation, route, goBack }) {
               .collection("users")
               .doc(currentUserId)
               .update({ finding:false, groupCategory:null });
-        navigation.goBack();
+        navigation.navigate('FindGroupScreen');
     }
 
     useEffect(() => {
