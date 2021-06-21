@@ -7,6 +7,25 @@ export const logoutUser = () => {
 
 export const signUpUser = async ({ name, email, password }) => {
   try {
+    try {
+      await firebase
+        .firestore()
+        .collection('users')
+        .get()
+        .then(querySnapshot => {
+          const list = []
+          querySnapshot.forEach(documentSnapshot => {
+            list.push(documentSnapshot.data().name)
+          })
+          if (list.includes(name)) {
+            throw new Error('This username is already in use, please try another username.')
+          }
+        })
+    } catch (error) {
+      return {
+        error: error.message
+      }
+    }
     const user = await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
