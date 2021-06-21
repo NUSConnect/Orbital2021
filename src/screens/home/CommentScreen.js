@@ -286,7 +286,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
       style={styles.container}
       contentContainerStyle={styles.inner}
       resetScrollToCoords={{ x: 0, y: 0 }}
-      scrollEnabled
+      scrollEnabled={false}
     >
       <TitleWithBack onPress={() => navigation.goBack()} />
       <FlatList
