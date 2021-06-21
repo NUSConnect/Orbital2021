@@ -48,8 +48,7 @@ const PostCard = ({
       .firestore()
       .collection('users')
       .doc(item.userId)
-      .get()
-      .then((documentSnapshot) => {
+      .onSnapshot((documentSnapshot) => {
         if (documentSnapshot.exists) {
           //          console.log('User Data', documentSnapshot.data());
           setUserData(documentSnapshot.data())
