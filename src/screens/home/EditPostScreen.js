@@ -120,12 +120,12 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '50%',
+    height: '40%',
     marginBottom: 15
   },
   input: {
     flex: 0,
-    height: 400,
+    height: 100,
     width: '90%',
     margin: 12,
     borderWidth: 1,
