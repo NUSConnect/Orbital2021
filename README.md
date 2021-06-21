@@ -37,12 +37,13 @@ We plan to make it a cross-platform mobile app, which users can download and reg
 
 ### Milestones:
 
-**Milestone 1:** [Link to report](https://docs.google.com/document/d/1kk2xyrJco7O6uScoS3XqIbGLOcx2QNYJV4IhLyRGNxg/edit?usp=sharing)
+**Milestone 1:** [Link to report](https://docs.google.com/document/d/1kk2xyrJco7O6uScoS3XqIbGLOcx2QNYJV4IhLyRGNxg/edit?usp=sharing)             
 **Milestone 2:** [Link to report](https://docs.google.com/document/d/1x6VheE0PXcwjMB-_03SBfArbyHGMapKNLqP0gecd_4c/edit?usp=sharing)
 
 ### Documentation:
 
-[Documentation can be found here](https://docs.google.com/document/d/1iCbU7dv6kQtr8h0xFe01NmVnVUM1NtYrTSJWbmPHA-I/edit?usp=sharing)
+[User's Guide](https://docs.google.com/document/d/1iCbU7dv6kQtr8h0xFe01NmVnVUM1NtYrTSJWbmPHA-I/edit?usp=sharing)          
+[Code Style Guide](https://github.com/benedictchuajj/Orbital2021/wiki/Portal.io-Code-Style-Guide)
 
 ### Deployment:
 
