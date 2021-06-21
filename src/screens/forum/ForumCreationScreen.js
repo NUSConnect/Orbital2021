@@ -2,6 +2,7 @@ import * as ImagePicker from 'expo-image-picker'
 import * as firebase from 'firebase'
 import React from 'react'
 import {
+  ActivityIndicator,
   Alert,
   Image,
   StyleSheet,
@@ -22,7 +23,9 @@ export default class ForumCreationScreen extends React.Component {
       nameText: '',
       descriptionText: '',
       reasonText: '',
-      image: 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/forum%2FWELCOME.png?alt=media&token=eb0f815b-0e18-4eca-b5a6-0cc170b0eb51'
+      image: 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/forum%2FWELCOME.png?alt=media&token=eb0f815b-0e18-4eca-b5a6-0cc170b0eb51',
+      uploading: false,
+      transferred: 0
     }
   }
 
@@ -116,13 +119,33 @@ export default class ForumCreationScreen extends React.Component {
       const name = this.state.nameText + '_'
       filename = name + Date.now() + '.' + extension
 
+      this.setState({ uploading: true })
+      this.setState({ transferred: 0 })
+
       const storageRef = firebase.storage().ref(`forum/${filename}`)
       const task = storageRef.put(blob)
+
+      // Set transferred state
+      task.on('state_changed', (taskSnapshot) => {
+        console.log(
+                `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`
+        )
+
+        this.setState({
+          transferred:
+                    Math.round(
+                      taskSnapshot.bytesTransferred / taskSnapshot.totalBytes
+                    ) * 100
+        })
+      })
 
       try {
         await task
 
         const url = await storageRef.getDownloadURL()
+
+        this.setState({ uploading: false })
+        this.setState({ image: null })
 
         return url
       } catch (e) {
@@ -174,24 +197,44 @@ export default class ForumCreationScreen extends React.Component {
             placeholder='How is this portal different from what is already open?'
             multiline
           />
-          <View style={styles.buttons}>
-            <CancelButton goBack={() => navigation.goBack()} />
-            <View style={styles.space} />
-            <SubmitButton
-              goBack={() => {
-                if (textChecker(this.state.nameText) && textChecker(this.state.descriptionText) &&
-                                textChecker(this.state.reasonText)) {
-                  this.submitPost(() => navigation.goBack())
-                } else {
-                  Alert.alert(
-                    'Missing information',
-                    'Please fill in all text boxes.'
-                  )
-                }
-              }}
-              string='Create'
-            />
-          </View>
+          {this.state.uploading
+            ? (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Text>
+                  {' '}
+                  {this.state.transferred} % completed!{' '}
+                </Text>
+                <ActivityIndicator
+                  size='large'
+                  color='0000ff'
+                />
+              </View>
+              )
+            : (
+              <View style={styles.buttons}>
+                <CancelButton goBack={() => navigation.goBack()} />
+                <View style={styles.space} />
+                <SubmitButton
+                  goBack={() => {
+                    if (textChecker(this.state.nameText) && textChecker(this.state.descriptionText) &&
+                                        textChecker(this.state.reasonText)) {
+                      this.submitPost(() => navigation.goBack())
+                    } else {
+                      Alert.alert(
+                        'Missing information',
+                        'Please fill in all text boxes.'
+                      )
+                    }
+                  }}
+                  string='Create'
+                />
+              </View>
+              )}
         </KeyboardAwareScrollView>
       )
     }

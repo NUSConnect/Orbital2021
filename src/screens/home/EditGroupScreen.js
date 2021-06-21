@@ -2,12 +2,14 @@ import * as ImagePicker from 'expo-image-picker'
 import * as firebase from 'firebase'
 import React, { useState } from 'react'
 import {
+  ActivityIndicator,
   Alert,
   Image,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  View
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import GroupCreationTopTab from '../../components/GroupCreationTopTab'
@@ -19,6 +21,8 @@ export default function EditGroupScreen ({ route, navigation }) {
   const [name, setName] = useState(String(item.name))
   const [description, setDescription] = useState(String(item.description))
   const [image, setImage] = useState(item.avatar)
+  const [uploading, setUploading] = useState(false)
+  const [transferred, setTransferred] = useState(0)
 
   const choosePhotoFromLibrary = async () => {
     const permissionResult =
@@ -91,6 +95,8 @@ export default function EditGroupScreen ({ route, navigation }) {
     if (image == null) {
       return null
     }
+    setUploading(true)
+
     const uploadUri = image
     const response = await fetch(uploadUri)
     const blob = await response.blob()
@@ -98,14 +104,26 @@ export default function EditGroupScreen ({ route, navigation }) {
     // Add timestamp to File Name
     const filename = item.id + '.jpg'
 
+    setTransferred(0)
+
     const storageRef = firebase.storage().ref(`groups/${filename}`)
     const task = storageRef.put(blob)
+
+    // Set transferred state
+    task.on('state_changed', (taskSnapshot) => {
+      console.log(
+                `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`
+      )
+
+      setTransferred(Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100)
+    })
 
     try {
       await task
 
       const url = await storageRef.getDownloadURL()
 
+      setUploading(false)
       return url
     } catch (e) {
       console.log(e)
@@ -122,7 +140,7 @@ export default function EditGroupScreen ({ route, navigation }) {
       <GroupCreationTopTab
         text='Edit group info'
         onBack={() => navigation.goBack()}
-        onPress={() => checkSubmit()}
+        onPress={() => { !uploading ? checkSubmit() : console.log('Already uploading') }}
       />
       <Text style={styles.subTitle}>Group Image</Text>
       <TouchableOpacity style={styles.imageContainer} onPress={choosePhotoFromLibrary}>
@@ -147,6 +165,25 @@ export default function EditGroupScreen ({ route, navigation }) {
         value={description}
         placeholder='Enter a description'
       />
+      {uploading
+        ? (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text>
+              {' '}
+              {transferred} % completed!{' '}
+            </Text>
+            <ActivityIndicator
+              size='large'
+              color='0000ff'
+            />
+          </View>
+          )
+        : (null)}
     </KeyboardAwareScrollView>
   )
 }

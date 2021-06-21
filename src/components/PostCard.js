@@ -19,6 +19,7 @@ import {
 } from '../styles/FeedStyles'
 import ProgressiveImage from './ProgressiveImage'
 import DoubleTap from './DoubleTap'
+import { sendPushNotification } from '../api/notifications'
 
 const PostCard = ({
   route,
@@ -30,6 +31,7 @@ const PostCard = ({
   onEdit
 }) => {
   const currentUserId = firebase.auth().currentUser.uid
+  const currentUserName = firebase.auth().currentUser.displayName
   const [userData, setUserData] = useState(null)
   const [userLiked, setUserLiked] = useState(null)
 
@@ -116,6 +118,14 @@ const PostCard = ({
         .update({ likeCount: item.likeCount })
       console.log('Like')
       setUserLiked(true)
+
+      firebase.firestore().collection('users').doc(item.userId).get()
+        .then((doc) => {
+          console.log('Checking if pushToken available')
+          if (doc.data().pushToken != null) {
+            sendPushNotification(doc.data().pushToken.data, currentUserName, 'Liked your post!')
+          }
+        })
     }
   }
 

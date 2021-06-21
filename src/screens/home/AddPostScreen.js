@@ -6,10 +6,10 @@ import {
   Alert,
   Animated,
   Image,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
+  ScrollView,
   View
 } from 'react-native'
 import ActionButton from 'react-native-action-button'
@@ -58,7 +58,6 @@ export default class AddPostScreen extends React.Component {
     super(props)
     this.state = {
       image: null,
-      blob: null,
       uploading: false,
       transferred: 0,
       text: ''
@@ -66,7 +65,7 @@ export default class AddPostScreen extends React.Component {
   }
 
     handleTakePhotoFromCamera = async () => {
-      const permissionResult = await ImagePicker.getCameraPermissionsAsync()
+      const permissionResult = await ImagePicker.requestCameraPermissionsAsync()
 
       if (permissionResult.granted === false) {
         alert('Permission to access camera on device is required!')
@@ -83,7 +82,6 @@ export default class AddPostScreen extends React.Component {
       }
 
       this.setState({ image: pickerResult.uri })
-      //    this.setState({ blob: pickerResult.base64 })
     };
 
     handleChoosePhotoFromLibrary = async () => {
@@ -105,7 +103,6 @@ export default class AddPostScreen extends React.Component {
       }
 
       this.setState({ image: pickerResult.uri })
-      //    this.setState({ blob: pickerResult.uri.blob() })
     };
 
     submitPost = async (navigator) => {
@@ -196,7 +193,6 @@ export default class AddPostScreen extends React.Component {
 
         this.setState({ uploading: false })
         this.setState({ image: null })
-        this.setState({ blob: null })
 
         return url
       } catch (e) {
@@ -208,7 +204,7 @@ export default class AddPostScreen extends React.Component {
     render () {
       const { navigation } = this.props
       return (
-        <SafeAreaView>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <View style={styles.container}>
             <View style={styles.innerContainer}>
               <Text style={styles.title}>Add a Post</Text>
@@ -294,7 +290,7 @@ export default class AddPostScreen extends React.Component {
               />
             </ActionButton.Item>
           </ActionButton>
-        </SafeAreaView>
+        </ScrollView>
       )
     }
 }
@@ -324,7 +320,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '50%',
+    height: '40%',
     marginBottom: 15
   },
   input: {
@@ -348,7 +344,6 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     position: 'absolute',
-    bottom: -300,
     right: -10
   },
   actionButtonIcon: {

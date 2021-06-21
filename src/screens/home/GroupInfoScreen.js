@@ -7,17 +7,32 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Modal
 } from 'react-native'
 import TitleWithBack from '../../components/TitleWithBack'
 import {
   Card, TextSection, UserImg, UserImgWrapper, UserInfo, UserInfoText, UserName
 } from '../../styles/MessageStyles'
+import ImageViewer from 'react-native-image-zoom-viewer'
+import { Ionicons } from 'react-native-vector-icons'
 
 const GroupInfoScreen = ({ navigation, route, onPress }) => {
   const currentUserId = firebase.auth().currentUser.uid
+  const [groupInfo, setGroupInfo] = useState(null)
   const [members, setMembers] = useState([])
+  const [images, setImages] = useState([{}])
+  const [modalVisible, setModalVisible] = useState(false)
+
   const { item } = route.params
+
+  const getGroupInfo = async () => {
+    await firebase.firestore().collection('THREADS').doc(item.id).get()
+      .then((doc) => {
+        setGroupInfo(doc.data())
+        setImages([{ url: doc.data().groupImage, props: {} }])
+      })
+  }
 
   const getMembers = async () => {
     const list = []
@@ -39,33 +54,79 @@ const GroupInfoScreen = ({ navigation, route, onPress }) => {
     }
   }
 
+  const renderHeader = () => {
+    return (
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+          <Ionicons name='close-sharp' size={38} color='white' />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setModalVisible(false)
+            navigation.navigate('EditGroupScreen', {
+              item:
+                      { id: item.id, name: groupInfo.groupName.name, description: groupInfo.groupDescription.description, avatar: groupInfo.groupImage }
+            })
+          }}
+          style={styles.editButton}
+        >
+          <Ionicons name='pencil-sharp' size={38} color='white' />
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   useEffect(() => {
+    getGroupInfo()
     getMembers()
+    const _unsubscribe = navigation.addListener('focus', () =>
+      getGroupInfo()
+    )
+
+    return () => {
+      _unsubscribe()
+    }
   }, [])
 
   return (
     <SafeAreaView style={styles.container}>
       <TitleWithBack onPress={() => navigation.goBack()} />
       <View style={styles.profileContainer}>
-        <Image
-          source={{
-            uri: item.avatar
-          }}
-          style={styles.profilePic}
-        />
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <Image
+            source={{
+              uri: groupInfo ? groupInfo.groupImage : null
+            }}
+            style={styles.profilePic}
+          />
+        </TouchableOpacity>
+        <Modal
+          visible={modalVisible}
+          transparent
+          onRequestClose={() => setModalVisible(false)}
+          statusBarTranslucent
+        >
+          <ImageViewer
+            imageUrls={images}
+            renderHeader={renderHeader}
+          />
+        </Modal>
         <View style={styles.profileInfo}>
           <Text style={styles.name}>
             {' '}
-            {item.name}{' '}
+            {groupInfo ? groupInfo.groupName.name : null}{' '}
           </Text>
           <Text style={styles.userInfo}>
             {' '}
-            Description: {item.description}{' '}
+            Description: {groupInfo ? groupInfo.groupDescription.description : null}{' '}
           </Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate('EditGroupScreen', { item })}
+              onPress={() => navigation.navigate('EditGroupScreen', {
+                item:
+                { id: item.id, name: groupInfo.groupName.name, description: groupInfo.groupDescription.description, avatar: groupInfo.groupImage }
+              })}
             >
               <Text style={styles.text}>Edit Group</Text>
             </TouchableOpacity>
@@ -172,11 +233,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 10,
-    paddingLeft: 10
+    paddingLeft: 10,
+    width: '95%'
   },
   button: {
     height: 40,
-    width: 120,
     backgroundColor: '#87cefa',
     borderRadius: 20,
     marginBottom: 10,
@@ -197,5 +258,13 @@ const styles = StyleSheet.create({
   bio: {
     fontSize: 16,
     color: 'black'
+  },
+  closeButton: {
+    paddingLeft: 10,
+    paddingTop: 50
+  },
+  editButton: {
+    paddingTop: 50,
+    paddingRight: 6
   }
 })
