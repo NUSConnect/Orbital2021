@@ -1,4 +1,6 @@
 # NUS Orbital 2021 (Team Name: NUSConnect)
+[![React-Native](https://img.shields.io/badge/react--native-v0.64.5-blue?logo=react)](https://reactnative.dev)
+[![runs with expo](https://img.shields.io/badge/Runs%20with%20Expo-4630EB.svg?style=flat&logo=EXPO&labelColor=f3f3f3&logoColor=000)](https://expo.io/@luayida99/Orbital2021)
 
 Orbital (Independent Software Development Project) is NUS School of Computing self-directed, independent work course. This programme gives students the opportunity to pick up software development skills on their own, using sources on the web. Our team members consist of Lua Yida and Benedict Chua.
 
