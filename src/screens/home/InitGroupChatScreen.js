@@ -2,12 +2,14 @@ import * as ImagePicker from 'expo-image-picker'
 import * as firebase from 'firebase'
 import React, { useState } from 'react'
 import {
+  ActivityIndicator,
   Alert,
   Image,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  View
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import GroupCreationTopTab from '../../components/GroupCreationTopTab'
@@ -17,6 +19,8 @@ export default function InitGroupChatScreen ({ route, navigation }) {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [image, setImage] = useState('https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/forum%2FWELCOME.png?alt=media&token=eb0f815b-0e18-4eca-b5a6-0cc170b0eb51')
+  const [uploading, setUploading] = useState(false)
+  const [transferred, setTransferred] = useState(0)
 
   const { users } = route.params
 
@@ -116,6 +120,7 @@ export default function InitGroupChatScreen ({ route, navigation }) {
     if (image == null) {
       return null
     }
+    setUploading(true)
     const uploadUri = image
     const response = await fetch(uploadUri)
     const blob = await response.blob()
@@ -123,13 +128,26 @@ export default function InitGroupChatScreen ({ route, navigation }) {
     // Add timestamp to File Name
     const filename = name + '.jpg'
 
+    setTransferred(0)
+
     const storageRef = firebase.storage().ref(`groups/${filename}`)
     const task = storageRef.put(blob)
+
+    // Set transferred state
+    task.on('state_changed', (taskSnapshot) => {
+      console.log(
+                `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`
+      )
+
+      setTransferred(Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100)
+    })
 
     try {
       await task
 
       const url = await storageRef.getDownloadURL()
+
+      setUploading(false)
 
       return url
     } catch (e) {
@@ -147,7 +165,7 @@ export default function InitGroupChatScreen ({ route, navigation }) {
       <GroupCreationTopTab
         text='Create a group'
         onBack={() => navigation.goBack()}
-        onPress={() => checkSubmit()}
+        onPress={() => { !uploading ? checkSubmit() : console.log('Already uploading') }}
       />
       <Text style={styles.subTitle}>Group Image</Text>
       <TouchableOpacity style={styles.imageContainer} onPress={choosePhotoFromLibrary}>
@@ -174,6 +192,25 @@ export default function InitGroupChatScreen ({ route, navigation }) {
         placeholder='Enter a description'
         multiline
       />
+      {uploading
+        ? (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Text>
+              {' '}
+              {transferred} % completed!{' '}
+            </Text>
+            <ActivityIndicator
+              size='large'
+              color='0000ff'
+            />
+          </View>
+          )
+        : (null)}
     </KeyboardAwareScrollView>
   )
 }

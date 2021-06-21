@@ -8,13 +8,18 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Modal
 } from 'react-native'
 import PostCard from '../../components/PostCard'
 import TitleWithBack from '../../components/TitleWithBack'
+import ImageViewer from 'react-native-image-zoom-viewer'
+import { Ionicons } from 'react-native-vector-icons'
+import { sendPushNotification } from '../../api/notifications'
 
 const ViewProfileScreen = ({ navigation, route, onPress }) => {
   const currentUserId = firebase.auth().currentUser.uid
+  const currentUserName = firebase.auth().currentUser.displayName
   const defaultUri =
         'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
   const [userData, setUserData] = useState(null)
@@ -22,6 +27,8 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
   const [following, setFollowing] = useState(false)
   const [refreshing, setRefreshing] = useState(true)
   const [majorData, setMajorData] = useState(null)
+  const [images, setImages] = useState([{}])
+  const [modalVisible, setModalVisible] = useState(false)
 
   const { item } = route.params
 
@@ -35,6 +42,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         if (documentSnapshot.exists) {
           setUserData(documentSnapshot.data())
           setMajorData(documentSnapshot.data().major)
+          setImages([{ url: documentSnapshot.data().userImg, props: {} }])
         }
       })
   }
@@ -74,6 +82,14 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         .doc(item.userId)
         .set({})
       setFollowing(true)
+
+      firebase.firestore().collection('users').doc(item.userId).get()
+        .then((doc) => {
+          console.log('Checking if pushToken available')
+          if (doc.data().pushToken != null) {
+            sendPushNotification(doc.data().pushToken.data, currentUserName, 'is now following you!')
+          }
+        })
     }
   }
 
@@ -167,6 +183,16 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     )
   }
 
+  const renderHeader = () => {
+    return (
+      <View>
+        <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+          <Ionicons name='close-sharp' size={38} color='white' />
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   const ItemSeparator = () => (
     <View
       style={{
@@ -195,14 +221,27 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     <SafeAreaView style={styles.container}>
       <TitleWithBack onPress={() => navigation.goBack()} />
       <View style={styles.profileContainer}>
-        <Image
-          source={{
-            uri: userData
-              ? userData.userImg || defaultUri
-              : defaultUri
-          }}
-          style={styles.profilePic}
-        />
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <Image
+            source={{
+              uri: userData
+                ? userData.userImg || defaultUri
+                : defaultUri
+            }}
+            style={styles.profilePic}
+          />
+        </TouchableOpacity>
+        <Modal
+          visible={modalVisible}
+          transparent
+          onRequestClose={() => setModalVisible(false)}
+          statusBarTranslucent
+        >
+          <ImageViewer
+            imageUrls={images}
+            renderHeader={renderHeader}
+          />
+        </Modal>
         <View style={styles.profileInfo}>
           <Text style={styles.name}>
             {' '}
@@ -314,11 +353,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 10,
-    paddingLeft: 10
+    paddingLeft: 10,
+    width: '95%'
   },
   button: {
     height: 40,
-    width: 120,
     backgroundColor: '#87cefa',
     borderRadius: 20,
     marginBottom: 10,
@@ -332,5 +371,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     color: 'white'
+  },
+  closeButton: {
+    paddingLeft: 10,
+    paddingTop: 50
   }
 })
