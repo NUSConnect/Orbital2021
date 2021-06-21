@@ -45,6 +45,7 @@
     "react-native-image-crop-picker": "^0.36.2",
     "react-native-image-picker": "1.1.0",
     "react-native-image-resizer": "^1.4.4",
+    "react-native-image-zoom-viewer": "^3.0.1",
     "react-native-interactable": "^2.0.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.4",
     "react-native-modal-selector": "^2.0.3",
@@ -81,7 +82,9 @@
   },
   "standard": {
     "parser": "babel-eslint",
-    "env": ["jest"],
+    "env": [
+      "jest"
+    ],
     "globals": [
       "alert",
       "fetch"

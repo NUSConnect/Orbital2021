@@ -8,10 +8,13 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Modal
 } from 'react-native'
 import PostCard from '../../components/PostCard'
 import TitleWithBack from '../../components/TitleWithBack'
+import ImageViewer from 'react-native-image-zoom-viewer'
+import { Ionicons } from 'react-native-vector-icons'
 
 const ViewProfileScreen = ({ navigation, route, onPress }) => {
   const currentUserId = firebase.auth().currentUser.uid
@@ -22,6 +25,8 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
   const [following, setFollowing] = useState(false)
   const [refreshing, setRefreshing] = useState(true)
   const [majorData, setMajorData] = useState(null)
+  const [images, setImages] = useState([{}])
+  const [modalVisible, setModalVisible] = useState(false);
 
   const { item } = route.params
 
@@ -35,6 +40,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         if (documentSnapshot.exists) {
           setUserData(documentSnapshot.data())
           setMajorData(documentSnapshot.data().major)
+          setImages([{ url: documentSnapshot.data().userImg, props: {} }])
         }
       })
   }
@@ -167,6 +173,16 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     )
   }
 
+  const renderHeader = () => {
+    return (
+        <View>
+            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+                <Ionicons name='close-sharp' size={38} color={'white'} />
+            </TouchableOpacity>
+        </View>
+    )
+  }
+
   const ItemSeparator = () => (
     <View
       style={{
@@ -195,14 +211,26 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     <SafeAreaView style={styles.container}>
       <TitleWithBack onPress={() => navigation.goBack()} />
       <View style={styles.profileContainer}>
-        <Image
-          source={{
-            uri: userData
-              ? userData.userImg || defaultUri
-              : defaultUri
-          }}
-          style={styles.profilePic}
-        />
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Image
+              source={{
+                uri: userData
+                  ? userData.userImg || defaultUri
+                  : defaultUri
+              }}
+              style={styles.profilePic}
+            />
+        </TouchableOpacity>
+        <Modal
+            visible={modalVisible}
+            transparent={true}
+            onRequestClose={() => setModalVisible(false)}
+        >
+            <ImageViewer
+                imageUrls={images}
+                renderHeader={renderHeader}
+            />
+        </Modal>
         <View style={styles.profileInfo}>
           <Text style={styles.name}>
             {' '}
@@ -332,5 +360,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     color: 'white'
+  },
+  closeButton: {
+    paddingLeft: 10,
+    paddingTop: 10
   }
 })
