@@ -1,64 +1,65 @@
-import React from "react";
+import React from 'react'
 import {
-    StyleSheet,
-    TextInput,
-    View,
-    Image,
-    TouchableOpacity,
-} from "react-native";
+  StyleSheet,
+  TextInput,
+  View,
+  Image,
+  TouchableOpacity
+} from 'react-native'
 
-const SearchBar = ({search, setSearch, searchFilterFunction, resetFilter}) => {
-
-    return (
-        <View style={styles.searchBar}>
-            <TextInput
-                style={styles.textInputStyle}
-                onChangeText={(text) => searchFilterFunction(text)}
-                value={search}
-                placeholder="Search Here"
-                testID='input'
+const SearchBar = ({ search, setSearch, searchFilterFunction, resetFilter }) => {
+  return (
+    <View style={styles.searchBar}>
+      <TextInput
+        style={styles.textInputStyle}
+        onChangeText={(text) => searchFilterFunction(text)}
+        value={search}
+        placeholder='Search Here'
+        testID='input'
+      />
+      {search !== ''
+        ? (
+          <TouchableOpacity
+            style={styles.closeButtonParent}
+            onPress={() => {
+              resetFilter()
+              setSearch('')
+            }}
+            testID='reset'
+          >
+            <Image
+              style={styles.closeButton}
+              source={require('../assets/close-circle-outline.png')}
             />
-            {search !== "" ? (
-                <TouchableOpacity
-                    style={styles.closeButtonParent}
-                    onPress={() => {
-                        resetFilter();
-                        setSearch("");
-                    }}
-                    testID='reset'
-                >
-                    <Image
-                        style={styles.closeButton}
-                        source={require("../assets/close-circle-outline.png")}
-                    />
-                </TouchableOpacity>
-            ) : null}
-        </View>
-    )
+          </TouchableOpacity>
+          )
+        : null}
+    </View>
+  )
 }
 
-export default SearchBar;
+export default SearchBar
 
 const styles = StyleSheet.create({
-    textInputStyle: {
-        height: 40,
-        paddingLeft: 20,
-        flex: 1,
-    },
-    searchBar: {
-        flexDirection: "row",
-        margin: 5,
-        borderColor: "#ff8c00",
-        backgroundColor: "#FFFFFF",
-        borderWidth: 1,
-    },
-    closeButtonParent: {
-        justifyContent: "center",
-        alignItems: "center",
-        marginRight: 10,
-    },
-    closeButton: {
-        height: 20,
-        width: 20,
-    },
-});
+  textInputStyle: {
+    height: 40,
+    paddingLeft: 20,
+    flex: 1
+  },
+  searchBar: {
+    flexDirection: 'row',
+    margin: 5,
+    borderColor: '#ff8c00',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1
+  },
+  closeButtonParent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10
+  },
+  closeButton: {
+    height: 20,
+    width: 20
+  }
+})

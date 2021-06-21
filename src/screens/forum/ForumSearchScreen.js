@@ -1,135 +1,127 @@
-import * as firebase from "firebase";
-import React from "react";
+import * as firebase from 'firebase'
+import React from 'react'
 import {
-    FlatList,
-    SafeAreaView,
-    StyleSheet,
-    TextInput,
-    View,
-    TouchableOpacity,
-    Image,
-} from "react-native";
-import ForumIcon from "../../components/ForumIcon";
-import SearchBar from '../../components/SearchBar';
+  FlatList,
+  SafeAreaView,
+  View
+} from 'react-native'
+import ForumIcon from '../../components/ForumIcon'
+import SearchBar from '../../components/SearchBar'
 
 export default class ForumSearchScreen extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: [],
-            refreshing: true,
-            search: "",
-            filteredData: [],
-            filtered: false,
-        };
+  constructor (props) {
+    super(props)
+    this.state = {
+      data: [],
+      refreshing: true,
+      search: '',
+      filteredData: [],
+      filtered: false
     }
+  }
 
-    componentDidMount() {
-        this.fetchForums();
-        this._unsubscribe = this.props.navigation.addListener("focus", () =>
-            this.fetchForums()
-        );
-    }
+  componentDidMount () {
+    this.fetchForums()
+    this._unsubscribe = this.props.navigation.addListener('focus', () =>
+      this.fetchForums()
+    )
+  }
 
-    componentWillUnmount() {
-        this._unsubscribe();
-    }
+  componentWillUnmount () {
+    this._unsubscribe()
+  }
 
     fetchForums = async () => {
-        this.setState({ refreshing: true });
-        const list = [];
+      this.setState({ refreshing: true })
+      const list = []
 
-        await firebase
-            .firestore()
-            .collection("forums")
-            .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    const { forumName, forumImg } = doc.data();
-                    list.push({
-                        id: doc.id,
-                        forumName,
-                        forumImg,
-                    });
-                });
-            });
+      await firebase
+        .firestore()
+        .collection('forums')
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const { forumName, forumImg } = doc.data()
+            list.push({
+              id: doc.id,
+              forumName,
+              forumImg
+            })
+          })
+        })
 
-        if (this.state.refreshing) {
-            this.setState({ refreshing: false });
-        }
-        this.setState({ data: list });
-        console.log(this.state.data);
+      if (this.state.refreshing) {
+        this.setState({ refreshing: false })
+      }
+      this.setState({ data: list })
+      console.log(this.state.data)
     };
 
     searchFilterFunction = (text) => {
-        if (text) {
-            const newData = this.state.data.filter(function (item) {
-                const itemData = item.forumName
-                    ? item.forumName.toUpperCase()
-                    : "".toUpperCase();
-                const textData = text.toUpperCase();
-                return itemData.indexOf(textData) > -1;
-            });
-            this.setState({
-                filtered: true,
-                filteredData: newData,
-                search: text,
-            });
-        } else {
-            this.setState({ filteredData: this.state.data, search: text });
-        }
+      if (text) {
+        const newData = this.state.data.filter(function (item) {
+          const itemData = item.forumName
+            ? item.forumName.toUpperCase()
+            : ''.toUpperCase()
+          const textData = text.toUpperCase()
+          return itemData.indexOf(textData) > -1
+        })
+        this.setState({
+          filtered: true,
+          filteredData: newData,
+          search: text
+        })
+      } else {
+        this.setState({ filteredData: this.state.data, search: text })
+      }
     };
 
     ItemSeparator = () => (
-        <View
-            style={{
-                height: 2,
-                marginLeft: 10,
-                marginRight: 10,
-            }}
-        />
+      <View
+        style={{
+          height: 2,
+          marginLeft: 10,
+          marginRight: 10
+        }}
+      />
     );
 
     handleRefresh = () => {
-        this.setState({ refreshing: false }, () => {
-            this.fetchForums();
-        });
+      this.setState({ refreshing: false }, () => {
+        this.fetchForums()
+      })
     };
 
-    render() {
-        const { navigation } = this.props;
-        return (
-            <SafeAreaView style={{ flex: 1 }}>
-                <SearchBar
-                    search={this.state.search}
-                    setSearch={(text) => this.setState({ search: text })}
-                    searchFilterFunction={this.searchFilterFunction}
-                    resetFilter={() => this.setState({ filteredData: this.state.data })}
-                />
-                <FlatList
-                    numColumns={3}
-                    data={
+    render () {
+      const { navigation } = this.props
+      return (
+        <SafeAreaView style={{ flex: 1 }}>
+          <SearchBar
+            search={this.state.search}
+            setSearch={(text) => this.setState({ search: text })}
+            searchFilterFunction={this.searchFilterFunction}
+            resetFilter={() => this.setState({ filteredData: this.state.data })}
+          />
+          <FlatList
+            numColumns={3}
+            data={
                         this.state.filtered
-                            ? this.state.filteredData
-                            : this.state.data
+                          ? this.state.filteredData
+                          : this.state.data
                     }
-                    renderItem={({ item }) => (
-                        <ForumIcon
-                            item={item}
-                            onPress={() =>
-                                navigation.navigate("SubForumScreen", { item })
-                            }
-                        />
-                    )}
-                    keyExtractor={(item) => item.id.toString()}
-                    ItemSeparatorComponent={this.ItemSeparator}
-                    refreshing={this.state.refreshing}
-                    onRefresh={this.handleRefresh}
-                />
-            </SafeAreaView>
-        );
+            renderItem={({ item }) => (
+              <ForumIcon
+                item={item}
+                onPress={() =>
+                  navigation.navigate('SubForumScreen', { item })}
+              />
+            )}
+            keyExtractor={(item) => item.id.toString()}
+            ItemSeparatorComponent={this.ItemSeparator}
+            refreshing={this.state.refreshing}
+            onRefresh={this.handleRefresh}
+          />
+        </SafeAreaView>
+      )
     }
 }
-
-const styles = StyleSheet.create({
-});
