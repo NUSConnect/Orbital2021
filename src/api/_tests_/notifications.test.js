@@ -1,5 +1,7 @@
 import { sendPushNotification } from '../notifications'
 
+/* global fetch:writable */
+
 it('sendPushNotification fetches once', () => {
   const mockToken = 'testToken'
   const mockSender = 'testSender'
