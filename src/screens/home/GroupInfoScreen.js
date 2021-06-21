@@ -56,22 +56,23 @@ const GroupInfoScreen = ({ navigation, route, onPress }) => {
 
   const renderHeader = () => {
     return (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between'}}>
-            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-                <Ionicons name='close-sharp' size={38} color={'white'} />
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => {
-                    setModalVisible(false)
-                    navigation.navigate('EditGroupScreen', { item:
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+          <Ionicons name='close-sharp' size={38} color='white' />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setModalVisible(false)
+            navigation.navigate('EditGroupScreen', {
+              item:
                       { id: item.id, name: groupInfo.groupName.name, description: groupInfo.groupDescription.description, avatar: groupInfo.groupImage }
-                    })
-                }}
-                style={styles.editButton}
-            >
-                <Ionicons name='pencil-sharp' size={38} color={'white'} />
-            </TouchableOpacity>
-        </View>
+            })
+          }}
+          style={styles.editButton}
+        >
+          <Ionicons name='pencil-sharp' size={38} color='white' />
+        </TouchableOpacity>
+      </View>
     )
   }
 
@@ -92,24 +93,23 @@ const GroupInfoScreen = ({ navigation, route, onPress }) => {
       <TitleWithBack onPress={() => navigation.goBack()} />
       <View style={styles.profileContainer}>
         <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Image
-              source={{
-                uri: groupInfo ? groupInfo.groupImage : null
-              }}
-              style={styles.profilePic}
-            />
+          <Image
+            source={{
+              uri: groupInfo ? groupInfo.groupImage : null
+            }}
+            style={styles.profilePic}
+          />
         </TouchableOpacity>
         <Modal
-            visible={modalVisible}
-            transparent={true}
-            onRequestClose={() => setModalVisible(false)}
-            statusBarTranslucent={true}
-            transparent={true}
+          visible={modalVisible}
+          transparent
+          onRequestClose={() => setModalVisible(false)}
+          statusBarTranslucent
         >
-            <ImageViewer
-                imageUrls={images}
-                renderHeader={renderHeader}
-            />
+          <ImageViewer
+            imageUrls={images}
+            renderHeader={renderHeader}
+          />
         </Modal>
         <View style={styles.profileInfo}>
           <Text style={styles.name}>
@@ -123,7 +123,8 @@ const GroupInfoScreen = ({ navigation, route, onPress }) => {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate('EditGroupScreen', { item:
+              onPress={() => navigation.navigate('EditGroupScreen', {
+                item:
                 { id: item.id, name: groupInfo.groupName.name, description: groupInfo.groupDescription.description, avatar: groupInfo.groupImage }
               })}
             >

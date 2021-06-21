@@ -28,7 +28,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
   const [refreshing, setRefreshing] = useState(true)
   const [majorData, setMajorData] = useState(null)
   const [images, setImages] = useState([{}])
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false)
 
   const { item } = route.params
 
@@ -84,12 +84,12 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
       setFollowing(true)
 
       firebase.firestore().collection('users').doc(item.userId).get()
-          .then((doc) => {
-            console.log('Checking if pushToken available')
-            if (doc.data().pushToken != null) {
-              sendPushNotification(doc.data().pushToken.data, currentUserName, 'is now following you!')
-            }
-          })
+        .then((doc) => {
+          console.log('Checking if pushToken available')
+          if (doc.data().pushToken != null) {
+            sendPushNotification(doc.data().pushToken.data, currentUserName, 'is now following you!')
+          }
+        })
     }
   }
 
@@ -185,11 +185,11 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
 
   const renderHeader = () => {
     return (
-        <View>
-            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-                <Ionicons name='close-sharp' size={38} color={'white'} />
-            </TouchableOpacity>
-        </View>
+      <View>
+        <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+          <Ionicons name='close-sharp' size={38} color='white' />
+        </TouchableOpacity>
+      </View>
     )
   }
 
@@ -222,26 +222,25 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
       <TitleWithBack onPress={() => navigation.goBack()} />
       <View style={styles.profileContainer}>
         <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Image
-              source={{
-                uri: userData
-                  ? userData.userImg || defaultUri
-                  : defaultUri
-              }}
-              style={styles.profilePic}
-            />
+          <Image
+            source={{
+              uri: userData
+                ? userData.userImg || defaultUri
+                : defaultUri
+            }}
+            style={styles.profilePic}
+          />
         </TouchableOpacity>
         <Modal
-            visible={modalVisible}
-            transparent={true}
-            onRequestClose={() => setModalVisible(false)}
-            statusBarTranslucent={true}
-            transparent={true}
+          visible={modalVisible}
+          transparent
+          onRequestClose={() => setModalVisible(false)}
+          statusBarTranslucent
         >
-                <ImageViewer
-                    imageUrls={images}
-                    renderHeader={renderHeader}
-                />
+          <ImageViewer
+            imageUrls={images}
+            renderHeader={renderHeader}
+          />
         </Modal>
         <View style={styles.profileInfo}>
           <Text style={styles.name}>

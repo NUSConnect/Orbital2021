@@ -105,12 +105,12 @@ const PostCardView = ({
       console.log('Like')
       setUserLiked(true)
       firebase.firestore().collection('users').doc(item.userId).get()
-            .then((doc) => {
-              console.log('Checking if pushToken available')
-              if (doc.data().pushToken != null) {
-                sendPushNotification(doc.data().pushToken.data, currentUserName, 'Liked your post!')
-              }
-            })
+        .then((doc) => {
+          console.log('Checking if pushToken available')
+          if (doc.data().pushToken != null) {
+            sendPushNotification(doc.data().pushToken.data, currentUserName, 'Liked your post!')
+          }
+        })
     }
   }
 
