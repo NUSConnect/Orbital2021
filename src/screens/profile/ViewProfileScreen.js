@@ -15,9 +15,11 @@ import PostCard from '../../components/PostCard'
 import TitleWithBack from '../../components/TitleWithBack'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import { Ionicons } from 'react-native-vector-icons'
+import { sendPushNotification } from '../../api/notifications'
 
 const ViewProfileScreen = ({ navigation, route, onPress }) => {
   const currentUserId = firebase.auth().currentUser.uid
+  const currentUserName = firebase.auth().currentUser.displayName
   const defaultUri =
         'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
   const [userData, setUserData] = useState(null)
@@ -80,6 +82,14 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         .doc(item.userId)
         .set({})
       setFollowing(true)
+
+      firebase.firestore().collection('users').doc(item.userId).get()
+          .then((doc) => {
+            console.log('Checking if pushToken available')
+            if (doc.data().pushToken != null) {
+              sendPushNotification(doc.data().pushToken.data, currentUserName, 'is now following you!')
+            }
+          })
     }
   }
 
