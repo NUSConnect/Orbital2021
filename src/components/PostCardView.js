@@ -18,6 +18,7 @@ import {
   UserName
 } from '../styles/FeedStyles'
 import ProgressiveImage from './ProgressiveImage'
+import DoubleTap from './DoubleTap'
 
 const PostCardView = ({
   route,
@@ -111,67 +112,69 @@ const PostCardView = ({
   }, [])
 
   return (
-    <Card key={item.id}>
-      <View style={styles.container}>
-        <TouchableOpacity
-          onPress={() => onViewProfile(currentUserId)}
-          style={styles.user}
-          testID='user'
-        >
-          <UserInfo>
-            <UserImg
-              source={{
-                uri: userData
-                  ? userData.userImg ||
+    <DoubleTap onDoubleTap={likePost}>
+      <Card key={item.id}>
+        <View style={styles.container}>
+          <TouchableOpacity
+            onPress={() => onViewProfile(currentUserId)}
+            style={styles.user}
+            testID='user'
+          >
+            <UserInfo>
+              <UserImg
+                source={{
+                  uri: userData
+                    ? userData.userImg ||
                                       'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
-                  : 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
-              }}
+                    : 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
+                }}
+              />
+              <UserInfoText>
+                <UserName>
+                  {userData
+                    ? userData.name || 'Anonymous User'
+                    : 'Anonymous User'}
+                </UserName>
+                <PostTime testID='time'>
+                  {moment(item.postTime.toDate()).fromNow()}
+                </PostTime>
+              </UserInfoText>
+            </UserInfo>
+          </TouchableOpacity>
+        </View>
+        <PostText testID='post'>{item.post}</PostText>
+        {item.postImg != null
+          ? (
+            <ProgressiveImage
+              defaultImageSource={require('../assets/default-img.jpg')}
+              source={{ uri: item.postImg }}
+              style={{ width: '100%', height: 350 }}
+              resizeMode='contain'
+              testID='image'
             />
-            <UserInfoText>
-              <UserName>
-                {userData
-                  ? userData.name || 'Anonymous User'
-                  : 'Anonymous User'}
-              </UserName>
-              <PostTime testID='time'>
-                {moment(item.postTime.toDate()).fromNow()}
-              </PostTime>
-            </UserInfoText>
-          </UserInfo>
-        </TouchableOpacity>
-      </View>
-      <PostText testID='post'>{item.post}</PostText>
-      {item.postImg != null
-        ? (
-          <ProgressiveImage
-            defaultImageSource={require('../assets/default-img.jpg')}
-            source={{ uri: item.postImg }}
-            style={{ width: '100%', height: 350 }}
-            resizeMode='contain'
-            testID='image'
-          />
-          )
-        : (
-          <Divider />
-          )}
+            )
+          : (
+            <Divider />
+            )}
 
-      <InteractionWrapper>
-        <Interaction onPress={likePost}>
-          <Ionicons
-            name={userLiked ? 'heart' : 'heart-outline'}
-            size={25}
-            color={userLiked ? '#dc143c' : '#333'}
-          />
-          <InteractionText>
-            {item.likeCount === 0
-              ? 'Like'
-              : item.likeCount === 1
-                ? '1 Like'
-                : item.likeCount + ' Likes'}
-          </InteractionText>
-        </Interaction>
-      </InteractionWrapper>
-    </Card>
+        <InteractionWrapper>
+          <Interaction onPress={likePost}>
+            <Ionicons
+              name={userLiked ? 'heart' : 'heart-outline'}
+              size={25}
+              color={userLiked ? '#dc143c' : '#333'}
+            />
+            <InteractionText>
+              {item.likeCount === 0
+                ? 'Like'
+                : item.likeCount === 1
+                  ? '1 Like'
+                  : item.likeCount + ' Likes'}
+            </InteractionText>
+          </Interaction>
+        </InteractionWrapper>
+      </Card>
+    </DoubleTap>
   )
 }
 
