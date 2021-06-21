@@ -103,6 +103,8 @@ const GroupInfoScreen = ({ navigation, route, onPress }) => {
             visible={modalVisible}
             transparent={true}
             onRequestClose={() => setModalVisible(false)}
+            statusBarTranslucent={true}
+            transparent={true}
         >
             <ImageViewer
                 imageUrls={images}
@@ -230,11 +232,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 10,
-    paddingLeft: 10
+    paddingLeft: 10,
+    width: '95%'
   },
   button: {
     height: 40,
-    width: 120,
     backgroundColor: '#87cefa',
     borderRadius: 20,
     marginBottom: 10,
@@ -258,10 +260,10 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     paddingLeft: 10,
-    paddingTop: 10
+    paddingTop: 50
   },
   editButton: {
-    paddingTop: 10,
+    paddingTop: 50,
     paddingRight: 6
   }
 })
