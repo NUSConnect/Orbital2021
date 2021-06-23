@@ -23,6 +23,8 @@ export default class UpdateEmailScreen extends React.Component {
 
     submitEmail = async (navigator, email) => {
       const list = []
+      const currentUser = firebase.auth().currentUser
+      const currentUserId = firebase.auth().currentUser.uid
 
       if (firebase.auth().currentUser.email === email) {
         Alert.alert('This is your current email!', 'Please choose another email address.')
@@ -53,9 +55,15 @@ export default class UpdateEmailScreen extends React.Component {
         .auth()
         .currentUser.updateEmail(email)
         .then(() => {
+          firebase
+            .firestore()
+            .collection('users')
+            .doc(currentUserId)
+            .update({ email: email })
+          currentUser.sendEmailVerification()
           Alert.alert(
             'Email successfully changed',
-            'Please login again',
+            'Please verify your email and login again',
             [
               {
                 text: 'OK',
