@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Ionicons } from 'react-native-vector-icons'
 
-export default function HomeTopTab ({ color, style, onPress, onPress2, icon, ...props}) {
+export default function HomeTopTab ({ color, style, onPress, onPress2, icon, ...props }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity
