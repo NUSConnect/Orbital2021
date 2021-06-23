@@ -315,6 +315,7 @@ export default class HomePostsScreen extends React.Component {
                 onPress={() => navigation.navigate('MessagesScreen')}
                 onPress2={() => navigation.navigate('AddPostScreen')}
                 icon='chatbubbles-outline'
+                color='#79D2E6'
               />
               )
             : (
@@ -322,6 +323,7 @@ export default class HomePostsScreen extends React.Component {
                 onPress={() => navigation.navigate('MessagesScreen')}
                 onPress2={() => navigation.navigate('AddPostScreen')}
                 icon='alert-circle-outline'
+                color='#ff7f50'
               />
               )}
           <FlatList
