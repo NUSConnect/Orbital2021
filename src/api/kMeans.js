@@ -1,27 +1,27 @@
-function defaultVectorFunc (vector) {
+export function defaultVectorFunc (vector) {
   return vector
 }
 
-function getNumDimensions (data, vectorFunc) {
+export function getNumDimensions (data, vectorFunc) {
   if (data[0]) {
     return vectorFunc(data[0]).length
   }
 }
 
-function getNumClusters (numPoints) {
+export function getNumClusters (numPoints) {
   return Math.ceil(Math.sqrt(numPoints / 2))
 }
 
-function initMinMax (numDimensions) {
+export function initMinMax (numDimensions) {
   const result = { minValue: [], maxValue: [] }
   for (let i = 0; i < numDimensions; i++) {
     result.minValue.push(-10000)
-    result.minValue.push(10000)
+    result.maxValue.push(10000)
   }
   return result
 }
 
-function getMinMax (data, numDimensions, vectorFunc) {
+export function getMinMax (data, numDimensions, vectorFunc) {
   const minMaxValues = initMinMax(numDimensions)
   data.forEach(vector => {
     for (let i = 0; i < numDimensions; i++) {
@@ -36,7 +36,7 @@ function getMinMax (data, numDimensions, vectorFunc) {
   return minMaxValues
 }
 
-function getMean (data, index, vectorFunc) {
+export function getMean (data, index, vectorFunc) {
   let sum = 0
   const total = data.length
   if (total === 0) return 0
@@ -46,7 +46,7 @@ function getMean (data, index, vectorFunc) {
   return sum / total
 }
 
-function updateMean (cluster, vectorFunc) {
+export function updateMean (cluster, vectorFunc) {
   const newMean = []
   for (let i = 0; i < cluster.mean.length; i++) {
     newMean.push(getMean(cluster.data, i, vectorFunc))
@@ -54,13 +54,13 @@ function updateMean (cluster, vectorFunc) {
   cluster.mean = newMean
 }
 
-function updateMeans (clusters, vectorFunc) {
+export function updateMeans (clusters, vectorFunc) {
   clusters.forEach(cluster => {
     updateMean(cluster, vectorFunc)
   })
 }
 
-function assignDataToClusters (data, clusters, distanceFunc, vectorFunc) {
+export function assignDataToClusters (data, clusters, distanceFunc, vectorFunc) {
   data.forEach(vector => {
     const cluster = findClosestCluster(vectorFunc(vector), clusters, distanceFunc)
     if (!cluster.data) cluster.data = []
@@ -68,10 +68,10 @@ function assignDataToClusters (data, clusters, distanceFunc, vectorFunc) {
   })
 }
 
-function findClosestCluster (vector, clusters, distanceFunc) {
+export function findClosestCluster (vector, clusters, distanceFunc) {
   let closest = {}
   let minDistance = 10000000
-  clusters.forEach(function (cluster) {
+  clusters.forEach(cluster => {
     const distance = distanceFunc(cluster.mean, vector)
     if (distance < minDistance) {
       minDistance = distance
@@ -81,13 +81,13 @@ function findClosestCluster (vector, clusters, distanceFunc) {
   return closest
 }
 
-function initClustersData (clusters) {
+export function initClustersData (clusters) {
   clusters.forEach(cluster => {
     cluster.data = []
   })
 }
 
-function createClusters (means) {
+export function createClusters (means) {
   const clusters = []
 
   means.forEach(mean => {
@@ -97,7 +97,7 @@ function createClusters (means) {
   return clusters
 }
 
-function createRandomMeans (numDimensions, numClusters, minMaxValues) {
+export function createRandomMeans (numDimensions, numClusters, minMaxValues) {
   const means = []
   for (let i = 0; i < numClusters; i++) {
     means.push(createRandomPoint(numDimensions, minMaxValues.minValue[i], minMaxValues.maxValue[i]))
@@ -105,7 +105,7 @@ function createRandomMeans (numDimensions, numClusters, minMaxValues) {
   return means
 }
 
-function createRandomPoint (numDimensions, minValue, maxValue) {
+export function createRandomPoint (numDimensions, minValue, maxValue) {
   const point = []
   for (let i = 0; i < numDimensions; i++) {
     point.push(random(minValue, maxValue))
@@ -113,11 +113,11 @@ function createRandomPoint (numDimensions, minValue, maxValue) {
   return point
 }
 
-function random (low, high) {
+export function random (low, high) {
   return low + Math.random() * (high - low)
 }
 
-function getDistance (vector1, vector2) {
+export function getDistance (vector1, vector2) {
   let sum = 0
   for (let i = 0; i < vector1.length; i++) {
     sum = sum + Math.pow(vector1[i] - vector2[i], 2)
@@ -125,8 +125,8 @@ function getDistance (vector1, vector2) {
   return Math.sqrt(sum)
 }
 
-function getClustersWithParams (data, numberOfDimensions, numberOfClusters, distanceFunc, vectorFunc, minMaxValues, maxIterations) {
-  const means = createRandomMeans(numberOfDimensions, numberOfClusters, minMaxValues)
+export function getClustersWithParams (data, numDimensions, numClusters, distanceFunc, vectorFunc, minMaxValues, maxIterations) {
+  const means = createRandomMeans(numDimensions, numClusters, minMaxValues)
   const clusters = createClusters(means)
   let numIterations = 0
   const iterations = []
