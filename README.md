@@ -44,6 +44,7 @@ We plan to make it a cross-platform mobile app, which users can download and reg
 
 [User's Guide](https://docs.google.com/document/d/1iCbU7dv6kQtr8h0xFe01NmVnVUM1NtYrTSJWbmPHA-I/edit?usp=sharing)          
 [Code Style Guide](https://github.com/benedictchuajj/Orbital2021/wiki/Portal.io-Code-Style-Guide)             
+[Exploratory Testing Logs](https://docs.google.com/spreadsheets/d/1KCm0rCN7O_AofAddP4x4V_NgiDMdbO97xRt5aXBQ4oQ/edit#gid=0)           
 [Application Flow Diagrams](https://docs.google.com/presentation/d/10Vce5bq84XKnBTnVDkMRTIb1metLHhhEP1AIHgtc38s/edit#slide=id.p)          
 [Git Branching Workflow](https://github.com/benedictchuajj/Orbital2021/wiki/Portal.io-Branching-Workflow)
 
