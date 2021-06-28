@@ -1,14 +1,13 @@
 import * as React from 'react'
 import { Text, View } from 'react-native'
-import { trendingScore } from '../../api/ranking'
 import BackButton from '../../components/BackButton'
+import { getClusters } from '../../api/kMeans'
 
 export default function DummyScreen ({ navigation }) {
-  console.log(trendingScore(100, 100, 40000))
-  console.log(trendingScore(100, 90, 40000))
-  // console.log(newScore(10));
-  // console.log(newScore(100));
-  // console.log(newScore(100));
+  const data = [[1, 2, 1, 2], [3, 4, 3, 4], [10, 11, 10, 11], [12, 13, 12, 13]]
+  const clusters = getClusters(data)
+  console.log(clusters[0])
+  console.log(clusters[1])
   return (
     <View
       style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
