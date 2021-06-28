@@ -51,7 +51,7 @@ We plan to make it a cross-platform mobile app, which users can download and reg
 
 Portal.io has been deployed for users to have a sneak preview of what the app entails. We will update the deployment as each milestone arrives so do keep an eye out for them! 
 
-Simply download Expo Go on your mobile devices and scan the QR code blow to test out our app!
+Simply download Expo Go on your mobile devices, create an Expo account and scan the QR code blow to test out our app!
 
 Note: iOS users will not be able to run the application out of the box due to restrictions on Expo put in place by Apple. If you want to test out the app, please contact us on Telegram for access.
 
