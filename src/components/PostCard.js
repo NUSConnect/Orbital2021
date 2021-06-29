@@ -119,7 +119,7 @@ const PostCard = ({
         .update({ likeCount: item.likeCount })
       console.log('Like')
       setUserLiked(true)
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
 
       firebase.firestore().collection('users').doc(item.userId).get()
         .then((doc) => {
