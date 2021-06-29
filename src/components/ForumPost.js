@@ -110,6 +110,7 @@ const ForumPost = ({
       .update({ votes: item.votes })
     setUpvoted(false)
     setDownvoted(true)
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
   }
 
   const unVote = async () => {
