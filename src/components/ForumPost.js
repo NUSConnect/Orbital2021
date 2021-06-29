@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { MaterialIcons } from 'react-native-vector-icons'
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu'
+import * as Haptics from 'expo-haptics'
 
 const ForumPost = ({
   route,
@@ -82,6 +83,7 @@ const ForumPost = ({
       .update({ votes: item.votes })
     setUpvoted(true)
     setDownvoted(false)
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
   }
 
   const downVote = async () => {
