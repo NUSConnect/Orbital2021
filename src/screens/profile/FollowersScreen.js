@@ -21,7 +21,7 @@ export default function FollowersScreen ({ props, navigation }) {
   const [filtered, setFiltered] = useState(false)
 
   const getAllFollowers = async () => {
-    const users = []
+    const followersId = []
 
     await firebase
       .firestore()
@@ -31,25 +31,33 @@ export default function FollowersScreen ({ props, navigation }) {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(documentSnapshot => {
-          firebase
-            .firestore()
-            .collection('users')
-            .doc(documentSnapshot.id)
-            .get()
-            .then(doc => {
-              const { name, bio, email, createdAt } = doc.data()
-              users.push({
-                userId: doc.id,
-                name,
-                bio,
-                email,
-                createdAt: createdAt
-              })
-              users.sort(sortByName)
-              setMasterDataSource(users)
-            })
+          followersId.push(documentSnapshot.id)
         })
       })
+
+    const users = []
+
+    for (let i = 0; i < followersId.length; i++) {
+      const userId = followersId[i]
+
+      await firebase
+        .firestore()
+        .collection('users')
+        .doc(userId)
+        .get()
+        .then(doc => {
+          const { name, bio, email, createdAt } = doc.data()
+          users.push({
+            userId: doc.id,
+            name,
+            bio,
+            email,
+            createdAt: createdAt
+          })
+        })
+    }
+    users.sort(sortByName)
+    setMasterDataSource(users)
     setLoading(false)
   }
 
