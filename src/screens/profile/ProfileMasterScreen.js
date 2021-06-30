@@ -24,6 +24,7 @@ import UpdateEmailScreen from './UpdateEmailScreen'
 import EditPostScreen from '../home/EditPostScreen'
 import FollowingScreen from './FollowingScreen'
 import FollowersScreen from './FollowersScreen'
+import ViewProfileScreen from './ViewProfileScreen'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -71,6 +72,7 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='EditPostScreen' component={EditPostScreen} />
         <Stack.Screen name='FollowingScreen' component={FollowingScreen} />
         <Stack.Screen name='FollowersScreen' component={FollowersScreen} />
+        <Stack.Screen name='ViewProfileScreen' component={ViewProfileScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )

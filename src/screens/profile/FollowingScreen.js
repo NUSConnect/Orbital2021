@@ -46,14 +46,12 @@ export default function FollowingScreen ({ props, navigation }) {
                   email,
                   createdAt: createdAt
                 })
-                console.log(users)
               })
           }
         })
       })
     users.sort(sortByName)
     setMasterDataSource(users)
-    console.log(users)
     setLoading(false)
   }
 

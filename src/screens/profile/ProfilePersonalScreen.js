@@ -149,13 +149,13 @@ export default class ProfilePersonalScreen extends React.Component {
                 <View style={styles.following}>
                   <View style={styles.innerFollowing}>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('FollowersScreen')}>
-                      <Text style={styles.name}> {this.state.followers} </Text>
+                      <Text style={styles.followWord}> {this.state.followers} </Text>
                     </TouchableOpacity>
                     <Text style={styles.userInfo}> {this.state.followers === 1 ? 'Follower' : 'Followers'} </Text>
                   </View>
                   <View style={styles.innerFollowing}>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('FollowingScreen')}>
-                      <Text style={styles.name}> {this.state.following} </Text>
+                      <Text style={styles.followWord}> {this.state.following} </Text>
                     </TouchableOpacity>
                     <Text style={styles.userInfo}> Following </Text>
                   </View>
@@ -272,5 +272,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingRight: 25,
     paddingLeft: 25
+  },
+  followWord: {
+    fontSize: 20,
+    color: '#000000',
+    fontWeight: '600'
   }
 })
