@@ -31,24 +31,22 @@ export default function FollowersScreen ({ props, navigation }) {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(documentSnapshot => {
-          if (documentSnapshot.id !== currentUserId) {
-            firebase
-              .firestore()
-              .collection('users')
-              .doc(documentSnapshot.id)
-              .get()
-              .then(doc => {
-                const { name, bio, email, createdAt } = doc.data()
-                users.push({
-                  userId: doc.id,
-                  name,
-                  bio,
-                  email,
-                  createdAt: createdAt
-                })
-                console.log(users)
+          firebase
+            .firestore()
+            .collection('users')
+            .doc(documentSnapshot.id)
+            .get()
+            .then(doc => {
+              const { name, bio, email, createdAt } = doc.data()
+              users.push({
+                userId: doc.id,
+                name,
+                bio,
+                email,
+                createdAt: createdAt
               })
-          }
+              console.log(users)
+            })
         })
       })
     users.sort(sortByName)
