@@ -23,7 +23,7 @@ export default function FollowersScreen ({ props, navigation }) {
   const getAllFollowers = async () => {
     const users = []
 
-    firebase
+    await firebase
       .firestore()
       .collection('users')
       .doc(currentUserId)
@@ -45,7 +45,7 @@ export default function FollowersScreen ({ props, navigation }) {
                 email,
                 createdAt: createdAt
               })
-              console.log(users)
+              // console.log(users)
             })
         })
       })

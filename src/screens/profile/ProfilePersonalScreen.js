@@ -147,17 +147,17 @@ export default class ProfilePersonalScreen extends React.Component {
                   {this.state.bio}
                 </Text>
                 <View style={styles.following}>
-                  <View style={styles.innerFollowing}>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('FollowersScreen')}>
+                  <View>
+                    <TouchableOpacity style={styles.innerFollowing} onPress={() => this.props.navigation.navigate('FollowersScreen')}>
                       <Text style={styles.followWord}> {this.state.followers} </Text>
+                      <Text style={styles.userInfo}> {this.state.followers === 1 ? 'Follower' : 'Followers'} </Text>
                     </TouchableOpacity>
-                    <Text style={styles.userInfo}> {this.state.followers === 1 ? 'Follower' : 'Followers'} </Text>
                   </View>
-                  <View style={styles.innerFollowing}>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('FollowingScreen')}>
+                  <View>
+                    <TouchableOpacity style={styles.innerFollowing} onPress={() => this.props.navigation.navigate('FollowingScreen')}>
                       <Text style={styles.followWord}> {this.state.following} </Text>
+                      <Text style={styles.userInfo}> Following </Text>
                     </TouchableOpacity>
-                    <Text style={styles.userInfo}> Following </Text>
                   </View>
                 </View>
               </View>

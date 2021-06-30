@@ -23,7 +23,7 @@ export default function FollowingScreen ({ props, navigation }) {
   const getAllFollowing = async () => {
     const users = []
 
-    firebase
+    await firebase
       .firestore()
       .collection('users')
       .doc(currentUserId)
@@ -50,6 +50,7 @@ export default function FollowingScreen ({ props, navigation }) {
           }
         })
       })
+    console.log(users)
     users.sort(sortByName)
     setMasterDataSource(users)
     setLoading(false)
