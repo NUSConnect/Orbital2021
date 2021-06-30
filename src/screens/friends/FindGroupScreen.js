@@ -4,7 +4,7 @@ import { Alert, Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'rea
 import { MaterialCommunityIcons } from 'react-native-vector-icons'
 
 const DeviceWidth = Dimensions.get('window').width
-const squareSide = 0.4 * DeviceWidth
+const squareSide = 0.38 * DeviceWidth
 const groupThreshold = 2
 
 export default function FindGroupScreen ({ navigation }) {
@@ -150,46 +150,52 @@ export default function FindGroupScreen ({ navigation }) {
       <View
         style={{
           flexDirection: 'row',
-          backgroundColor: 'orange'
         }}
       >
-        <View>
-          <TouchableOpacity style={styles.square1} onPress={() => addToCategory('Sports')}>
+        <View style={{ marginBottom: 50 }}>
+          <TouchableOpacity style={styles.circle} onPress={() => addToCategory('Sports')}>
             <MaterialCommunityIcons
               name='run'
-              size={130}
+              size={80}
               style={styles.icon}
             />
-            <Text> Sports </Text>
+            <Text style={styles.name}> Sports </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.square2} onPress={() => addToCategory('Music')}>
+          <View style={styles.space} />
+          <TouchableOpacity style={styles.circle} onPress={() => addToCategory('Music')}>
             <MaterialCommunityIcons
               name='account-music'
-              size={130}
+              size={80}
               style={styles.icon}
             />
-            <Text> Music </Text>
+            <Text style={styles.name}> Music </Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.space} />
         <View>
-          <TouchableOpacity style={styles.square1} onPress={() => addToCategory('Study')}>
+          <TouchableOpacity style={styles.circle} onPress={() => addToCategory('Study')}>
             <MaterialCommunityIcons
               name='book-open'
-              size={130}
+              size={80}
               style={styles.icon}
             />
-            <Text> Study </Text>
+            <Text style={styles.name}> Study </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.square2} onPress={() => addToCategory('For Fun')}>
+          <View style={styles.space} />
+          <TouchableOpacity style={styles.circle} onPress={() => addToCategory('For Fun')}>
             <MaterialCommunityIcons
               name='controller-classic'
-              size={130}
+              size={80}
               style={styles.icon}
             />
-            <Text> For Fun </Text>
+            <Text style={styles.name}> For Fun </Text>
           </TouchableOpacity>
         </View>
       </View>
+      <Text style={styles.header}> Nothing suits you? </Text>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MatchMeScreen')}>
+        <Text style={styles.buttonText}> Match Me! </Text>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -201,28 +207,39 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   header: {
-    fontSize: 20,
+    fontSize: 24,
     marginBottom: 10
   },
-  square1: {
+  circle: {
     width: squareSide,
     height: squareSide,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'powderblue',
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 10
+    backgroundColor: 'white',
+    borderColor: 'black',
+    borderWidth: 2,
+    borderRadius: squareSide / 2
   },
-  square2: {
-    width: squareSide,
-    height: squareSide,
-    justifyContent: 'center',
+  space: {
+    height: DeviceWidth * 0.02,
+    width: DeviceWidth * 0.03
+  },
+  name: {
+    fontSize: 20
+  },
+  button: {
+    width: DeviceWidth * 0.8,
+    height: squareSide / 2,
     alignItems: 'center',
-    backgroundColor: 'skyblue',
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 10
+    justifyContent: 'center',
+    backgroundColor: 'darkorange',
+    borderRadius: 25,
   },
-  icon: {}
+  buttonText: {
+    fontSize: 30,
+    color: 'white'
+  },
+  icon: {
+    color: 'orange'
+  }
 })
