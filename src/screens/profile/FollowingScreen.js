@@ -46,13 +46,12 @@ export default function FollowingScreen ({ props, navigation }) {
                   email,
                   createdAt: createdAt
                 })
+                users.sort(sortByName)
+                setMasterDataSource(users)
               })
           }
         })
       })
-    console.log(users)
-    users.sort(sortByName)
-    setMasterDataSource(users)
     setLoading(false)
   }
 

@@ -45,13 +45,11 @@ export default function FollowersScreen ({ props, navigation }) {
                 email,
                 createdAt: createdAt
               })
-              // console.log(users)
+              users.sort(sortByName)
+              setMasterDataSource(users)
             })
         })
       })
-    users.sort(sortByName)
-    setMasterDataSource(users)
-    console.log(users)
     setLoading(false)
   }
 
