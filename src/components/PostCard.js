@@ -20,6 +20,7 @@ import {
 import ProgressiveImage from './ProgressiveImage'
 import DoubleTap from './DoubleTap'
 import { sendPushNotification } from '../api/notifications'
+import * as Haptics from 'expo-haptics'
 
 const PostCard = ({
   route,
@@ -118,6 +119,7 @@ const PostCard = ({
         .update({ likeCount: item.likeCount })
       console.log('Like')
       setUserLiked(true)
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
 
       firebase.firestore().collection('users').doc(item.userId).get()
         .then((doc) => {
