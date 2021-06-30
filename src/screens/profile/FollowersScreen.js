@@ -20,14 +20,14 @@ export default function FollowersScreen ({ props, navigation }) {
   const [loading, setLoading] = useState(true)
   const [filtered, setFiltered] = useState(false)
 
-  const getAllFollowing = async () => {
+  const getAllFollowers = async () => {
     const users = []
 
     firebase
       .firestore()
       .collection('users')
       .doc(currentUserId)
-      .collection('following')
+      .collection('followers')
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(documentSnapshot => {
@@ -104,7 +104,7 @@ export default function FollowersScreen ({ props, navigation }) {
   }
 
   useEffect(() => {
-    getAllFollowing()
+    getAllFollowers()
   }, [])
 
   if (loading) {
