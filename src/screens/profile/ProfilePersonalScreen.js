@@ -22,7 +22,9 @@ export default class ProfilePersonalScreen extends React.Component {
       status: '',
       imageURL: '',
       bio: '',
-      major: null
+      major: null,
+      following: 0,
+      followers: 0
     };
 
     static navigationOptions = {
@@ -85,8 +87,32 @@ export default class ProfilePersonalScreen extends React.Component {
         })
     };
 
+    getFollowing = async () => {
+      await firebase
+        .firestore()
+        .collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .collection('following')
+        .onSnapshot(querySnapshot => {
+          this.setState({ following: querySnapshot.size - 1 })
+        })
+    }
+
+    getFollowers = async () => {
+      await firebase
+        .firestore()
+        .collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .collection('followers')
+        .onSnapshot(querySnapshot => {
+          this.setState({ followers: querySnapshot.size })
+        })
+    }
+
     componentDidMount () {
       this.getUser()
+      this.getFollowing()
+      this.getFollowers()
       this._unsubscribe = this.props.navigation.addListener('focus', () => this.getUser())
     }
 
@@ -120,6 +146,20 @@ export default class ProfilePersonalScreen extends React.Component {
                 <Text style={styles.userInfo}>
                   {this.state.bio}
                 </Text>
+                <View style={styles.following}>
+                  <View style={styles.innerFollowing}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('FollowersScreen')}>
+                      <Text style={styles.name}> {this.state.followers} </Text>
+                    </TouchableOpacity>
+                    <Text style={styles.userInfo}> {this.state.followers === 1 ? 'Follower' : 'Followers'} </Text>
+                  </View>
+                  <View style={styles.innerFollowing}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('FollowingScreen')}>
+                      <Text style={styles.name}> {this.state.following} </Text>
+                    </TouchableOpacity>
+                    <Text style={styles.userInfo}> Following </Text>
+                  </View>
+                </View>
               </View>
             </View>
 
@@ -224,5 +264,13 @@ const styles = StyleSheet.create({
   },
   logout: {
     backgroundColor: '#add8e6'
+  },
+  following: {
+    flexDirection: 'row'
+  },
+  innerFollowing: {
+    alignItems: 'center',
+    paddingRight: 25,
+    paddingLeft: 25
   }
 })

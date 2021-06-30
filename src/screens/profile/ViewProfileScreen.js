@@ -72,6 +72,13 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         .collection('following')
         .doc(item.userId)
         .delete()
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(item.userId)
+        .collection('followers')
+        .doc(currentUserId)
+        .delete()
       setFollowing(false)
     } else {
       firebase
@@ -80,6 +87,13 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         .doc(currentUserId)
         .collection('following')
         .doc(item.userId)
+        .set({})
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(item.userId)
+        .collection('followers')
+        .doc(currentUserId)
         .set({})
       setFollowing(true)
 
