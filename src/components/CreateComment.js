@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
-import { Ionicons } from 'react-native-vector-icons'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const CreateComment = ({ onPress, setComment, comment, setIsFocused, isFocused }) => {
   const textInputRef = React.useRef()
