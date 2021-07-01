@@ -112,7 +112,10 @@ it('getDistance returns the correct Euclidean distance', () => {
 
 it('getClusters returns the correct info', () => {
   const data = [{ vector: [1, 2, 1, 2] }, { vector: [3, 4, 3, 4] }, { vector: [10, 11, 10, 11] }, { vector: [12, 13, 12, 13] }]
-  expect(kMeans.getClusters(data, 2)).toEqual([{ data: [{ vector: [10, 11, 10, 11] },
-  { vector: [12, 13, 12, 13] }], mean: [11, 12, 11, 12] }, { data: [{ vector: [1, 2, 1, 2] }, { vector: [3, 4, 3, 4] }], mean: [2, 3, 2, 3] }]
+  expect(kMeans.getClusters(data, 2)).toEqual([{
+    data: [{ vector: [10, 11, 10, 11] },
+      { vector: [12, 13, 12, 13] }],
+    mean: [11, 12, 11, 12]
+  }, { data: [{ vector: [1, 2, 1, 2] }, { vector: [3, 4, 3, 4] }], mean: [2, 3, 2, 3] }]
   )
 })
