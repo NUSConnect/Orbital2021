@@ -1,7 +1,7 @@
 import * as firebase from 'firebase'
 import { getClusters } from './kMeans'
 
-export async function formClusters() {
+export async function formClusters () {
   const data = []
 
   await firebase
@@ -21,17 +21,17 @@ export async function formClusters() {
   console.log('New Test: # points = ', data.length)
 
   const clusters = getClusters(data)
-  console.log(clusters);
+  console.log(clusters)
 
   const flattenHelper = (clusters) => {
-    if (clusters.length == 0) {
-        return []
+    if (clusters.length === 0) {
+      return []
     } else {
-        const newClusters = clusters.flatMap(cluster => getClusters(cluster.data))
-        const acceptableClusters = newClusters.filter(cluster => cluster.data.length <= 5)
-        const incorrectClusters = newClusters.filter(cluster => cluster.data.length > 5)
+      const newClusters = clusters.flatMap(cluster => getClusters(cluster.data))
+      const acceptableClusters = newClusters.filter(cluster => cluster.data.length <= 5)
+      const incorrectClusters = newClusters.filter(cluster => cluster.data.length > 5)
 
-        return acceptableClusters.concat(flattenHelper(incorrectClusters))
+      return acceptableClusters.concat(flattenHelper(incorrectClusters))
     }
   }
 
@@ -44,12 +44,11 @@ export async function formClusters() {
     return acceptableClusters.concat(correctedClusters)
   }
 
-  const flattenedClusters = flattenClusters(clusters);
-
+  const flattenedClusters = flattenClusters(clusters)
 
   const processedClusters = flattenedClusters.filter(cluster => cluster.data.length > 1)
 
-  const rejectedClusters = flattenedClusters.filter(cluster => cluster.data.length == 1)
+  const rejectedClusters = flattenedClusters.filter(cluster => cluster.data.length === 1)
 
   for (let i = 0; i < processedClusters.length; i++) {
     const clusterSize = processedClusters[i].data.length

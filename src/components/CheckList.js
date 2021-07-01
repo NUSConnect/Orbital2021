@@ -1,101 +1,95 @@
-import React from "react"
+import React from 'react'
 import {
   StyleSheet,
   Text,
   View,
-  Button,
-  TextInput,
   CheckBox,
   Switch,
-  TouchableOpacity,
-  LayoutAnimation,
-  Platform,
-  UIManager,
-  ScrollView
-} from "react-native"
+  Platform
+} from 'react-native'
 
 export default class CheckList extends React.Component {
-  constructor(props) {
-    super();
-    this.state = { value: props.item, checked: false };
+  constructor (props) {
+    super()
+    this.state = { value: props.item, checked: false }
   }
 
   componentDidMount () {
     this.setState({ checked: this.props.checked })
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.item !== this.props.item)
-      this.setState({ ...this.state, value: nextProps.item, checked: false });
+  UNSAFE_componentWillReceiveProps (nextProps) {
+    if (nextProps.item !== this.props.item) { this.setState({ ...this.state, value: nextProps.item, checked: false }) }
   }
-  _handleCheckBoxClick = e => {
+
+  handleCheckBoxClick = e => {
     this.props.selectItem(this.state.checked, this.props.item)
     this.setState({
       checked: !this.state.checked
-    });
+    })
   };
 
-  render() {
-    /** RENDER  **/
-    let text = this.state.checked ? (
-      <Text>{this.state.value}</Text>
-    ) : (
-      this.state.value
-    );
-    let checked = this.state.checked ? "checked" : "";
+  render () {
+    const text = this.state.checked
+      ? (
+        <Text>{this.state.value}</Text>
+        )
+      : (
+          this.state.value
+        )
     return (
-      <View id="list" style={styles.widgetUl}>
+      <View id='list' style={styles.widgetUl}>
         <View
-          className="main"
+          className='main'
           style={styles.main}
-          style={{ flex: 11, flexBasis: 250, flexDirection: "row" }}
         >
-          {Platform.OS === "android" ? (
-            <CheckBox
-              style={{ marginLeft: 5 }}
-              onValueChange={this._handleCheckBoxClick}
-              value={this.state.checked}
-            />
-          ) : (
-            <Switch
-              onValueChange={this._handleCheckBoxClick}
-              value={this.state.checked}
-            />
-          )}
+          {Platform.OS === 'android'
+            ? (
+              <CheckBox
+                style={{ marginLeft: 5 }}
+                onValueChange={this.handleCheckBoxClick}
+                value={this.state.checked}
+              />
+              )
+            : (
+              <Switch
+                onValueChange={this.handleCheckBoxClick}
+                value={this.state.checked}
+              />
+              )}
 
           <Text style={styles.textBd}>{text}</Text>
         </View>
       </View>
-    );
+    )
   }
-  componentWillUnmount() {}
+
+  componentWillUnmount () {}
 }
 
 const styles = StyleSheet.create({
   widgetUlX: {
     padding: 0,
     margin: 0,
-    display: "flex",
-    justifyContent: "space-around",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "stretch",
-    alignItems: "center"
+    display: 'flex',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center'
   },
   widgetUl: {
     paddingVertical: 8,
     width: '50%',
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "stretch",
-    alignItems: "center"
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   textBd: {
     fontSize: 20
   },
   main: {
-    flex: 1,
+    flex: 11,
     flexBasis: 250,
-    padding: 10
-  },
+    flexDirection: 'row'
+  }
 })

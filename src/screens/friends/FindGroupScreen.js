@@ -149,11 +149,11 @@ export default function FindGroupScreen ({ navigation }) {
     await firebase.firestore().collection('matchingPool').doc(currentUserId).get()
       .then((doc) => {
         if (doc.exists) {
-          inPool = true;
+          inPool = true
         }
       })
 
-    if ( inPool ) {
+    if (inPool) {
       Alert.alert(
         'You already have an existing matching request',
         'Do you want to delete it?',
@@ -196,7 +196,7 @@ export default function FindGroupScreen ({ navigation }) {
           ],
           { cancelable: false }
         )
-        })
+      })
       .catch((e) => console.log('Error deleting post.', e))
   }
   return (
@@ -204,7 +204,7 @@ export default function FindGroupScreen ({ navigation }) {
       <Text style={styles.header}> Choose a category </Text>
       <View
         style={{
-          flexDirection: 'row',
+          flexDirection: 'row'
         }}
       >
         <View style={{ marginBottom: 50 }}>
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'darkorange',
-    borderRadius: 25,
+    borderRadius: 25
   },
   buttonText: {
     fontSize: 30,

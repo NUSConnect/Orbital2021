@@ -7,7 +7,6 @@ import {
 } from 'react-native'
 import GroupCreationTopTab from '../../components/GroupCreationTopTab'
 import Collapsible from '../../components/Collapsible'
-import CheckList from  '../../components/CheckList'
 
 export default function MatchMeScreen ({ props, route, navigation }) {
   const currentUserId = firebase.auth().currentUser.uid
@@ -24,13 +23,13 @@ export default function MatchMeScreen ({ props, route, navigation }) {
 
   const selectItem = (list, setList) => {
     return (checked, item) => {
-        if (checked) {
-          setList(list.filter(thing => thing !== item))
-          setNumSelected(numSelected - 1)
-        } else {
-          setList(oldArray => [...oldArray, item])
-          setNumSelected(numSelected + 1)
-        }
+      if (checked) {
+        setList(list.filter(thing => thing !== item))
+        setNumSelected(numSelected - 1)
+      } else {
+        setList(oldArray => [...oldArray, item])
+        setNumSelected(numSelected + 1)
+      }
     }
   }
 
@@ -39,8 +38,8 @@ export default function MatchMeScreen ({ props, route, navigation }) {
     const artsScore = arts.length / ARTS.length
     const leisureScore = leisure.length / LEISURE.length
     const commonScore = common.length / COMMONS.length
-    const vector = [ sportsScore, artsScore, leisureScore, commonScore ]
-    if ( numSelected === 0 ) {
+    const vector = [sportsScore, artsScore, leisureScore, commonScore]
+    if (numSelected === 0) {
       Alert.alert(
         'Cannot match with 0 interests selected!',
         'Select a few interests to join the matching pool.'
@@ -70,28 +69,28 @@ export default function MatchMeScreen ({ props, route, navigation }) {
         onBack={() => navigation.goBack()} onPress={() => submitVector()}
       />
       <Collapsible
-        header={'Sports'}
+        header='Sports'
         data={SPORTS}
         items={sports}
         setItems={setSports}
         selectItem={selectItem}
       />
       <Collapsible
-        header={'Arts'}
+        header='Arts'
         data={ARTS}
         items={arts}
         setItems={setArts}
         selectItem={selectItem}
       />
       <Collapsible
-        header={'Leisure'}
+        header='Leisure'
         data={LEISURE}
         items={leisure}
         setItems={setLeisure}
         selectItem={selectItem}
       />
       <Collapsible
-        header={'Other common interests'}
+        header='Other common interests'
         data={COMMONS}
         items={common}
         setItems={setCommon}
@@ -109,7 +108,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 20,
     color: 'darkorange',
-    paddingLeft: 10,
+    paddingLeft: 10
   },
   collapsible: {
     backgroundColor: 'darkorange'
