@@ -19,15 +19,20 @@ export default class CheckList extends React.Component {
     super();
     this.state = { value: props.item, checked: false };
   }
+
+  componentDidMount () {
+    this.setState({ checked: this.props.checked })
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.item !== this.props.item)
       this.setState({ ...this.state, value: nextProps.item, checked: false });
   }
   _handleCheckBoxClick = e => {
+    this.props.selectItem(this.state.checked, this.props.item)
     this.setState({
       checked: !this.state.checked
     });
-    //select item
   };
 
   render() {
@@ -47,7 +52,7 @@ export default class CheckList extends React.Component {
         >
           {Platform.OS === "android" ? (
             <CheckBox
-              style={{ marginLeft: 10 }}
+              style={{ marginLeft: 5 }}
               onValueChange={this._handleCheckBoxClick}
               value={this.state.checked}
             />
@@ -67,13 +72,20 @@ export default class CheckList extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  widgetUl: {
+  widgetUlX: {
     padding: 0,
     margin: 0,
     display: "flex",
     justifyContent: "space-around",
     flexDirection: "row",
     flexWrap: "wrap",
+    alignItems: "stretch",
+    alignItems: "center"
+  },
+  widgetUl: {
+    width: '50%',
+    display: "flex",
+    flexDirection: "row",
     alignItems: "stretch",
     alignItems: "center"
   },

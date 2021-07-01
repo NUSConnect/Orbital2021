@@ -144,6 +144,61 @@ export default function FindGroupScreen ({ navigation }) {
       })
   }
 
+  const _handleMatchMe = async () => {
+    let inPool = false
+    await firebase.firestore().collection('matchingPool').doc(currentUserId).get()
+      .then((doc) => {
+        if (doc.exists) {
+          inPool = true;
+        }
+      })
+
+    if ( inPool ) {
+      Alert.alert(
+        'You already have an existing matching request',
+        'Do you want to delete it?',
+        [
+          {
+            text: 'No',
+            onPress: () => console.log('Nothing done')
+          },
+          {
+            text: 'Yes',
+            onPress: () => _handleDeletePoolEntry()
+          }
+        ],
+        { cancelable: false }
+      )
+    } else {
+      navigation.navigate('MatchMeScreen')
+    }
+  }
+
+  const _handleDeletePoolEntry = () => {
+    firebase
+      .firestore()
+      .collection('matchingPool')
+      .doc(currentUserId)
+      .delete()
+      .then(() => {
+        Alert.alert(
+          'Your previous matching request has been deleted',
+          'Create a new matching request?',
+          [
+            {
+              text: 'No',
+              onPress: () => console.log('Nothing done')
+            },
+            {
+              text: 'Yes',
+              onPress: () => navigation.navigate('MatchMeScreen')
+            }
+          ],
+          { cancelable: false }
+        )
+        })
+      .catch((e) => console.log('Error deleting post.', e))
+  }
   return (
     <View style={styles.center}>
       <Text style={styles.header}> Choose a category </Text>
@@ -193,7 +248,7 @@ export default function FindGroupScreen ({ navigation }) {
         </View>
       </View>
       <Text style={styles.header}> Nothing suits you? </Text>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MatchMeScreen')}>
+      <TouchableOpacity style={styles.button} onPress={() => _handleMatchMe()}>
         <Text style={styles.buttonText}> Match Me! </Text>
       </TouchableOpacity>
     </View>
