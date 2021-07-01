@@ -3,6 +3,8 @@ import BackButton from '../BackButton'
 import renderer from 'react-test-renderer'
 import { fireEvent, render } from '@testing-library/react-native'
 
+jest.useFakeTimers()
+
 it('renders correctly', () => {
   const tree = renderer.create(<BackButton />)
   expect(tree).toMatchSnapshot()

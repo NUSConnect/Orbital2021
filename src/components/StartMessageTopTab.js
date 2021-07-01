@@ -2,13 +2,14 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Ionicons } from 'react-native-vector-icons'
 
-export default function StartMessageTopTab ({ onBack, onPress, style, ...props }) {
+export default function StartMessageTopTab ({ onBack, style, ...props }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.buttonLeft}
         activeOpacity={0.4}
         onPress={onBack}
+        testID='onBack'
       >
         <Ionicons
           name='arrow-back'

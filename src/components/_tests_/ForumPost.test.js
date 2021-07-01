@@ -11,6 +11,8 @@ jest.mock('firebase', () => {
   }
 })
 
+jest.mock('react-native-vector-icons')
+
 class CustomDate {
   constructor (date) {
     this.date = date

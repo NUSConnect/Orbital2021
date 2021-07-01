@@ -8,7 +8,24 @@ exports[`renders correctly 1`] = `
     }
   }
 >
-  <Text />
+  <View
+    accessible={true}
+    focusable={false}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "marginTop": 10,
+        "opacity": 1,
+      }
+    }
+    testID="back"
+  />
   <Text
     style={
       Object {

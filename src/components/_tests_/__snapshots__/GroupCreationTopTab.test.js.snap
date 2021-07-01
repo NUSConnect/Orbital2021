@@ -31,9 +31,8 @@ exports[`renders correctly 1`] = `
         "width": "15%",
       }
     }
-  >
-    <Text />
-  </View>
+    testID="onBack"
+  />
   <Text
     style={
       Object {
@@ -63,8 +62,7 @@ exports[`renders correctly 1`] = `
         "width": "15%",
       }
     }
-  >
-    <Text />
-  </View>
+    testID="onPress"
+  />
 </View>
 `;

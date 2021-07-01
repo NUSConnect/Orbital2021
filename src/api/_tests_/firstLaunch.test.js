@@ -1,5 +1,7 @@
-import { AsyncStorage } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import checkIfFirstLaunch from '../firstLaunch'
+
+jest.useFakeTimers()
 
 it('can read asyncstorage', async () => {
   this.HAS_LAUNCHED = ''

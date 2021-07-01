@@ -50,8 +50,7 @@ exports[`renders correctly 1`] = `
         "opacity": 1,
       }
     }
-  >
-    <Text />
-  </View>
+    testID="send"
+  />
 </View>
 `;
