@@ -12,7 +12,7 @@ export default function Collapsible ({ header, data, items, setItems, selectItem
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.item} testID='collapsible'>
-        <Text style={open ? styles.openedText : styles.closedText}>{header}</Text>
+        <Text style={styles.text}>{header}</Text>
         {open && (
           <FlatList
             style={styles.list}
@@ -42,20 +42,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'orange',
     borderColor: 'white'
   },
-  openedText: {
-    color: 'white',
-    fontSize: 24,
-    paddingLeft: 10,
-    paddingTop: 10
-  },
-  closedText: {
+  text: {
     color: 'white',
     fontSize: 24,
     paddingLeft: 10,
     paddingVertical: 10,
   },
   list: {
-    marginTop: 20,
+    paddingVertical: 8,
     width: '100%',
     backgroundColor: 'white'
   }

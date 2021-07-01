@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   widgetUl: {
+    paddingVertical: 8,
     width: '50%',
     display: "flex",
     flexDirection: "row",
