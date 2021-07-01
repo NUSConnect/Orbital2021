@@ -3,6 +3,9 @@ import ForumPostHeader from '../ForumPostHeader'
 import renderer from 'react-test-renderer'
 import { fireEvent, render } from '@testing-library/react-native'
 
+jest.useFakeTimers()
+jest.mock('react-native-vector-icons')
+
 it('renders correctly', () => {
   const tree = renderer.create(<ForumPostHeader />)
   expect(tree).toMatchSnapshot()

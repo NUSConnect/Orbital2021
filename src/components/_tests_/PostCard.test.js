@@ -5,6 +5,9 @@ import 'jest-styled-components'
 import moment from 'moment'
 import { fireEvent, render } from '@testing-library/react-native'
 
+jest.useFakeTimers()
+jest.mock('react-native-vector-icons')
+
 // Mock
 jest.mock('firebase', () => {
   return {
