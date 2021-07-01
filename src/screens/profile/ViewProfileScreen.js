@@ -29,6 +29,8 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
   const [majorData, setMajorData] = useState(null)
   const [images, setImages] = useState([{}])
   const [modalVisible, setModalVisible] = useState(false)
+  const [followers, setFollowers] = useState(0)
+  const [followingPeople, setFollowingPeople] = useState(0)
 
   const { item } = route.params
 
@@ -44,6 +46,28 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
           setMajorData(documentSnapshot.data().major)
           setImages([{ url: documentSnapshot.data().userImg, props: {} }])
         }
+      })
+  }
+
+  const getFollowingPeople = async () => {
+    await firebase
+      .firestore()
+      .collection('users')
+      .doc(item.userId)
+      .collection('following')
+      .onSnapshot(querySnapshot => {
+        setFollowingPeople(querySnapshot.size - 1)
+      })
+  }
+
+  const getFollowers = async () => {
+    await firebase
+      .firestore()
+      .collection('users')
+      .doc(item.userId)
+      .collection('followers')
+      .onSnapshot(querySnapshot => {
+        setFollowers(querySnapshot.size)
       })
   }
 
@@ -72,6 +96,13 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         .collection('following')
         .doc(item.userId)
         .delete()
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(item.userId)
+        .collection('followers')
+        .doc(currentUserId)
+        .delete()
       setFollowing(false)
     } else {
       firebase
@@ -80,6 +111,13 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         .doc(currentUserId)
         .collection('following')
         .doc(item.userId)
+        .set({})
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(item.userId)
+        .collection('followers')
+        .doc(currentUserId)
         .set({})
       setFollowing(true)
 
@@ -214,6 +252,8 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     console.log(item)
     getUser()
     getFollowing()
+    getFollowers()
+    getFollowingPeople()
     fetchUserPosts()
   }, [])
 
@@ -255,7 +295,10 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
             {' '}
             {userData ? userData.bio : '.'}{' '}
           </Text>
-
+          <View style={styles.following}>
+            <Text style={styles.followerInfo}> {followers} {followers === 1 ? 'Follower' : 'Followers'} </Text>
+            <Text style={styles.followingInfo}> {followingPeople} Following </Text>
+          </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.button}
@@ -319,7 +362,7 @@ const styles = StyleSheet.create({
   profileContainer: {
     backgroundColor: '#DCDCDC',
     width: '100%',
-    height: 130,
+    height: 150,
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row'
@@ -375,5 +418,22 @@ const styles = StyleSheet.create({
   closeButton: {
     paddingLeft: 10,
     paddingTop: 50
+  },
+  following: {
+    flexDirection: 'row'
+  },
+  followerInfo: {
+    fontSize: 16,
+    color: '#778899',
+    fontWeight: '600',
+    flexWrap: 'wrap',
+    paddingLeft: 4
+  },
+  followingInfo: {
+    fontSize: 16,
+    color: '#778899',
+    fontWeight: '600',
+    flexWrap: 'wrap',
+    paddingLeft: 20
   }
 })

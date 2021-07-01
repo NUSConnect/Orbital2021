@@ -12,3 +12,5 @@ export { default as EngineeringMajorsScreen } from './profile/EngineeringMajorsS
 export { default as UpdateEmailScreen } from './profile/UpdateEmailScreen'
 export { default as ProfileMasterScreen } from './ProfileMasterScreen'
 export { default as ProfilePostsScreen } from './ProfilePostsScreen'
+export { default as FollowingScreen } from './FollowingScreen'
+export { default as FollowersScreen } from './FollowersScreen'
