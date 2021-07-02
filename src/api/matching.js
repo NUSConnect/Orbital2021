@@ -1,6 +1,7 @@
 import * as firebase from 'firebase'
 import { getClusters } from './kMeans'
 
+/*
 const splitClusterTest = (cluster) => {
   const firstHalf = cluster.splice(cluster.length / 2)
   const result = [firstHalf, cluster]
@@ -17,8 +18,8 @@ const splitHelperTest = (cluster) => {
   }
 }
 
-const test = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
-
+const test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+*/
 export async function formClusters () {
   const data = []
   console.log('Start pulling')
