@@ -38,7 +38,7 @@ export default class MatchHistoryScreen extends React.Component {
         await firebase
           .firestore()
           .collection('users')
-          .doc('dikglmLKhxVjRurnheRDcKE5Q0A3')
+          .doc(this.state.userId)
           .collection('matchHistory')
           .get()
           .then((querySnapshot) => {
@@ -47,14 +47,16 @@ export default class MatchHistoryScreen extends React.Component {
                 groupChatThread,
                 isGroup,
                 success,
-                timeMatched
+                timeMatched,
+                users
               } = doc.data()
               list.push({
                 id: doc.id,
                 groupChatThread,
                 isGroup,
                 success,
-                timeMatched
+                timeMatched,
+                users
               })
             })
           })
@@ -64,8 +66,6 @@ export default class MatchHistoryScreen extends React.Component {
         if (this.state.refreshing) {
           this.setState({ refreshing: false })
         }
-
-        console.log('Matches: ', this.state.data)
       } catch (e) {
         console.log(e)
       }
@@ -101,8 +101,6 @@ export default class MatchHistoryScreen extends React.Component {
             renderItem={({ item }) => (
               <MatchCard
                 item={item}
-                onPress={() =>
-                  navigation.navigate('CommentScreen', { item })}
               />
             )}
             keyExtractor={(item) => item.id}
