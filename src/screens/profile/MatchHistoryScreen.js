@@ -1,9 +1,7 @@
 import * as firebase from 'firebase'
 import React from 'react'
 import {
-  Alert,
   FlatList,
-  Image,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
@@ -74,8 +72,7 @@ export default class MatchHistoryScreen extends React.Component {
     }
 
     renderItemComponent = (data) => (
-      <TouchableOpacity style={styles.container}>
-      </TouchableOpacity>
+      <TouchableOpacity style={styles.container} />
     );
 
     ItemSeparator = () => (
