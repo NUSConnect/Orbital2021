@@ -69,7 +69,7 @@ export async function deletePool () {
     .get()
     .then(querySnapshot => {
       querySnapshot.forEach(documentSnapshot => {
-        documentSnapshot.delete()
+        documentSnapshot.ref.delete()
       })
     })
 }
