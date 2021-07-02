@@ -15,7 +15,11 @@ export default class MatchHistoryScreen extends React.Component {
     this.state = {
       data: [],
       refreshing: true,
-      userId: firebase.auth().currentUser.uid
+      userId: firebase.auth().currentUser.uid,
+      otherName: '',
+      otherBio: '',
+      otherEmail: '',
+      otherCreatedAt: ''
     }
   }
 
@@ -62,6 +66,7 @@ export default class MatchHistoryScreen extends React.Component {
           })
 
         this.setState({ data: list })
+        console.log(this.state.data)
 
         if (this.state.refreshing) {
           this.setState({ refreshing: false })
@@ -70,6 +75,36 @@ export default class MatchHistoryScreen extends React.Component {
         console.log(e)
       }
     }
+
+      getOtherInfo = async () => {
+        if (this.state.data.isGroup || this.state.data.isGroup === undefined) {
+          console.log('Group')
+        } else {
+          const otherId = this.state.data.users.filter(x => x !== firebase.auth().currentUser.uid)[0]
+          await firebase
+            .firestore()
+            .collection('users')
+            .doc(otherId)
+            .get()
+            .then(documentSnapshot => {
+              const { name, bio, email, createdAt } = documentSnapshot.data()
+              this.setState({ otherName: name, otherBio: bio, otherEmail: email, otherCreatedAt: createdAt })
+            })
+        }
+      }
+
+      navigateProfile = async () => {
+        this.getOtherInfo()
+        const userObj = {
+          userId: this.state.otherId,
+          name: this.state.otherName,
+          bio: this.state.otherBio,
+          email: this.state.otherEmail,
+          createdAt: this.state.otherCreatedAt
+        }
+        console.log(userObj)
+        this.props.navigation.navigate('ViewProfileScreen', { userObj })
+      }
 
     renderItemComponent = (data) => (
       <TouchableOpacity style={styles.container} />
@@ -100,6 +135,7 @@ export default class MatchHistoryScreen extends React.Component {
             renderItem={({ item }) => (
               <MatchCard
                 item={item}
+                onPress={() => this.navigateProfile()}
               />
             )}
             keyExtractor={(item) => item.id}
