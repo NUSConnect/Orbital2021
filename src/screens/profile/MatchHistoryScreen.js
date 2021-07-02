@@ -93,7 +93,6 @@ export default class MatchHistoryScreen extends React.Component {
     };
 
     render () {
-      const { navigation } = this.props
       return (
         <SafeAreaView style={{ flex: 1 }}>
           <FlatList
