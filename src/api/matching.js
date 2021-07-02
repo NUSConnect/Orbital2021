@@ -61,3 +61,15 @@ export async function formClusters () {
     // Send them notification that matching failed, alert opens the next time they open the app
   }
 }
+
+export async function deletePool () {
+  await firebase
+    .firestore()
+    .collection('matchingPool')
+    .get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(documentSnapshot => {
+        documentSnapshot.delete()
+      })
+    })
+}
