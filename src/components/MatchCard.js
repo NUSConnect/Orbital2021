@@ -8,6 +8,9 @@ const MatchCard = ({ navigation, item, onPress }) => {
   const color = item.success ? '#90EE90' : '#FF7F7F'
   const [otherName, setOtherName] = useState('')
   const [otherId, setOtherId] = useState('')
+  const [otherBio, setOtherBio] = useState('')
+  const [otherEmail, setOtherEmail] = useState('')
+  const [otherCreatedAt, setOtherCreatedAt] = useState('')
 
   const getOtherName = async () => {
     if (item.isGroup || item.isGroup === undefined) {
@@ -20,10 +23,16 @@ const MatchCard = ({ navigation, item, onPress }) => {
         .collection('users')
         .doc(otherId)
         .get()
-        .then(documentSnapshot => setOtherName(documentSnapshot.data().name))
+        .then(documentSnapshot => {
+          const { name, bio, email, createdAt } = documentSnapshot.data()
+          setOtherName(name)
+          setOtherBio(bio)
+          setOtherEmail(email)
+          setOtherCreatedAt(createdAt)
+        })
     }
   }
-
+  /*
   const concatList = (list) => {
     let str = ''
     list.sort()
@@ -32,13 +41,11 @@ const MatchCard = ({ navigation, item, onPress }) => {
     }
     return str
   }
-
-  const message = async () => {
-    const list = [currentUserId, otherId]
-    const threadID = concatList(list)
-    const threadObj = { id: threadID, name: otherName, otherId: otherId }
+*/
+  const navigateProfile = async () => {
+    const threadObj = { userId: otherId, name: otherName, bio: otherBio, email: otherEmail, createdAt: otherCreatedAt }
     console.log(threadObj)
-    navigation.navigate('ChatScreen', { thread: threadObj })
+    navigation.navigate('ViewProfileScreen', { thread: threadObj })
   }
 
   const onPressFn = () => {
@@ -47,7 +54,7 @@ const MatchCard = ({ navigation, item, onPress }) => {
     } else if (item.isGroup) {
       console.log('Group')
     } else {
-      message()
+      navigateProfile()
     }
   }
 
@@ -58,12 +65,12 @@ const MatchCard = ({ navigation, item, onPress }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onPressFn}>
-        <Card style={{ padding: 10, margin: 10, backgroundColor: color, height: 120 }}>
+        <Card style={{ padding: 10, margin: 10, backgroundColor: color, height: 100 }}>
           <Text style={styles.title}> {item.success ? 'Success!' : 'Sorry!'} </Text>
           {item.success
             ? item.isGroup
                 ? <Text style={styles.info}> Match successful! Tap here to chat with your group! </Text>
-                : <Text style={styles.info}> Match successful! Tap here to chat with {otherName}</Text>
+                : <Text style={styles.info}> Match successful! Tap here to check out {otherName}{'\'s profile'}</Text>
             : <Text style={styles.info}> Match failed, better luck next time! </Text>}
         </Card>
       </TouchableOpacity>
