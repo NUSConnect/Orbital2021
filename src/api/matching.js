@@ -107,6 +107,7 @@ export async function formClusters () {
 }
 
 export async function deletePool () {
+  console.log('Deleting pool')
   await firebase
     .firestore()
     .collection('matchingPool')
