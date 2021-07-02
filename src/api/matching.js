@@ -131,7 +131,7 @@ export async function formClusters () {
             console.log('Checking if pushToken available')
             if (doc.data().pushToken != null) {
               sendPushNotification(doc.data().pushToken.data, 'Matching Successful',
-              'Check your matching results under your profile page now!')
+                'Check your matching results under your profile page now!')
             }
           })
       }
@@ -152,7 +152,7 @@ export async function formClusters () {
             console.log('Checking if pushToken available')
             if (doc.data().pushToken != null) {
               sendPushNotification(doc.data().pushToken.data, 'Matching Successful',
-              'Check your matching results under your profile page now!')
+                'Check your matching results under your profile page now!')
             }
           })
       }
@@ -172,10 +172,9 @@ export async function formClusters () {
         console.log('Checking if pushToken available')
         if (doc.data().pushToken != null) {
           sendPushNotification(doc.data().pushToken.data, 'Matching Failed',
-          'We are sad to inform you that we are unable to match you this time :(')
+            'We are sad to inform you that we are unable to match you this time :(')
         }
       })
-
   }
 }
 
@@ -211,19 +210,6 @@ export async function createGroupChat (category, threadId, groupName, users, dat
       groupName: { name: groupName },
       groupDescription: { description: description }
     }, { merge: true })
-    .then(() => {
-      Alert.alert(
-        'Group created!',
-        'The group has been created successfully!',
-        [
-          {
-            text: 'OK',
-            onPress: navigator
-          }
-        ],
-        { cancelable: false }
-      )
-    })
     .catch((error) => {
       console.log(
         'Something went wrong with added post to firestore.',

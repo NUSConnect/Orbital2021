@@ -2,6 +2,8 @@ import * as firebase from 'firebase'
 import React, { useEffect } from 'react'
 import { Alert, Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { MaterialCommunityIcons } from 'react-native-vector-icons'
+import { createGroupChat } from '../../api/matching'
+import { sendPushNotification } from '../../api/notifications'
 
 const DeviceWidth = Dimensions.get('window').width
 const squareSide = 0.38 * DeviceWidth
@@ -91,12 +93,76 @@ export default function FindGroupScreen ({ navigation }) {
           documentSnapshot.ref.delete()
         })
       })
+    const matchingId = Date.now().toString()
+    const completionTime = new Date()
+
     if (success) {
-      const groupId = category + concatList(list)
-      firebase.firestore().collection('groups').doc(groupId).set({ category: category })
+      if (list.length > 2) {
+        const threadId = category + concatList(list) + matchingId
+        const groupName = category + completionTime.toLocaleDateString()
+
+        createGroupChat(category, threadId, groupName, list, completionTime.toLocaleDateString())
+
+        for (let i = 0; i < list.length; i++) {
+          const userId = list[i]
+
+          firebase.firestore().collection('users').doc(userId).collection('openChats').doc(threadId).set({})
+
+          firebase.firestore().collection('users').doc(userId).collection('matchHistory').doc(category + matchingId)
+            .set({
+              success: true,
+              timeMatched: firebase.firestore.Timestamp.fromDate(completionTime),
+              users: list,
+              isGroup: true,
+              groupChatThread: threadId
+            })
+
+          firebase.firestore().collection('users').doc(userId).get()
+            .then((doc) => {
+              console.log('Checking if pushToken available')
+              if (doc.data().pushToken != null) {
+                sendPushNotification(doc.data().pushToken.data, 'Matching Successful',
+                  'Check your matching results under your profile page now!')
+              }
+            })
+        }
+      } else {
+        for (let k = 0; k < list.length; k++) {
+          const userId = list[k]
+
+          firebase.firestore().collection('users').doc(userId).collection('matchHistory').doc(category + matchingId)
+            .set({
+              success: true,
+              timeMatched: firebase.firestore.Timestamp.fromDate(completionTime),
+              users: list,
+              isGroup: false
+            })
+
+          firebase.firestore().collection('users').doc(userId).get()
+            .then((doc) => {
+              console.log('Checking if pushToken available')
+              if (doc.data().pushToken != null) {
+                sendPushNotification(doc.data().pushToken.data, 'Matching Successful',
+                  'Check your matching results under your profile page now!')
+              }
+            })
+        }
+      }
+    } else {
       for (let i = 0; i < list.length; i++) {
-        firebase.firestore().collection('groups').doc(groupId).collection('members').doc(list[i]).set({})
-        firebase.firestore().collection('users').doc(list[i]).collection('groups').doc(groupId).set({})
+        const userId = list[i]
+
+        firebase.firestore().collection('users').doc(userId).collection('matchHistory').doc(matchingId)
+          .set({ success: false, timeMatched: firebase.firestore.Timestamp.fromDate(completionTime) })
+
+        firebase.firestore().collection('users').doc(userId).get()
+          .then((doc) => {
+            console.log('Checking if pushToken available')
+            if (doc.data().pushToken != null) {
+              sendPushNotification(doc.data().pushToken.data, 'Matching Failed',
+                'We are sad to inform you that we are unable to match you this time :(')
+            }
+          })
       }
     }
 
