@@ -3,6 +3,9 @@ import ForumIcon from '../ForumIcon'
 import renderer from 'react-test-renderer'
 import { fireEvent, render } from '@testing-library/react-native'
 
+jest.useFakeTimers()
+jest.mock('react-native-vector-icons')
+
 const mockItem = { forumName: 'TestName', forumImg: 'MockForumImg' }
 
 it('renders correctly', () => {

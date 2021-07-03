@@ -46,8 +46,6 @@ exports[`renders correctly 1`] = `
       }
     }
     testID="onPress"
-  >
-    <Text />
-  </View>
+  />
 </View>
 `;

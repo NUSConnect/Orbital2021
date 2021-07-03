@@ -24,6 +24,7 @@ const CreateComment = ({ onPress, setComment, comment, setIsFocused, isFocused }
           textInputRef.current.blur()
           onPress()
         }}
+        testID='send'
       >
         <Ionicons name='send' size={25} color='#79D2E6' />
       </TouchableOpacity>

@@ -1,18 +1,22 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { Ionicons } from 'react-native-vector-icons'
 
 export default function AddMajorTopTab ({ onPress }) {
   return (
     <View style={styles.header}>
-      <Ionicons
-        name='arrow-back'
-        color='#79D2E6'
-        size={38}
+      <TouchableOpacity
         style={styles.icon}
+        activeOpacity={0.4}
         onPress={onPress}
         testID='back'
-      />
+      >
+        <Ionicons
+          name='arrow-back'
+          color='#79D2E6'
+          size={38}
+        />
+      </TouchableOpacity>
       <Text style={styles.title}> Add your major </Text>
     </View>
   )

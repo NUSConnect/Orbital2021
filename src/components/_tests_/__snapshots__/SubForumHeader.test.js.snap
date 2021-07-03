@@ -31,9 +31,7 @@ exports[`renders correctly 1`] = `
         "width": "15%",
       }
     }
-  >
-    <Text />
-  </View>
+  />
   <View
     style={
       Object {
@@ -72,9 +70,7 @@ exports[`renders correctly 1`] = `
           "width": "15%",
         }
       }
-    >
-      <Text />
-    </View>
+    />
   </View>
   <View
     accessible={true}
@@ -93,8 +89,6 @@ exports[`renders correctly 1`] = `
         "width": "15%",
       }
     }
-  >
-    <Text />
-  </View>
+  />
 </View>
 `;
