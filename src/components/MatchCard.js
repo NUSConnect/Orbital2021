@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import * as firebase from 'firebase'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Card } from 'react-native-shadow-cards'
+import { useNavigation } from '@react-navigation/native'
 
-const MatchCard = ({ navigation, item, onPress }) => {
+const MatchCard = ({ item, onPress }) => {
   const currentUserId = firebase.auth().currentUser.uid
   const color = item.success ? '#90EE90' : '#FF7F7F'
   const [otherName, setOtherName] = useState('')
@@ -11,10 +12,15 @@ const MatchCard = ({ navigation, item, onPress }) => {
   const [otherBio, setOtherBio] = useState('')
   const [otherEmail, setOtherEmail] = useState('')
   const [otherCreatedAt, setOtherCreatedAt] = useState('')
+  const [groupName, setGroupName] = useState('')
+  const [groupImage, setGroupImage] = useState('')
+  const [groupDescription, setGroupDescription] = useState('')
+  const [groupMembers, setGroupMembers] = useState([])
+  const navigation = useNavigation()
 
   const getOtherName = async () => {
     if (item.isGroup || item.isGroup === undefined) {
-      console.log('Group')
+      console.log('group or fail')
     } else {
       const otherId = item.users.filter(x => x !== currentUserId)[0]
       setOtherId(otherId)
@@ -32,33 +38,48 @@ const MatchCard = ({ navigation, item, onPress }) => {
         })
     }
   }
-  /*
-  const concatList = (list) => {
-    let str = ''
-    list.sort()
-    for (let i = 0; i < list.length; i++) {
-      str = str + list[i].substring(0, 6)
-    }
-    return str
+
+  const getOtherGroup = async () => {
+    await firebase
+      .firestore()
+      .collection('THREADS')
+      .doc(item.groupChatThread)
+      .get()
+      .then(documentSnapshot => {
+        setGroupName(documentSnapshot.data().groupName.name)
+        setGroupImage(documentSnapshot.data().groupImage)
+        setGroupDescription(documentSnapshot.data().groupDescription.description)
+        setGroupMembers(documentSnapshot.data().users)
+      })
   }
-*/
-  const navigateProfile = async () => {
-    const threadObj = { userId: otherId, name: otherName, bio: otherBio, email: otherEmail, createdAt: otherCreatedAt }
-    console.log(threadObj)
-    navigation.navigate('ViewProfileScreen', { thread: threadObj })
+
+  const navigateGroupChat = () => {
+    const chatObj = { id: item.groupChatThread, name: groupName, description: groupDescription, members: groupMembers, isGroup: true, groupImage: groupImage }
+    navigation.navigate('ChatScreen', { thread: chatObj })
+  }
+
+  const navigateProfile = () => {
+    const profileObj = { userId: otherId, name: otherName, bio: otherBio, email: otherEmail, createdAt: otherCreatedAt }
+    navigation.navigate('ViewProfileScreen', { item: profileObj })
   }
 
   const onPressFn = () => {
     if (item.isGroup === undefined) {
       console.log('Failure')
+      Alert.alert('Match failed!', 'Sorry, better luck next time :(')
     } else if (item.isGroup) {
       console.log('Group')
+      navigateGroupChat()
     } else {
+      console.log('Individual, go to view profile')
       navigateProfile()
     }
   }
 
   useEffect(() => {
+    if (item.isGroup) {
+      getOtherGroup()
+    }
     getOtherName()
   }, [])
 
@@ -69,7 +90,7 @@ const MatchCard = ({ navigation, item, onPress }) => {
           <Text style={styles.title}> {item.success ? 'Success!' : 'Sorry!'} </Text>
           {item.success
             ? item.isGroup
-                ? <Text style={styles.info}> Match successful! Tap here to chat with your group! </Text>
+                ? <Text style={styles.info}> Match successful! Tap here to chat with your new group! </Text>
                 : <Text style={styles.info}> Match successful! Tap here to check out {otherName}{'\'s profile'}</Text>
             : <Text style={styles.info}> Match failed, better luck next time! </Text>}
         </Card>
@@ -92,7 +113,7 @@ const styles = StyleSheet.create({
   info: {
     fontSize: 18,
     color: '#000000',
-    fontWeight: '600'
+    fontWeight: '300'
   }
 })
 

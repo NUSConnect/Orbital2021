@@ -25,6 +25,8 @@ import MatchHistoryScreen from './MatchHistoryScreen'
 import EditPostScreen from '../home/EditPostScreen'
 import ChatScreen from '../home/ChatScreen'
 import ViewProfileScreen from './ViewProfileScreen'
+import GroupInfoScreen from '../home/GroupInfoScreen'
+import EditGroupScreen from '../home/EditGroupScreen'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -72,6 +74,9 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='ChangeNameScreen' component={ChangeNameScreen} />
         <Stack.Screen name='EditPostScreen' component={EditPostScreen} />
         <Stack.Screen name='ViewProfileScreen' component={ViewProfileScreen} />
+        <Stack.Screen name='ChatScreen' component={ChatScreen} />
+        <Stack.Screen name='GroupInfoScreen' component={GroupInfoScreen} />
+        <Stack.Screen name='EditGroupScreen' component={EditGroupScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )
