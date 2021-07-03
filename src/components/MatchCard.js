@@ -91,7 +91,7 @@ const MatchCard = ({ item, onPress }) => {
           {item.success
             ? item.isGroup
                 ? <Text style={styles.info}> Match successful! Tap here to chat with your new group! </Text>
-                : <Text style={styles.info}> Match successful! Tap here to check out {otherName}{'\'s profile'}</Text>
+                : <Text style={styles.info}> Match successful! Tap here to check out {otherName}{'\'s profile!'}</Text>
             : <Text style={styles.info}> Match failed, better luck next time! </Text>}
         </Card>
       </TouchableOpacity>
