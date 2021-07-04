@@ -40,6 +40,7 @@ export default class MatchHistoryScreen extends React.Component {
           .collection('users')
           .doc(this.state.userId)
           .collection('matchHistory')
+          .orderBy('timeMatched', 'desc')
           .get()
           .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
