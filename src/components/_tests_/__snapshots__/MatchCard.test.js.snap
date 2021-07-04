@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "paddingBottom": 5,
+      "paddingTop": 5,
+    }
+  }
+>
+  <View
+    accessible={true}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "backgroundColor": "#ffffff",
+            "borderRadius": 5,
+            "shadowOffset": Object {
+              "height": 3,
+              "width": 0,
+            },
+            "shadowOpacity": 0.5,
+            "shadowRadius": 3,
+            "width": 710,
+          },
+          Object {
+            "backgroundColor": "#90EE90",
+            "height": 100,
+            "margin": 10,
+            "padding": 10,
+          },
+        ]
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "#000000",
+            "fontSize": 22,
+            "fontWeight": "600",
+          }
+        }
+      >
+         
+        Success!
+         
+      </Text>
+      <Text
+        style={
+          Object {
+            "color": "#000000",
+            "fontSize": 16,
+            "fontWeight": "300",
+          }
+        }
+      >
+         Match successfully completed on 
+        Tue Jun 15 2021
+        ! Tap here to check out 
+        
+        's profile!
+      </Text>
+    </View>
+  </View>
+</View>
+`;
