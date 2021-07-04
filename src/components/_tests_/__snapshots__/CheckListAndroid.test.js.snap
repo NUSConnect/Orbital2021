@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  id="list"
+  style={
+    Object {
+      "alignItems": "center",
+      "display": "flex",
+      "flexDirection": "row",
+      "paddingVertical": 8,
+      "width": "50%",
+    }
+  }
+>
+  <View
+    className="main"
+    style={
+      Object {
+        "flex": 11,
+        "flexBasis": 250,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <View
+      pointerEvents="auto"
+    >
+      <RNCCheckbox
+        forwardedRef={null}
+        onValueChange={[Function]}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "height": 32,
+              "width": 32,
+            },
+            Object {
+              "marginLeft": 5,
+            },
+          ]
+        }
+        testID="checkbox"
+      />
+    </View>
+    <Text
+      style={
+        Object {
+          "fontSize": 20,
+        }
+      }
+    />
+  </View>
+</View>
+`;

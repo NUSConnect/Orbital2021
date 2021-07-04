@@ -3,10 +3,10 @@ import {
   StyleSheet,
   Text,
   View,
-  CheckBox,
   Switch,
   Platform
 } from 'react-native'
+import CheckBox from '@react-native-community/checkbox'
 
 export default class CheckList extends React.Component {
   constructor (props) {
@@ -16,6 +16,7 @@ export default class CheckList extends React.Component {
 
   componentDidMount () {
     this.setState({ checked: this.props.checked })
+    console.log(Platform.OS)
   }
 
   UNSAFE_componentWillReceiveProps (nextProps) {
@@ -49,12 +50,14 @@ export default class CheckList extends React.Component {
                 style={{ marginLeft: 5 }}
                 onValueChange={this.handleCheckBoxClick}
                 value={this.state.checked}
+                testID='checkbox'
               />
               )
             : (
               <Switch
                 onValueChange={this.handleCheckBoxClick}
                 value={this.state.checked}
+                testID='switch'
               />
               )}
 
