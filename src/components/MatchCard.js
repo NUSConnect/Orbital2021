@@ -86,13 +86,13 @@ const MatchCard = ({ item, onPress }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onPressFn}>
-        <Card style={{ padding: 10, margin: 10, backgroundColor: color, height: 100 }}>
-          <Text style={styles.title}> {item.success ? 'Success!' : 'Sorry!'} </Text>
+        <Card style={{ padding: 10, margin: 10, backgroundColor: color, height: 100, borderRadius: 15 }}>
+          <Text style={styles.title}>{item.success ? 'Success!' : 'Sorry!'}</Text>
           {item.success
             ? item.isGroup
-                ? <Text style={styles.info}> Match successfully completed on {item.timeMatched.toDate().toDateString()}! Tap here to chat with your new group!</Text>
-                : <Text style={styles.info}> Match successfully completed on {item.timeMatched.toDate().toDateString()}! Tap here to check out {otherName}{'\'s profile!'}</Text>
-            : <Text style={styles.info}> Match failed, better luck next time! </Text>}
+                ? <Text style={styles.info}>Match successfully completed on {item.timeMatched.toDate().toDateString()}! Tap here to chat with your new group!</Text>
+                : <Text style={styles.info}>Match successfully completed on {item.timeMatched.toDate().toDateString()}! Tap here to check out {otherName}{'\'s profile!'}</Text>
+            : <Text style={styles.info}>Match failed, better luck next time!</Text>}
         </Card>
       </TouchableOpacity>
     </View>

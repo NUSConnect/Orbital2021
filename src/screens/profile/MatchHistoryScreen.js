@@ -4,8 +4,7 @@ import {
   FlatList,
   SafeAreaView,
   StyleSheet,
-  TouchableOpacity,
-  View
+  TouchableOpacity
 } from 'react-native'
 import MatchCard from '../../components/MatchCard'
 
@@ -74,18 +73,7 @@ export default class MatchHistoryScreen extends React.Component {
 
     renderItemComponent = (data) => (
       <TouchableOpacity style={styles.container} />
-    );
-
-    ItemSeparator = () => (
-      <View
-        style={{
-          height: 20,
-          backgroundColor: '#eeeeee',
-          marginLeft: 10,
-          marginRight: 10
-        }}
-      />
-    );
+    )
 
     handleRefresh = () => {
       this.setState({ refreshing: false }, () => {
@@ -104,7 +92,6 @@ export default class MatchHistoryScreen extends React.Component {
               />
             )}
             keyExtractor={(item) => item.id}
-            ItemSeparatorComponent={this.ItemSeparator}
             refreshing={this.state.refreshing}
             onRefresh={this.handleRefresh}
             style={{ width: '100%', paddingBottom: 40 }}
