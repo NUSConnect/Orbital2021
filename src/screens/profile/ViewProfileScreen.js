@@ -25,6 +25,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
   const currentUserName = firebase.auth().currentUser.displayName
   const defaultUri =
         'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
+  const [name, setName] = useState(null)
   const [userData, setUserData] = useState(null)
   const [posts, setPosts] = useState([])
   const [following, setFollowing] = useState(false)
@@ -45,6 +46,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
+          setName(documentSnapshot.data().name)
           setUserData(documentSnapshot.data())
           setMajorData(documentSnapshot.data().major)
           setImages([{ url: documentSnapshot.data().userImg, props: {} }])
@@ -147,7 +149,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     const list = [currentUserId, item.userId]
     const threadID = concatList(list)
     const threadObj = { id: threadID, name: userData.name, otherId: item.userId }
-    navigation.navigate('ChatScreen', { thread: threadObj })
+    navigation.push('ChatScreen', { thread: threadObj })
   }
 
   const fetchUserPosts = async () => {
@@ -299,10 +301,10 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
             {userData ? userData.bio : '.'}
           </Text>
           <View style={styles.following}>
-            <Text style={styles.followerInfo} onPress={() => navigation.push('FollowersScreen', { userId: item.userId })}>
+            <Text style={styles.followerInfo} onPress={() => navigation.push('FollowersScreen', { userId: item.userId, username: name })}>
               {followers} {followers === 1 ? 'Follower' : 'Followers'}
             </Text>
-            <Text style={styles.followingInfo} onPress={() => navigation.push('FollowingScreen', { userId: item.userId })}>
+            <Text style={styles.followingInfo} onPress={() => navigation.push('FollowingScreen', { userId: item.userId, username: name })}>
               {followingPeople} Following
             </Text>
           </View>
@@ -365,7 +367,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 80
+    marginBottom: 100
   },
   profileContainer: {
     backgroundColor: '#DCDCDC',
@@ -397,7 +399,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     flexWrap: 'wrap',
     paddingLeft: 4,
-    width: DeviceWidth * 0.75 - 5
+    width: DeviceWidth * 0.75 - 10
   },
   buttonContainer: {
     backgroundColor: '#DCDCDC',

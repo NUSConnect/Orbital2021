@@ -13,7 +13,8 @@ import { sortByName } from '../../api/ranking'
 import { Ionicons } from 'react-native-vector-icons'
 
 export default function FollowingScreen ({ props, navigation, route }) {
-  const { userId } = route.params
+  const currentUserId = firebase.auth().currentUser.uid
+  const { userId, username } = route.params
   const [search, setSearch] = useState('')
   const [filteredDataSource, setFilteredDataSource] = useState([])
   const [masterDataSource, setMasterDataSource] = useState([])
@@ -51,7 +52,7 @@ export default function FollowingScreen ({ props, navigation, route }) {
         .then(doc => {
           const { name, bio, email, createdAt } = doc.data()
           users.push({
-            followingId: doc.id,
+            userId: doc.id,
             name,
             bio,
             email,
@@ -62,10 +63,6 @@ export default function FollowingScreen ({ props, navigation, route }) {
     users.sort(sortByName)
     setMasterDataSource(users)
     setLoading(false)
-
-    console.log(userId)
-    console.log(allFollowingId)
-    console.log(users)
   }
 
   const searchFilterFunction = (text) => {
@@ -86,15 +83,20 @@ export default function FollowingScreen ({ props, navigation, route }) {
     }
   }
 
+  const navigateToOwnProfile = () => {
+    navigation.navigate('Profile')
+    navigation.navigate('ProfileHomeTabs')
+  }
+
   const ItemView = ({ item }) => {
     return (
     // Flat List Item
       <Text
         style={styles.itemStyle}
         onPress={() =>
-          userId === item.followingId
-            ? navigation.navigate('Profile')
-            : navigation.navigate('ViewProfileScreen', { item })}
+          currentUserId === item.userId
+            ? navigateToOwnProfile()
+            : navigation.push('ViewProfileScreen', { item })}
       >
         {item.name}
       </Text>
@@ -133,7 +135,7 @@ export default function FollowingScreen ({ props, navigation, route }) {
             onPress={() => navigation.goBack()}
           />
           <Text style={{ fontSize: 18, alignItems: 'center' }}>
-            Following
+            {currentUserId === userId ? 'Your' : username + "'s"} Following
           </Text>
         </View>
         <SearchBar

@@ -13,7 +13,8 @@ import { sortByName } from '../../api/ranking'
 import { Ionicons } from 'react-native-vector-icons'
 
 export default function FollowersScreen ({ props, navigation, route }) {
-  const { userId } = route.params
+  const currentUserId = firebase.auth().currentUser.uid
+  const { userId, username } = route.params
   const [search, setSearch] = useState('')
   const [filteredDataSource, setFilteredDataSource] = useState([])
   const [masterDataSource, setMasterDataSource] = useState([])
@@ -59,8 +60,6 @@ export default function FollowersScreen ({ props, navigation, route }) {
     users.sort(sortByName)
     setMasterDataSource(users)
     setLoading(false)
-
-    console.log(userId)
   }
 
   const searchFilterFunction = (text) => {
@@ -81,15 +80,20 @@ export default function FollowersScreen ({ props, navigation, route }) {
     }
   }
 
+  const navigateToOwnProfile = () => {
+    navigation.navigate('Profile')
+    navigation.navigate('ProfileHomeTabs')
+  }
+
   const ItemView = ({ item }) => {
     return (
     // Flat List Item
       <Text
         style={styles.itemStyle}
         onPress={() =>
-          userId === item.userId
-            ? navigation.navigate('Profile')
-            : navigation.navigate('ViewProfileScreen', { item })}
+          currentUserId === item.userId
+            ? navigateToOwnProfile()
+            : navigation.push('ViewProfileScreen', { item })}
       >
         {item.name}
       </Text>
@@ -128,7 +132,7 @@ export default function FollowersScreen ({ props, navigation, route }) {
             onPress={() => navigation.goBack()}
           />
           <Text style={{ fontSize: 18, alignItems: 'center' }}>
-            Followers
+            {currentUserId === userId ? 'Your' : username + "'s"} Followers
           </Text>
         </View>
         <SearchBar
