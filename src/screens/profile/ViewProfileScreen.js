@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 80
+    marginBottom: 100
   },
   profileContainer: {
     backgroundColor: '#DCDCDC',
