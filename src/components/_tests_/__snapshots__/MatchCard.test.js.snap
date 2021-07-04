@@ -42,6 +42,7 @@ exports[`renders correctly 1`] = `
           },
           Object {
             "backgroundColor": "#90EE90",
+            "borderRadius": 15,
             "height": 100,
             "margin": 10,
             "padding": 10,
@@ -58,9 +59,7 @@ exports[`renders correctly 1`] = `
           }
         }
       >
-         
         Success!
-         
       </Text>
       <Text
         style={
@@ -71,7 +70,7 @@ exports[`renders correctly 1`] = `
           }
         }
       >
-         Match successfully completed on 
+        Match successfully completed on 
         Tue Jun 15 2021
         ! Tap here to check out 
         
