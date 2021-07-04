@@ -1,6 +1,7 @@
 import * as React from 'react'
 import MatchCard from '../MatchCard'
 import renderer from 'react-test-renderer'
+import { fireEvent, render } from '@testing-library/react-native'
 
 jest.useFakeTimers()
 
@@ -36,10 +37,18 @@ const timestamp = new CustomDate(setDate)
 
 const mockItem = {
   success: true,
-  timeMatched: timestamp
+  timeMatched: timestamp,
+  isGroup: true
 }
 
 it('renders correctly', () => {
   const tree = renderer.create(<MatchCard item={mockItem} />)
   expect(tree).toMatchSnapshot()
+})
+
+it('on press card', () => {
+  console.log = jest.fn()
+  const { getByTestId } = render(<MatchCard item={mockItem} />)
+  fireEvent.press(getByTestId('pressable'))
+  expect(console.log).toHaveBeenCalledWith('group or fail')
 })

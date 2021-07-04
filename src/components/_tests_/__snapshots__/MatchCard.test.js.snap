@@ -25,6 +25,7 @@ exports[`renders correctly 1`] = `
         "opacity": 1,
       }
     }
+    testID="pressable"
   >
     <View
       style={
@@ -72,9 +73,7 @@ exports[`renders correctly 1`] = `
       >
         Match successfully completed on 
         Tue Jun 15 2021
-        ! Tap here to check out 
-        
-        's profile!
+        ! Tap here to chat with your new group!
       </Text>
     </View>
   </View>

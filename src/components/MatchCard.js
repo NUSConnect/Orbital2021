@@ -85,7 +85,7 @@ const MatchCard = ({ item, onPress }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onPressFn}>
+      <TouchableOpacity onPress={onPressFn} testID='pressable'>
         <Card style={{ padding: 10, margin: 10, backgroundColor: color, height: 100, borderRadius: 15 }}>
           <Text style={styles.title}>{item.success ? 'Success!' : 'Sorry!'}</Text>
           {item.success
