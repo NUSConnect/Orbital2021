@@ -9,6 +9,8 @@ import {
 import ChatScreen from '../home/ChatScreen'
 import CommentScreen from '../home/CommentScreen'
 import ViewProfileScreen from '../profile/ViewProfileScreen'
+import FollowingScreen from '../profile/FollowingScreen'
+import FollowersScreen from '../profile/FollowersScreen'
 import FilteredMajorScreen from './FilteredMajorScreen'
 import FindGroupScreen from './FindGroupScreen'
 import FriendSearchScreen from './FriendSearchScreen'
@@ -89,6 +91,8 @@ const FriendsScreen = ({ navigation }) => {
           name='ViewProfileScreen'
           component={ViewProfileScreen}
         />
+        <Stack.Screen name='FollowersScreen' component={FollowersScreen} />
+        <Stack.Screen name='FollowingScreen' component={FollowingScreen} />
         <Stack.Screen name='ChatScreen' component={ChatScreen} />
         <Stack.Screen name='CommentScreen' component={CommentScreen} />
       </Stack.Navigator>

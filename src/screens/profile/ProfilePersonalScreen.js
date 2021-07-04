@@ -15,6 +15,7 @@ import { theme } from '../../core/theme'
 
 export default class ProfilePersonalScreen extends React.Component {
     state = {
+      currentUserId: firebase.auth().currentUser.uid,
       defaultUri:
             'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460',
       userData: null,
@@ -38,7 +39,7 @@ export default class ProfilePersonalScreen extends React.Component {
       })
 
       if (!result.cancelled) {
-        const userId = firebase.auth().currentUser.uid
+        const userId = this.state.currentUSerId
         const imagePath = 'profile/' + userId
 
         this.uploadImage(result.uri, imagePath)
@@ -52,7 +53,7 @@ export default class ProfilePersonalScreen extends React.Component {
             firebase
               .firestore()
               .collection('users')
-              .doc(firebase.auth().currentUser.uid)
+              .doc(this.state.currentUserId)
               .update({ userImg: url })
             this.getUser()
           })
@@ -75,7 +76,7 @@ export default class ProfilePersonalScreen extends React.Component {
       await firebase
         .firestore()
         .collection('users')
-        .doc(firebase.auth().currentUser.uid)
+        .doc(this.state.currentUserId)
         .get()
         .then((documentSnapshot) => {
           if (documentSnapshot.exists) {
@@ -91,7 +92,7 @@ export default class ProfilePersonalScreen extends React.Component {
       await firebase
         .firestore()
         .collection('users')
-        .doc(firebase.auth().currentUser.uid)
+        .doc(this.state.currentUserId)
         .collection('following')
         .onSnapshot(querySnapshot => {
           this.setState({ following: querySnapshot.size - 1 })
@@ -102,7 +103,7 @@ export default class ProfilePersonalScreen extends React.Component {
       await firebase
         .firestore()
         .collection('users')
-        .doc(firebase.auth().currentUser.uid)
+        .doc(this.state.currentUserId)
         .collection('followers')
         .onSnapshot(querySnapshot => {
           this.setState({ followers: querySnapshot.size })
@@ -148,13 +149,19 @@ export default class ProfilePersonalScreen extends React.Component {
                 </Text>
                 <View style={styles.following}>
                   <View>
-                    <TouchableOpacity style={styles.innerFollowing} onPress={() => this.props.navigation.navigate('FollowersScreen')}>
+                    <TouchableOpacity
+                      style={styles.innerFollowing}
+                      onPress={() => this.props.navigation.navigate('FollowersScreen', { userId: this.state.currentUserId })}
+                    >
                       <Text style={styles.followWord}> {this.state.followers} </Text>
                       <Text style={styles.userInfo}> {this.state.followers === 1 ? 'Follower' : 'Followers'} </Text>
                     </TouchableOpacity>
                   </View>
                   <View>
-                    <TouchableOpacity style={styles.innerFollowing} onPress={() => this.props.navigation.navigate('FollowingScreen')}>
+                    <TouchableOpacity
+                      style={styles.innerFollowing}
+                      onPress={() => this.props.navigation.navigate('FollowingScreen', { userId: this.state.currentUserId })}
+                    >
                       <Text style={styles.followWord}> {this.state.following} </Text>
                       <Text style={styles.userInfo}> Following </Text>
                     </TouchableOpacity>
@@ -266,7 +273,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#add8e6'
   },
   following: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginTop: 10
   },
   innerFollowing: {
     alignItems: 'center',

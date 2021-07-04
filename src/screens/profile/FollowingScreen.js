@@ -12,8 +12,8 @@ import SearchBar from '../../components/SearchBar'
 import { sortByName } from '../../api/ranking'
 import { Ionicons } from 'react-native-vector-icons'
 
-export default function FollowingScreen ({ props, navigation }) {
-  const currentUserId = firebase.auth().currentUser.uid
+export default function FollowingScreen ({ props, navigation, route }) {
+  const { userId } = route.params
   const [search, setSearch] = useState('')
   const [filteredDataSource, setFilteredDataSource] = useState([])
   const [masterDataSource, setMasterDataSource] = useState([])
@@ -21,36 +21,37 @@ export default function FollowingScreen ({ props, navigation }) {
   const [filtered, setFiltered] = useState(false)
 
   const getAllFollowing = async () => {
-    const followingId = []
+    console.log(userId)
+    const allFollowingId = []
 
     await firebase
       .firestore()
       .collection('users')
-      .doc(currentUserId)
+      .doc(userId)
       .collection('following')
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(documentSnapshot => {
-          if (documentSnapshot.id !== currentUserId) {
-            followingId.push(documentSnapshot.id)
+          if (documentSnapshot.id !== userId) {
+            allFollowingId.push(documentSnapshot.id)
           }
         })
       })
-
+    console.log(allFollowingId)
     const users = []
 
-    for (let i = 0; i < followingId.length; i++) {
-      const userId = followingId[i]
+    for (let i = 0; i < allFollowingId.length; i++) {
+      const followingId = allFollowingId[i]
 
       await firebase
         .firestore()
         .collection('users')
-        .doc(userId)
+        .doc(followingId)
         .get()
         .then(doc => {
           const { name, bio, email, createdAt } = doc.data()
           users.push({
-            userId: doc.id,
+            followingId: doc.id,
             name,
             bio,
             email,
@@ -61,6 +62,10 @@ export default function FollowingScreen ({ props, navigation }) {
     users.sort(sortByName)
     setMasterDataSource(users)
     setLoading(false)
+
+    console.log(userId)
+    console.log(allFollowingId)
+    console.log(users)
   }
 
   const searchFilterFunction = (text) => {
@@ -87,7 +92,7 @@ export default function FollowingScreen ({ props, navigation }) {
       <Text
         style={styles.itemStyle}
         onPress={() =>
-          currentUserId === item.userId
+          userId === item.followingId
             ? navigation.navigate('Profile')
             : navigation.navigate('ViewProfileScreen', { item })}
       >
