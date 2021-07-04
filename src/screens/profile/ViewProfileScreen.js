@@ -299,10 +299,10 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
             {userData ? userData.bio : '.'}
           </Text>
           <View style={styles.following}>
-            <Text style={styles.followerInfo} onPress={() => navigation.navigate('FollowersScreen', { userId: item.userId })}>
+            <Text style={styles.followerInfo} onPress={() => navigation.push('FollowersScreen', { userId: item.userId })}>
               {followers} {followers === 1 ? 'Follower' : 'Followers'}
             </Text>
-            <Text style={styles.followingInfo} onPress={() => navigation.navigate('FollowingScreen', { userId: item.userId })}>
+            <Text style={styles.followingInfo} onPress={() => navigation.push('FollowingScreen', { userId: item.userId })}>
               {followingPeople} Following
             </Text>
           </View>
@@ -344,7 +344,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
             onReport={handlePostsReport}
             onViewProfile={x => x}
             onPress={() =>
-              navigation.navigate('CommentScreen', { item })}
+              navigation.push('CommentScreen', { item })}
           />
         )}
         keyExtractor={(item) => item.id}
@@ -370,16 +370,16 @@ const styles = StyleSheet.create({
   profileContainer: {
     backgroundColor: '#DCDCDC',
     width: '100%',
-    height: 120,
+    height: DeviceWidth * 0.25 + 15,
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row'
   },
   profileInfo: {},
   profilePic: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: DeviceWidth * 0.25,
+    height: DeviceWidth * 0.25,
+    borderRadius: DeviceWidth * 0.15,
     borderWidth: 4,
     borderColor: 'white',
     margin: 5
@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     flexWrap: 'wrap',
     paddingLeft: 4,
-    width: DeviceWidth - 110
+    width: DeviceWidth * 0.75 - 5
   },
   buttonContainer: {
     backgroundColor: '#DCDCDC',
@@ -407,7 +407,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     paddingLeft: '5%',
-    paddingRight: '5%'
+    paddingRight: '5%',
+    paddingBottom: 10
   },
   button: {
     height: 40,
@@ -440,7 +441,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: DeviceWidth - 110,
+    width: DeviceWidth * 0.75 - 5,
     paddingLeft: '10%',
     paddingRight: '20%'
   },
