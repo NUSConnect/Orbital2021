@@ -315,17 +315,17 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         >
           <Text style={styles.text}>
             {following ? 'Unfollow' : 'Follow'}
-           </Text>
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
-           style={styles.button}
-           onPress={message}
+          style={styles.button}
+          onPress={message}
         >
           <Text style={styles.text}>Message</Text>
         </TouchableOpacity>
         <TouchableOpacity
-           style={styles.smallButton}
-           onPress={profileReport}
+          style={styles.smallButton}
+          onPress={profileReport}
         >
           <MaterialIcons
             name='report'
@@ -455,6 +455,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'darkslategrey',
     fontWeight: '600',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   }
 })
