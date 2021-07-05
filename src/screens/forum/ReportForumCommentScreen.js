@@ -13,6 +13,8 @@ import ReportPostTopTab from '../../components/ReportPostTopTab'
 export default function ReportForumCommentScreen ({ props, navigation, route, goBack }) {
   const currentUserId = firebase.auth().currentUser.uid
   const comment = route.params.comment
+  const post = route.params.post
+  console.log(post)
   console.log(comment)
 
   const majors = [
@@ -35,7 +37,7 @@ export default function ReportForumCommentScreen ({ props, navigation, route, go
             .doc('forumComments')
             .collection(comment.commentId)
             .doc(currentUserId)
-            .set({ reason: item.name })
+            .set({ reason: item.name, forumId: post.forumId, postId: post.postId })
           Alert.alert('Thank you!', 'Your report has been submitted.')
           navigation.goBack()
         }}

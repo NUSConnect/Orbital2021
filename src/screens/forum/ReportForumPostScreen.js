@@ -35,7 +35,7 @@ export default function ReportForumPostScreen ({ props, navigation, route, goBac
             .doc('forumPosts')
             .collection(post.postId)
             .doc(currentUserId)
-            .set({ reason: item.name })
+            .set({ reason: item.name, forumId: post.forumId })
           Alert.alert('Thank you!', 'Your report has been submitted.')
           navigation.goBack()
         }}

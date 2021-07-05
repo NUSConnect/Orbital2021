@@ -230,7 +230,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         {
           text: 'Confirm',
           onPress: () =>
-            navigation.navigate('ReportForumCommentScreen', { comment: comment })
+            navigation.navigate('ReportForumCommentScreen', { comment: comment, post: item })
         }
       ],
       { cancelable: false }
