@@ -162,21 +162,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         )
       }
     } else {
-      Alert.alert(
-        'Report comment',
-        'Are you sure?',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('cancel pressed')
-          },
-          {
-            text: 'OK',
-            onPress: () => handleReport(comment)
-          }
-        ],
-        { cancelable: true }
-      )
+      handleReport(comment)
     }
   }
 
@@ -244,10 +230,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         {
           text: 'Confirm',
           onPress: () =>
-            Alert.alert(
-              'Comment Reported!',
-              'This comment has been reported successfully!'
-            )
+            navigation.navigate('ReportForumCommentScreen', { comment: comment })
         }
       ],
       { cancelable: false }

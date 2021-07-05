@@ -19,6 +19,7 @@ import WaitingScreen from './WaitingScreen'
 import MatchMeScreen from './MatchMeScreen'
 import ReportPostScreen from '../home/ReportPostScreen'
 import ReportUserScreen from './ReportUserScreen'
+import ReportCommentScreen from '../home/ReportCommentScreen'
 
 const Stack = createStackNavigator()
 const TopTab = createMaterialTopTabNavigator()
@@ -101,6 +102,7 @@ const FriendsScreen = ({ navigation }) => {
         <Stack.Screen name='MatchMeScreen' component={MatchMeScreen} />
         <Stack.Screen name='ReportPostScreen' component={ReportPostScreen} />
         <Stack.Screen name='ReportUserScreen' component={ReportUserScreen} />
+        <Stack.Screen name='ReportCommentScreen' component={ReportCommentScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )
