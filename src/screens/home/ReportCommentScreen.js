@@ -35,7 +35,7 @@ export default function ReportCommentScreen ({ props, navigation, route, goBack 
             .doc('userComments')
             .collection(comment.commentId)
             .doc(currentUserId)
-            .set({ reason: item.name })
+            .set({ reason: item.name, postId: comment.postId })
           Alert.alert('Thank you!', 'Your report has been submitted.')
           navigation.goBack()
         }}
