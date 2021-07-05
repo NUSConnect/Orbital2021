@@ -343,6 +343,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
       contentContainerStyle={styles.inner}
       resetScrollToCoords={{ x: 0, y: 0 }}
       scrollEnabled={false}
+      keyboardShouldPersistTaps='always'
     >
       <ForumPostHeader
         goBack={() => navigation.goBack()}
