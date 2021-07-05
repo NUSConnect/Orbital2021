@@ -35,9 +35,16 @@ export default function ReportCommentScreen ({ props, navigation, route, goBack 
             .doc('userComments')
             .collection('reported')
             .doc(comment.commentId)
+            .set({ postId: comment.postId })
+          firebase
+            .firestore()
+            .collection('reports')
+            .doc('userComments')
+            .collection('reported')
+            .doc(comment.commentId)
             .collection('reporters')
             .doc(currentUserId)
-            .set({ reason: item.name, postId: comment.postId })
+            .set({ reason: item.name })
           Alert.alert('Thank you!', 'Your report has been submitted.')
           navigation.goBack()
         }}
