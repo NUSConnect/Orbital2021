@@ -37,9 +37,16 @@ export default function ReportForumCommentScreen ({ props, navigation, route, go
             .doc('forumComments')
             .collection('reported')
             .doc(comment.commentId)
+            .set({ forumId: post.forumId, postId: post.postId })
+          firebase
+            .firestore()
+            .collection('reports')
+            .doc('forumComments')
+            .collection('reported')
+            .doc(comment.commentId)
             .collection('reporters')
             .doc(currentUserId)
-            .set({ reason: item.name, forumId: post.forumId, postId: post.postId })
+            .set({ reason: item.name })
           Alert.alert('Thank you!', 'Your report has been submitted.')
           navigation.goBack()
         }}
