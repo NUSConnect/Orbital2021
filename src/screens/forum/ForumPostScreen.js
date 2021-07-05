@@ -330,10 +330,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         {
           text: 'Confirm',
           onPress: () =>
-            Alert.alert(
-              'Post Reported!',
-              'This post has been reported successfully!'
-            )
+            navigation.navigate('ReportForumPostScreen', { post: post })
         }
       ],
       { cancelable: false }

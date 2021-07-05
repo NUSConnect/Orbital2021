@@ -12,7 +12,8 @@ import {
   ForumPostScreen,
   ForumSearchScreen,
   ForumSubscribedScreen,
-  SubForumScreen
+  SubForumScreen,
+  ReportForumPostScreen
 } from './'
 
 const Stack = createStackNavigator()
@@ -47,6 +48,7 @@ export default function ForumScreen () {
         <Stack.Screen name='EditForumPostScreen' component={EditForumPostScreen} />
         <Stack.Screen name='EditForumCommentScreen' component={EditForumCommentScreen} />
         <Stack.Screen name='ViewProfileScreen' component={ViewProfileScreen} />
+        <Stack.Screen name='ReportForumPostScreen' component={ReportForumPostScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )
