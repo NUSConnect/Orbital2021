@@ -16,6 +16,7 @@ import FindGroupScreen from './FindGroupScreen'
 import FriendSearchScreen from './FriendSearchScreen'
 import MajorsSearchScreen from './MajorsSearchScreen'
 import WaitingScreen from './WaitingScreen'
+import MatchMeScreen from './MatchMeScreen'
 
 const Stack = createStackNavigator()
 const TopTab = createMaterialTopTabNavigator()
@@ -95,6 +96,7 @@ const FriendsScreen = ({ navigation }) => {
         <Stack.Screen name='FollowingScreen' component={FollowingScreen} />
         <Stack.Screen name='ChatScreen' component={ChatScreen} />
         <Stack.Screen name='CommentScreen' component={CommentScreen} />
+        <Stack.Screen name='MatchMeScreen' component={MatchMeScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )

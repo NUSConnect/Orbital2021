@@ -4,7 +4,7 @@ export function defaultVectorFunc (vector) {
 
 export function getNumDimensions (data, vectorFunc) {
   if (data[0]) {
-    return vectorFunc(data[0]).length
+    return vectorFunc(data[0].vector).length
   }
 }
 
@@ -23,13 +23,13 @@ export function initMinMax (numDimensions) {
 
 export function getMinMax (data, numDimensions, vectorFunc) {
   const minMaxValues = initMinMax(numDimensions)
-  data.forEach(vector => {
+  data.forEach(point => {
     for (let i = 0; i < numDimensions; i++) {
-      if (vectorFunc(vector)[i] < minMaxValues.minValue[i]) {
-        minMaxValues.minValue[i] = vectorFunc(vector)[i]
+      if (vectorFunc(point.vector)[i] < minMaxValues.minValue[i]) {
+        minMaxValues.minValue[i] = vectorFunc(point.vector)[i]
       }
-      if (vectorFunc(vector)[i] > minMaxValues.maxValue[i]) {
-        minMaxValues.maxValue[i] = vectorFunc(vector)[i]
+      if (vectorFunc(point.vector)[i] > minMaxValues.maxValue[i]) {
+        minMaxValues.maxValue[i] = vectorFunc(point.vector)[i]
       }
     }
   })
@@ -40,8 +40,8 @@ export function getMean (data, index, vectorFunc) {
   let sum = 0
   const total = data.length
   if (total === 0) return 0
-  data.forEach(vector => {
-    sum = sum + vectorFunc(vector)[index]
+  data.forEach(point => {
+    sum = sum + vectorFunc(point.vector)[index]
   })
   return sum / total
 }
@@ -61,10 +61,10 @@ export function updateMeans (clusters, vectorFunc) {
 }
 
 export function assignDataToClusters (data, clusters, distanceFunc, vectorFunc) {
-  data.forEach(vector => {
-    const cluster = findClosestCluster(vectorFunc(vector), clusters, distanceFunc)
+  data.forEach(point => {
+    const cluster = findClosestCluster(vectorFunc(point.vector), clusters, distanceFunc)
     if (!cluster.data) cluster.data = []
-    cluster.data.push(vector)
+    cluster.data.push(point)
   })
 }
 

@@ -21,10 +21,12 @@ import EngineeringMajorsScreen from './EngineeringMajorsScreen'
 import ProfilePersonalScreen from './ProfilePersonalScreen'
 import ProfilePostsScreen from './ProfilePostsScreen'
 import UpdateEmailScreen from './UpdateEmailScreen'
+import MatchHistoryScreen from './MatchHistoryScreen'
 import EditPostScreen from '../home/EditPostScreen'
-import FollowingScreen from './FollowingScreen'
-import FollowersScreen from './FollowersScreen'
+import ChatScreen from '../home/ChatScreen'
 import ViewProfileScreen from './ViewProfileScreen'
+import GroupInfoScreen from '../home/GroupInfoScreen'
+import EditGroupScreen from '../home/EditGroupScreen'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -41,6 +43,7 @@ function ProfileHomeTabs () {
     >
       <Tab.Screen name='Personal' component={ProfilePersonalScreen} />
       <Tab.Screen name='Posts' component={ProfilePostsScreen} />
+      <Tab.Screen name='Matches' component={MatchHistoryScreen} />
     </Tab.Navigator>
   )
 }
@@ -70,9 +73,10 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='ChangePasswordScreen' component={ChangePasswordScreen} />
         <Stack.Screen name='ChangeNameScreen' component={ChangeNameScreen} />
         <Stack.Screen name='EditPostScreen' component={EditPostScreen} />
-        <Stack.Screen name='FollowingScreen' component={FollowingScreen} />
-        <Stack.Screen name='FollowersScreen' component={FollowersScreen} />
         <Stack.Screen name='ViewProfileScreen' component={ViewProfileScreen} />
+        <Stack.Screen name='ChatScreen' component={ChatScreen} />
+        <Stack.Screen name='GroupInfoScreen' component={GroupInfoScreen} />
+        <Stack.Screen name='EditGroupScreen' component={EditGroupScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )

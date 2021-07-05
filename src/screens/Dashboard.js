@@ -13,6 +13,12 @@ import {
 
 const Tab = createMaterialBottomTabNavigator()
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return { shouldShowAlert: true }
+  }
+})
+
 function MyTabs () {
   return (
     <Tab.Navigator

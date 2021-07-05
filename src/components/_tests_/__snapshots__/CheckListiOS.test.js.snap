@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  id="list"
+  style={
+    Object {
+      "alignItems": "center",
+      "display": "flex",
+      "flexDirection": "row",
+      "paddingVertical": 8,
+      "width": "50%",
+    }
+  }
+>
+  <View
+    className="main"
+    style={
+      Object {
+        "flex": 11,
+        "flexBasis": 250,
+        "flexDirection": "row",
+      }
+    }
+  >
+    <Switch
+      onValueChange={[Function]}
+      testID="switch"
+    />
+    <Text
+      style={
+        Object {
+          "fontSize": 20,
+        }
+      }
+    />
+  </View>
+</View>
+`;
