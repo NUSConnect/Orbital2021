@@ -300,7 +300,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
               item.userId,
               () => navigation.navigate('Profile'),
               () =>
-                navigation.navigate('ViewProfileScreen', {
+                navigation.push('ViewProfileScreen', {
                   item
                 })
             )}
@@ -314,7 +314,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
               item.userId,
               () => navigation.navigate('Profile'),
               () =>
-                navigation.navigate('ViewProfileScreen', {
+                navigation.push('ViewProfileScreen', {
                   item
                 })
             )}

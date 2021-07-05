@@ -2,6 +2,7 @@ import * as firebase from 'firebase'
 import React, { useEffect, useState } from 'react'
 import {
   Alert,
+  Dimensions,
   FlatList,
   Image,
   SafeAreaView,
@@ -14,14 +15,17 @@ import {
 import PostCard from '../../components/PostCard'
 import TitleWithBack from '../../components/TitleWithBack'
 import ImageViewer from 'react-native-image-zoom-viewer'
-import { Ionicons } from 'react-native-vector-icons'
+import { Ionicons, MaterialIcons } from 'react-native-vector-icons'
 import { sendPushNotification } from '../../api/notifications'
+
+const DeviceWidth = Dimensions.get('window').width
 
 const ViewProfileScreen = ({ navigation, route, onPress }) => {
   const currentUserId = firebase.auth().currentUser.uid
   const currentUserName = firebase.auth().currentUser.displayName
   const defaultUri =
         'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
+  const [name, setName] = useState(null)
   const [userData, setUserData] = useState(null)
   const [posts, setPosts] = useState([])
   const [following, setFollowing] = useState(false)
@@ -42,6 +46,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
+          setName(documentSnapshot.data().name)
           setUserData(documentSnapshot.data())
           setMajorData(documentSnapshot.data().major)
           setImages([{ url: documentSnapshot.data().userImg, props: {} }])
@@ -144,7 +149,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     const list = [currentUserId, item.userId]
     const threadID = concatList(list)
     const threadObj = { id: threadID, name: userData.name, otherId: item.userId }
-    navigation.navigate('ChatScreen', { thread: threadObj })
+    navigation.push('ChatScreen', { thread: threadObj })
   }
 
   const fetchUserPosts = async () => {
@@ -221,6 +226,9 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
     )
   }
 
+  const profileReport = () => {
+    alert('Account reported')
+  }
   const renderHeader = () => {
     return (
       <View>
@@ -284,48 +292,50 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         </Modal>
         <View style={styles.profileInfo}>
           <Text style={styles.name}>
-            {' '}
             {userData ? userData.name : 'Anonymous User'}{' '}
           </Text>
           <Text style={styles.userInfo}>
-            {' '}
             Major: {majorData || 'Undeclared'}{' '}
           </Text>
           <Text style={styles.userInfo}>
-            {' '}
-            {userData ? userData.bio : '.'}{' '}
+            {userData ? userData.bio : '.'}
           </Text>
           <View style={styles.following}>
-            <Text style={styles.followerInfo}> {followers} {followers === 1 ? 'Follower' : 'Followers'} </Text>
-            <Text style={styles.followingInfo}> {followingPeople} Following </Text>
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={follow}
-            >
-              <Text style={styles.text}>
-                {following ? 'Unfollow' : 'Follow'}
-              </Text>
-            </TouchableOpacity>
-            <View style={styles.space} />
-            <TouchableOpacity
-              style={styles.button}
-              onPress={message}
-            >
-              <Text style={styles.text}>Message</Text>
-            </TouchableOpacity>
+            <Text style={styles.followerInfo} onPress={() => navigation.push('FollowersScreen', { userId: item.userId, username: name })}>
+              {followers} {followers === 1 ? 'Follower' : 'Followers'}
+            </Text>
+            <Text style={styles.followingInfo} onPress={() => navigation.push('FollowingScreen', { userId: item.userId, username: name })}>
+              {followingPeople} Following
+            </Text>
           </View>
         </View>
       </View>
-      <View
-        style={{
-          height: 2,
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          marginLeft: 10,
-          marginRight: 10
-        }}
-      />
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={follow}
+        >
+          <Text style={styles.text}>
+            {following ? 'Unfollow' : 'Follow'}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={message}
+        >
+          <Text style={styles.text}>Message</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.smallButton}
+          onPress={profileReport}
+        >
+          <MaterialIcons
+            name='report'
+            size={20}
+            color='white'
+          />
+        </TouchableOpacity>
+      </View>
       <FlatList
         numColumns={1}
         horizontal={false}
@@ -336,7 +346,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
             onReport={handlePostsReport}
             onViewProfile={x => x}
             onPress={() =>
-              navigation.navigate('CommentScreen', { item })}
+              navigation.push('CommentScreen', { item })}
           />
         )}
         keyExtractor={(item) => item.id}
@@ -357,21 +367,21 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 80
+    marginBottom: 100
   },
   profileContainer: {
     backgroundColor: '#DCDCDC',
     width: '100%',
-    height: 150,
+    height: DeviceWidth * 0.25 + 15,
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row'
   },
   profileInfo: {},
   profilePic: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: DeviceWidth * 0.25,
+    height: DeviceWidth * 0.25,
+    borderRadius: DeviceWidth * 0.15,
     borderWidth: 4,
     borderColor: 'white',
     margin: 5
@@ -380,7 +390,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#000000',
     fontWeight: '600',
-    paddingTop: 10
+    paddingTop: 10,
+    paddingLeft: 4
   },
   userInfo: {
     fontSize: 14,
@@ -388,31 +399,40 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     flexWrap: 'wrap',
     paddingLeft: 4,
-    width: 280
+    width: DeviceWidth * 0.75 - 10
   },
   buttonContainer: {
-    flex: 1,
+    backgroundColor: '#DCDCDC',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 10,
-    paddingLeft: 10,
-    width: '95%'
+    width: '100%',
+    height: 50,
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    paddingBottom: 10
   },
   button: {
     height: 40,
+    width: '38%',
     backgroundColor: '#87cefa',
     borderRadius: 20,
-    marginBottom: 10,
     alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1
+    justifyContent: 'center'
+  },
+  smallButton: {
+    height: 40,
+    width: '15%',
+    backgroundColor: '#87cefa',
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   space: {
     width: 20
   },
   text: {
-    fontSize: 16,
+    fontSize: 18,
     color: 'white'
   },
   closeButton: {
@@ -420,20 +440,24 @@ const styles = StyleSheet.create({
     paddingTop: 50
   },
   following: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: DeviceWidth * 0.75 - 5,
+    paddingLeft: '10%',
+    paddingRight: '20%'
   },
   followerInfo: {
     fontSize: 16,
-    color: '#778899',
+    color: 'darkslategrey',
     fontWeight: '600',
     flexWrap: 'wrap',
     paddingLeft: 4
   },
   followingInfo: {
     fontSize: 16,
-    color: '#778899',
+    color: 'darkslategrey',
     fontWeight: '600',
-    flexWrap: 'wrap',
-    paddingLeft: 20
+    flexWrap: 'wrap'
   }
 })

@@ -6,6 +6,8 @@ import {
   StyleSheet
 } from 'react-native'
 import ViewProfileScreen from '../profile/ViewProfileScreen'
+import FollowingScreen from '../profile/FollowingScreen'
+import FollowersScreen from '../profile/FollowersScreen'
 import AddPostScreen from './AddPostScreen'
 import ChatScreen from './ChatScreen'
 import CommentScreen from './CommentScreen'
@@ -36,6 +38,8 @@ const HomeScreen = ({ navigation }) => {
         <Stack.Screen name='CommentScreen' component={CommentScreen} />
         <Stack.Screen name='EditCommentScreen' component={EditCommentScreen} />
         <Stack.Screen name='ViewProfileScreen' component={ViewProfileScreen} />
+        <Stack.Screen name='FollowersScreen' component={FollowersScreen} />
+        <Stack.Screen name='FollowingScreen' component={FollowingScreen} />
         <Stack.Screen name='ChatScreen' component={ChatScreen} />
         <Stack.Screen name='MessagesScreen' component={MessagesScreen} />
         <Stack.Screen name='StartMessagesScreen' component={StartMessagesScreen} />
