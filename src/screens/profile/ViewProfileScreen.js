@@ -27,8 +27,10 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
   const [name, setName] = useState(null)
   const [userData, setUserData] = useState(null)
+  const [isPrivate, setIsPrivate] = useState(false)
   const [posts, setPosts] = useState([])
   const [following, setFollowing] = useState(false)
+  const [requested, setRequested] = useState(false)
   const [refreshing, setRefreshing] = useState(true)
   const [majorData, setMajorData] = useState(null)
   const [images, setImages] = useState([{}])
@@ -50,6 +52,9 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
           setUserData(documentSnapshot.data())
           setMajorData(documentSnapshot.data().major)
           setImages([{ url: documentSnapshot.data().userImg, props: {} }])
+          if (documentSnapshot.data().isPrivate !== null) {
+            setIsPrivate(documentSnapshot.data().isPrivate)
+          }
         }
       })
   }
@@ -109,30 +114,58 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         .doc(currentUserId)
         .delete()
       setFollowing(false)
+    } else if (requested) {
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(item.userId)
+        .collection('followRequests')
+        .doc(currentUserId)
+        .delete()
+      setRequested(false)
     } else {
-      firebase
-        .firestore()
-        .collection('users')
-        .doc(currentUserId)
-        .collection('following')
-        .doc(item.userId)
-        .set({})
-      firebase
-        .firestore()
-        .collection('users')
-        .doc(item.userId)
-        .collection('followers')
-        .doc(currentUserId)
-        .set({})
-      setFollowing(true)
+      if (isPrivate) {
+        firebase
+          .firestore()
+          .collection('users')
+          .doc(item.userId)
+          .collection('followRequests')
+          .doc(currentUserId)
+          .set({})
+        setRequested(true)
 
-      firebase.firestore().collection('users').doc(item.userId).get()
-        .then((doc) => {
-          console.log('Checking if pushToken available')
-          if (doc.data().pushToken != null) {
-            sendPushNotification(doc.data().pushToken.data, currentUserName, 'is now following you!')
-          }
-        })
+        firebase.firestore().collection('users').doc(item.userId).get()
+          .then((doc) => {
+            console.log('Checking if pushToken available')
+            if (doc.data().pushToken != null) {
+              sendPushNotification(doc.data().pushToken.data, currentUserName, 'requested to follow you!')
+            }
+          })
+      } else {
+        firebase
+          .firestore()
+          .collection('users')
+          .doc(currentUserId)
+          .collection('following')
+          .doc(item.userId)
+          .set({})
+        firebase
+          .firestore()
+          .collection('users')
+          .doc(item.userId)
+          .collection('followers')
+          .doc(currentUserId)
+          .set({})
+        setFollowing(true)
+
+        firebase.firestore().collection('users').doc(item.userId).get()
+          .then((doc) => {
+            console.log('Checking if pushToken available')
+            if (doc.data().pushToken != null) {
+              sendPushNotification(doc.data().pushToken.data, currentUserName, 'is now following you!')
+            }
+          })
+      }
     }
   }
 
@@ -316,7 +349,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
           onPress={follow}
         >
           <Text style={styles.text}>
-            {following ? 'Unfollow' : 'Follow'}
+            {following ? 'Unfollow' : requested ? 'Requested' : 'Follow'}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -336,25 +369,48 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
           />
         </TouchableOpacity>
       </View>
-      <FlatList
-        numColumns={1}
-        horizontal={false}
-        data={posts}
-        renderItem={({ item }) => (
-          <PostCard
-            item={item}
-            onReport={handlePostsReport}
-            onViewProfile={x => x}
-            onPress={() =>
-              navigation.push('CommentScreen', { item })}
-          />
-        )}
-        keyExtractor={(item) => item.id}
-        ItemSeparatorComponent={ItemSeparator}
-        refreshing={refreshing}
-        onRefresh={handleRefresh}
-        style={{ width: '100%', paddingBottom: 200 }}
-      />
+      {(isPrivate && following) || !isPrivate
+        ? (
+            posts.length !== 0
+              ? (
+                <FlatList
+                  numColumns={1}
+                  horizontal={false}
+                  data={posts}
+                  renderItem={({ item }) => (
+                    <PostCard
+                      item={item}
+                      onReport={handlePostsReport}
+                      onViewProfile={x => x}
+                      onPress={() =>
+                        navigation.push('CommentScreen', { item })}
+                    />
+                  )}
+                  keyExtractor={(item) => item.id}
+                  ItemSeparatorComponent={ItemSeparator}
+                  refreshing={refreshing}
+                  onRefresh={handleRefresh}
+                  style={{ width: '100%', paddingBottom: 200 }}
+                />
+                )
+              : (
+                <View style={styles.postMessage}>
+                  <Text style={styles.postsDescription}>
+                    User has no posts.
+                  </Text>
+                </View>
+                )
+          )
+        : (
+          <View style={styles.postMessage}>
+            <Text style={styles.postsDescription}>
+              User's account is private.
+            </Text>
+            <Text style={styles.postsDescription}>
+              Follow the user to see their posts.
+            </Text>
+          </View>
+          )}
     </SafeAreaView>
   )
 }
@@ -459,5 +515,15 @@ const styles = StyleSheet.create({
     color: 'darkslategrey',
     fontWeight: '600',
     flexWrap: 'wrap'
+  },
+  postMessage: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '30%'
+  },
+  postsDescription: {
+    fontSize: 18,
+    color: 'darkslategrey',
+    width: '90%'
   }
 })

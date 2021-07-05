@@ -34,7 +34,7 @@ export default function AccountSettingsScreen ({ navigation }) {
         </Button>
         <Button
           style={styles.button}
-          onPress={() => navigation.navigate('DummyScreen')}
+          onPress={() => navigation.navigate('PrivacySettingsScreen')}
         >
           {' '}
           Privacy Settings{' '}
