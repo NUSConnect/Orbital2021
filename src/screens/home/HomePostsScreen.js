@@ -260,10 +260,7 @@ export default class HomePostsScreen extends React.Component {
           {
             text: 'Confirm',
             onPress: () =>
-              Alert.alert(
-                'Post Reported!',
-                'This post has been reported successfully!'
-              )
+              this.props.navigation.navigate('ReportPostScreen', { postId: postId })
           }
         ],
         { cancelable: false }
