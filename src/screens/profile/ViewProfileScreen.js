@@ -258,22 +258,22 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
 
   const profileReport = () => {
     Alert.alert(
-          'Report User',
-          'Are you sure?',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => console.log('Cancel Pressed!'),
-              style: 'cancel'
-            },
-            {
-              text: 'Confirm',
-              onPress: () =>
-                navigation.navigate('ReportUserScreen', { userId: item.userId })
-            }
-          ],
-          { cancelable: false }
-        )
+      'Report User',
+      'Are you sure?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed!'),
+          style: 'cancel'
+        },
+        {
+          text: 'Confirm',
+          onPress: () =>
+            navigation.navigate('ReportUserScreen', { userId: item.userId })
+        }
+      ],
+      { cancelable: false }
+    )
   }
   const renderHeader = () => {
     return (
