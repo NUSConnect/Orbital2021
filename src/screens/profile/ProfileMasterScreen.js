@@ -27,6 +27,8 @@ import ChatScreen from '../home/ChatScreen'
 import ViewProfileScreen from './ViewProfileScreen'
 import GroupInfoScreen from '../home/GroupInfoScreen'
 import EditGroupScreen from '../home/EditGroupScreen'
+import FollowersScreen from './FollowersScreen'
+import FollowingScreen from './FollowingScreen'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -77,6 +79,8 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='ChatScreen' component={ChatScreen} />
         <Stack.Screen name='GroupInfoScreen' component={GroupInfoScreen} />
         <Stack.Screen name='EditGroupScreen' component={EditGroupScreen} />
+        <Stack.Screen name='FollowersScreen' component={FollowersScreen} />
+        <Stack.Screen name='FollowingScreen' component={FollowingScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )
