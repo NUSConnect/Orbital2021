@@ -69,10 +69,8 @@ const styles = {
     marginBottom: 30
   },
   switchText: {
-    fontSize: 20
-  },
-  switchFlip: {
-    transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }]
+    fontSize: 20,
+    paddingRight: 5
   },
   buttonWrap: {
     backgroundColor: '#FFFFFF',
