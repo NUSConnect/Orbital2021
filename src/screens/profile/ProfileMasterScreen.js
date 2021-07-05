@@ -29,6 +29,8 @@ import GroupInfoScreen from '../home/GroupInfoScreen'
 import EditGroupScreen from '../home/EditGroupScreen'
 import FollowersScreen from './FollowersScreen'
 import FollowingScreen from './FollowingScreen'
+import RequestedFollowersScreen from './RequestedFollowersScreen'
+import PrivacySettingsScreen from './PrivacySettingsScreen'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -81,6 +83,8 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='EditGroupScreen' component={EditGroupScreen} />
         <Stack.Screen name='FollowersScreen' component={FollowersScreen} />
         <Stack.Screen name='FollowingScreen' component={FollowingScreen} />
+        <Stack.Screen name='RequestedFollowersScreen' component={RequestedFollowersScreen} />
+        <Stack.Screen name='PrivacySettingsScreen' component={PrivacySettingsScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )
