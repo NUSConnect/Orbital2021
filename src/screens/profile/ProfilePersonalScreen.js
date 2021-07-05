@@ -105,9 +105,9 @@ export default class ProfilePersonalScreen extends React.Component {
         .collection('followRequests')
         .onSnapshot(querySnapshot => {
           if (querySnapshot.size !== 0) {
-            this.setState({ followRequests: true})
+            this.setState({ followRequests: true })
           } else {
-            this.setState({ followRequests: false})
+            this.setState({ followRequests: false })
           }
         })
     }
@@ -181,17 +181,17 @@ export default class ProfilePersonalScreen extends React.Component {
                   </View>
                   {this.state.followRequests === true
                     ? (
-                     <View>
-                       <TouchableOpacity
-                         style={styles.innerFollowing}
-                         onPress={() => this.props.navigation.navigate('RequestedFollowersScreen')}
-                       >
-                         <Text style={styles.followRequests}>Follow</Text>
-                         <Text style={styles.followRequests}>Requests</Text>
-                       </TouchableOpacity>
-                     </View>
-                    ) : (null)
-                  }
+                      <View>
+                        <TouchableOpacity
+                          style={styles.innerFollowing}
+                          onPress={() => this.props.navigation.navigate('RequestedFollowersScreen')}
+                        >
+                          <Text style={styles.followRequests}>Follow</Text>
+                          <Text style={styles.followRequests}>Requests</Text>
+                        </TouchableOpacity>
+                      </View>
+                      )
+                    : (null)}
                 </View>
               </View>
             </View>

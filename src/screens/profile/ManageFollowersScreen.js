@@ -12,44 +12,42 @@ import {
 } from 'react-native'
 import SearchBar from '../../components/SearchBar'
 import { sortByName } from '../../api/ranking'
-import { Ionicons, Entypo } from 'react-native-vector-icons'
-import { sendPushNotification } from '../../api/notifications'
+import { Ionicons } from 'react-native-vector-icons'
 
-export default function RequestedFollowersScreen ({ props, navigation, route }) {
+export default function ManageFollowersScreen ({ props, navigation, route }) {
   const currentUserId = firebase.auth().currentUser.uid
-  const currentUserName = firebase.auth().currentUser.displayName
   const [search, setSearch] = useState('')
   const [filteredDataSource, setFilteredDataSource] = useState([])
   const [masterDataSource, setMasterDataSource] = useState([])
   const [loading, setLoading] = useState(true)
   const [filtered, setFiltered] = useState(false)
 
-  const getAllFollowing = async () => {
-    const allRequestersId = []
+  const getAllFollowers = async () => {
+    const allFollowersId = []
 
     await firebase
       .firestore()
       .collection('users')
       .doc(currentUserId)
-      .collection('followRequests')
+      .collection('followers')
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(documentSnapshot => {
           if (documentSnapshot.id !== currentUserId) {
-            allRequestersId.push(documentSnapshot.id)
+            allFollowersId.push(documentSnapshot.id)
           }
         })
       })
-    console.log(allRequestersId)
+    console.log(allFollowersId)
     const users = []
 
-    for (let i = 0; i < allRequestersId.length; i++) {
-      const requesterId = allRequestersId[i]
+    for (let i = 0; i < allFollowersId.length; i++) {
+      const followerId = allFollowersId[i]
 
       await firebase
         .firestore()
         .collection('users')
-        .doc(requesterId)
+        .doc(followerId)
         .get()
         .then(doc => {
           const { name, bio, email, createdAt } = doc.data()
@@ -67,27 +65,9 @@ export default function RequestedFollowersScreen ({ props, navigation, route }) 
     setLoading(false)
   }
 
-  const acceptRequest = async (userId) => {
-    setMasterDataSource(masterDataSource.filter(item => item.userId !== userId))
-    setFilteredDataSource(filteredDataSource.filter(item => item.userId !== userId))
-
-    firebase.firestore().collection('users').doc(currentUserId).collection('followRequests').doc(userId).delete()
-
-    firebase.firestore().collection('users').doc(currentUserId).collection('followers').doc(userId).set({})
-    firebase.firestore().collection('users').doc(userId).collection('following').doc(currentUserId).set({})
-
-    firebase.firestore().collection('users').doc(userId).get()
-      .then((doc) => {
-        console.log('Checking if pushToken available')
-        if (doc.data().pushToken != null) {
-          sendPushNotification(doc.data().pushToken.data, currentUserName, 'accepted your follow request.')
-        }
-      })
-  }
-
-  const handleReject = (userId, userName) => {
+  const handleRemove = (userId, userName) => {
     Alert.alert(
-      'Remove request from ' + userName,
+      'Remove ' + userName + ' from your followers',
       'Are you sure?',
       [
         {
@@ -97,17 +77,18 @@ export default function RequestedFollowersScreen ({ props, navigation, route }) 
         },
         {
           text: 'Confirm',
-          onPress: () => rejectRequest(userId)
+          onPress: () => removeFollower(userId)
         }
       ],
       { cancelable: false }
     )
   }
 
-  const rejectRequest = async (userId) => {
+  const removeFollower = async (userId) => {
     setMasterDataSource(masterDataSource.filter(item => item.userId !== userId))
     setFilteredDataSource(filteredDataSource.filter(item => item.userId !== userId))
-    firebase.firestore().collection('users').doc(currentUserId).collection('followRequests').doc(userId).delete()
+    firebase.firestore().collection('users').doc(currentUserId).collection('followers').doc(userId).delete()
+    firebase.firestore().collection('users').doc(userId).collection('following').doc(currentUserId).delete()
   }
 
   const searchFilterFunction = (text) => {
@@ -139,24 +120,12 @@ export default function RequestedFollowersScreen ({ props, navigation, route }) 
           {item.name}
         </Text>
         <TouchableOpacity
-          style={styles.greenButton}
-          onPress={() => acceptRequest(item.userId)}
+          style={styles.button}
+          onPress={() => handleRemove(item.userId, item.name)}
         >
-          <Ionicons
-            name='checkmark-sharp'
-            size={24}
-            color='white'
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.redButton}
-          onPress={() => handleReject(item.userId, item.name)}
-        >
-          <Entypo
-            name='cross'
-            size={24}
-            color='white'
-          />
+          <Text style={styles.buttonText}>
+            Remove
+          </Text>
         </TouchableOpacity>
         <View style={{ width: '2%' }} />
       </View>
@@ -177,7 +146,7 @@ export default function RequestedFollowersScreen ({ props, navigation, route }) 
   }
 
   useEffect(() => {
-    getAllFollowing()
+    getAllFollowers()
   }, [])
 
   if (loading) {
@@ -223,7 +192,7 @@ const styles = StyleSheet.create({
   username: {
     padding: 10,
     fontSize: 20,
-    width: '65%'
+    width: '70%'
   },
   subHeader: {
     flexDirection: 'row',
@@ -237,20 +206,16 @@ const styles = StyleSheet.create({
     marginRight: 8,
     color: 'black'
   },
-  greenButton: {
+  button: {
     alignItems: 'center',
-    width: '15%',
-    height: 38,
-    backgroundColor: 'green',
-    justifyContent: 'center',
-    borderRadius: 10
-  },
-  redButton: {
-    alignItems: 'center',
-    width: '15%',
+    width: '25%',
     height: 38,
     backgroundColor: 'red',
     justifyContent: 'center',
     borderRadius: 10
+  },
+  buttonText: {
+    fontSize: 16,
+    color: 'white'
   }
 })

@@ -47,10 +47,10 @@ export default function PrivacySettingsScreen ({ navigation }) {
         <Button
           style={styles.button}
           color='#de1738'
-          onPress={() => console.log('blocked pressed')}
+          onPress={() => navigation.navigate('ManageFollowersScreen')}
         >
-          <Text style={styles.switchText}>
-            Manage Blocked Users
+          <Text style={{ fontSize: 17 }}>
+            Manage Followers
           </Text>
         </Button>
       </View>

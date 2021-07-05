@@ -371,35 +371,37 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
       </View>
       {(isPrivate && following) || !isPrivate
         ? (
-          posts.length !== 0
-            ? (
-              <FlatList
-                numColumns={1}
-                horizontal={false}
-                data={posts}
-                renderItem={({ item }) => (
-                  <PostCard
-                    item={item}
-                    onReport={handlePostsReport}
-                    onViewProfile={x => x}
-                    onPress={() =>
-                      navigation.push('CommentScreen', { item })}
-                  />
-                )}
-                keyExtractor={(item) => item.id}
-                ItemSeparatorComponent={ItemSeparator}
-                refreshing={refreshing}
-                onRefresh={handleRefresh}
-                style={{ width: '100%', paddingBottom: 200 }}
-              />
-            ) : (
-              <View style={styles.postMessage}>
-                <Text style={styles.postsDescription}>
-                  User has no posts.
-                </Text>
-              </View>
-            )
-        ) : (
+            posts.length !== 0
+              ? (
+                <FlatList
+                  numColumns={1}
+                  horizontal={false}
+                  data={posts}
+                  renderItem={({ item }) => (
+                    <PostCard
+                      item={item}
+                      onReport={handlePostsReport}
+                      onViewProfile={x => x}
+                      onPress={() =>
+                        navigation.push('CommentScreen', { item })}
+                    />
+                  )}
+                  keyExtractor={(item) => item.id}
+                  ItemSeparatorComponent={ItemSeparator}
+                  refreshing={refreshing}
+                  onRefresh={handleRefresh}
+                  style={{ width: '100%', paddingBottom: 200 }}
+                />
+                )
+              : (
+                <View style={styles.postMessage}>
+                  <Text style={styles.postsDescription}>
+                    User has no posts.
+                  </Text>
+                </View>
+                )
+          )
+        : (
           <View style={styles.postMessage}>
             <Text style={styles.postsDescription}>
               User's account is private.
@@ -408,7 +410,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
               Follow the user to see their posts.
             </Text>
           </View>
-        )}
+          )}
     </SafeAreaView>
   )
 }
@@ -522,6 +524,6 @@ const styles = StyleSheet.create({
   postsDescription: {
     fontSize: 18,
     color: 'darkslategrey',
-    width: '90%',
+    width: '90%'
   }
 })
