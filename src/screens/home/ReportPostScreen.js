@@ -38,6 +38,15 @@ export default function ReportPostScreen ({ props, navigation, route, goBack }) 
         style={styles.itemStyle}
         onPress={() => {
           submitReport(item.name)
+          firebase
+            .firestore()
+            .collection('reports')
+            .doc('userPosts')
+            .collection('reported')
+            .doc(postId)
+            .collection('reporters')
+            .doc(currentUserId)
+            .set({ reason: item.name })
           Alert.alert('Thank you!', 'Your report has been submitted.')
           navigation.goBack()
         }}
