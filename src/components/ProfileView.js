@@ -80,7 +80,7 @@ const ProfileView = ({ route, itemId, onPress }) => {
   return (
     <View>
       <Text style={styles.reportId}>
-        User Report for: {itemId}
+        User Report for: {itemId.length > 25 ? itemId.substring(0, 25) : itemId}
       </Text>
       <View
         style={{
