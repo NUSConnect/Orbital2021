@@ -32,6 +32,12 @@ import FollowingScreen from './FollowingScreen'
 import RequestedFollowersScreen from './RequestedFollowersScreen'
 import PrivacySettingsScreen from './PrivacySettingsScreen'
 import ManageFollowersScreen from './ManageFollowersScreen'
+import SuperAdminScreen from './SuperAdminScreen'
+import ViewReportsScreen from './ViewReportsScreen'
+import UnrestrictedViewProfileScreen from './UnrestrictedViewProfileScreen'
+import ReportsListScreen from './viewReports/ReportsListScreen'
+import ReportDetailScreen from './viewReports/ReportDetailScreen'
+import MatchMeControlScreen from './MatchMeControlScreen'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -87,6 +93,12 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='RequestedFollowersScreen' component={RequestedFollowersScreen} />
         <Stack.Screen name='PrivacySettingsScreen' component={PrivacySettingsScreen} />
         <Stack.Screen name='ManageFollowersScreen' component={ManageFollowersScreen} />
+        <Stack.Screen name='SuperAdminScreen' component={SuperAdminScreen} />
+        <Stack.Screen name='ViewReportsScreen' component={ViewReportsScreen} />
+        <Stack.Screen name='UnrestrictedViewProfileScreen' component={UnrestrictedViewProfileScreen} />
+        <Stack.Screen name='ReportsListScreen' component={ReportsListScreen} />
+        <Stack.Screen name='ReportDetailScreen' component={ReportDetailScreen} />
+        <Stack.Screen name='MatchMeControlScreen' component={MatchMeControlScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )

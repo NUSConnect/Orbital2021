@@ -24,27 +24,20 @@ export default function ReportForumPostScreen ({ props, navigation, route, goBac
     { name: 'False Information' }
   ]
 
+  const submitReport = async (reason) => {
+    const date = new Date()
+    await firebase.firestore().collection('reports').doc('forumPosts').collection('reported').doc(post.postId)
+      .set({ timeReported: firebase.firestore.Timestamp.fromDate(date), actionTaken: false, forumId: post.forumId })
+    await firebase.firestore().collection('reports').doc('forumPosts').collection('reported').doc(post.postId)
+      .collection('reporters').doc(currentUserId).set({ reason: reason })
+  }
+
   const ItemView = ({ item }) => {
     return (
       <Text
         style={styles.itemStyle}
         onPress={() => {
-          firebase
-            .firestore()
-            .collection('reports')
-            .doc('forumPosts')
-            .collection('reported')
-            .doc(post.postId)
-            .set({ forumId: post.forumId })
-          firebase
-            .firestore()
-            .collection('reports')
-            .doc('forumPosts')
-            .collection('reported')
-            .doc(post.postId)
-            .collection('reporters')
-            .doc(currentUserId)
-            .set({ reason: item.name })
+          submitReport(item.name)
           Alert.alert('Thank you!', 'Your report has been submitted.')
           navigation.goBack()
         }}

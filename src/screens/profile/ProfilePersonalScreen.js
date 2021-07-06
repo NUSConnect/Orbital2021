@@ -26,7 +26,8 @@ export default class ProfilePersonalScreen extends React.Component {
       major: null,
       following: 0,
       followers: 0,
-      requestedFollows: false
+      requestedFollows: false,
+      superAdmin: false
     };
 
     static navigationOptions = {
@@ -84,6 +85,9 @@ export default class ProfilePersonalScreen extends React.Component {
             this.setState({ userData: documentSnapshot.data() })
             this.setState({ bio: documentSnapshot.data().bio })
             this.setState({ major: documentSnapshot.data().major })
+            if (documentSnapshot.data().superAdmin !== null) {
+              this.setState({ superAdmin: documentSnapshot.data().superAdmin })
+            }
           }
         })
     };
@@ -213,13 +217,21 @@ export default class ProfilePersonalScreen extends React.Component {
               </Button>
               <Button
                 style={styles.accountset}
-                onPress={() =>
-                  this.props.navigation.navigate(
-                    'AccountSettingsScreen'
-                  )}
+                onPress={() => this.props.navigation.navigate('AccountSettingsScreen')}
               >
                 Account Settings
               </Button>
+              {this.state.superAdmin
+                ? (
+                  <Button
+                    style={styles.button}
+                    color='darkorange'
+                    onPress={() => this.props.navigation.navigate('SuperAdminScreen')}
+                  >
+                    Super Admin Controls
+                  </Button>
+                  )
+                : (null)}
               <Button
                 style={styles.button}
                 color='#de1738'

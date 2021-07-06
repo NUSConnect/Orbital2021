@@ -24,27 +24,20 @@ export default function ReportCommentScreen ({ props, navigation, route, goBack 
     { name: 'False Information' }
   ]
 
+  const submitReport = async (reason) => {
+    const date = new Date()
+    await firebase.firestore().collection('reports').doc('userComments').collection('reported').doc(comment.commentId)
+      .set({ timeReported: firebase.firestore.Timestamp.fromDate(date), actionTaken: false, postId: comment.postId })
+    await firebase.firestore().collection('reports').doc('userComments').collection('reported').doc(comment.commentId)
+      .collection('reporters').doc(currentUserId).set({ reason: reason })
+  }
+
   const ItemView = ({ item }) => {
     return (
       <Text
         style={styles.itemStyle}
         onPress={() => {
-          firebase
-            .firestore()
-            .collection('reports')
-            .doc('userComments')
-            .collection('reported')
-            .doc(comment.commentId)
-            .set({ postId: comment.postId })
-          firebase
-            .firestore()
-            .collection('reports')
-            .doc('userComments')
-            .collection('reported')
-            .doc(comment.commentId)
-            .collection('reporters')
-            .doc(currentUserId)
-            .set({ reason: item.name })
+          submitReport(item.name)
           Alert.alert('Thank you!', 'Your report has been submitted.')
           navigation.goBack()
         }}

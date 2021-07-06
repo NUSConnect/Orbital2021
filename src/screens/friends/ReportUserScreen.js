@@ -24,20 +24,20 @@ export default function ReportUserScreen ({ props, navigation, route, goBack }) 
     { name: 'False Information' }
   ]
 
+  const submitReport = async (reason) => {
+    const date = new Date()
+    await firebase.firestore().collection('reports').doc('users').collection('reported').doc(userId)
+      .set({ timeReported: firebase.firestore.Timestamp.fromDate(date), actionTaken: false })
+    await firebase.firestore().collection('reports').doc('users').collection('reported').doc(userId)
+      .collection('reporters').doc(currentUserId).set({ reason: reason })
+  }
+
   const ItemView = ({ item }) => {
     return (
       <Text
         style={styles.itemStyle}
         onPress={() => {
-          firebase
-            .firestore()
-            .collection('reports')
-            .doc('users')
-            .collection('reported')
-            .doc(userId)
-            .collection('reporters')
-            .doc(currentUserId)
-            .set({ reason: item.name })
+          submitReport(item.name)
           Alert.alert('Thank you!', 'Your report has been submitted.')
           navigation.goBack()
         }}

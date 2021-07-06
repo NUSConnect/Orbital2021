@@ -26,27 +26,25 @@ export default function ReportForumCommentScreen ({ props, navigation, route, go
     { name: 'False Information' }
   ]
 
+  const submitReport = async (reason) => {
+    const date = new Date()
+    await firebase.firestore().collection('reports').doc('forumComments').collection('reported').doc(comment.commentId)
+      .set({
+        timeReported: firebase.firestore.Timestamp.fromDate(date),
+        actionTaken: false,
+        forumId: post.forumId,
+        postId: post.postId
+      })
+    await firebase.firestore().collection('reports').doc('forumComments').collection('reported').doc(comment.commentId)
+      .collection('reporters').doc(currentUserId).set({ reason: reason })
+  }
+
   const ItemView = ({ item }) => {
     return (
       <Text
         style={styles.itemStyle}
         onPress={() => {
-          firebase
-            .firestore()
-            .collection('reports')
-            .doc('forumComments')
-            .collection('reported')
-            .doc(comment.commentId)
-            .set({ forumId: post.forumId, postId: post.postId })
-          firebase
-            .firestore()
-            .collection('reports')
-            .doc('forumComments')
-            .collection('reported')
-            .doc(comment.commentId)
-            .collection('reporters')
-            .doc(currentUserId)
-            .set({ reason: item.name })
+          submitReport(item.name)
           Alert.alert('Thank you!', 'Your report has been submitted.')
           navigation.goBack()
         }}

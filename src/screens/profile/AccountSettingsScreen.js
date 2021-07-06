@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { deleteUser, logoutUser } from '../../api/auth'
 import BackButton from '../../components/BackButton'
 import Background from '../../components/Background'
@@ -60,7 +60,7 @@ export default function AccountSettingsScreen ({ navigation }) {
   )
 }
 
-const styles = {
+const styles = StyleSheet.create({
   button: {
     backgroundColor: '#FFFFFF'
   },
@@ -69,4 +69,4 @@ const styles = {
     height: 500,
     alignItems: 'center'
   }
-}
+})
