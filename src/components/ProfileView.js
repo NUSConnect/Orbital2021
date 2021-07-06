@@ -80,7 +80,7 @@ const ProfileView = ({ route, itemId, onPress }) => {
   return (
     <View>
       <Text style={styles.reportId}>
-        User Report for: {itemId.length > 25 ? itemId.substring(0, 25) : itemId}
+        User Report for: {itemId}
       </Text>
       <View
         style={{
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     height: DeviceWidth * 0.25 + 15,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   profileInfo: {},
   profilePic: {
