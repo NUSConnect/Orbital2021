@@ -10,49 +10,8 @@ export default function ReportDetailScreen ({ props, route, navigation }) {
   const { category, item } = route.params
   const [reports, setReports] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [reportedUid, setReportedUid] = useState('')
-  console.log(reportedUid)
 
   const quickViewer = REPORTS_CATEGORY[category].quickView
-  const navigateTo = REPORTS_CATEGORY[category].navigateTo
-
-  const getReportedUid = () => {
-    switch (category) {
-      case 'users':
-        setReportedUid(item.id)
-        break
-      case 'userPosts':
-        setReportedUid(item.id.substring(0, 28))
-        break
-      case 'userComments':
-        firebase
-          .firestore()
-          .collection('reports')
-          .doc('userComments')
-          .collection('reported')
-          .doc(item.id)
-          .get()
-          .then(documentSnapshot => {
-            setReportedUid(documentSnapshot.data().postId.substring(0, 28))
-          })
-        break
-      case 'forumPosts':
-        setReportedUid(item.id.substring(0, 28))
-        break
-      case 'forumComments':
-        firebase
-          .firestore()
-          .collection('reports')
-          .doc('forumComments')
-          .collection('reported')
-          .doc(item.id)
-          .get()
-          .then(documentSnapshot => {
-            setReportedUid(documentSnapshot.data().postId.substring(0, 28))
-          })
-        break
-    }
-  }
 
   const getReports = async () => {
     const reports = []
@@ -117,7 +76,6 @@ export default function ReportDetailScreen ({ props, route, navigation }) {
 
   useEffect(() => {
     getReports()
-    getReportedUid()
   }, [])
 
   if (loading) {
@@ -132,7 +90,7 @@ export default function ReportDetailScreen ({ props, route, navigation }) {
       />
       <FlatList
         data={reports}
-        ListHeaderComponent={quickViewer(item.id, reportedUid, () => navigation.navigate(navigateTo, { itemId: reportedUid }))}
+        ListHeaderComponent={quickViewer(item, navigation)}
         ListHeaderComponentStyle={styles.headerComponentStyle}
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={ItemSeparatorView}
@@ -149,7 +107,7 @@ export default function ReportDetailScreen ({ props, route, navigation }) {
           </TouchableOpacity>
         }
         ListFooterComponentStyle={styles.footerComponentStyle}
-        style={{ marginBottom: 40 }}
+        style={{ marginBottom: 2 }}
       />
     </View>
   )
@@ -180,7 +138,8 @@ const styles = StyleSheet.create({
   footerComponentStyle: {
     flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 10
   },
   button: {
     height: 50,

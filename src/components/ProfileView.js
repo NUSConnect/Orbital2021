@@ -14,7 +14,7 @@ import { Ionicons } from 'react-native-vector-icons'
 
 const DeviceWidth = Dimensions.get('window').width
 
-const ProfileView = ({ route, itemId, reportId, onPress }) => {
+const ProfileView = ({ route, item, navigation }) => {
   const defaultUri =
         'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
   const [userData, setUserData] = useState(null)
@@ -28,7 +28,7 @@ const ProfileView = ({ route, itemId, reportId, onPress }) => {
     await firebase
       .firestore()
       .collection('users')
-      .doc(itemId)
+      .doc(item.id)
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
@@ -43,7 +43,7 @@ const ProfileView = ({ route, itemId, reportId, onPress }) => {
     await firebase
       .firestore()
       .collection('users')
-      .doc(itemId)
+      .doc(item.id)
       .collection('following')
       .onSnapshot(querySnapshot => {
         setFollowingPeople(querySnapshot.size - 1)
@@ -54,7 +54,7 @@ const ProfileView = ({ route, itemId, reportId, onPress }) => {
     await firebase
       .firestore()
       .collection('users')
-      .doc(itemId)
+      .doc(item.id)
       .collection('followers')
       .onSnapshot(querySnapshot => {
         setFollowers(querySnapshot.size)
@@ -80,7 +80,7 @@ const ProfileView = ({ route, itemId, reportId, onPress }) => {
   return (
     <View>
       <Text style={styles.reportId}>
-        Report ID: {reportId}
+        User ID: {item.id}
       </Text>
       <View
         style={{
@@ -135,7 +135,7 @@ const ProfileView = ({ route, itemId, reportId, onPress }) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={onPress}
+          onPress={() => navigation.navigate('UnrestrictedViewProfileScreen', { itemId: item.id })}
         >
           <Text style={styles.buttonText}>
             View Full Profile
@@ -162,7 +162,7 @@ export default ProfileView
 const styles = StyleSheet.create({
   container: {
     flex: 0,
-    width: '100%',
+    width: DeviceWidth,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 100
@@ -247,9 +247,10 @@ const styles = StyleSheet.create({
   reportId: {
     fontSize: 18,
     color: 'crimson',
-    width: '90%',
-    paddingLeft: 20,
-    marginBottom: 6
+    width: DeviceWidth,
+    paddingLeft: 10,
+    margin: 6,
+    flexWrap: 'wrap'
   },
   subHeader: {
     fontSize: 20,

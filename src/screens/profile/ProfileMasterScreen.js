@@ -7,6 +7,7 @@ import {
   StyleSheet
 } from 'react-native'
 import CommentScreen from '../home/CommentScreen'
+import ForumPostScreen from '../forum/ForumPostScreen'
 import AccountSettingsScreen from './AccountSettingsScreen'
 import AddBioScreen from './AddBioScreen'
 import AddFacultyScreen from './AddFacultyScreen'
@@ -34,7 +35,7 @@ import PrivacySettingsScreen from './PrivacySettingsScreen'
 import ManageFollowersScreen from './ManageFollowersScreen'
 import SuperAdminScreen from './SuperAdminScreen'
 import ViewReportsScreen from './ViewReportsScreen'
-import UnrestrictedViewProfileScreen from './UnrestrictedViewProfileScreen'
+import UnrestrictedViewProfileScreen from './viewReports/UnrestrictedViewProfileScreen'
 import ReportsListScreen from './viewReports/ReportsListScreen'
 import ReportDetailScreen from './viewReports/ReportDetailScreen'
 import MatchMeControlScreen from './MatchMeControlScreen'
@@ -84,6 +85,7 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='EngineeringMajorsScreen' component={EngineeringMajorsScreen} />
         <Stack.Screen name='AddBioScreen' component={AddBioScreen} />
         <Stack.Screen name='CommentScreen' component={CommentScreen} />
+        <Stack.Screen name='ForumPostScreen' component={ForumPostScreen} />
         <Stack.Screen name='ChangePasswordScreen' component={ChangePasswordScreen} />
         <Stack.Screen name='ChangeNameScreen' component={ChangeNameScreen} />
         <Stack.Screen name='EditPostScreen' component={EditPostScreen} />

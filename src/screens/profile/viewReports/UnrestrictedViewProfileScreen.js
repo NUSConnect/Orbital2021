@@ -12,11 +12,11 @@ import {
   View,
   Modal
 } from 'react-native'
-import PostCard from '../../components/PostCard'
-import TitleWithBack from '../../components/TitleWithBack'
+import PostCard from '../../../components/PostCard'
+import TitleWithBack from '../../../components/TitleWithBack'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import { Ionicons, MaterialIcons } from 'react-native-vector-icons'
-import { sendPushNotification } from '../../api/notifications'
+import { sendPushNotification } from '../../../api/notifications'
 
 const DeviceWidth = Dimensions.get('window').width
 

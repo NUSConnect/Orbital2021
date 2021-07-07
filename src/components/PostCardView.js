@@ -39,7 +39,6 @@ const PostCardView = ({
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          //          console.log('User Data', documentSnapshot.data());
           setUserData(documentSnapshot.data())
         }
       })

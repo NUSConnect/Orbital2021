@@ -23,18 +23,18 @@ export default function ReportsListScreen ({ props, route, navigation }) {
       .collection('reported')
       .get()
       .then(querySnapshot => {
-        console.log(querySnapshot.size)
         querySnapshot.forEach(documentSnapshot => {
-          const { timeReported, actionTaken } = documentSnapshot.data()
+          const { timeReported, actionTaken, postId, forumId } = documentSnapshot.data()
           reports.push({
             id: documentSnapshot.id,
             timeReported: timeReported,
-            actionTaken: actionTaken
+            actionTaken: actionTaken,
+            postId: postId,
+            forumId: forumId
           })
         })
       })
 
-    // console.log(reports)
     setMasterDataSource(reports)
     setLoading(false)
   }
