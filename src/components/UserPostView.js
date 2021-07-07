@@ -24,7 +24,7 @@ import ProgressiveImage from './ProgressiveImage'
 const DeviceWidth = Dimensions.get('window').width
 
 const UserPostView = ({ route, item, navigation }) => {
-  const userId = item.id.substring(0, 28)
+  const userId = item.userId
   const [userData, setUserData] = useState(null)
   const [postData, setPostData] = useState(null)
 
@@ -44,7 +44,9 @@ const UserPostView = ({ route, item, navigation }) => {
   const getPost = async () => {
     await firebase.firestore().collection('posts').doc(userId).collection('userPosts').doc(item.id).get()
       .then((documentSnapshot) => {
-        setPostData(documentSnapshot.data())
+        if (documentSnapshot.exists) {
+          setPostData(documentSnapshot.data())
+        }
       })
   }
 
@@ -96,7 +98,7 @@ const UserPostView = ({ route, item, navigation }) => {
               </UserInfo>
             </View>
           </View>
-          <PostText testID='post'>{postData ? postData.post : ''}</PostText>
+          <PostText testID='post'>{postData ? postData.post : '---Deleted Post---'}</PostText>
           {postData != null && postData.postImg != null
             ? (
               <ProgressiveImage
@@ -131,7 +133,7 @@ const UserPostView = ({ route, item, navigation }) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('CommentScreen', { item: postData })}
+            onPress={() => postData ? navigation.navigate('CommentScreen', { item: postData }) : alert('Post deleted')}
           >
             <Text style={styles.buttonText}>
               View Full Post

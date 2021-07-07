@@ -13,7 +13,7 @@ import ReportPostTopTab from '../../components/ReportPostTopTab'
 export default function ReportCommentScreen ({ props, navigation, route, goBack }) {
   const currentUserId = firebase.auth().currentUser.uid
   const comment = route.params.comment
-  console.log(comment)
+  const userId = route.params.userId
 
   const majors = [
     { name: 'Spam' },
@@ -27,7 +27,7 @@ export default function ReportCommentScreen ({ props, navigation, route, goBack 
   const submitReport = async (reason) => {
     const date = new Date()
     await firebase.firestore().collection('reports').doc('userComments').collection('reported').doc(comment.commentId)
-      .set({ timeReported: firebase.firestore.Timestamp.fromDate(date), actionTaken: false, postId: comment.postId })
+      .set({ timeReported: firebase.firestore.Timestamp.fromDate(date), actionTaken: false, postId: comment.postId, userId: userId })
     await firebase.firestore().collection('reports').doc('userComments').collection('reported').doc(comment.commentId)
       .collection('reporters').doc(currentUserId).set({ reason: reason })
   }

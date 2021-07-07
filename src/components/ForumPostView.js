@@ -12,7 +12,7 @@ import moment from 'moment'
 const DeviceWidth = Dimensions.get('window').width
 
 const UserPostView = ({ route, item, navigation }) => {
-  const userId = item.id.substring(0, 28)
+  const userId = item.userId
   const [userData, setUserData] = useState(null)
   const [postData, setPostData] = useState(null)
 
@@ -32,7 +32,9 @@ const UserPostView = ({ route, item, navigation }) => {
   const getPost = async () => {
     await firebase.firestore().collection('forums').doc(item.forumId).collection('forumPosts').doc(item.id).get()
       .then((documentSnapshot) => {
-        setPostData(documentSnapshot.data())
+        if (documentSnapshot.exists) {
+          setPostData(documentSnapshot.data())
+        }
       })
   }
 
@@ -65,8 +67,8 @@ const UserPostView = ({ route, item, navigation }) => {
                   style={styles.username}
                 >
                   {userData
-                    ? userData.name || 'Anonymous User'
-                    : 'Anonymous User'}
+                    ? userData.name || 'Deleted User'
+                    : 'Deleted User'}
                 </Text>
                 <Text style={styles.regularFont} testID='time'>
                   {' ·'} {postData ? moment(postData.postTime.toDate()).fromNow() : ''}
@@ -79,7 +81,7 @@ const UserPostView = ({ route, item, navigation }) => {
               {postData ? postData.postTitle : ''}
             </Text>
             <Text style={styles.text}>
-              {postData ? postData.postBody : ''}
+              {postData ? postData.postBody : '---Deleted Post---'}
             </Text>
 
             <View style={styles.bottomContainer}>
@@ -103,7 +105,9 @@ const UserPostView = ({ route, item, navigation }) => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('ForumPostScreen', { item: postData, forumId: item.forumId, forumName: 'Reported Post' })}
+            onPress={() => postData
+              ? navigation.navigate('ForumPostScreen', { item: postData, forumId: item.forumId, forumName: 'Reported Post' })
+              : alert('Post deleted')}
           >
             <Text style={styles.buttonText}>
               View Full Post

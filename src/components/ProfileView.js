@@ -114,7 +114,7 @@ const ProfileView = ({ route, item, navigation }) => {
         </Modal>
         <View style={styles.profileInfo}>
           <Text style={styles.name}>
-            {userData ? userData.name : 'Anonymous User'}{' '}
+            {userData ? userData.name : 'Deleted User'}{' '}
           </Text>
           <Text style={styles.userInfo}>
             Major: {majorData || 'Undeclared'}{' '}

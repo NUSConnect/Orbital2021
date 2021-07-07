@@ -13,7 +13,7 @@ import ReportPostTopTab from '../../components/ReportPostTopTab'
 export default function ReportPostScreen ({ props, navigation, route, goBack }) {
   const currentUserId = firebase.auth().currentUser.uid
   const postId = route.params.postId
-  console.log(postId)
+  const userId = route.params.userId
 
   const majors = [
     { name: 'Spam' },
@@ -27,7 +27,7 @@ export default function ReportPostScreen ({ props, navigation, route, goBack }) 
   const submitReport = async (reason) => {
     const date = new Date()
     await firebase.firestore().collection('reports').doc('userPosts').collection('reported').doc(postId)
-      .set({ timeReported: firebase.firestore.Timestamp.fromDate(date), actionTaken: false })
+      .set({ timeReported: firebase.firestore.Timestamp.fromDate(date), actionTaken: false, userId: userId })
     await firebase.firestore().collection('reports').doc('userPosts').collection('reported').doc(postId)
       .collection('reporters').doc(currentUserId).set({ reason: reason })
   }
@@ -38,15 +38,6 @@ export default function ReportPostScreen ({ props, navigation, route, goBack }) 
         style={styles.itemStyle}
         onPress={() => {
           submitReport(item.name)
-          firebase
-            .firestore()
-            .collection('reports')
-            .doc('userPosts')
-            .collection('reported')
-            .doc(postId)
-            .collection('reporters')
-            .doc(currentUserId)
-            .set({ reason: item.name })
           Alert.alert('Thank you!', 'Your report has been submitted.')
           navigation.goBack()
         }}

@@ -29,6 +29,7 @@ const UserCommentView = ({ route, item, navigation }) => {
   const [postData, setPostData] = useState(null)
   const [commentData, setCommentData] = useState(null)
   const [commenterUserData, setCommenterUserData] = useState(null)
+  const reportedUid = item.userId
 
   const getCreator = async () => {
     await firebase
@@ -46,7 +47,9 @@ const UserCommentView = ({ route, item, navigation }) => {
   const getPost = async () => {
     await firebase.firestore().collection('posts').doc(postUserId).collection('userPosts').doc(item.postId).get()
       .then((documentSnapshot) => {
-        setPostData(documentSnapshot.data())
+        if (documentSnapshot.exists) {
+          setPostData(documentSnapshot.data())
+        }
       })
   }
 
@@ -57,8 +60,9 @@ const UserCommentView = ({ route, item, navigation }) => {
       .collection('comments').doc(item.id)
       .get()
       .then((documentSnapshot) => {
-        setCommentData(documentSnapshot.data())
-        getCommenter(documentSnapshot.data().creator)
+        if (documentSnapshot.exists) {
+          setCommentData(documentSnapshot.data())
+        }
       })
   }
 
@@ -79,6 +83,7 @@ const UserCommentView = ({ route, item, navigation }) => {
     getCreator()
     getPost()
     getComment()
+    getCommenter(reportedUid)
   }, [])
 
   return (
@@ -125,7 +130,7 @@ const UserCommentView = ({ route, item, navigation }) => {
               </UserInfo>
             </TouchableOpacity>
           </View>
-          <PostText testID='post'>{postData ? postData.post : ''}</PostText>
+          <PostText testID='post'>{postData ? postData.post : '---Deleted Post---'}</PostText>
           {postData != null && postData.postImg != null
             ? (
               <ProgressiveImage
@@ -168,23 +173,23 @@ const UserCommentView = ({ route, item, navigation }) => {
               >
                 {commenterUserData
                   ? commenterUserData.name || 'Deleted User'
-                  : 'Deleted User'}
+                  : ''}
               </Text>
               <Text style={styles.moments}>
-                {' ·'} {commentData ? moment(commentData.postTime.toDate()).fromNow() : ''}
+                {commentData ? ' · ' + moment(commentData.postTime.toDate()).fromNow() : ''}
               </Text>
             </View>
             <View style={styles.headerRight} />
           </View>
           <Text style={styles.text}>
-            {commentData ? commentData.text : ''}
+            {commentData ? commentData.text : 'Deleted Comment'}
           </Text>
         </View>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('CommentScreen', { item: postData })}
+          onPress={() => postData ? navigation.navigate('CommentScreen', { item: postData }) : alert('Post deleted')}
         >
           <Text style={styles.buttonText}>
             View Full Post
@@ -194,7 +199,7 @@ const UserCommentView = ({ route, item, navigation }) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('UnrestrictedViewProfileScreen', { itemId: commentData.creator })}
+          onPress={() => navigation.navigate('UnrestrictedViewProfileScreen', { itemId: reportedUid })}
         >
           <Text style={styles.buttonText}>
             View Profile

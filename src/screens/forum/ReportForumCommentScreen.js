@@ -33,7 +33,8 @@ export default function ReportForumCommentScreen ({ props, navigation, route, go
         timeReported: firebase.firestore.Timestamp.fromDate(date),
         actionTaken: false,
         forumId: post.forumId,
-        postId: post.postId
+        postId: post.postId,
+        userId: comment.userId
       })
     await firebase.firestore().collection('reports').doc('forumComments').collection('reported').doc(comment.commentId)
       .collection('reporters').doc(currentUserId).set({ reason: reason })

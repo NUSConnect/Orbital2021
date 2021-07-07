@@ -143,7 +143,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
         )
       }
     } else {
-      handleReport(comment)
+      handleReport(comment, comment.userId)
     }
   }
 
@@ -219,7 +219,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
       .update({ commentCount: item.commentCount })
   }
 
-  const handleReport = (postId) => {
+  const handleReport = (postId, userId) => {
     Alert.alert(
       'Report Comment',
       'Are you sure?',
@@ -232,7 +232,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
         {
           text: 'Confirm',
           onPress: () =>
-            navigation.navigate('ReportCommentScreen', { comment: postId })
+            navigation.navigate('ReportCommentScreen', { comment: postId, userId: userId })
         }
       ],
       { cancelable: false }

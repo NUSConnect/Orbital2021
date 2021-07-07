@@ -21,16 +21,18 @@ export default function ReportsListScreen ({ props, route, navigation }) {
       .collection('reports')
       .doc(category)
       .collection('reported')
+      .orderBy('timeReported', 'desc')
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(documentSnapshot => {
-          const { timeReported, actionTaken, postId, forumId } = documentSnapshot.data()
+          const { timeReported, actionTaken, postId, forumId, userId } = documentSnapshot.data()
           reports.push({
             id: documentSnapshot.id,
             timeReported: timeReported,
             actionTaken: actionTaken,
             postId: postId,
-            forumId: forumId
+            forumId: forumId,
+            userId: userId
           })
         })
       })

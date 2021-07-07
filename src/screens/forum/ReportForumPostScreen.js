@@ -13,7 +13,6 @@ import ReportPostTopTab from '../../components/ReportPostTopTab'
 export default function ReportForumPostScreen ({ props, navigation, route, goBack }) {
   const currentUserId = firebase.auth().currentUser.uid
   const post = route.params.post
-  console.log(post)
 
   const majors = [
     { name: 'Spam' },
@@ -27,7 +26,7 @@ export default function ReportForumPostScreen ({ props, navigation, route, goBac
   const submitReport = async (reason) => {
     const date = new Date()
     await firebase.firestore().collection('reports').doc('forumPosts').collection('reported').doc(post.postId)
-      .set({ timeReported: firebase.firestore.Timestamp.fromDate(date), actionTaken: false, forumId: post.forumId })
+      .set({ timeReported: firebase.firestore.Timestamp.fromDate(date), actionTaken: false, forumId: post.forumId, userId: post.userId })
     await firebase.firestore().collection('reports').doc('forumPosts').collection('reported').doc(post.postId)
       .collection('reporters').doc(currentUserId).set({ reason: reason })
   }
