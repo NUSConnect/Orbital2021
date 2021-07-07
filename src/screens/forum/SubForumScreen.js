@@ -269,62 +269,70 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
         subscribe={subscribe}
         title={item.forumName}
       />
-      <FlatList
-        data={posts}
-        ListHeaderComponent={
-          <View style={styles.sortBar}>
-            <MaterialCommunityIcons
-              name='sort'
-              color='blue'
-              size={26}
-            />
-            <Text style={styles.text}>
-              {'Sorted by: '}
-            </Text>
-            <ModalSelector
-              data={sortingOptions}
-              initValue={sortedBy}
-              onChange={(option) => changeSorting(option.label)}
-              animationType='fade'
-              backdropPressToClose
-              overlayStyle={{ flex: 1, padding: '5%', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.9)' }}
-              sectionTextStyle={{ fontSize: 20 }}
-              cancelTextStyle={{ color: 'crimson', fontSize: 20 }}
-              cancelText='Cancel'
-              optionTextStyle={{ fontSize: 20 }}
-            >
-              <TextInput
-                style={styles.pickerText}
-                editable={false}
-                placeholder={sortedBy}
-                value={sortedBy}
-              />
-            </ModalSelector>
-          </View>
+      {posts.length !== 0
+        ? (<FlatList
+            data={posts}
+            ListHeaderComponent={
+              <View style={styles.sortBar}>
+                <MaterialCommunityIcons
+                  name='sort'
+                  color='blue'
+                  size={26}
+                />
+                <Text style={styles.text}>
+                  {'Sorted by: '}
+                </Text>
+                <ModalSelector
+                  data={sortingOptions}
+                  initValue={sortedBy}
+                  onChange={(option) => changeSorting(option.label)}
+                  animationType='fade'
+                  backdropPressToClose
+                  overlayStyle={{ flex: 1, padding: '5%', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.9)' }}
+                  sectionTextStyle={{ fontSize: 20 }}
+                  cancelTextStyle={{ color: 'crimson', fontSize: 20 }}
+                  cancelText='Cancel'
+                  optionTextStyle={{ fontSize: 20 }}
+                >
+                  <TextInput
+                    style={styles.pickerText}
+                    editable={false}
+                    placeholder={sortedBy}
+                    value={sortedBy}
+                  />
+                </ModalSelector>
+              </View>
                 }
-        ListHeaderComponentStyle={styles.headerComponentStyle}
-        renderItem={({ item }) => (
-          <ForumPost
-            item={item}
-            onViewProfile={navigateProfile(
-              item.userId,
-              () => navigation.navigate('Profile'),
-              () =>
-                navigation.navigate('ViewProfileScreen', {
-                  item
-                })
+            ListHeaderComponentStyle={styles.headerComponentStyle}
+            renderItem={({ item }) => (
+              <ForumPost
+                item={item}
+                onViewProfile={navigateProfile(
+                  item.userId,
+                  () => navigation.navigate('Profile'),
+                  () =>
+                    navigation.navigate('ViewProfileScreen', {
+                      item
+                    })
+                )}
+                onPress={() => navigation.navigate('ForumPostScreen', { item, forumId, forumName })}
+                onEdit={() => handleEdit(item)}
+                onDelete={() => handleDelete(item)}
+                onReport={() => handleReport(item)}
+              />
             )}
-            onPress={() => navigation.navigate('ForumPostScreen', { item, forumId, forumName })}
-            onEdit={() => handleEdit(item)}
-            onDelete={() => handleDelete(item)}
-            onReport={() => handleReport(item)}
-          />
-        )}
-        keyExtractor={(item) => item.postId}
-        refreshing={refreshing}
-        onRefresh={handleRefresh}
-        style={{ marginBottom: 10, width: '100%' }}
-      />
+            keyExtractor={(item) => item.postId}
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            style={{ marginBottom: 10, width: '100%' }}
+           />)
+        : (
+          <View style={styles.postMessage}>
+            <Text style={styles.postsDescription}>
+              No posts here yet. Be the first!
+            </Text>
+          </View>
+          )}
     </SafeAreaView>
   )
 }
@@ -333,11 +341,7 @@ export default SubForumScreen
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center'
-
+    flex: 1
   },
   sortBar: {
     flexDirection: 'row',
@@ -358,5 +362,15 @@ const styles = StyleSheet.create({
   },
   headerComponentStyle: {
     marginVertical: 7
+  },
+  postMessage: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '50%'
+  },
+  postsDescription: {
+    fontSize: 18,
+    color: 'darkslategrey',
+    width: '90%'
   }
 })

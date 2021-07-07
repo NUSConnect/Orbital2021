@@ -326,72 +326,80 @@ export default class HomePostsScreen extends React.Component {
                 color='#ff7f50'
               />
               )}
-          <FlatList
-            data={this.state.data}
-            ListHeaderComponent={
-              <View style={styles.sortBar}>
-                <MaterialCommunityIcons
-                  name='sort'
-                  color='blue'
-                  size={26}
-                />
-                <Text style={styles.text}>{'Sorted by: '}</Text>
-                <ModalSelector
-                  data={this.state.sortingOptions}
-                  initValue={this.state.sortedBy}
-                  onChange={(option) =>
-                    this.changeSorting(option.label)}
-                  animationType='fade'
-                  backdropPressToClose
-                  overlayStyle={{
-                    flex: 1,
-                    padding: '5%',
-                    justifyContent: 'center',
-                    backgroundColor: 'rgba(0,0,0,0.9)'
-                  }}
-                  sectionTextStyle={{ fontSize: 20 }}
-                  cancelTextStyle={{
-                    color: 'crimson',
-                    fontSize: 20
-                  }}
-                  cancelText='Cancel'
-                  optionTextStyle={{ fontSize: 20 }}
-                >
-                  <TextInput
-                    style={styles.pickerText}
-                    editable={false}
-                    placeholder={this.state.sortedBy}
-                    value={this.state.sortedBy}
-                  />
-                </ModalSelector>
-              </View>
+          {this.state.data.length !== 0
+            ? (<FlatList
+                data={this.state.data}
+                ListHeaderComponent={
+                  <View style={styles.sortBar}>
+                    <MaterialCommunityIcons
+                      name='sort'
+                      color='blue'
+                      size={26}
+                    />
+                    <Text style={styles.text}>{'Sorted by: '}</Text>
+                    <ModalSelector
+                      data={this.state.sortingOptions}
+                      initValue={this.state.sortedBy}
+                      onChange={(option) =>
+                        this.changeSorting(option.label)}
+                      animationType='fade'
+                      backdropPressToClose
+                      overlayStyle={{
+                        flex: 1,
+                        padding: '5%',
+                        justifyContent: 'center',
+                        backgroundColor: 'rgba(0,0,0,0.9)'
+                      }}
+                      sectionTextStyle={{ fontSize: 20 }}
+                      cancelTextStyle={{
+                        color: 'crimson',
+                        fontSize: 20
+                      }}
+                      cancelText='Cancel'
+                      optionTextStyle={{ fontSize: 20 }}
+                    >
+                      <TextInput
+                        style={styles.pickerText}
+                        editable={false}
+                        placeholder={this.state.sortedBy}
+                        value={this.state.sortedBy}
+                      />
+                    </ModalSelector>
+                  </View>
                     }
-            ListHeaderComponentStyle={styles.headerComponentStyle}
-            renderItem={({ item }) => (
-              <PostCard
-                item={item}
-                onViewProfile={this.navigateProfile(
-                  item.userId,
-                  () => navigation.navigate('Profile'),
-                  () =>
-                    navigation.navigate('ViewProfileScreen', {
-                      item
-                    })
+                ListHeaderComponentStyle={styles.headerComponentStyle}
+                renderItem={({ item }) => (
+                  <PostCard
+                    item={item}
+                    onViewProfile={this.navigateProfile(
+                      item.userId,
+                      () => navigation.navigate('Profile'),
+                      () =>
+                        navigation.navigate('ViewProfileScreen', {
+                          item
+                        })
+                    )}
+                    onDelete={this.handleDelete}
+                    onReport={this.handleReport}
+                    onEdit={() =>
+                      navigation.navigate('EditPostScreen', { item })}
+                    onPress={() =>
+                      navigation.navigate('CommentScreen', { item })}
+                  />
                 )}
-                onDelete={this.handleDelete}
-                onReport={this.handleReport}
-                onEdit={() =>
-                  navigation.navigate('EditPostScreen', { item })}
-                onPress={() =>
-                  navigation.navigate('CommentScreen', { item })}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-            ItemSeparatorComponent={this.ItemSeparator}
-            refreshing={this.state.refreshing}
-            onRefresh={this.handleRefresh}
-            style={{ marginBottom: 40 }}
-          />
+                keyExtractor={(item) => item.id}
+                ItemSeparatorComponent={this.ItemSeparator}
+                refreshing={this.state.refreshing}
+                onRefresh={this.handleRefresh}
+                style={{ marginBottom: 40 }}
+               />)
+            : (
+              <View style={styles.postMessage}>
+                <Text style={styles.postsDescription}>
+                  No posts here!{'\n'}Follow someone or make a post yourself.
+                </Text>
+              </View>
+              )}
         </SafeAreaView>
       )
     }
@@ -427,5 +435,15 @@ const styles = StyleSheet.create({
   image: {
     height: '100%',
     borderRadius: 4
+  },
+  postMessage: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '50%'
+  },
+  postsDescription: {
+    fontSize: 18,
+    color: 'darkslategrey',
+    width: '90%'
   }
 })
