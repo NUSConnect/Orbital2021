@@ -84,7 +84,7 @@ export default function ReportDetailScreen ({ props, route, navigation }) {
     // Flat List Item
       <TouchableOpacity
         style={styles.itemContainer}
-        onPress={() => alert('NavigateToProfile?')}
+        onPress={() => navigation.navigate('UnrestrictedViewProfileScreen', { itemId: item.id })}
       >
         <View style={styles.itemContainer2}>
           <Text
