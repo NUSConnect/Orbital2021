@@ -26,6 +26,7 @@ export default function ReportsListScreen ({ props, route, navigation }) {
       .then(querySnapshot => {
         querySnapshot.forEach(documentSnapshot => {
           const { timeReported, actionTaken, postId, forumId, userId } = documentSnapshot.data()
+          if (!actionTaken) {
           reports.push({
             id: documentSnapshot.id,
             timeReported: timeReported,
@@ -34,6 +35,7 @@ export default function ReportsListScreen ({ props, route, navigation }) {
             forumId: forumId,
             userId: userId
           })
+          }
         })
       })
 

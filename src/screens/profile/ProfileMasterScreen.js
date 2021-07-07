@@ -42,6 +42,7 @@ import MatchMeControlScreen from './MatchMeControlScreen'
 import PromoteAdminOptionsScreen from './PromoteAdminOptionsScreen'
 import PromoteSuperAdminScreen from './PromoteSuperAdminScreen'
 import DemoteSuperAdminScreen from './DemoteSuperAdminScreen'
+import HandleReportActionsScreen from './HandleReportActionsScreen'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -107,6 +108,7 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='PromoteAdminOptionsScreen' component={PromoteAdminOptionsScreen} />
         <Stack.Screen name='PromoteSuperAdminScreen' component={PromoteSuperAdminScreen} />
         <Stack.Screen name='DemoteSuperAdminScreen' component={DemoteSuperAdminScreen} />
+        <Stack.Screen name='HandleReportActionsScreen' component={HandleReportActionsScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )

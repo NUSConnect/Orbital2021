@@ -99,7 +99,7 @@ export default function ReportDetailScreen ({ props, route, navigation }) {
         ListFooterComponent={
           <TouchableOpacity
             style={styles.button}
-            onPress={() => alert('HandleReportActions')}
+            onPress={() => navigation.navigate('HandleReportActionsScreen', { item, itemId: item.id, category })}
           >
             <Text style={styles.buttonText}>
               Handle Report
