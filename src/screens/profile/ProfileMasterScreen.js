@@ -38,6 +38,9 @@ import UnrestrictedViewProfileScreen from './UnrestrictedViewProfileScreen'
 import ReportsListScreen from './viewReports/ReportsListScreen'
 import ReportDetailScreen from './viewReports/ReportDetailScreen'
 import MatchMeControlScreen from './MatchMeControlScreen'
+import PromoteAdminOptionsScreen from './PromoteAdminOptionsScreen'
+import PromoteSuperAdminScreen from './PromoteSuperAdminScreen'
+import DemoteSuperAdminScreen from './DemoteSuperAdminScreen'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -99,6 +102,9 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='ReportsListScreen' component={ReportsListScreen} />
         <Stack.Screen name='ReportDetailScreen' component={ReportDetailScreen} />
         <Stack.Screen name='MatchMeControlScreen' component={MatchMeControlScreen} />
+        <Stack.Screen name='PromoteAdminOptionsScreen' component={PromoteAdminOptionsScreen} />
+        <Stack.Screen name='PromoteSuperAdminScreen' component={PromoteSuperAdminScreen} />
+        <Stack.Screen name='DemoteSuperAdminScreen' component={DemoteSuperAdminScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )

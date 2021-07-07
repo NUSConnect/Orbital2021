@@ -11,22 +11,15 @@ export default function SuperAdminScreen ({ navigation }) {
       <View style={styles.buttonwrap}>
         <Button
           style={styles.button}
-          title='update'
-          onPress={() => navigation.navigate('ViewReportsScreen')}
+          onPress={() => navigation.navigate('PromoteSuperAdminScreen')}
         >
-          View Reports
+          Promote to Super Admin
         </Button>
         <Button
           style={styles.button}
-          onPress={() => navigation.navigate('MatchMeControlScreen')}
+          onPress={() => navigation.navigate('DemoteSuperAdminScreen')}
         >
-          MatchMe Cluster Control
-        </Button>
-        <Button
-          style={styles.button}
-          onPress={() => navigation.navigate('PromoteAdminOptionsScreen')}
-        >
-          Manage Admins
+          Demote Super Admin
         </Button>
       </View>
     </Background>
