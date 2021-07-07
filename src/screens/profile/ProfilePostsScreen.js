@@ -7,7 +7,8 @@ import {
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-  View
+  View,
+  Text
 } from 'react-native'
 import PostCard from '../../components/PostCard'
 
@@ -194,26 +195,34 @@ export default class ProfilePostsScreen extends React.Component {
       const { navigation } = this.props
       return (
         <SafeAreaView style={{ flex: 1 }}>
-          <FlatList
-            data={this.state.data}
-            renderItem={({ item }) => (
-              <PostCard
-                item={item}
-                onDelete={this.handleDelete}
-                onEdit={() =>
-                  navigation.navigate('EditPostScreen', { item })}
-                onViewProfile={() => console.log('user pressed')}
-                onPress={() =>
-                  navigation.navigate('CommentScreen', { item })}
-              />
-            )}
+          {this.state.data.length !== 0
+            ? (<FlatList
+                data={this.state.data}
+                renderItem={({ item }) => (
+                  <PostCard
+                    item={item}
+                    onDelete={this.handleDelete}
+                    onEdit={() =>
+                      navigation.navigate('EditPostScreen', { item })}
+                    onViewProfile={() => console.log('user pressed')}
+                    onPress={() =>
+                      navigation.navigate('CommentScreen', { item })}
+                  />
+                )}
                     //            renderItem={item => this.renderItemComponent(item)}
-            keyExtractor={(item) => item.id}
-            ItemSeparatorComponent={this.ItemSeparator}
-            refreshing={this.state.refreshing}
-            onRefresh={this.handleRefresh}
-            style={{ width: '100%', paddingBottom: 40 }}
-          />
+                keyExtractor={(item) => item.id}
+                ItemSeparatorComponent={this.ItemSeparator}
+                refreshing={this.state.refreshing}
+                onRefresh={this.handleRefresh}
+                style={{ width: '100%', paddingBottom: 40 }}
+               />)
+            : (
+              <View style={styles.postMessage}>
+                <Text style={styles.postsDescription}>
+                  You haven{'\'t'} posted yet!{'\n'}Give it a shot on the home page.
+                </Text>
+              </View>
+              )}
         </SafeAreaView>
       )
     }
@@ -229,5 +238,15 @@ const styles = StyleSheet.create({
   image: {
     height: '100%',
     borderRadius: 4
+  },
+  postMessage: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '50%'
+  },
+  postsDescription: {
+    fontSize: 18,
+    color: 'darkslategrey',
+    width: '90%'
   }
 })

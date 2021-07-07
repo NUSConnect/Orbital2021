@@ -3,7 +3,9 @@ import React from 'react'
 import {
   FlatList,
   SafeAreaView,
-  View
+  View,
+  StyleSheet,
+  Text
 } from 'react-native'
 import ForumIcon from '../../components/ForumIcon'
 
@@ -94,22 +96,46 @@ export default class ForumFavouritesScreen extends React.Component {
       const { navigation } = this.props
       return (
         <SafeAreaView style={{ flex: 1 }}>
-          <FlatList
-            numColumns={3}
-            data={this.state.data}
-            renderItem={({ item }) => (
-              <ForumIcon
-                item={item}
-                onPress={() =>
-                  navigation.navigate('SubForumScreen', { item })}
-              />
-            )}
-            keyExtractor={(item) => item.id.toString()}
-            ItemSeparatorComponent={this.ItemSeparator}
-            refreshing={this.state.refreshing}
-            onRefresh={this.handleRefresh}
-          />
+          {this.state.data.length !== 0
+            ? (<FlatList
+                numColumns={3}
+                data={this.state.data}
+                renderItem={({ item }) => (
+                  <ForumIcon
+                    item={item}
+                    onPress={() =>
+                      navigation.navigate('SubForumScreen', { item })}
+                  />
+                )}
+                keyExtractor={(item) => item.id.toString()}
+                ItemSeparatorComponent={this.ItemSeparator}
+                refreshing={this.state.refreshing}
+                onRefresh={this.handleRefresh}
+               />)
+            : (
+              <View style={styles.postMessage}>
+                <Text style={styles.postsDescription}>
+                  You have no favourited portals.
+                </Text>
+                <Text style={styles.postsDescription}>
+                  Try favouriting by tapping the star on any portal header!
+                </Text>
+              </View>
+              )}
         </SafeAreaView>
       )
     }
 }
+
+const styles = StyleSheet.create({
+  postMessage: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '50%'
+  },
+  postsDescription: {
+    fontSize: 18,
+    color: 'darkslategrey',
+    width: '90%'
+  }
+})

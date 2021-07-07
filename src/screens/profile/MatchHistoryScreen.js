@@ -4,7 +4,9 @@ import {
   FlatList,
   SafeAreaView,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  View,
+  Text
 } from 'react-native'
 import MatchCard from '../../components/MatchCard'
 
@@ -84,18 +86,26 @@ export default class MatchHistoryScreen extends React.Component {
     render () {
       return (
         <SafeAreaView style={{ flex: 1 }}>
-          <FlatList
-            data={this.state.data}
-            renderItem={({ item }) => (
-              <MatchCard
-                item={item}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-            refreshing={this.state.refreshing}
-            onRefresh={this.handleRefresh}
-            style={{ width: '100%', paddingBottom: 40 }}
-          />
+          {this.state.data.length !== 0
+            ? (<FlatList
+                data={this.state.data}
+                renderItem={({ item }) => (
+                  <MatchCard
+                    item={item}
+                  />
+                )}
+                keyExtractor={(item) => item.id}
+                refreshing={this.state.refreshing}
+                onRefresh={this.handleRefresh}
+                style={{ width: '100%', paddingBottom: 40 }}
+               />)
+            : (
+              <View style={styles.postMessage}>
+                <Text style={styles.postsDescription}>
+                  No matches yet!{'\n'}Try it out on the friends page.
+                </Text>
+              </View>
+              )}
         </SafeAreaView>
       )
     }
@@ -111,5 +121,15 @@ const styles = StyleSheet.create({
   image: {
     height: '100%',
     borderRadius: 4
+  },
+  postMessage: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '50%'
+  },
+  postsDescription: {
+    fontSize: 18,
+    color: 'darkslategrey',
+    width: '90%'
   }
 })
