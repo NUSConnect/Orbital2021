@@ -34,7 +34,7 @@ export default function ReportsListScreen ({ props, route, navigation }) {
         })
       })
 
-    console.log(reports)
+    // console.log(reports)
     setMasterDataSource(reports)
     setLoading(false)
   }

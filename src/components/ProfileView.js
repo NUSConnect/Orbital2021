@@ -14,7 +14,7 @@ import { Ionicons } from 'react-native-vector-icons'
 
 const DeviceWidth = Dimensions.get('window').width
 
-const ProfileView = ({ route, itemId, onPress }) => {
+const ProfileView = ({ route, itemId, reportId, onPress }) => {
   const defaultUri =
         'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
   const [userData, setUserData] = useState(null)
@@ -80,7 +80,7 @@ const ProfileView = ({ route, itemId, onPress }) => {
   return (
     <View>
       <Text style={styles.reportId}>
-        User Report for: {itemId}
+        Report ID: {reportId}
       </Text>
       <View
         style={{
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     height: DeviceWidth * 0.25 + 15,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   profileInfo: {},
   profilePic: {
