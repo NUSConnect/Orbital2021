@@ -6,9 +6,9 @@ import Button from '../../components/Button'
 import * as firebase from 'firebase'
 
 export default function HandleReportActionsScreen ({ route, navigation }) {
-  const { itemId, category } = route.params
-  // const { item, itemId, category } = route.params
-  // const reportedUid = category === 'users' ? itemId : item.userId
+  // const { itemId, category } = route.params
+  const { item, itemId, category } = route.params
+  const reportedUid = category === 'users' ? itemId : item.userId
 
   const navigateToCategories = () => {
     navigation.goBack()
@@ -17,7 +17,7 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
   }
 
   const dismissReport = async () => {
-    firebase
+    await firebase
       .firestore()
       .collection('reports')
       .doc(category)
@@ -46,6 +46,87 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
       { cancelable: false })
   }
 
+  const issueWarning = async () => {
+    const increment = firebase.firestore.FieldValue.increment(1)
+    await firebase
+      .firestore()
+      .collection('users')
+      .doc(reportedUid)
+      .update({ numWarnings: increment })
+    await firebase
+      .firestore()
+      .collection('users')
+      .doc(reportedUid)
+      .get()
+      .then(documentSnapshot => {
+        if (documentSnapshot.data().numWarnings >= 3) {
+          banUser()
+        }
+      })
+    await firebase
+      .firestore()
+      .collection('reports')
+      .doc(category)
+      .collection('reported')
+      .doc(itemId)
+      .update({ actionTaken: true })
+    Alert.alert('Success!', 'User has been issued a warning.')
+    navigateToCategories()
+  }
+
+  const handleIssueWarning = () => {
+    Alert.alert('Issue warning',
+      'Are you sure? This will issue a warning to the reported user.',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed!'),
+          style: 'cancel'
+        },
+        {
+          text: 'Confirm',
+          onPress: () => issueWarning()
+        }
+      ]
+      ,
+      { cancelable: false })
+  }
+
+  const banUser = async () => {
+    await firebase
+      .firestore()
+      .collection('banned')
+      .doc(reportedUid)
+      .set({})
+    await firebase
+      .firestore()
+      .collection('reports')
+      .doc(category)
+      .collection('reported')
+      .doc(itemId)
+      .update({ actionTaken: true })
+    Alert.alert('Success!', 'User has been added to the list to be banned.')
+    navigateToCategories()
+  }
+
+  const handleBanUser = () => {
+    Alert.alert('Ban user',
+      'Are you sure? This will ban the reported user.',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed!'),
+          style: 'cancel'
+        },
+        {
+          text: 'Confirm',
+          onPress: () => banUser()
+        }
+      ]
+      ,
+      { cancelable: false })
+  }
+
   return (
     <Background style={styles.bg}>
       <BackButton goBack={navigation.goBack} />
@@ -58,13 +139,13 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
         </Button>
         <Button
           style={styles.button}
-          onPress={() => alert('warn')}
+          onPress={() => handleIssueWarning()}
         >
           Issue Warning
         </Button>
         <Button
           style={styles.button}
-          onPress={() => alert('ban')}
+          onPress={() => handleBanUser()}
         >
           Ban user
         </Button>
