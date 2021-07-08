@@ -4,28 +4,16 @@ import BackButton from '../../components/BackButton'
 import Background from '../../components/Background'
 import Button from '../../components/Button'
 
-export default function SuperAdminScreen ({ navigation }) {
+export default function PortalManagementOptionsScreen ({ navigation }) {
   return (
     <Background style={styles.bg}>
       <BackButton goBack={navigation.goBack} />
       <View style={styles.buttonwrap}>
         <Button
           style={styles.button}
-          onPress={() => navigation.navigate('PromoteSuperAdminScreen')}
+          onPress={() => navigation.navigate('DeletePortalScreen')}
         >
-          Promote to Super Admin
-        </Button>
-        <Button
-          style={styles.button}
-          onPress={() => navigation.navigate('DemoteSuperAdminScreen')}
-        >
-          Demote Super Admin
-        </Button>
-        <Button
-          style={styles.button}
-          onPress={() => navigation.navigate('ManageForumAdminsScreen')}
-        >
-          Manage Portal Admins
+          Delete A Portal
         </Button>
       </View>
     </Background>

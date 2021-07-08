@@ -34,6 +34,12 @@ export default function SuperAdminScreen ({ navigation }) {
         >
           Manage Admins
         </Button>
+        <Button
+          style={styles.button}
+          onPress={() => navigation.navigate('PortalManagementOptionsScreen')}
+        >
+          Manage Portals
+        </Button>
       </View>
     </Background>
   )

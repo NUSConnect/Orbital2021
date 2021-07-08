@@ -7,48 +7,47 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native'
 import SearchBar from '../../components/SearchBar'
 import { sortByName } from '../../api/ranking'
 import { Ionicons } from 'react-native-vector-icons'
 
-export default function ManageForumAdminScreen ({ props, navigation, route }) {
+export default function DeletePortalScreen ({ props, navigation, route }) {
   const [search, setSearch] = useState('')
   const [filteredDataSource, setFilteredDataSource] = useState([])
   const [masterDataSource, setMasterDataSource] = useState([])
   const [loading, setLoading] = useState(true)
   const [filtered, setFiltered] = useState(false)
 
-  const getAllUsers = async () => {
-    const users = []
+  const getAllForums = async () => {
+    const forums = []
 
     await firebase
       .firestore()
-      .collection('users')
+      .collection('forums')
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          const { name, bio, email, createdAt } = doc.data()
-          users.push({
-            userId: doc.id,
-            name,
-            bio,
-            email,
-            createdAt: createdAt
+          const { forumImg, forumName } = doc.data()
+          forums.push({
+            id: doc.id,
+            forumImg,
+            forumName
           })
         })
       })
-    users.sort(sortByName)
-    setMasterDataSource(users)
+    forums.sort(sortByName)
+    setMasterDataSource(forums)
     setLoading(false)
   }
 
   const searchFilterFunction = (text) => {
     if (text) {
       const newData = masterDataSource.filter(function (item) {
-        const itemData = item.name
-          ? item.name.toUpperCase()
+        const itemData = item.forumName
+          ? item.forumName.toUpperCase()
           : ''.toUpperCase()
         const textData = text.toUpperCase()
         return itemData.indexOf(textData) > -1
@@ -62,25 +61,52 @@ export default function ManageForumAdminScreen ({ props, navigation, route }) {
     }
   }
 
+  const deleteForum = async (item) => {
+    await firebase
+      .firestore()
+      .collection('forums')
+      .doc(item.id)
+      .delete()
+    Alert.alert('Success!', 'Forum has been successfully deleted.')
+    setMasterDataSource(masterDataSource.filter(forum => forum.id !== item.id))
+    setFilteredDataSource(filteredDataSource.filter(forum => forum.id !== item.id))
+  }
+
+  const handleDeleteForum = async (item) => {
+    Alert.alert('Delete ' + item.forumName,
+      'Are you sure? This action cannot be reversed.',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed!'),
+          style: 'cancel'
+        },
+        {
+          text: 'Confirm',
+          onPress: () => deleteForum(item)
+        }
+      ],
+      { cancelable: false }
+    )
+  }
+
   const ItemView = ({ item }) => {
     return (
     // Flat List Item
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <Text
           style={styles.username}
-          onPress={() => navigation.push('UnrestrictedViewProfileScreen', { itemId: item.userId })}
+          onPress={() => navigation.push('SubForumScreen', { item })}
         >
-          {item.name}
+          {item.forumName}
         </Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('ForumAdminSelectionScreen', { name: item.name, userId: item.userId })}
+          onPress={() => handleDeleteForum(item)}
         >
-          <Ionicons
-            name='chevron-forward'
-            size={28}
-            color='green'
-          />
+          <Text style={styles.buttonText}>
+            Delete
+          </Text>
         </TouchableOpacity>
         <View style={{ width: '2%' }} />
       </View>
@@ -101,7 +127,7 @@ export default function ManageForumAdminScreen ({ props, navigation, route }) {
   }
 
   useEffect(() => {
-    getAllUsers()
+    getAllForums()
   }, [])
 
   if (loading) {
@@ -119,7 +145,7 @@ export default function ManageForumAdminScreen ({ props, navigation, route }) {
             onPress={() => navigation.goBack()}
           />
           <Text style={{ fontSize: 18, alignItems: 'center' }}>
-            Manage Portal Admins
+            Delete a Portal
           </Text>
         </View>
         <SearchBar
@@ -165,7 +191,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '25%',
     height: 38,
-    justifyContent: 'center'
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    borderRadius: 10
   },
   buttonText: {
     fontSize: 16,
