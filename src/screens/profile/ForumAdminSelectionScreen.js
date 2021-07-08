@@ -1,7 +1,6 @@
 import * as firebase from 'firebase'
 import React, { useState, useEffect } from 'react'
 import {
-  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -22,7 +21,6 @@ import {
 import { sortByName } from '../../api/ranking'
 
 export default function ForumAdminSelectionScreen ({ props, route, navigation }) {
-  const currentUserId = firebase.auth().currentUser.uid
   const [filteredDataSource, setFilteredDataSource] = useState([])
   const [search, setSearch] = useState('')
   const [filtered, setFiltered] = useState(false)
@@ -129,7 +127,7 @@ export default function ForumAdminSelectionScreen ({ props, route, navigation })
 
       const keys = Object.keys(currentlyAdmin)
       keys.forEach((key, index) => {
-        if (added[key] != true) {
+        if (added[key] !== true) {
           firebase.firestore().collection('users').doc(userId).collection('forumAdmin').doc(key).delete()
           removeAdmin(key)
         }
@@ -177,7 +175,7 @@ export default function ForumAdminSelectionScreen ({ props, route, navigation })
         search={search}
         setSearch={setSearch}
         searchFilterFunction={searchFilterFunction}
-        resetFilter={() => setFilteredDataSource(threads)}
+        resetFilter={() => setFilteredDataSource(forums)}
       />
       <FlatList
         data={filtered ? filteredDataSource : forums}

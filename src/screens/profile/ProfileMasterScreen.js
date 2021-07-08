@@ -49,6 +49,7 @@ import ForumReportsListScreen from './viewReports/ForumReportsListScreen'
 import ForumAdminForumsScreen from './ForumAdminForumsScreen'
 import ForumAdminManagementScreen from './ForumAdminManagementScreen'
 import HandleReportActionsScreen from './HandleReportActionsScreen'
+import BannedUsersScreen from './BannedUsersScreen'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -121,6 +122,7 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='ForumAdminForumsScreen' component={ForumAdminForumsScreen} />
         <Stack.Screen name='ForumAdminManagementScreen' component={ForumAdminManagementScreen} />
         <Stack.Screen name='HandleReportActionsScreen' component={HandleReportActionsScreen} />
+        <Stack.Screen name='BannedUsersScreen' component={BannedUsersScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )

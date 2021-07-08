@@ -7,8 +7,6 @@ import { REPORTS_CATEGORY } from '../../core/reports'
 
 export default function SubforumReportsListScreen ({ props, route, navigation }) {
   const { category, subforumId, subforumName } = route.params
-  const currentUserId = firebase.auth().currentUser.uid
-  const [forums, setForums] = useState(null)
   const [search, setSearch] = useState('')
   const [filteredDataSource, setFilteredDataSource] = useState([])
   const [masterDataSource, setMasterDataSource] = useState([])
@@ -28,7 +26,7 @@ export default function SubforumReportsListScreen ({ props, route, navigation })
       .then(querySnapshot => {
         querySnapshot.forEach(documentSnapshot => {
           const { timeReported, actionTaken, postId, forumId, userId } = documentSnapshot.data()
-          if (forumId == subforumId && !actionTaken) {
+          if (forumId === subforumId && !actionTaken) {
             reports.push({
               id: documentSnapshot.id,
               timeReported: timeReported,

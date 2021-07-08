@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import * as firebase from 'firebase'
+import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Ionicons, MaterialIcons, MaterialCommunityIcons } from 'react-native-vector-icons'
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu'
@@ -12,7 +11,6 @@ export default function SubForumHeader ({
   subscribe,
   isAdmin
 }) {
-
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -42,42 +40,41 @@ export default function SubForumHeader ({
           />
         </TouchableOpacity>
       </View>
-        <Menu style={styles.centerAlign}>
-          <MenuTrigger>
-            <Ionicons name='chevron-down' size={38} color='#79D2E6' style={styles.moreOptions}/>
-          </MenuTrigger>
-          <MenuOptions>
-            <MenuOption onSelect={() => navigation.navigate('ForumAddPostScreen', { forumId })}>
-              <View style={styles.menuItems}>
-                <MaterialCommunityIcons name='plus-thick' size={30} color='#79D2E6' />
-                <Text style={styles.menuText}>Add Post</Text>
-              </View>
-            </MenuOption>
-            <MenuOption onSelect={() => navigation.navigate('SubForumInfoScreen', { forumName: title, forumId: forumId })}>
-              <View style={styles.menuItems}>
-                <MaterialIcons name='info' size={30} color='#79D2E6' />
-                <Text style={styles.menuText}>Forum Info</Text>
-              </View>
-            </MenuOption>
-            {isAdmin === true
-              ? (
-                <MenuOption onSelect={() => navigation.navigate('SubforumViewReportScreen', { forumName: title, forumId: forumId })}>
-                  <View style={styles.menuItems}>
-                    <MaterialCommunityIcons name='shield-check' size={30} color='#79D2E6' />
-                    <Text style={styles.menuText}>Manage Forum</Text>
-                  </View>
-                </MenuOption>
-                )
-              : (null)
-            }
-            <MenuOption onSelect={() => console.log('cancel')}>
-              <View style={styles.menuItems}>
-                <MaterialIcons name='cancel' size={30} color='#79D2E6' />
-                <Text style={styles.menuText}>Cancel</Text>
-              </View>
-            </MenuOption>
-          </MenuOptions>
-        </Menu>
+      <Menu style={styles.centerAlign}>
+        <MenuTrigger>
+          <Ionicons name='chevron-down' size={38} color='#79D2E6' style={styles.moreOptions} />
+        </MenuTrigger>
+        <MenuOptions>
+          <MenuOption onSelect={() => navigation.navigate('ForumAddPostScreen', { forumId })}>
+            <View style={styles.menuItems}>
+              <MaterialCommunityIcons name='plus-thick' size={30} color='#79D2E6' />
+              <Text style={styles.menuText}>Add Post</Text>
+            </View>
+          </MenuOption>
+          <MenuOption onSelect={() => navigation.navigate('SubForumInfoScreen', { forumName: title, forumId: forumId })}>
+            <View style={styles.menuItems}>
+              <MaterialIcons name='info' size={30} color='#79D2E6' />
+              <Text style={styles.menuText}>Forum Info</Text>
+            </View>
+          </MenuOption>
+          {isAdmin === true
+            ? (
+              <MenuOption onSelect={() => navigation.navigate('SubforumViewReportScreen', { forumName: title, forumId: forumId })}>
+                <View style={styles.menuItems}>
+                  <MaterialCommunityIcons name='shield-check' size={30} color='#79D2E6' />
+                  <Text style={styles.menuText}>Manage Forum</Text>
+                </View>
+              </MenuOption>
+              )
+            : (null)}
+          <MenuOption onSelect={() => console.log('cancel')}>
+            <View style={styles.menuItems}>
+              <MaterialIcons name='cancel' size={30} color='#79D2E6' />
+              <Text style={styles.menuText}>Cancel</Text>
+            </View>
+          </MenuOption>
+        </MenuOptions>
+      </Menu>
     </View>
   )
 }

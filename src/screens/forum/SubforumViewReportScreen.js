@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { View, StyleSheet } from 'react-native'
 import HeaderTopBar from '../../components/HeaderTopBar'
-import Background from '../../components/Background'
 import Button from '../../components/Button'
 
 export default function SubforumViewReportScreen ({ navigation, route }) {

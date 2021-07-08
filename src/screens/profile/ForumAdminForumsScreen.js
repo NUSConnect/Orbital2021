@@ -2,8 +2,6 @@ import * as firebase from 'firebase'
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import HeaderTopBar from '../../components/HeaderTopBar'
-import BackButton from '../../components/BackButton'
-import Background from '../../components/Background'
 import Button from '../../components/Button'
 
 export default function ForumAdminForumsScreen ({ navigation }) {
@@ -40,18 +38,18 @@ export default function ForumAdminForumsScreen ({ navigation }) {
     <View style={styles.bg}>
       <HeaderTopBar
         onPress={() => navigation.goBack()}
-        title={'Forums managed by you'}
+        title='Forums managed by you'
       />
       <FlatList
         data={forums}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-            <Button
-              style={styles.button}
-              onPress={() => navigation.navigate('ForumAdminManagementScreen', { forumId: item.id, forumName: item.name })}
-            >
-              {item.name}
-            </Button>
+          <Button
+            style={styles.button}
+            onPress={() => navigation.navigate('ForumAdminManagementScreen', { forumId: item.id, forumName: item.name })}
+          >
+            {item.name}
+          </Button>
         )}
       />
 

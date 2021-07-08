@@ -22,7 +22,6 @@ import {
 import { sortByName } from '../../api/ranking'
 
 export default function ForumAdminManagementScreen ({ props, route, navigation }) {
-  const currentUserId = firebase.auth().currentUser.uid
   const [filteredDataSource, setFilteredDataSource] = useState([])
   const [search, setSearch] = useState('')
   const [filtered, setFiltered] = useState(false)
@@ -126,7 +125,7 @@ export default function ForumAdminManagementScreen ({ props, route, navigation }
 
       const keys = Object.keys(currentlyAdmin)
       keys.forEach((key, index) => {
-        if (added[key] != true) {
+        if (added[key] !== true) {
           firebase.firestore().collection('users').doc(key).collection('forumAdmin').doc(forumId).delete()
             .then(() => {
               firebase.firestore().collection('users').doc(key).collection('forumAdmin').get()
@@ -181,7 +180,7 @@ export default function ForumAdminManagementScreen ({ props, route, navigation }
         search={search}
         setSearch={setSearch}
         searchFilterFunction={searchFilterFunction}
-        resetFilter={() => setFilteredDataSource(threads)}
+        resetFilter={() => setFilteredDataSource(users)}
       />
       <FlatList
         data={filtered ? filteredDataSource : users}

@@ -269,11 +269,10 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
     getSubscribed()
     fetchPosts()
     checkIfAdmin()
-    const _unsubscribe = navigation.addListener('focus', () =>
-      {
-        fetchPosts()
-        checkIfAdmin()
-      }
+    const _unsubscribe = navigation.addListener('focus', () => {
+      fetchPosts()
+      checkIfAdmin()
+    }
     )
     return () => {
       _unsubscribe()

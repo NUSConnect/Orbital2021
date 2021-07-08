@@ -7,13 +7,11 @@ import {
   StyleSheet,
   Text,
   Image,
-  TextInput,
   View
 } from 'react-native'
 import {
   Card, TextSection, UserImg, UserImgWrapper, UserInfo, UserInfoText, UserName
 } from '../../styles/MessageStyles'
-import { MaterialCommunityIcons } from 'react-native-vector-icons'
 import HeaderTopBar from '../../components/HeaderTopBar'
 
 const DeviceWidth = Dimensions.get('window').width
@@ -79,24 +77,24 @@ const SubForumInfoScreen = ({ navigation, route }) => {
         data={admins}
         ListHeaderComponent={
           <View>
-              <View style={styles.forumContainer}>
-                <Image
-                  source={{
-                    uri: forumInfo ? forumInfo.forumImg : null
-                  }}
-                  style={styles.forumPic}
-                />
-                <View style={styles.forumInfo}>
-                  <Text style={styles.name}>
-                    {' '}
-                    {forumInfo ? forumInfo.forumName : null}{' '}
-                  </Text>
-                  <Text style={styles.text}>
-                    {' '}
-                    Description: {forumInfo ? forumInfo.forumDescription : null}{' '}
-                  </Text>
-                </View>
+            <View style={styles.forumContainer}>
+              <Image
+                source={{
+                  uri: forumInfo ? forumInfo.forumImg : null
+                }}
+                style={styles.forumPic}
+              />
+              <View style={styles.forumInfo}>
+                <Text style={styles.name}>
+                  {' '}
+                  {forumInfo ? forumInfo.forumName : null}{' '}
+                </Text>
+                <Text style={styles.text}>
+                  {' '}
+                  Description: {forumInfo ? forumInfo.forumDescription : null}{' '}
+                </Text>
               </View>
+            </View>
 
             <Text style={styles.adminHeader}>
               Admins:

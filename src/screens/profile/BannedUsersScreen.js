@@ -6,29 +6,44 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  View,
-  TouchableOpacity
+  View
 } from 'react-native'
 import SearchBar from '../../components/SearchBar'
 import { sortByName } from '../../api/ranking'
 import { Ionicons } from 'react-native-vector-icons'
 
-export default function ManageForumAdminScreen ({ props, navigation, route }) {
+export default function BannedUsersScreen ({ props, navigation, route }) {
+  const currentUserId = firebase.auth().currentUser.uid
   const [search, setSearch] = useState('')
   const [filteredDataSource, setFilteredDataSource] = useState([])
   const [masterDataSource, setMasterDataSource] = useState([])
   const [loading, setLoading] = useState(true)
   const [filtered, setFiltered] = useState(false)
 
-  const getAllUsers = async () => {
-    const users = []
+  const getAllBanned = async () => {
+    const allBannedId = []
 
     await firebase
       .firestore()
-      .collection('users')
+      .collection('banned')
       .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
+      .then(querySnapshot => {
+        querySnapshot.forEach(documentSnapshot => {
+          allBannedId.push(documentSnapshot.id)
+        })
+      })
+    console.log(allBannedId)
+    const users = []
+
+    for (let i = 0; i < allBannedId.length; i++) {
+      const bannedId = allBannedId[i]
+
+      await firebase
+        .firestore()
+        .collection('users')
+        .doc(bannedId)
+        .get()
+        .then(doc => {
           const { name, bio, email, createdAt } = doc.data()
           users.push({
             userId: doc.id,
@@ -38,7 +53,7 @@ export default function ManageForumAdminScreen ({ props, navigation, route }) {
             createdAt: createdAt
           })
         })
-      })
+    }
     users.sort(sortByName)
     setMasterDataSource(users)
     setLoading(false)
@@ -62,28 +77,23 @@ export default function ManageForumAdminScreen ({ props, navigation, route }) {
     }
   }
 
+  const navigateToOwnProfile = () => {
+    navigation.navigate('Profile')
+    navigation.navigate('ProfileHomeTabs')
+  }
+
   const ItemView = ({ item }) => {
     return (
     // Flat List Item
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Text
-          style={styles.username}
-          onPress={() => navigation.push('UnrestrictedViewProfileScreen', { item })}
-        >
-          {item.name}
-        </Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('ForumAdminSelectionScreen', { name: item.name, userId: item.userId })}
-        >
-          <Ionicons
-            name='chevron-forward'
-            size={28}
-            color='green'
-          />
-        </TouchableOpacity>
-        <View style={{ width: '2%' }} />
-      </View>
+      <Text
+        style={styles.itemStyle}
+        onPress={() =>
+          currentUserId === item.userId
+            ? navigateToOwnProfile()
+            : navigation.push('ViewProfileScreen', { item })}
+      >
+        {item.name}
+      </Text>
     )
   }
 
@@ -101,7 +111,7 @@ export default function ManageForumAdminScreen ({ props, navigation, route }) {
   }
 
   useEffect(() => {
-    getAllUsers()
+    getAllBanned()
   }, [])
 
   if (loading) {
@@ -119,7 +129,7 @@ export default function ManageForumAdminScreen ({ props, navigation, route }) {
             onPress={() => navigation.goBack()}
           />
           <Text style={{ fontSize: 18, alignItems: 'center' }}>
-            Manage Forum Admins
+            Banned
           </Text>
         </View>
         <SearchBar
@@ -144,10 +154,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1
   },
-  username: {
+  itemStyle: {
     padding: 10,
-    fontSize: 20,
-    width: '70%'
+    fontSize: 20
   },
   subHeader: {
     flexDirection: 'row',
@@ -160,15 +169,5 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     marginRight: 8,
     color: 'black'
-  },
-  button: {
-    alignItems: 'center',
-    width: '25%',
-    height: 38,
-    justifyContent: 'center'
-  },
-  buttonText: {
-    fontSize: 16,
-    color: 'white'
   }
 })
