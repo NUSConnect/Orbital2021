@@ -9,11 +9,57 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
   // const { itemId, category } = route.params
   const { item, itemId, category } = route.params
   const reportedUid = category === 'users' ? itemId : item.userId
+  //console.log(item)
+  //console.log(itemId)
+  console.log(reportedUid)
 
   const navigateToCategories = () => {
     navigation.goBack()
     navigation.goBack()
     navigation.goBack()
+  }
+
+  const deleteReportedItem = async () => {
+    switch(category) {
+      case 'userPosts':
+        await firebase
+          .firestore()
+          .collection('posts')
+          .doc(reportedUid)
+          .collection(category)
+          .doc(itemId)
+          .delete()
+        break
+      case 'userComments':
+        await firebase
+          .firestore()
+          .collection('posts')
+          .doc(item.postId.substring(0, 28))
+          .collection('userPosts')
+          .doc(item.postId)
+          .collection('comments')
+          .doc(itemId)
+          .delete()
+        break
+      case 'forumPosts':
+        await firebase
+          .firestore()
+          .collection('forums')
+          .doc(item.forumId)
+          .collection('forumPosts')
+          .doc(itemId)
+          .delete()
+      case 'forumComments':
+        await firebase
+          .firestore()
+          .collection('forums')
+          .doc(item.forumId)
+          .collection('forumPosts')
+          .doc(item.postId)
+          .collection('comments')
+          .doc(itemId)
+          .delete()
+    }
   }
 
   const dismissReport = async () => {
@@ -47,6 +93,7 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
   }
 
   const issueWarning = async () => {
+    deleteReportedItem()
     const increment = firebase.firestore.FieldValue.increment(1)
     await firebase
       .firestore()
@@ -76,7 +123,7 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
 
   const handleIssueWarning = () => {
     Alert.alert('Issue warning',
-      'Are you sure? This will issue a warning to the reported user.',
+      'Are you sure? This will issue a warning to the reported user and delete the offending item.',
       [
         {
           text: 'Cancel',
@@ -93,6 +140,7 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
   }
 
   const banUser = async () => {
+    deleteReportedItem()
     await firebase
       .firestore()
       .collection('banned')
@@ -111,7 +159,7 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
 
   const handleBanUser = () => {
     Alert.alert('Ban user',
-      'Are you sure? This will ban the reported user.',
+      'Are you sure? This will ban the reported user and delete the offending item.',
       [
         {
           text: 'Cancel',
