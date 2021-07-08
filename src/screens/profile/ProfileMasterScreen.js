@@ -43,6 +43,7 @@ import PromoteAdminOptionsScreen from './PromoteAdminOptionsScreen'
 import PromoteSuperAdminScreen from './PromoteSuperAdminScreen'
 import DemoteSuperAdminScreen from './DemoteSuperAdminScreen'
 import HandleReportActionsScreen from './HandleReportActionsScreen'
+import BannedUsersScreen from './BannedUsersScreen'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -109,6 +110,7 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='PromoteSuperAdminScreen' component={PromoteSuperAdminScreen} />
         <Stack.Screen name='DemoteSuperAdminScreen' component={DemoteSuperAdminScreen} />
         <Stack.Screen name='HandleReportActionsScreen' component={HandleReportActionsScreen} />
+        <Stack.Screen name='BannedUsersScreen' component={BannedUsersScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )
