@@ -4,28 +4,28 @@ import BackButton from '../../components/BackButton'
 import Background from '../../components/Background'
 import Button from '../../components/Button'
 
-export default function SuperAdminScreen ({ navigation }) {
+export default function ForumAdminViewReportsScreen ({ navigation }) {
   return (
     <Background style={styles.bg}>
       <BackButton goBack={navigation.goBack} />
       <View style={styles.buttonwrap}>
         <Button
           style={styles.button}
-          onPress={() => navigation.navigate('PromoteSuperAdminScreen')}
+          onPress={() => navigation.navigate('ForumReportsListScreen', { category: 'forumPosts' })}
         >
-          Promote to Super Admin
+          forum posts
         </Button>
         <Button
           style={styles.button}
-          onPress={() => navigation.navigate('DemoteSuperAdminScreen')}
+          onPress={() => navigation.navigate('ForumReportsListScreen', { category: 'forumComments' })}
         >
-          Demote Super Admin
+          forum comments
         </Button>
         <Button
           style={styles.button}
-          onPress={() => navigation.navigate('ManageForumAdminsScreen')}
+          onPress={() => navigation.navigate('ForumAdminForumsScreen')}
         >
-          Manage Forum Admins
+          manage forum admins
         </Button>
       </View>
     </Background>
@@ -34,12 +34,10 @@ export default function SuperAdminScreen ({ navigation }) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#FFFFFF',
-    width: '100%'
+    backgroundColor: '#FFFFFF'
   },
   buttonwrap: {
     backgroundColor: '#FFFFFF',
-    height: 500,
     alignItems: 'center',
     justifyContent: 'center'
   }

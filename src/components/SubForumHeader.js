@@ -1,21 +1,24 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import * as firebase from 'firebase'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { Ionicons } from 'react-native-vector-icons'
+import { Ionicons, MaterialIcons, MaterialCommunityIcons } from 'react-native-vector-icons'
+import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu'
 
 export default function SubForumHeader ({
   title,
-  style,
-  goBack,
-  onPress,
+  forumId,
+  navigation,
   isSubscribed,
-  subscribe
+  subscribe,
+  isAdmin
 }) {
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.4}
-        onPress={goBack}
+        onPress={() => navigation.goBack()}
       >
         <Ionicons
           name='arrow-back'
@@ -39,18 +42,42 @@ export default function SubForumHeader ({
           />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        activeOpacity={0.4}
-        onPress={onPress}
-      >
-        <Ionicons
-          name='add'
-          color='#79D2E6'
-          size={38}
-          style={styles.icon}
-        />
-      </TouchableOpacity>
+        <Menu style={styles.centerAlign}>
+          <MenuTrigger>
+            <Ionicons name='chevron-down' size={38} color='#79D2E6' style={styles.moreOptions}/>
+          </MenuTrigger>
+          <MenuOptions>
+            <MenuOption onSelect={() => navigation.navigate('ForumAddPostScreen', { forumId })}>
+              <View style={styles.menuItems}>
+                <MaterialCommunityIcons name='plus-thick' size={30} color='#79D2E6' />
+                <Text style={styles.menuText}>Add Post</Text>
+              </View>
+            </MenuOption>
+            <MenuOption onSelect={() => navigation.navigate('SubForumInfoScreen', { forumName: title, forumId: forumId })}>
+              <View style={styles.menuItems}>
+                <MaterialIcons name='info' size={30} color='#79D2E6' />
+                <Text style={styles.menuText}>Forum Info</Text>
+              </View>
+            </MenuOption>
+            {isAdmin === true
+              ? (
+                <MenuOption onSelect={() => navigation.navigate('SubforumViewReportScreen', { forumName: title, forumId: forumId })}>
+                  <View style={styles.menuItems}>
+                    <MaterialCommunityIcons name='shield-check' size={30} color='#79D2E6' />
+                    <Text style={styles.menuText}>Manage Forum</Text>
+                  </View>
+                </MenuOption>
+                )
+              : (null)
+            }
+            <MenuOption onSelect={() => console.log('cancel')}>
+              <View style={styles.menuItems}>
+                <MaterialIcons name='cancel' size={30} color='#79D2E6' />
+                <Text style={styles.menuText}>Cancel</Text>
+              </View>
+            </MenuOption>
+          </MenuOptions>
+        </Menu>
     </View>
   )
 }
@@ -82,5 +109,17 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: 'center'
   },
-  icon: {}
+  icon: {},
+  moreOptions: {
+    marginRight: 10
+  },
+  menuText: {
+    fontSize: 16,
+    color: 'black',
+    paddingLeft: 4
+  },
+  menuItems: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  }
 })

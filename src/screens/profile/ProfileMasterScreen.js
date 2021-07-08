@@ -42,6 +42,12 @@ import MatchMeControlScreen from './MatchMeControlScreen'
 import PromoteAdminOptionsScreen from './PromoteAdminOptionsScreen'
 import PromoteSuperAdminScreen from './PromoteSuperAdminScreen'
 import DemoteSuperAdminScreen from './DemoteSuperAdminScreen'
+import ManageForumAdminsScreen from './ManageForumAdminsScreen'
+import ForumAdminSelectionScreen from './ForumAdminSelectionScreen'
+import ForumAdminViewReportScreen from './ForumAdminViewReportScreen'
+import ForumReportsListScreen from './viewReports/ForumReportsListScreen'
+import ForumAdminForumsScreen from './ForumAdminForumsScreen'
+import ForumAdminManagementScreen from './ForumAdminManagementScreen'
 import HandleReportActionsScreen from './HandleReportActionsScreen'
 
 const Stack = createStackNavigator()
@@ -108,6 +114,12 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='PromoteAdminOptionsScreen' component={PromoteAdminOptionsScreen} />
         <Stack.Screen name='PromoteSuperAdminScreen' component={PromoteSuperAdminScreen} />
         <Stack.Screen name='DemoteSuperAdminScreen' component={DemoteSuperAdminScreen} />
+        <Stack.Screen name='ManageForumAdminsScreen' component={ManageForumAdminsScreen} />
+        <Stack.Screen name='ForumAdminSelectionScreen' component={ForumAdminSelectionScreen} />
+        <Stack.Screen name='ForumAdminViewReportScreen' component={ForumAdminViewReportScreen} />
+        <Stack.Screen name='ForumReportsListScreen' component={ForumReportsListScreen} />
+        <Stack.Screen name='ForumAdminForumsScreen' component={ForumAdminForumsScreen} />
+        <Stack.Screen name='ForumAdminManagementScreen' component={ForumAdminManagementScreen} />
         <Stack.Screen name='HandleReportActionsScreen' component={HandleReportActionsScreen} />
       </Stack.Navigator>
     </SafeAreaView>

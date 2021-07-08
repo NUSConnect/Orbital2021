@@ -27,7 +27,8 @@ export default class ProfilePersonalScreen extends React.Component {
       following: 0,
       followers: 0,
       requestedFollows: false,
-      superAdmin: false
+      superAdmin: false,
+      forumAdmin: false
     };
 
     static navigationOptions = {
@@ -87,6 +88,9 @@ export default class ProfilePersonalScreen extends React.Component {
             this.setState({ major: documentSnapshot.data().major })
             if (documentSnapshot.data().superAdmin !== null) {
               this.setState({ superAdmin: documentSnapshot.data().superAdmin })
+            }
+            if (documentSnapshot.data().forumAdmin !== null) {
+              this.setState({ forumAdmin: documentSnapshot.data().forumAdmin })
             }
           }
         })
@@ -231,7 +235,17 @@ export default class ProfilePersonalScreen extends React.Component {
                     Super Admin Controls
                   </Button>
                   )
-                : (null)}
+                : this.state.forumAdmin
+                  ? (
+                    <Button
+                      style={styles.button}
+                      color='darkorange'
+                      onPress={() => this.props.navigation.navigate('ForumAdminViewReportScreen')}
+                    >
+                      Forum Admin Controls
+                    </Button>
+                    )
+                  : (null)}
               <Button
                 style={styles.button}
                 color='#de1738'
