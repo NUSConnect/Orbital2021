@@ -9,8 +9,8 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
   // const { itemId, category } = route.params
   const { item, itemId, category } = route.params
   const reportedUid = category === 'users' ? itemId : item.userId
-  //console.log(item)
-  //console.log(itemId)
+  // console.log(item)
+  // console.log(itemId)
   console.log(reportedUid)
 
   const navigateToCategories = () => {
@@ -20,7 +20,7 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
   }
 
   const deleteReportedItem = async () => {
-    switch(category) {
+    switch (category) {
       case 'userPosts':
         await firebase
           .firestore()
@@ -49,6 +49,7 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
           .collection('forumPosts')
           .doc(itemId)
           .delete()
+        break
       case 'forumComments':
         await firebase
           .firestore()
@@ -59,6 +60,7 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
           .collection('comments')
           .doc(itemId)
           .delete()
+        break
     }
   }
 
