@@ -68,7 +68,7 @@ export default function ManageForumAdminScreen ({ props, navigation, route }) {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <Text
           style={styles.username}
-          onPress={() => navigation.push('UnrestrictedViewProfileScreen', { item })}
+          onPress={() => navigation.push('UnrestrictedViewProfileScreen', { itemId: item.userId })}
         >
           {item.name}
         </Text>
