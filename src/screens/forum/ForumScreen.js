@@ -30,7 +30,7 @@ function ForumTabs () {
     >
       <TopTab.Screen name='Favourites' component={ForumSubscribedScreen} />
       <TopTab.Screen name='Search' component={ForumSearchScreen} />
-      <TopTab.Screen name='Others' component={ForumOthersScreen} />
+      <TopTab.Screen name='Open Portal' component={ForumOthersScreen} />
     </TopTab.Navigator>
   )
 }

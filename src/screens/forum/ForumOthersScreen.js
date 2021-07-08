@@ -44,9 +44,26 @@ export default class ForumOthersScreen extends React.Component {
       const { navigation } = this.props
       return (
         <SafeAreaView>
-          <Text style={styles.createForum}>
-            Can't find what you're looking for?
+          <Text style={styles.createForumHeader}>
+            Portal Opening Guidelines
           </Text>
+          <Text style={styles.createForum}>
+            1. Check for duplicates before creation. If the portal you want to open is very similar to existing ones,
+            consider applying to be a portal moderator instead.
+          </Text>
+          <Text style={styles.createForum}>
+            2. Avoid using inappropriate names or images when trying to open a new portal.
+          </Text>
+          <Text style={styles.createForum}>
+            3. At Portal.io, we believe in forging inclusive communities. Do not open portals which aim to sow discord.
+          </Text>
+          <Text style={styles.createForum}>
+            4. Do not engage in illegal activities using the portals.
+          </Text>
+          <Text style={styles.createForum}>
+            5. Do not publicly share personal information.
+          </Text>
+          <Text />
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.buttonStyle}
@@ -70,11 +87,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: 6
   },
-  createForum: {
+  createForumHeader: {
     fontSize: 20,
-    color: '#000000',
+    fontWeight: 'bold',
+    color: 'darkslategrey',
     paddingLeft: 20,
-    paddingTop: 10
+    paddingTop: 10,
+    paddingRight: 20
+  },
+  createForum: {
+    fontSize: 18,
+    color: 'darkslategrey',
+    paddingLeft: 20,
+    paddingTop: 10,
+    paddingRight: 20
   },
   image: {
     height: '100%',
