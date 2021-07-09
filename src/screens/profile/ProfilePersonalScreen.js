@@ -8,11 +8,18 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Linking
+  Linking,
+  Dimensions,
+  PixelRatio
 } from 'react-native'
 import { logoutUser } from '../../api/auth'
 import Button from '../../components/Button'
 import { theme } from '../../core/theme'
+
+const nameSize = PixelRatio.get() <= 1.5 ? 18 : 22
+const userInfoSize = PixelRatio.get() <= 1.5 ? 14 : 16
+const followSize = PixelRatio.get() <= 1.5 ? 16 : 20
+const avatarSize = PixelRatio.get() <= 1.5 ? 110 : 150
 
 export default class ProfilePersonalScreen extends React.Component {
     state = {
@@ -275,7 +282,8 @@ export default class ProfilePersonalScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.colors.surface
+    backgroundColor: theme.colors.surface,
+    height: 294.5 * Dimensions.get('window').width / 414
   },
   header: {
     backgroundColor: '#DCDCDC'
@@ -285,20 +293,20 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   avatar: {
-    width: 150,
-    height: 150,
+    width: avatarSize,
+    height: avatarSize,
     borderRadius: 75,
     borderWidth: 4,
     borderColor: 'white',
     marginBottom: 10
   },
   name: {
-    fontSize: 22,
+    fontSize: nameSize,
     color: '#000000',
     fontWeight: '600'
   },
   userInfo: {
-    fontSize: 16,
+    fontSize: userInfoSize,
     color: '#778899',
     fontWeight: '600'
   },
@@ -346,7 +354,7 @@ const styles = StyleSheet.create({
     paddingLeft: 25
   },
   followWord: {
-    fontSize: 20,
+    fontSize: followSize,
     color: '#000000',
     fontWeight: '600'
   },
