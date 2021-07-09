@@ -7,6 +7,7 @@ import {
   StyleSheet
 } from 'react-native'
 import CommentScreen from '../home/CommentScreen'
+import ForumPostScreen from '../forum/ForumPostScreen'
 import AccountSettingsScreen from './AccountSettingsScreen'
 import AddBioScreen from './AddBioScreen'
 import AddFacultyScreen from './AddFacultyScreen'
@@ -33,6 +34,26 @@ import RequestedFollowersScreen from './RequestedFollowersScreen'
 import PrivacySettingsScreen from './PrivacySettingsScreen'
 import ManageFollowersScreen from './ManageFollowersScreen'
 import SetupAccountScreen from './SetupAccountScreen'
+import SuperAdminScreen from './SuperAdminScreen'
+import ViewReportsScreen from './ViewReportsScreen'
+import UnrestrictedViewProfileScreen from './viewReports/UnrestrictedViewProfileScreen'
+import ReportsListScreen from './viewReports/ReportsListScreen'
+import ReportDetailScreen from './viewReports/ReportDetailScreen'
+import MatchMeControlScreen from './MatchMeControlScreen'
+import PromoteAdminOptionsScreen from './PromoteAdminOptionsScreen'
+import PromoteSuperAdminScreen from './PromoteSuperAdminScreen'
+import DemoteSuperAdminScreen from './DemoteSuperAdminScreen'
+import ManageForumAdminsScreen from './ManageForumAdminsScreen'
+import ForumAdminSelectionScreen from './ForumAdminSelectionScreen'
+import ForumAdminViewReportScreen from './ForumAdminViewReportScreen'
+import ForumReportsListScreen from './viewReports/ForumReportsListScreen'
+import ForumAdminForumsScreen from './ForumAdminForumsScreen'
+import ForumAdminManagementScreen from './ForumAdminManagementScreen'
+import HandleReportActionsScreen from './HandleReportActionsScreen'
+import BannedUsersScreen from './BannedUsersScreen'
+import PortalManagementOptionsScreen from './PortalManagementOptionsScreen'
+import DeletePortalScreen from './DeletePortalScreen'
+import SubForumScreen from '../forum/SubForumScreen'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -76,6 +97,7 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='EngineeringMajorsScreen' component={EngineeringMajorsScreen} />
         <Stack.Screen name='AddBioScreen' component={AddBioScreen} />
         <Stack.Screen name='CommentScreen' component={CommentScreen} />
+        <Stack.Screen name='ForumPostScreen' component={ForumPostScreen} />
         <Stack.Screen name='ChangePasswordScreen' component={ChangePasswordScreen} />
         <Stack.Screen name='ChangeNameScreen' component={ChangeNameScreen} />
         <Stack.Screen name='EditPostScreen' component={EditPostScreen} />
@@ -89,6 +111,26 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='PrivacySettingsScreen' component={PrivacySettingsScreen} />
         <Stack.Screen name='ManageFollowersScreen' component={ManageFollowersScreen} />
         <Stack.Screen name='SetupAccountScreen' component={SetupAccountScreen} />
+        <Stack.Screen name='SuperAdminScreen' component={SuperAdminScreen} />
+        <Stack.Screen name='ViewReportsScreen' component={ViewReportsScreen} />
+        <Stack.Screen name='UnrestrictedViewProfileScreen' component={UnrestrictedViewProfileScreen} />
+        <Stack.Screen name='ReportsListScreen' component={ReportsListScreen} />
+        <Stack.Screen name='ReportDetailScreen' component={ReportDetailScreen} />
+        <Stack.Screen name='MatchMeControlScreen' component={MatchMeControlScreen} />
+        <Stack.Screen name='PromoteAdminOptionsScreen' component={PromoteAdminOptionsScreen} />
+        <Stack.Screen name='PromoteSuperAdminScreen' component={PromoteSuperAdminScreen} />
+        <Stack.Screen name='DemoteSuperAdminScreen' component={DemoteSuperAdminScreen} />
+        <Stack.Screen name='ManageForumAdminsScreen' component={ManageForumAdminsScreen} />
+        <Stack.Screen name='ForumAdminSelectionScreen' component={ForumAdminSelectionScreen} />
+        <Stack.Screen name='ForumAdminViewReportScreen' component={ForumAdminViewReportScreen} />
+        <Stack.Screen name='ForumReportsListScreen' component={ForumReportsListScreen} />
+        <Stack.Screen name='ForumAdminForumsScreen' component={ForumAdminForumsScreen} />
+        <Stack.Screen name='ForumAdminManagementScreen' component={ForumAdminManagementScreen} />
+        <Stack.Screen name='HandleReportActionsScreen' component={HandleReportActionsScreen} />
+        <Stack.Screen name='BannedUsersScreen' component={BannedUsersScreen} />
+        <Stack.Screen name='PortalManagementOptionsScreen' component={PortalManagementOptionsScreen} />
+        <Stack.Screen name='DeletePortalScreen' component={DeletePortalScreen} />
+        <Stack.Screen name='SubForumScreen' component={SubForumScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )

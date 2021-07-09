@@ -21,6 +21,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
   const [refreshing, setRefreshing] = useState(true)
   const [subscribed, setSubscribed] = useState(null)
   const [sortedBy, setSortedBy] = useState(null)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   const { item } = route.params
   const forumId = item.id
@@ -38,6 +39,24 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
           setSortedBy(documentSnapshot.data().preferredSorting)
         } else {
           setSortedBy('Latest')
+        }
+      })
+  }
+
+  const checkIfAdmin = async () => {
+    await firebase.firestore().collection('users').doc(currentUserId).get()
+      .then((doc) => {
+        if (doc.exists) {
+          if (doc.data().superAdmin === true) {
+            setIsAdmin(true)
+          } else if (doc.data().forumAdmin === true) {
+            firebase.firestore().collection('users').doc(currentUserId).collection('forumAdmin').doc(forumId).get()
+              .then((doc) => {
+                if (doc.exists) {
+                  setIsAdmin(true)
+                }
+              })
+          }
         }
       })
   }
@@ -60,22 +79,12 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
 
   const subscribe = () => {
     if (subscribed) {
-      firebase
-        .firestore()
-        .collection('users')
-        .doc(currentUserId)
-        .collection('subscribedForums')
-        .doc(forumId)
-        .delete()
+      firebase.firestore().collection('users').doc(currentUserId).collection('subscribedForums').doc(forumId).delete()
+      firebase.firestore().collection('forums').doc(forumId).collection('subscribers').doc(currentUserId).delete()
       setSubscribed(false)
     } else {
-      firebase
-        .firestore()
-        .collection('users')
-        .doc(currentUserId)
-        .collection('subscribedForums')
-        .doc(forumId)
-        .set({})
+      firebase.firestore().collection('users').doc(currentUserId).collection('subscribedForums').doc(forumId).set({})
+      firebase.firestore().collection('forums').doc(forumId).collection('subscribers').doc(currentUserId).set({})
       setSubscribed(true)
     }
   }
@@ -207,10 +216,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
         {
           text: 'Confirm',
           onPress: () =>
-            Alert.alert(
-              'Post Reported!',
-              'This post has been reported successfully!'
-            )
+            navigation.navigate('ReportForumPostScreen', { post: post })
         }
       ],
       { cancelable: false }
@@ -252,8 +258,12 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
     getUser()
     getSubscribed()
     fetchPosts()
-    const _unsubscribe = navigation.addListener('focus', () => fetchPosts())
-
+    checkIfAdmin()
+    const _unsubscribe = navigation.addListener('focus', () => {
+      fetchPosts()
+      checkIfAdmin()
+    }
+    )
     return () => {
       _unsubscribe()
     }
@@ -262,12 +272,12 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
   return (
     <SafeAreaView style={styles.container}>
       <SubForumHeader
-        goBack={() => navigation.goBack()}
-        onPress={() =>
-          navigation.navigate('ForumAddPostScreen', { forumId })}
+        forumId={forumId}
+        navigation={navigation}
         isSubscribed={subscribed}
         subscribe={subscribe}
         title={item.forumName}
+        isAdmin={isAdmin}
       />
       {posts.length !== 0
         ? (<FlatList

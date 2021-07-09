@@ -2,93 +2,167 @@
 
 exports[`renders correctly 1`] = `
 <View
+  onLayout={[Function]}
   style={
     Object {
-      "alignItems": "center",
-      "backgroundColor": "#ffffff",
-      "borderColor": "#dcdcdc",
-      "borderWidth": 1,
-      "flexDirection": "row",
-      "height": 60,
-      "justifyContent": "center",
+      "flex": 1,
     }
   }
 >
   <View
-    accessible={true}
-    focusable={false}
-    onClick={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
     style={
-      Object {
-        "opacity": 1,
-        "paddingLeft": 12,
-        "width": "15%",
-      }
+      Array [
+        Object {
+          "flex": 1,
+        },
+        undefined,
+        undefined,
+        undefined,
+      ]
     }
-  />
-  <View
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#ffffff",
+          "borderColor": "#dcdcdc",
+          "borderWidth": 1,
+          "flexDirection": "row",
+          "height": 60,
+          "justifyContent": "center",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+            "paddingLeft": 12,
+            "width": "15%",
+          }
+        }
+      />
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "paddingLeft": 30,
+            "width": "85%",
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#ff7f50",
+              "fontSize": 30,
+              "textAlign": "center",
+            }
+          }
+        />
+        <View
+          accessible={true}
+          focusable={false}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+              "paddingLeft": 12,
+              "width": "15%",
+            }
+          }
+        />
+      </View>
+      <View>
+        <View
+          collapsable={false}
+        >
+          <View
+            accessible={true}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+          >
+            <View
+              ctx={
+                Object {
+                  "menuActions": Object {
+                    "_getOpenedMenu": [Function],
+                    "_notify": [Function],
+                    "closeMenu": [Function],
+                    "isMenuOpen": [Function],
+                    "openMenu": [Function],
+                    "toggleMenu": [Function],
+                  },
+                  "menuRegistry": Object {
+                    "getAll": [Function],
+                    "getMenu": [Function],
+                    "setOptionsCustomStyles": [Function],
+                    "subscribe": [Function],
+                    "unsubscribe": [Function],
+                    "updateLayoutInfo": [Function],
+                  },
+                }
+              }
+              style={
+                Array [
+                  undefined,
+                  undefined,
+                ]
+              }
+            />
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+  <RCTSafeAreaView
+    emulateUnlessSupported={true}
+    pointerEvents="box-none"
     style={
       Object {
-        "alignItems": "center",
-        "flex": 1,
-        "flexDirection": "row",
-        "justifyContent": "center",
-        "paddingLeft": 30,
-        "width": "85%",
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
       }
     }
   >
-    <Text
-      style={
-        Object {
-          "color": "#ff7f50",
-          "fontSize": 30,
-          "textAlign": "center",
-        }
-      }
-    />
     <View
-      accessible={true}
-      focusable={false}
-      onClick={[Function]}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      collapsable={false}
+      onLayout={[Function]}
+      pointerEvents="box-none"
       style={
         Object {
-          "opacity": 1,
-          "paddingLeft": 12,
-          "width": "15%",
+          "flex": 1,
         }
       }
     />
-  </View>
-  <View
-    accessible={true}
-    focusable={false}
-    onClick={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      Object {
-        "opacity": 1,
-        "paddingLeft": 12,
-        "width": "15%",
-      }
-    }
-  />
+  </RCTSafeAreaView>
 </View>
 `;

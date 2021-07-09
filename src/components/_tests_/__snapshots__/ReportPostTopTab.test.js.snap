@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "flexDirection": "row",
+    }
+  }
+>
+  <View
+    accessible={true}
+    focusable={false}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "marginTop": 10,
+        "opacity": 1,
+      }
+    }
+    testID="back"
+  />
+  <Text
+    style={
+      Object {
+        "backgroundColor": "#ffffff",
+        "color": "#ff8c00",
+        "fontSize": 30,
+        "height": 60,
+        "lineHeight": 60,
+        "marginBottom": 10,
+        "paddingLeft": 15,
+        "width": "100%",
+      }
+    }
+  >
+     Add your major 
+  </Text>
+</View>
+`;

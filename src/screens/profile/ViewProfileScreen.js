@@ -249,10 +249,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         {
           text: 'Confirm',
           onPress: () =>
-            Alert.alert(
-              'Post Reported!',
-              'This post has been reported successfully!'
-            )
+            navigation.navigate('ReportPostScreen', { postId: postId })
         }
       ],
       { cancelable: false }
@@ -260,7 +257,23 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
   }
 
   const profileReport = () => {
-    alert('Account reported')
+    Alert.alert(
+      'Report User',
+      'Are you sure?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed!'),
+          style: 'cancel'
+        },
+        {
+          text: 'Confirm',
+          onPress: () =>
+            navigation.navigate('ReportUserScreen', { userId: item.userId })
+        }
+      ],
+      { cancelable: false }
+    )
   }
   const renderHeader = () => {
     return (

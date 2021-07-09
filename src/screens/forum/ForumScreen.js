@@ -12,8 +12,17 @@ import {
   ForumPostScreen,
   ForumSearchScreen,
   ForumSubscribedScreen,
-  SubForumScreen
+  SubForumScreen,
+  ReportForumPostScreen,
+  ReportForumCommentScreen,
+  SubforumReportsListScreen,
+  SubforumViewReportScreen,
+  SubForumInfoScreen
 } from './'
+import ForumAdminManagementScreen from '../profile/ForumAdminManagementScreen'
+import ReportDetailScreen from '../profile/viewReports/ReportDetailScreen'
+import HandleReportActionsScreen from '../profile/HandleReportActionsScreen'
+import UnrestrictedViewProfileScreen from '../profile/viewReports/UnrestrictedViewProfileScreen'
 
 const Stack = createStackNavigator()
 const TopTab = createMaterialTopTabNavigator()
@@ -47,6 +56,15 @@ export default function ForumScreen () {
         <Stack.Screen name='EditForumPostScreen' component={EditForumPostScreen} />
         <Stack.Screen name='EditForumCommentScreen' component={EditForumCommentScreen} />
         <Stack.Screen name='ViewProfileScreen' component={ViewProfileScreen} />
+        <Stack.Screen name='ReportForumPostScreen' component={ReportForumPostScreen} />
+        <Stack.Screen name='ReportForumCommentScreen' component={ReportForumCommentScreen} />
+        <Stack.Screen name='SubforumReportsListScreen' component={SubforumReportsListScreen} />
+        <Stack.Screen name='SubforumViewReportScreen' component={SubforumViewReportScreen} />
+        <Stack.Screen name='ForumAdminManagementScreen' component={ForumAdminManagementScreen} />
+        <Stack.Screen name='ReportDetailScreen' component={ReportDetailScreen} />
+        <Stack.Screen name='HandleReportActionsScreen' component={HandleReportActionsScreen} />
+        <Stack.Screen name='UnrestrictedViewProfileScreen' component={UnrestrictedViewProfileScreen} />
+        <Stack.Screen name='SubForumInfoScreen' component={SubForumInfoScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )

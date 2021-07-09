@@ -162,21 +162,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         )
       }
     } else {
-      Alert.alert(
-        'Report comment',
-        'Are you sure?',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('cancel pressed')
-          },
-          {
-            text: 'OK',
-            onPress: () => handleReport(comment)
-          }
-        ],
-        { cancelable: true }
-      )
+      handleReport(comment)
     }
   }
 
@@ -244,10 +230,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         {
           text: 'Confirm',
           onPress: () =>
-            Alert.alert(
-              'Comment Reported!',
-              'This comment has been reported successfully!'
-            )
+            navigation.navigate('ReportForumCommentScreen', { comment: comment, post: item })
         }
       ],
       { cancelable: false }
@@ -330,10 +313,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
         {
           text: 'Confirm',
           onPress: () =>
-            Alert.alert(
-              'Post Reported!',
-              'This post has been reported successfully!'
-            )
+            navigation.navigate('ReportForumPostScreen', { post: post })
         }
       ],
       { cancelable: false }
@@ -363,6 +343,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
       contentContainerStyle={styles.inner}
       resetScrollToCoords={{ x: 0, y: 0 }}
       scrollEnabled={false}
+      keyboardShouldPersistTaps='always'
     >
       <ForumPostHeader
         goBack={() => navigation.goBack()}
