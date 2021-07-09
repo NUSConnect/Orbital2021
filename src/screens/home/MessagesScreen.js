@@ -58,11 +58,11 @@ export default function MessagesScreen ({ navigation }) {
       .update({ haveNewMessage: false })
   }
 
-  const deletePressed = (id) => {
+  const deletePressed = (item) => {
     console.log('Pressed')
     Alert.alert(
       'Are you sure?',
-      'Chat will be deleted from your messages',
+      "Chat will be deleted from your messages (You will leave the group if it's a group chat)",
       [
         {
           text: 'Cancel',
@@ -71,38 +71,35 @@ export default function MessagesScreen ({ navigation }) {
         },
         {
           text: 'Delete',
-          onPress: () => moveToDeleted(id)
+          onPress: () => moveToDeleted(item)
         }
       ],
       { cancelable: false }
     )
   }
 
-  const moveToDeleted = (id) => {
+  const moveToDeleted = (item) => {
     console.log('Delete')
-    firebase
-      .firestore()
-      .collection('THREADS')
-      .doc(id)
-      .get()
-      .then((querySnapshot) => {
-        const lastSent = querySnapshot.data().latestMessage.createdAt
-        firebase
-          .firestore()
-          .collection('users')
-          .doc(currentUserId)
-          .collection('deletedChats')
-          .doc(id)
-          .set({ lastSent })
-        firebase
-          .firestore()
-          .collection('users')
-          .doc(currentUserId)
-          .collection('openChats')
-          .doc(id)
-          .delete()
-      })
+    if (item.isGroup) {
+      console.log('group')
+      firebase.firestore().collection('THREADS').doc(item.id).get()
+        .then((docSnapshot) => {
+          const { users } = docSnapshot.data()
+          const updatedUsers = users.filter(x => x !== currentUserId)
 
+          firebase.firestore().collection('THREADS').doc(item.id).update({ users: updatedUsers })
+          firebase.firestore().collection('users').doc(currentUserId).collection('openChats').doc(item.id).delete()
+        })
+    } else {
+      console.log('dm')
+      firebase.firestore().collection('THREADS').doc(item.id).get()
+        .then((querySnapshot) => {
+          const lastSent = querySnapshot.data().latestMessage.createdAt
+
+          firebase.firestore().collection('users').doc(currentUserId).collection('deletedChats').doc(item.id).set({ lastSent })
+          firebase.firestore().collection('users').doc(currentUserId).collection('openChats').doc(item.id).delete()
+        })
+    }
     Alert.alert(
       'Success',
       'Chat deleted!',
@@ -116,7 +113,7 @@ export default function MessagesScreen ({ navigation }) {
     )
   }
 
-  const rightSwipe = (id) => (progress, dragX) => {
+  const rightSwipe = (item) => (progress, dragX) => {
     const scale = dragX.interpolate({
       inputRange: [0, 100],
       outputRange: [1, 0],
@@ -124,7 +121,7 @@ export default function MessagesScreen ({ navigation }) {
     })
     return (
       <TouchableOpacity
-        onPress={() => deletePressed(id)}
+        onPress={() => deletePressed(item)}
         activeOpacity={0.6}
       >
         <View style={styles.deleteBox}>
@@ -315,7 +312,7 @@ export default function MessagesScreen ({ navigation }) {
         keyExtractor={(item) => item.id}
         ItemSeparatorComponent={() => <Divider />}
         renderItem={({ item }) => (
-          <Swipeable renderRightActions={rightSwipe(item.id)}>
+          <Swipeable renderRightActions={rightSwipe(item)}>
             <Card
               onPress={() =>
                 navigation.navigate('ChatScreen', {

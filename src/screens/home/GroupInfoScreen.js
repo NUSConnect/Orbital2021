@@ -14,8 +14,9 @@ import TitleWithBack from '../../components/TitleWithBack'
 import {
   Card, TextSection, UserImg, UserImgWrapper, UserInfo, UserInfoText, UserName
 } from '../../styles/MessageStyles'
+import { sortByName } from '../../api/ranking'
 import ImageViewer from 'react-native-image-zoom-viewer'
-import { Ionicons } from 'react-native-vector-icons'
+import { Ionicons, MaterialIcons } from 'react-native-vector-icons'
 
 const GroupInfoScreen = ({ navigation, route, onPress }) => {
   const currentUserId = firebase.auth().currentUser.uid
@@ -35,14 +36,22 @@ const GroupInfoScreen = ({ navigation, route, onPress }) => {
   }
 
   const getMembers = async () => {
+    let users = []
+
+    await firebase.firestore().collection('THREADS').doc(item.id).get()
+      .then((doc) => {
+        users = doc.data().users
+      })
+
     const list = []
-    for (const memberId of item.members) {
+    for (const memberId of users) {
       await firebase.firestore().collection('users').doc(memberId).get()
         .then((doc) => {
           const { name, userImg, bio } = doc.data()
           list.push({ userId: doc.id, name, userImg, bio })
         })
     }
+    list.sort(sortByName)
     setMembers(list)
   }
 
@@ -79,9 +88,10 @@ const GroupInfoScreen = ({ navigation, route, onPress }) => {
   useEffect(() => {
     getGroupInfo()
     getMembers()
-    const _unsubscribe = navigation.addListener('focus', () =>
+    const _unsubscribe = navigation.addListener('focus', () => {
       getGroupInfo()
-    )
+      getMembers()
+    })
 
     return () => {
       _unsubscribe()
@@ -147,9 +157,17 @@ const GroupInfoScreen = ({ navigation, route, onPress }) => {
         data={members}
         ListHeaderComponent={
           <View style={{ width: '100%' }}>
-            <Text style={styles.memberHeader}>
-              Members
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Text style={styles.memberHeader}>
+                Members
+              </Text>
+              <TouchableOpacity
+                style={styles.editIcon}
+                onPress={() => navigation.navigate('EditGroupMembersScreen', { threadId: item.id, name: groupInfo.groupName.name })}
+              >
+                <MaterialIcons name='edit' size={26} color='#87cefa' />
+              </TouchableOpacity>
+            </View>
             <View
               style={{
                 height: 2,
@@ -266,5 +284,8 @@ const styles = StyleSheet.create({
   editButton: {
     paddingTop: 50,
     paddingRight: 6
+  },
+  editIcon: {
+    marginRight: 25
   }
 })
