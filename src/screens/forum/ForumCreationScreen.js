@@ -84,7 +84,7 @@ export default class ForumCreationScreen extends React.Component {
         })
         .then((docRef) => {
           const currentUserId = firebase.auth().currentUser.uid
-          firebase.firestore().collection('users').doc(currentUserId).update({ forumAdmin: true})
+          firebase.firestore().collection('users').doc(currentUserId).update({ forumAdmin: true })
           firebase.firestore().collection('users').doc(currentUserId).collection('forumAdmin').doc(docRef.id)
             .set({ name: this.state.nameText })
           firebase.firestore().collection('forums').doc(docRef.id).collection('admins').doc(currentUserId).set({})
