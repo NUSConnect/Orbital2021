@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 import { Button as PaperButton } from 'react-native-paper'
 import { theme } from '../core/theme'
 
@@ -23,12 +23,11 @@ export default function Button ({ mode, style, ...props }) {
 const styles = StyleSheet.create({
   button: {
     width: '100%',
-    marginVertical: 10,
-    paddingVertical: 2
+    marginVertical: 9 * Dimensions.get('window').width / 414
   },
   text: {
     fontWeight: 'bold',
     fontSize: 15,
-    lineHeight: 26
+    lineHeight: 24
   }
 })

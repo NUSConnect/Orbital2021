@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, Dimensions } from 'react-native'
 
 const ForumIcon = ({ item, onPress }) => {
   return (
@@ -23,7 +23,7 @@ export default ForumIcon
 const styles = StyleSheet.create({
   container: {
     flex: 0,
-    width: 130,
+    width: 130 * Dimensions.get('window').width / 414,
     height: 150,
     alignItems: 'center',
     justifyContent: 'center'

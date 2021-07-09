@@ -18,7 +18,7 @@ exports[`renders correctly 1`] = `
       "height": 150,
       "justifyContent": "center",
       "opacity": 1,
-      "width": 130,
+      "width": 235.5072463768116,
     }
   }
   testID="icon"
