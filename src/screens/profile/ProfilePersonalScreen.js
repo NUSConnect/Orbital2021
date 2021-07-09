@@ -7,7 +7,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Linking
 } from 'react-native'
 import { logoutUser } from '../../api/auth'
 import Button from '../../components/Button'
@@ -34,6 +35,11 @@ export default class ProfilePersonalScreen extends React.Component {
     static navigationOptions = {
       header: null
     };
+
+    handleLoadInBrowser = () => {
+      Linking.openURL('https://docs.google.com/document/d/1iCbU7dv6kQtr8h0xFe01NmVnVUM1NtYrTSJWbmPHA-I/edit')
+        .catch(err => console.error("Couldn't load page", err))
+    }
 
     handleChooseImagePress = async () => {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -246,6 +252,12 @@ export default class ProfilePersonalScreen extends React.Component {
                     </Button>
                     )
                   : (null)}
+              <Button
+                style={styles.accountset}
+                onPress={this.handleLoadInBrowser}
+              >
+                User Guide
+              </Button>
               <Button
                 style={styles.button}
                 color='#de1738'
