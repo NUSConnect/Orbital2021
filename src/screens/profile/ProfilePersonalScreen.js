@@ -221,16 +221,9 @@ export default class ProfilePersonalScreen extends React.Component {
               <Button
                 style={styles.accountset}
                 onPress={() =>
-                  this.props.navigation.navigate('AddBioScreen')}
+                  this.props.navigation.navigate('SetupAccountScreen')}
               >
-                Update Bio
-              </Button>
-              <Button
-                style={styles.accountset}
-                onPress={() =>
-                  this.props.navigation.navigate('AddFacultyScreen')}
-              >
-                Add your major
+                Setup Account
               </Button>
               <Button
                 style={styles.accountset}
