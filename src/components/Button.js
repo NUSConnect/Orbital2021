@@ -4,6 +4,7 @@ import { Button as PaperButton } from 'react-native-paper'
 import { theme } from '../core/theme'
 
 const marginVertical = PixelRatio.get() <= 1.5 ? 2 : 10
+const textSize = PixelRatio.get() <= 1.5 ? 13 : 15
 
 export default function Button ({ mode, style, ...props }) {
   return (
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: 'bold',
-    fontSize: 15,
+    fontSize: textSize,
     lineHeight: 24
   }
 })
