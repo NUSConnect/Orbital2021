@@ -165,7 +165,7 @@ const GroupInfoScreen = ({ navigation, route, onPress }) => {
                 style={styles.editIcon}
                 onPress={() => navigation.navigate('EditGroupMembersScreen', { threadId: item.id, name: groupInfo.groupName.name })}
               >
-                <MaterialIcons name='edit' size={26} color='#87cefa' />
+                <MaterialIcons name='edit' size={26} color='black' />
               </TouchableOpacity>
             </View>
             <View
