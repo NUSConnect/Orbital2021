@@ -35,6 +35,7 @@ export default function AddFacultyScreen ({ props, navigation, goBack }) {
       .doc(currentUserId)
       .update({ major: major })
     navigation.goBack()
+    navigation.goBack()
   }
 
   const multipleMajors = (screen) => {

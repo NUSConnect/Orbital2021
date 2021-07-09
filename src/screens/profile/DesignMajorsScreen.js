@@ -24,6 +24,7 @@ export default function DesignMajorsScreen ({ props, navigation, goBack }) {
   const returnToPersonal = () => {
     navigation.goBack()
     navigation.goBack()
+    navigation.goBack()
   }
 
   const ItemView = ({ item }) => {

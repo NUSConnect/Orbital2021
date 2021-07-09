@@ -24,6 +24,7 @@ export default function ComputingMajorsScreen ({ props, navigation, goBack }) {
   const returnToPersonal = () => {
     navigation.goBack()
     navigation.goBack()
+    navigation.goBack()
   }
 
   const ItemView = ({ item }) => {
