@@ -99,33 +99,34 @@ export default class ForumSearchScreen extends React.Component {
       return (
         <SafeAreaView style={{ flex: 1 }}>
           {this.state.data.length !== 0
-            ? (<View style={{ flex: 1 }}>
-              <SearchBar
-                search={this.state.search}
-                setSearch={(text) => this.setState({ search: text })}
-                searchFilterFunction={this.searchFilterFunction}
-                resetFilter={() => this.setState({ filteredData: this.state.data })}
-              />
-              <FlatList
-                numColumns={3}
-                data={
+            ? (
+              <View style={{ flex: 1 }}>
+                <SearchBar
+                  search={this.state.search}
+                  setSearch={(text) => this.setState({ search: text })}
+                  searchFilterFunction={this.searchFilterFunction}
+                  resetFilter={() => this.setState({ filteredData: this.state.data })}
+                />
+                <FlatList
+                  numColumns={3}
+                  data={
                         this.state.filtered
                           ? this.state.filteredData
                           : this.state.data
                     }
-                renderItem={({ item }) => (
-                  <ForumIcon
-                    item={item}
-                    onPress={() =>
-                      navigation.navigate('SubForumScreen', { item })}
-                  />
-                )}
-                keyExtractor={(item) => item.id.toString()}
-                ItemSeparatorComponent={this.ItemSeparator}
-                refreshing={this.state.refreshing}
-                onRefresh={this.handleRefresh}
-              />
-            </View>)
+                  renderItem={({ item }) => (
+                    <ForumIcon
+                      item={item}
+                      onPress={() =>
+                        navigation.navigate('SubForumScreen', { item })}
+                    />
+                  )}
+                  keyExtractor={(item) => item.id.toString()}
+                  ItemSeparatorComponent={this.ItemSeparator}
+                  refreshing={this.state.refreshing}
+                  onRefresh={this.handleRefresh}
+                />
+              </View>)
             : (
               <View style={styles.postMessage}>
                 <Text style={styles.postsDescription}>
