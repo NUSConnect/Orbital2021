@@ -79,22 +79,12 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
 
   const subscribe = () => {
     if (subscribed) {
-      firebase
-        .firestore()
-        .collection('users')
-        .doc(currentUserId)
-        .collection('subscribedForums')
-        .doc(forumId)
-        .delete()
+      firebase.firestore().collection('users').doc(currentUserId).collection('subscribedForums').doc(forumId).delete()
+      firebase.firestore().collection('forums').doc(forumId).collection('subscribers').doc(currentUserId).delete()
       setSubscribed(false)
     } else {
-      firebase
-        .firestore()
-        .collection('users')
-        .doc(currentUserId)
-        .collection('subscribedForums')
-        .doc(forumId)
-        .set({})
+      firebase.firestore().collection('users').doc(currentUserId).collection('subscribedForums').doc(forumId).set({})
+      firebase.firestore().collection('forums').doc(forumId).collection('subscribers').doc(currentUserId).set({})
       setSubscribed(true)
     }
   }

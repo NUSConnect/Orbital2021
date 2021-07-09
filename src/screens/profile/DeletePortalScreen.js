@@ -62,11 +62,30 @@ export default function DeletePortalScreen ({ props, navigation, route }) {
   }
 
   const deleteForum = async (item) => {
-    await firebase
-      .firestore()
-      .collection('forums')
-      .doc(item.id)
-      .delete()
+    await firebase.firestore().collection('forums').doc(item.id).collection('subscribers').get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          firebase.firestore().collection('users').doc(doc.id).collection('subscribedForums').doc(item.id).delete()
+        })
+      })
+
+    await firebase.firestore().collection('forums').doc(item.id).collection('admins').get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          firebase.firestore().collection('users').doc(doc.id).collection('forumAdmin').doc(item.id).delete()
+            .then(() => {
+              firebase.firestore().collection('users').doc(doc.id).collection('forumAdmin').get()
+                .then((querySnapshot) => {
+                  if (querySnapshot.size === 0) {
+                    firebase.firestore().collection('users').doc(doc.id).update({ forumAdmin: false })
+                  }
+                })
+            })
+        })
+      })
+
+    await firebase.firestore().collection('forums').doc(item.id).delete()
+
     Alert.alert('Success!', 'Forum has been successfully deleted.')
     setMasterDataSource(masterDataSource.filter(forum => forum.id !== item.id))
     setFilteredDataSource(filteredDataSource.filter(forum => forum.id !== item.id))
