@@ -16,9 +16,9 @@ import { logoutUser } from '../../api/auth'
 import Button from '../../components/Button'
 import { theme } from '../../core/theme'
 
-const nameSize = PixelRatio.get() <= 1.5 ? 18 : 22
+const nameSize = PixelRatio.get() <= 1.5 ? 16 : 22
 const userInfoSize = PixelRatio.get() <= 1.5 ? 14 : 16
-const followSize = PixelRatio.get() <= 1.5 ? 16 : 20
+const followSize = PixelRatio.get() <= 1.5 ? 14 : 20
 const avatarSize = PixelRatio.get() <= 1.5 ? 110 : 150
 
 export default class ProfilePersonalScreen extends React.Component {
@@ -234,7 +234,7 @@ export default class ProfilePersonalScreen extends React.Component {
               {this.state.superAdmin
                 ? (
                   <Button
-                    style={styles.button}
+                    style={styles.accountset}
                     color='darkorange'
                     onPress={() => this.props.navigation.navigate('SuperAdminScreen')}
                   >
@@ -244,7 +244,7 @@ export default class ProfilePersonalScreen extends React.Component {
                 : this.state.forumAdmin
                   ? (
                     <Button
-                      style={styles.button}
+                      style={styles.accountset}
                       color='darkorange'
                       onPress={() => this.props.navigation.navigate('ForumAdminViewReportScreen')}
                     >
@@ -275,8 +275,7 @@ export default class ProfilePersonalScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.colors.surface,
-    height: 294.5 * Dimensions.get('window').width / 414
+    backgroundColor: theme.colors.surface
   },
   header: {
     backgroundColor: '#DCDCDC'
@@ -288,7 +287,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: avatarSize,
     height: avatarSize,
-    borderRadius: 75,
+    borderRadius: avatarSize/2,
     borderWidth: 4,
     borderColor: 'white',
     marginBottom: 10

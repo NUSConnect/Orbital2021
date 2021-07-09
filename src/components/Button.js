@@ -1,7 +1,9 @@
 import React from 'react'
-import { StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet, Dimensions, PixelRatio } from 'react-native'
 import { Button as PaperButton } from 'react-native-paper'
 import { theme } from '../core/theme'
+
+const marginVertical = PixelRatio.get() <= 1.5 ? 2 : 10
 
 export default function Button ({ mode, style, ...props }) {
   return (
@@ -23,7 +25,7 @@ export default function Button ({ mode, style, ...props }) {
 const styles = StyleSheet.create({
   button: {
     width: '100%',
-    marginVertical: 9 * Dimensions.get('window').width / 414
+    marginVertical: marginVertical
   },
   text: {
     fontWeight: 'bold',
