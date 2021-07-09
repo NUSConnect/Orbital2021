@@ -119,7 +119,7 @@ const SubForumInfoScreen = ({ navigation, route }) => {
             </UserInfo>
           </Card>
         )}
-        keyExtractor={(item) => item.postId}
+        keyExtractor={(item) => item.userId}
         style={{ marginBottom: 10, width: '100%' }}
       />
     </SafeAreaView>
