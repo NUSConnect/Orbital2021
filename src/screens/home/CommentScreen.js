@@ -143,21 +143,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
         )
       }
     } else {
-      Alert.alert(
-        'Report comment',
-        'Are you sure?',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('cancel pressed')
-          },
-          {
-            text: 'OK',
-            onPress: () => handleReport(comment)
-          }
-        ],
-        { cancelable: true }
-      )
+      handleReport(comment, comment.userId)
     }
   }
 
@@ -233,7 +219,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
       .update({ commentCount: item.commentCount })
   }
 
-  const handleReport = (postId) => {
+  const handleReport = (postId, userId) => {
     Alert.alert(
       'Report Comment',
       'Are you sure?',
@@ -246,10 +232,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
         {
           text: 'Confirm',
           onPress: () =>
-            Alert.alert(
-              'Comment Reported!',
-              'This comment has been reported successfully!'
-            )
+            navigation.navigate('ReportCommentScreen', { comment: postId, userId: userId })
         }
       ],
       { cancelable: false }
@@ -287,6 +270,7 @@ const CommentScreen = ({ navigation, route, onPress }) => {
       contentContainerStyle={styles.inner}
       resetScrollToCoords={{ x: 0, y: 0 }}
       scrollEnabled={false}
+      keyboardShouldPersistTaps='always'
     >
       <TitleWithBack onPress={() => navigation.goBack()} />
       <FlatList

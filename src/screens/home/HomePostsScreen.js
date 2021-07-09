@@ -247,7 +247,7 @@ export default class HomePostsScreen extends React.Component {
         .catch((e) => console.log('Error deleting post.', e))
     };
 
-    handleReport = (postId) => {
+    handleReport = (postId, userId) => {
       Alert.alert(
         'Report Post',
         'Are you sure?',
@@ -260,10 +260,7 @@ export default class HomePostsScreen extends React.Component {
           {
             text: 'Confirm',
             onPress: () =>
-              Alert.alert(
-                'Post Reported!',
-                'This post has been reported successfully!'
-              )
+              this.props.navigation.navigate('ReportPostScreen', { postId: postId, userId: userId })
           }
         ],
         { cancelable: false }

@@ -71,21 +71,12 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   headerRight: {},
-  centerAlign: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '33%'
-  },
   text: {
     fontSize: 16,
     padding: 5,
     paddingLeft: 10,
     paddingRight: 5,
     marginBottom: 10
-  },
-  regularFont: {
-    fontSize: 14
   },
   username: {
     fontSize: 16,

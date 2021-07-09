@@ -164,7 +164,7 @@ export default function ManageFollowersScreen ({ props, navigation, route }) {
             onPress={() => navigation.goBack()}
           />
           <Text style={{ fontSize: 18, alignItems: 'center' }}>
-            Follow Requests
+            Manage Followers
           </Text>
         </View>
         <SearchBar

@@ -1,0 +1,289 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+      }
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "crimson",
+          "flexWrap": "wrap",
+          "fontSize": 18,
+          "margin": 6,
+          "paddingLeft": 10,
+          "width": 750,
+        }
+      }
+    >
+      Post ID: 
+      11111
+    </Text>
+    <View
+      style={
+        Object {
+          "backgroundColor": "rgba(0,0,0,0.5)",
+          "height": 2,
+          "marginLeft": 10,
+          "marginRight": 10,
+          "width": 675,
+        }
+      }
+    />
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#DCDCDC",
+          "justifyContent": "center",
+          "marginVertical": 10,
+          "paddingBottom": 20,
+          "paddingTop": 20,
+          "width": 750,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "backgroundColor": "white",
+            "borderColor": "black",
+            "borderRadius": 10,
+            "borderWidth": 1,
+            "width": 735,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "paddingLeft": 10,
+              "width": "100%",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "fontSize": 14,
+                }
+              }
+            >
+              Posted by 
+            </Text>
+            <Text
+              style={
+                Object {
+                  "color": "blue",
+                  "fontSize": 14,
+                }
+              }
+            >
+              Deleted User
+            </Text>
+            <Text
+              style={
+                Object {
+                  "fontSize": 14,
+                }
+              }
+              testID="time"
+            >
+               ·
+               
+              
+            </Text>
+          </View>
+          <View
+            style={Object {}}
+          />
+        </View>
+        <Text
+          style={
+            Object {
+              "fontSize": 22,
+              "fontWeight": "bold",
+              "paddingLeft": 10,
+            }
+          }
+        >
+          
+        </Text>
+        <Text
+          style={
+            Object {
+              "fontSize": 16,
+              "paddingLeft": 10,
+              "paddingRight": 15,
+            }
+          }
+        >
+          ---Deleted Post---
+        </Text>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "marginLeft": 187.5,
+              "width": 375,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "black",
+                "fontSize": 16,
+              }
+            }
+          >
+            
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "black",
+                "fontSize": 16,
+              }
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": 50,
+          "justifyContent": "center",
+          "marginVertical": 10,
+          "width": "100%",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "darkorange",
+            "borderRadius": 30,
+            "height": 50,
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": "50%",
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "white",
+              "fontSize": 18,
+            }
+          }
+        >
+          View Full Post
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "height": 50,
+          "justifyContent": "center",
+          "marginVertical": 10,
+          "width": "100%",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "darkorange",
+            "borderRadius": 30,
+            "height": 50,
+            "justifyContent": "center",
+            "opacity": 1,
+            "width": "50%",
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "white",
+              "fontSize": 18,
+            }
+          }
+        >
+          View Profile
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "rgba(0,0,0,0.5)",
+          "height": 2,
+          "marginLeft": 10,
+          "marginRight": 10,
+          "width": 675,
+        }
+      }
+    />
+  </View>
+  <Text
+    style={
+      Object {
+        "fontSize": 20,
+        "marginBottom": 10,
+        "marginTop": 10,
+        "paddingLeft": 20,
+      }
+    }
+  >
+    Reporters:
+  </Text>
+</View>
+`;

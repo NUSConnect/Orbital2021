@@ -95,6 +95,21 @@ export const loginUser = async ({ email, password }) => {
       .auth()
       .signInWithEmailAndPassword(email, password)
     if (firebase.auth().currentUser.emailVerified) {
+      await firebase
+        .firestore()
+        .collection('banned')
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(documentSnapshot => {
+            if (firebase.auth().currentUser.uid === documentSnapshot.id) {
+              Alert.alert('You have been banned', 'Due to this ban, you will not be able to log in.')
+              firebase.auth().signOut()
+              return {
+                user
+              }
+            }
+          })
+        })
       return {
         user
       }
