@@ -428,7 +428,7 @@ const styles = StyleSheet.create({
   profileContainer: {
     backgroundColor: '#DCDCDC',
     width: '100%',
-    height: DeviceWidth * 0.25 + 15,
+    height: DeviceWidth * 0.25 + 40,
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row'
@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10
   },
   button: {
-    height: 40,
+    height: 35,
     width: '38%',
     backgroundColor: '#87cefa',
     borderRadius: 20,
@@ -477,7 +477,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   smallButton: {
-    height: 40,
+    height: 35,
     width: '15%',
     backgroundColor: '#87cefa',
     borderRadius: 20,
