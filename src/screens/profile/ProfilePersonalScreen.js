@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   View,
   Linking,
-  Dimensions,
   PixelRatio
 } from 'react-native'
 import { logoutUser } from '../../api/auth'
@@ -287,7 +286,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: avatarSize,
     height: avatarSize,
-    borderRadius: avatarSize/2,
+    borderRadius: avatarSize / 2,
     borderWidth: 4,
     borderColor: 'white',
     marginBottom: 10

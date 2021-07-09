@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Dimensions, PixelRatio } from 'react-native'
+import { StyleSheet, PixelRatio } from 'react-native'
 import { Button as PaperButton } from 'react-native-paper'
 import { theme } from '../core/theme'
 
