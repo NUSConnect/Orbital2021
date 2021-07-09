@@ -32,6 +32,7 @@ import FollowingScreen from './FollowingScreen'
 import RequestedFollowersScreen from './RequestedFollowersScreen'
 import PrivacySettingsScreen from './PrivacySettingsScreen'
 import ManageFollowersScreen from './ManageFollowersScreen'
+import SetupAccountScreen from './SetupAccountScreen'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -87,6 +88,7 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='RequestedFollowersScreen' component={RequestedFollowersScreen} />
         <Stack.Screen name='PrivacySettingsScreen' component={PrivacySettingsScreen} />
         <Stack.Screen name='ManageFollowersScreen' component={ManageFollowersScreen} />
+        <Stack.Screen name='SetupAccountScreen' component={SetupAccountScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )
