@@ -3,7 +3,9 @@ import React from 'react'
 import {
   FlatList,
   SafeAreaView,
-  View
+  View,
+  StyleSheet,
+  Text
 } from 'react-native'
 import ForumIcon from '../../components/ForumIcon'
 import SearchBar from '../../components/SearchBar'
@@ -96,32 +98,55 @@ export default class ForumSearchScreen extends React.Component {
       const { navigation } = this.props
       return (
         <SafeAreaView style={{ flex: 1 }}>
-          <SearchBar
-            search={this.state.search}
-            setSearch={(text) => this.setState({ search: text })}
-            searchFilterFunction={this.searchFilterFunction}
-            resetFilter={() => this.setState({ filteredData: this.state.data })}
-          />
-          <FlatList
-            numColumns={3}
-            data={
+          {this.state.data.length !== 0
+            ? (
+              <View style={{ flex: 1 }}>
+                <SearchBar
+                  search={this.state.search}
+                  setSearch={(text) => this.setState({ search: text })}
+                  searchFilterFunction={this.searchFilterFunction}
+                  resetFilter={() => this.setState({ filteredData: this.state.data })}
+                />
+                <FlatList
+                  numColumns={3}
+                  data={
                         this.state.filtered
                           ? this.state.filteredData
                           : this.state.data
                     }
-            renderItem={({ item }) => (
-              <ForumIcon
-                item={item}
-                onPress={() =>
-                  navigation.navigate('SubForumScreen', { item })}
-              />
-            )}
-            keyExtractor={(item) => item.id.toString()}
-            ItemSeparatorComponent={this.ItemSeparator}
-            refreshing={this.state.refreshing}
-            onRefresh={this.handleRefresh}
-          />
+                  renderItem={({ item }) => (
+                    <ForumIcon
+                      item={item}
+                      onPress={() =>
+                        navigation.navigate('SubForumScreen', { item })}
+                    />
+                  )}
+                  keyExtractor={(item) => item.id.toString()}
+                  ItemSeparatorComponent={this.ItemSeparator}
+                  refreshing={this.state.refreshing}
+                  onRefresh={this.handleRefresh}
+                />
+              </View>)
+            : (
+              <View style={styles.postMessage}>
+                <Text style={styles.postsDescription}>
+                  There are currently no portals.{'\n'}Try opening one!
+                </Text>
+              </View>)}
         </SafeAreaView>
       )
     }
 }
+
+const styles = StyleSheet.create({
+  postMessage: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '50%'
+  },
+  postsDescription: {
+    fontSize: 18,
+    color: 'darkslategrey',
+    width: '90%'
+  }
+})
