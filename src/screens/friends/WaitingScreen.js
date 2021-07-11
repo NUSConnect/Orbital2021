@@ -54,11 +54,10 @@ export default function WaitingScreen ({ navigation, route, goBack }) {
         iterationCount='infinite'
         style={styles.find}
       >
-        Finding you a group...️
+        Finding you a friend...️
       </Animatable.Text>
       <Text style={styles.text}>
-        {'     '}{size} {size <= 1 ? 'person' : 'people'} in queue...
-        {'\nFeel free to go, I\'ll stay :)'}
+        {'Feel free to go, we\'ll inform you when your friend is found :)'}
       </Text>
       <Button
         style={styles.stop}

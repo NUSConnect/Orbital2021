@@ -4,6 +4,7 @@ import { Alert, Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'rea
 import { MaterialCommunityIcons } from 'react-native-vector-icons'
 import { createGroupChat } from '../../api/matching'
 import { sendPushNotification } from '../../api/notifications'
+import * as Haptics from 'expo-haptics'
 
 const DeviceWidth = Dimensions.get('window').width
 const squareSide = 0.38 * DeviceWidth
@@ -57,6 +58,7 @@ export default function FindGroupScreen ({ navigation }) {
             )
           })
       })
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
   }
 
   //  const stopFinding = async (userId) => {
@@ -196,7 +198,7 @@ export default function FindGroupScreen ({ navigation }) {
           const loggedInListener = firebase.auth().onAuthStateChanged(user => {
             if (user) {
               navigation.navigate('FindGroupScreen')
-              Alert.alert('Group found!')
+              Alert.alert('Friend found!', 'Congratulations! Find your new friend on your profile page, under Matches.')
               loggedInListener()
             }
           })

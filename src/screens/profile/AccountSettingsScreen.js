@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
   buttonwrap: {
     backgroundColor: '#FFFFFF',
     height: 500,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
