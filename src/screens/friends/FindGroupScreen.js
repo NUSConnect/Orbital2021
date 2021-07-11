@@ -267,7 +267,7 @@ export default function FindGroupScreen ({ navigation }) {
   }
   return (
     <View style={styles.center}>
-      <Text style={styles.header}> Choose a category </Text>
+      <Text style={styles.header}> Find a friend! </Text>
       <View
         style={{
           flexDirection: 'row'
