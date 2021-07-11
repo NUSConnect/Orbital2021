@@ -16,7 +16,22 @@ const MatchCard = ({ item, onPress }) => {
   const [groupImage, setGroupImage] = useState('')
   const [groupDescription, setGroupDescription] = useState('')
   const [groupMembers, setGroupMembers] = useState([])
+  const [category, setCategory] = useState('')
   const navigation = useNavigation()
+
+  const getCategory = async () => {
+    if (item.groupChatThread !== undefined) {
+      await setCategory('Match Me!')
+    } else if (item.id.substring(0, 6) === 'Sports') {
+      await setCategory('Sports')
+    } else if (item.id.substring(0, 5) === 'Study') {
+      await setCategory('Study')
+    } else if (item.id.substring(0, 5) === 'Music') {
+      await setCategory('Music')
+    } else if (item.id.substring(0, 7) === 'For Fun') {
+      await setCategory('For Fun')
+    }
+  }
 
   const getOtherName = async () => {
     if (item.isGroup || item.isGroup === undefined) {
@@ -81,6 +96,7 @@ const MatchCard = ({ item, onPress }) => {
       getOtherGroup()
     }
     getOtherName()
+    getCategory()
   }, [])
 
   return (
@@ -90,8 +106,8 @@ const MatchCard = ({ item, onPress }) => {
           <Text style={styles.title}>{item.success ? 'Success!' : 'Sorry!'}</Text>
           {item.success
             ? item.isGroup
-                ? <Text style={styles.info}>Match successfully completed on {item.timeMatched.toDate().toDateString()}! Tap here to chat with your new group!</Text>
-                : <Text style={styles.info}>Match successfully completed on {item.timeMatched.toDate().toDateString()}! Tap here to check out {otherName}{'\'s profile!'}</Text>
+                ? <Text style={styles.info}>{category} successfully completed on {item.timeMatched.toDate().toDateString()}! Tap here to chat with your new group!</Text>
+                : <Text style={styles.info}>{category} match successfully completed on {item.timeMatched.toDate().toDateString()}! Tap here to check out {otherName}{'\'s profile!'}</Text>
             : <Text style={styles.info}>Match failed, better luck next time!</Text>}
         </Card>
       </TouchableOpacity>

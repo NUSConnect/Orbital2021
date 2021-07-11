@@ -71,7 +71,8 @@ exports[`renders correctly 1`] = `
           }
         }
       >
-        Match successfully completed on 
+        
+         successfully completed on 
         Tue Jun 15 2021
         ! Tap here to chat with your new group!
       </Text>
