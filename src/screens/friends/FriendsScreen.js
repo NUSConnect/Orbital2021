@@ -71,7 +71,7 @@ function FriendsTabs () {
         component={MajorStack}
       />
       <TopTab.Screen
-        name='Find A Group'
+        name='Match Me!'
         component={GroupStack}
       />
     </TopTab.Navigator>
