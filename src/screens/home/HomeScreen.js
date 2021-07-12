@@ -13,6 +13,7 @@ import ChatScreen from './ChatScreen'
 import CommentScreen from './CommentScreen'
 import EditCommentScreen from './EditCommentScreen'
 import EditGroupScreen from './EditGroupScreen'
+import EditGroupMembersScreen from './EditGroupMembersScreen'
 import EditPostScreen from './EditPostScreen'
 import GroupCreationScreen from './GroupCreationScreen'
 import GroupInfoScreen from './GroupInfoScreen'
@@ -49,6 +50,7 @@ const HomeScreen = ({ navigation }) => {
         <Stack.Screen name='InitGroupChatScreen' component={InitGroupChatScreen} />
         <Stack.Screen name='GroupInfoScreen' component={GroupInfoScreen} />
         <Stack.Screen name='EditGroupScreen' component={EditGroupScreen} />
+        <Stack.Screen name='EditGroupMembersScreen' component={EditGroupMembersScreen} />
         <Stack.Screen name='ReportPostScreen' component={ReportPostScreen} />
         <Stack.Screen name='ReportCommentScreen' component={ReportCommentScreen} />
       </Stack.Navigator>
