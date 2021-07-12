@@ -138,18 +138,30 @@ export default function FollowingScreen ({ props, navigation, route }) {
             {currentUserId === userId ? 'Your' : username + "'s"} Following
           </Text>
         </View>
-        <SearchBar
-          search={search}
-          setSearch={setSearch}
-          searchFilterFunction={searchFilterFunction}
-          resetFilter={() => setFilteredDataSource(masterDataSource)}
-        />
-        <FlatList
-          data={filtered ? filteredDataSource : masterDataSource}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={ItemSeparatorView}
-          renderItem={ItemView}
-        />
+        {masterDataSource.length !== 0
+          ? (
+            <View>
+              <SearchBar
+                search={search}
+                setSearch={setSearch}
+                searchFilterFunction={searchFilterFunction}
+                resetFilter={() => setFilteredDataSource(masterDataSource)}
+              />
+              <FlatList
+                data={filtered ? filteredDataSource : masterDataSource}
+                keyExtractor={(item, index) => index.toString()}
+                ItemSeparatorComponent={ItemSeparatorView}
+                renderItem={ItemView}
+              />
+            </View>
+            )
+          : (
+            <View style={styles.postMessage}>
+              <Text style={styles.postsDescription}>
+                You're not following anyone.{'\n'}Go follow someone!
+              </Text>
+            </View>
+            )}
       </View>
     </SafeAreaView>
   )
@@ -175,5 +187,15 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     marginRight: 8,
     color: 'black'
+  },
+  postMessage: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '50%'
+  },
+  postsDescription: {
+    fontSize: 18,
+    color: 'darkslategrey',
+    width: '90%'
   }
 })
