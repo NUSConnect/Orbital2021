@@ -28,11 +28,6 @@ export default function FindGroupScreen ({ navigation }) {
     return () => subscriber()
   }, [])
 
-  function getDifferenceInHours (date1, date2) {
-    const diffInMs = Math.abs(date2 - date1)
-    return diffInMs / (1000 * 60 * 60)
-  }
-
   const addToCategory = async (category) => {
     // add uid to corresponding category
     await firebase
@@ -176,9 +171,6 @@ export default function FindGroupScreen ({ navigation }) {
 
   const calculateGroup = async (category) => {
     let count
-    let lastJoinedAt
-    console.log('Logged at ' + new Date())
-    await firebase.firestore().collection('categories').doc(category).get().then(doc => { lastJoinedAt = doc.data().lastJoinedAt })
 
     const unsubscribe = firebase
       .firestore()
@@ -190,7 +182,7 @@ export default function FindGroupScreen ({ navigation }) {
         if (count === 0) {
           navigation.navigate('FindGroupScreen')
           unsubscribe()
-        } else if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 6) {
+        } else if (count >= groupThreshold) {
           // hit threshold, handle logic to form a group. currently only an alert.
 
           const successfulFinding = count >= groupThreshold
