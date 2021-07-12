@@ -4,6 +4,7 @@ import { Alert, Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'rea
 import { MaterialCommunityIcons } from 'react-native-vector-icons'
 import { createGroupChat } from '../../api/matching'
 import { sendPushNotification } from '../../api/notifications'
+import * as Haptics from 'expo-haptics'
 
 const DeviceWidth = Dimensions.get('window').width
 const squareSide = 0.38 * DeviceWidth
@@ -26,11 +27,6 @@ export default function FindGroupScreen ({ navigation }) {
 
     return () => subscriber()
   }, [])
-
-  function getDifferenceInHours (date1, date2) {
-    const diffInMs = Math.abs(date2 - date1)
-    return diffInMs / (1000 * 60 * 60)
-  }
 
   const addToCategory = async (category) => {
     // add uid to corresponding category
@@ -57,6 +53,7 @@ export default function FindGroupScreen ({ navigation }) {
             )
           })
       })
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
   }
 
   //  const stopFinding = async (userId) => {
@@ -174,9 +171,6 @@ export default function FindGroupScreen ({ navigation }) {
 
   const calculateGroup = async (category) => {
     let count
-    let lastJoinedAt
-    console.log('Logged at ' + new Date())
-    await firebase.firestore().collection('categories').doc(category).get().then(doc => { lastJoinedAt = doc.data().lastJoinedAt })
 
     const unsubscribe = firebase
       .firestore()
@@ -188,7 +182,7 @@ export default function FindGroupScreen ({ navigation }) {
         if (count === 0) {
           navigation.navigate('FindGroupScreen')
           unsubscribe()
-        } else if (count >= groupThreshold || getDifferenceInHours(new Date(), lastJoinedAt.toDate()) >= 6) {
+        } else if (count >= groupThreshold) {
           // hit threshold, handle logic to form a group. currently only an alert.
 
           const successfulFinding = count >= groupThreshold
@@ -196,7 +190,7 @@ export default function FindGroupScreen ({ navigation }) {
           const loggedInListener = firebase.auth().onAuthStateChanged(user => {
             if (user) {
               navigation.navigate('FindGroupScreen')
-              Alert.alert('Group found!')
+              Alert.alert('Friend found!', 'Congratulations! Find your new friend on your profile page, under Matches.')
               loggedInListener()
             }
           })
@@ -267,7 +261,7 @@ export default function FindGroupScreen ({ navigation }) {
   }
   return (
     <View style={styles.center}>
-      <Text style={styles.header}> Choose a category </Text>
+      <Text style={styles.header}> Find a friend! </Text>
       <View
         style={{
           flexDirection: 'row'

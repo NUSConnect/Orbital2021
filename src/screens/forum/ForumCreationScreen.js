@@ -53,8 +53,8 @@ export default class ForumCreationScreen extends React.Component {
 
     submitPost = async (goBack) => {
       Alert.alert(
-        'Submit request to open portal',
-        'Are you sure?',
+        'Open portal',
+        'Are you sure all the information has been correctly entered?',
         [
           {
             text: 'Cancel',
@@ -91,7 +91,7 @@ export default class ForumCreationScreen extends React.Component {
 
           Alert.alert(
             'Portal opened!',
-            'The portal has successfully opened! It will be reviewed by the moderators shortly',
+            'The portal has successfully opened. Make your first post!',
             [
               {
                 text: 'OK',
@@ -237,7 +237,7 @@ export default class ForumCreationScreen extends React.Component {
                       )
                     }
                   }}
-                  string='Create'
+                  string='Open'
                 />
               </View>
               )}

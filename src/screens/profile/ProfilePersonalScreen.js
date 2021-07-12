@@ -7,11 +7,18 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Linking,
+  PixelRatio
 } from 'react-native'
 import { logoutUser } from '../../api/auth'
 import Button from '../../components/Button'
 import { theme } from '../../core/theme'
+
+const nameSize = PixelRatio.get() <= 1.5 ? 16 : 22
+const userInfoSize = PixelRatio.get() <= 1.5 ? 14 : 16
+const followSize = PixelRatio.get() <= 1.5 ? 14 : 20
+const avatarSize = PixelRatio.get() <= 1.5 ? 110 : 150
 
 export default class ProfilePersonalScreen extends React.Component {
     state = {
@@ -34,6 +41,11 @@ export default class ProfilePersonalScreen extends React.Component {
     static navigationOptions = {
       header: null
     };
+
+    handleLoadInBrowser = () => {
+      Linking.openURL('https://docs.google.com/document/d/1iCbU7dv6kQtr8h0xFe01NmVnVUM1NtYrTSJWbmPHA-I/edit')
+        .catch(err => console.error("Couldn't load page", err))
+    }
 
     handleChooseImagePress = async () => {
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -208,16 +220,9 @@ export default class ProfilePersonalScreen extends React.Component {
               <Button
                 style={styles.accountset}
                 onPress={() =>
-                  this.props.navigation.navigate('AddBioScreen')}
+                  this.props.navigation.navigate('SetupAccountScreen')}
               >
-                Update Bio
-              </Button>
-              <Button
-                style={styles.accountset}
-                onPress={() =>
-                  this.props.navigation.navigate('AddFacultyScreen')}
-              >
-                Add your major
+                Setup Account
               </Button>
               <Button
                 style={styles.accountset}
@@ -228,7 +233,7 @@ export default class ProfilePersonalScreen extends React.Component {
               {this.state.superAdmin
                 ? (
                   <Button
-                    style={styles.button}
+                    style={styles.accountset}
                     color='darkorange'
                     onPress={() => this.props.navigation.navigate('SuperAdminScreen')}
                   >
@@ -238,7 +243,7 @@ export default class ProfilePersonalScreen extends React.Component {
                 : this.state.forumAdmin
                   ? (
                     <Button
-                      style={styles.button}
+                      style={styles.accountset}
                       color='darkorange'
                       onPress={() => this.props.navigation.navigate('ForumAdminViewReportScreen')}
                     >
@@ -246,6 +251,12 @@ export default class ProfilePersonalScreen extends React.Component {
                     </Button>
                     )
                   : (null)}
+              <Button
+                style={styles.accountset}
+                onPress={this.handleLoadInBrowser}
+              >
+                User Guide
+              </Button>
               <Button
                 style={styles.button}
                 color='#de1738'
@@ -273,20 +284,20 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   avatar: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
+    width: avatarSize,
+    height: avatarSize,
+    borderRadius: avatarSize / 2,
     borderWidth: 4,
     borderColor: 'white',
     marginBottom: 10
   },
   name: {
-    fontSize: 22,
+    fontSize: nameSize,
     color: '#000000',
     fontWeight: '600'
   },
   userInfo: {
-    fontSize: 16,
+    fontSize: userInfoSize,
     color: '#778899',
     fontWeight: '600'
   },
@@ -334,7 +345,7 @@ const styles = StyleSheet.create({
     paddingLeft: 25
   },
   followWord: {
-    fontSize: 20,
+    fontSize: followSize,
     color: '#000000',
     fontWeight: '600'
   },

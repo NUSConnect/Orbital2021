@@ -301,44 +301,54 @@ export default function MessagesScreen ({ navigation }) {
         }}
         onPress={() => navigation.navigate('StartMessagesScreen')}
       />
-      <SearchBar
-        search={search}
-        setSearch={setSearch}
-        searchFilterFunction={searchFilterFunction}
-        resetFilter={() => setFilteredDataSource(threads)}
-      />
-      <FlatList
-        data={filtered ? filteredDataSource : threads}
-        keyExtractor={(item) => item.id}
-        ItemSeparatorComponent={() => <Divider />}
-        renderItem={({ item }) => (
-          <Swipeable renderRightActions={rightSwipe(item)}>
-            <Card
-              onPress={() =>
-                navigation.navigate('ChatScreen', {
-                  thread: item
-                })}
-            >
-              <UserInfo>
-                <UserImgWrapper>
-                  <UserImg source={{ uri: item.avatar }} />
-                </UserImgWrapper>
-                <TextSection>
-                  <UserInfoText>
-                    <UserName>{item.name}</UserName>
-                    <PostTime>
-                      {moment(item.latest).fromNow()}
-                    </PostTime>
-                  </UserInfoText>
-                  <Text style={styles.text}>
-                    {item.message}
-                  </Text>
-                </TextSection>
-              </UserInfo>
-            </Card>
-          </Swipeable>
-        )}
-      />
+      {threads.length !== 0
+        ? (
+          <View style={{ flex: 1 }}>
+            <SearchBar
+              search={search}
+              setSearch={setSearch}
+              searchFilterFunction={searchFilterFunction}
+              resetFilter={() => setFilteredDataSource(threads)}
+            />
+            <FlatList
+              data={filtered ? filteredDataSource : threads}
+              keyExtractor={(item) => item.id}
+              ItemSeparatorComponent={() => <Divider />}
+              renderItem={({ item }) => (
+                <Swipeable renderRightActions={rightSwipe(item)}>
+                  <Card
+                    onPress={() =>
+                      navigation.navigate('ChatScreen', {
+                        thread: item
+                      })}
+                  >
+                    <UserInfo>
+                      <UserImgWrapper>
+                        <UserImg source={{ uri: item.avatar }} />
+                      </UserImgWrapper>
+                      <TextSection>
+                        <UserInfoText>
+                          <UserName>{item.name}</UserName>
+                          <PostTime>
+                            {moment(item.latest).fromNow()}
+                          </PostTime>
+                        </UserInfoText>
+                        <Text style={styles.text}>
+                          {item.message}
+                        </Text>
+                      </TextSection>
+                    </UserInfo>
+                  </Card>
+                </Swipeable>
+              )}
+            />
+          </View>)
+        : (
+          <View style={styles.postMessage}>
+            <Text style={styles.postsDescription}>
+              You have no open chats!{'\n'}Try messaging someone.
+            </Text>
+          </View>)}
     </View>
   )
 }
@@ -371,5 +381,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 100,
     height: 80
+  },
+  postMessage: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '50%'
+  },
+  postsDescription: {
+    fontSize: 18,
+    color: 'darkslategrey',
+    width: '90%'
   }
 })
