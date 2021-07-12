@@ -49,7 +49,7 @@ export default class ForumOthersScreen extends React.Component {
           </Text>
           <Text style={styles.createForum}>
             1. Check for duplicates before creation. If the portal you want to open is very similar to existing ones,
-            consider applying to be a portal moderator instead.
+            try messaging an existing portal admin for admin status.
           </Text>
           <Text style={styles.createForum}>
             2. Avoid using inappropriate names or images when trying to open a new portal.
