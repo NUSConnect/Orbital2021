@@ -31,6 +31,12 @@ export default class HomePostsScreen extends React.Component {
         { key: 1, label: 'Latest' },
         { key: 2, label: 'Trending' }
       ],
+      filteredBy: null,
+      filterOptions: [
+        { key: 0, section: true, label: 'Filter by:' },
+        { key: 1, label: 'Posts' },
+        { key: 2, label: 'News' }
+      ],
       haveNewMessage: false
     }
   }
@@ -66,10 +72,11 @@ export default class HomePostsScreen extends React.Component {
         .then((documentSnapshot) => {
           if (documentSnapshot.data().preferredSorting != null) {
             this.setState({
-              sortedBy: documentSnapshot.data().preferredSorting
+              sortedBy: documentSnapshot.data().preferredSorting,
+              filteredBy: documentSnapshot.data().preferredFilter
             })
           } else {
-            this.setState({ sortedBy: 'Latest' })
+            this.setState({ sortedBy: 'Latest', filteredBy: 'Posts' })
           }
         })
     };
@@ -77,18 +84,37 @@ export default class HomePostsScreen extends React.Component {
     fetchPosts = async () => {
       try {
         const following = []
-        await firebase
-          .firestore()
-          .collection('users')
-          .doc(this.state.currentUserId)
-          .collection('following')
-          .get()
-          .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              following.push(doc.id)
+        if (this.state.filteredBy === null) {
+          await this.getUser()
+          console.log(this.state.filteredBy)
+          await this.fetchPosts()
+        }
+        if (this.state.filteredBy === 'Posts') {
+          await firebase
+            .firestore()
+            .collection('users')
+            .doc(this.state.currentUserId)
+            .collection('following')
+            .get()
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                following.push(doc.id)
+              })
             })
-          })
-
+        }
+        if (this.state.filteredBy === 'News') {
+          await firebase
+            .firestore()
+            .collection('users')
+            .get()
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                if (doc.data().news) {
+                  following.push(doc.id)
+                }
+              })
+            })
+        }
         // console.log("Following: ", following);
         const list = []
         this.setState({ refreshing: true })
@@ -160,6 +186,18 @@ export default class HomePostsScreen extends React.Component {
         .doc(this.state.currentUserId)
         .update({
           preferredSorting: sorter
+        })
+      this.fetchPosts()
+    };
+
+    changeFilter = async (filter) => {
+      this.setState({ filteredBy: filter })
+      await firebase
+        .firestore()
+        .collection('users')
+        .doc(this.state.currentUserId)
+        .update({
+          preferredFilter: filter
         })
       this.fetchPosts()
     };
@@ -305,7 +343,7 @@ export default class HomePostsScreen extends React.Component {
     render () {
       const { navigation } = this.props
       return (
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
           {!this.state.haveNewMessage
             ? (
               <HomeTopTab
@@ -327,41 +365,79 @@ export default class HomePostsScreen extends React.Component {
             ? (<FlatList
                 data={this.state.data}
                 ListHeaderComponent={
-                  <View style={styles.sortBar}>
-                    <MaterialCommunityIcons
-                      name='sort'
-                      color='blue'
-                      size={26}
-                    />
-                    <Text style={styles.text}>{'Sorted by: '}</Text>
-                    <ModalSelector
-                      data={this.state.sortingOptions}
-                      initValue={this.state.sortedBy}
-                      onChange={(option) =>
-                        this.changeSorting(option.label)}
-                      animationType='fade'
-                      backdropPressToClose
-                      overlayStyle={{
-                        flex: 1,
-                        padding: '5%',
-                        justifyContent: 'center',
-                        backgroundColor: 'rgba(0,0,0,0.9)'
-                      }}
-                      sectionTextStyle={{ fontSize: 20 }}
-                      cancelTextStyle={{
-                        color: 'crimson',
-                        fontSize: 20
-                      }}
-                      cancelText='Cancel'
-                      optionTextStyle={{ fontSize: 20 }}
-                    >
-                      <TextInput
-                        style={styles.pickerText}
-                        editable={false}
-                        placeholder={this.state.sortedBy}
-                        value={this.state.sortedBy}
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={styles.sortBar}>
+                      <MaterialCommunityIcons
+                        name='sort'
+                        color='blue'
+                        size={26}
                       />
-                    </ModalSelector>
+                      <Text style={styles.text}>{'Sorted by: '}</Text>
+                      <ModalSelector
+                        data={this.state.sortingOptions}
+                        initValue={this.state.sortedBy}
+                        onChange={(option) =>
+                          this.changeSorting(option.label)}
+                        animationType='fade'
+                        backdropPressToClose
+                        overlayStyle={{
+                          flex: 1,
+                          padding: '5%',
+                          justifyContent: 'center',
+                          backgroundColor: 'rgba(0,0,0,0.9)'
+                        }}
+                        sectionTextStyle={{ fontSize: 20 }}
+                        cancelTextStyle={{
+                          color: 'crimson',
+                          fontSize: 20
+                        }}
+                        cancelText='Cancel'
+                        optionTextStyle={{ fontSize: 20 }}
+                      >
+                        <TextInput
+                          style={styles.pickerText}
+                          editable={false}
+                          placeholder={this.state.sortedBy}
+                          value={this.state.sortedBy}
+                        />
+                      </ModalSelector>
+                    </View>
+                    <View style={styles.sortBar}>
+                      <ModalSelector
+                        data={this.state.filterOptions}
+                        initValue={this.state.filteredBy}
+                        onChange={(option) =>
+                          this.changeFilter(option.label)}
+                        animationType='fade'
+                        backdropPressToClose
+                        overlayStyle={{
+                          flex: 1,
+                          padding: '5%',
+                          justifyContent: 'center',
+                          backgroundColor: 'rgba(0,0,0,0.9)'
+                        }}
+                        sectionTextStyle={{ fontSize: 20 }}
+                        cancelTextStyle={{
+                          color: 'crimson',
+                          fontSize: 20
+                        }}
+                        cancelText='Cancel'
+                        optionTextStyle={{ fontSize: 20 }}
+                      >
+                        <TextInput
+                          style={styles.pickerText}
+                          editable={false}
+                          placeholder={this.state.filteredBy}
+                          value={this.state.filteredBy}
+                        />
+                      </ModalSelector>
+                      <Text style={styles.text}>{' :Filter'}</Text>
+                      <MaterialCommunityIcons
+                        name='filter'
+                        color='blue'
+                        size={26}
+                      />
+                    </View>
                   </View>
                     }
                 ListHeaderComponentStyle={styles.headerComponentStyle}
