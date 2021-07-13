@@ -345,18 +345,17 @@ const UnrestrictedViewProfileScreen = ({ navigation, route, onPress }) => {
           <Text style={styles.name}>
             {userData ? userData.name : 'Anonymous User'}{' '}
           </Text>
-          { !isNewsAccount
+          {!isNewsAccount
             ? (
               <Text style={styles.userInfo}>
                 Major: {majorData || 'Undeclared'}{' '}
               </Text>
               )
-            : null
-          }
+            : null}
           <Text style={styles.userInfo}>
             {userData ? userData.bio : '.'}
           </Text>
-          { !isNewsAccount
+          {!isNewsAccount
             ? (
               <View style={styles.following}>
                 <Text style={styles.followerInfo} onPress={() => navigation.push('FollowersScreen', { userId: itemId, username: name })}>
@@ -367,11 +366,10 @@ const UnrestrictedViewProfileScreen = ({ navigation, route, onPress }) => {
                 </Text>
               </View>
               )
-            : null
-          }
+            : null}
         </View>
       </View>
-      { !isNewsAccount && currentUserId !== itemId
+      {!isNewsAccount && currentUserId !== itemId
         ? (
           <View style={styles.buttonContainer}>
             <TouchableOpacity
@@ -400,8 +398,7 @@ const UnrestrictedViewProfileScreen = ({ navigation, route, onPress }) => {
             </TouchableOpacity>
           </View>
           )
-        : null
-      }
+        : null}
       {posts.length !== 0
         ? (
           <FlatList
