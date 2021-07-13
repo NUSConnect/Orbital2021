@@ -181,7 +181,7 @@ export default class ForumCreationScreen extends React.Component {
           </TouchableOpacity>
           <View style={{ marginBottom: -15 }}>
             <Button
-              onPress={() => this.setState({ image: 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/forum%2FWELCOME.png?alt=media&token=eb0f815b-0e18-4eca-b5a6-0cc170b0eb51'})}
+              onPress={() => this.setState({ image: 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/forum%2FWELCOME.png?alt=media&token=eb0f815b-0e18-4eca-b5a6-0cc170b0eb51' })}
             >
               Default Portal Image
             </Button>
