@@ -35,7 +35,8 @@ export default class HomePostsScreen extends React.Component {
       filterOptions: [
         { key: 0, section: true, label: 'Filter by:' },
         { key: 1, label: 'Posts' },
-        { key: 2, label: 'News' }
+        { key: 2, label: 'News' },
+        { key: 2, label: 'Everything' }
       ],
       haveNewMessage: false
     }
@@ -88,6 +89,30 @@ export default class HomePostsScreen extends React.Component {
           await this.getUser()
           console.log(this.state.filteredBy)
           await this.fetchPosts()
+        }
+        if (this.state.filteredBy === 'Everything') {
+          await firebase
+            .firestore()
+            .collection('users')
+            .doc(this.state.currentUserId)
+            .collection('following')
+            .get()
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                following.push(doc.id)
+              })
+            })
+          await firebase
+            .firestore()
+            .collection('users')
+            .get()
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                if (doc.data().news) {
+                  following.push(doc.id)
+                }
+              })
+            })
         }
         if (this.state.filteredBy === 'Posts') {
           await firebase
@@ -343,7 +368,7 @@ export default class HomePostsScreen extends React.Component {
     render () {
       const { navigation } = this.props
       return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView>
           {!this.state.haveNewMessage
             ? (
               <HomeTopTab
