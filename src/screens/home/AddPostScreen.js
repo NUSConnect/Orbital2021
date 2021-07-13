@@ -16,6 +16,7 @@ import ActionButton from 'react-native-action-button'
 import Icon from 'react-native-vector-icons/Ionicons'
 import CancelButton from '../../components/CancelButton'
 import SubmitButton from '../../components/SubmitButton'
+import Button from '../../components/Button'
 import { textChecker } from '../../api/textChecker'
 
 // Action button fix
@@ -211,11 +212,21 @@ export default class AddPostScreen extends React.Component {
 
               {this.state.image != null
                 ? (
-                  <Image
-                    style={styles.image}
-                    source={{ uri: this.state.image }}
-                    resizeMode='contain'
-                  />
+                  <>
+                    <Image
+                      style={styles.image}
+                      source={{ uri: this.state.image }}
+                      resizeMode='contain'
+                    />
+                    <View>
+                      <Button
+                        color='#de1738'
+                        onPress={() => this.setState({ image: null })}
+                      >
+                        Remove Image
+                      </Button>
+                    </View>
+                  </>
                   )
                 : null}
 
@@ -320,8 +331,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '40%',
-    marginBottom: 15
+    height: '40%'
   },
   input: {
     flex: 0,
