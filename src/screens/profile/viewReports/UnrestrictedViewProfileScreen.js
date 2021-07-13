@@ -30,6 +30,7 @@ const UnrestrictedViewProfileScreen = ({ navigation, route, onPress }) => {
   const [name, setName] = useState(null)
   const [userData, setUserData] = useState(null)
   const [isPrivate, setIsPrivate] = useState(false)
+  const [isNewsAccount, setIsNewsAccount] = useState(false)
   const [posts, setPosts] = useState([])
   const [following, setFollowing] = useState(false)
   const [requested, setRequested] = useState(false)
@@ -56,6 +57,9 @@ const UnrestrictedViewProfileScreen = ({ navigation, route, onPress }) => {
           setImages([{ url: documentSnapshot.data().userImg, props: {} }])
           if (documentSnapshot.data().isPrivate !== null) {
             setIsPrivate(documentSnapshot.data().isPrivate)
+          }
+          if (documentSnapshot.data().news !== null) {
+            setIsNewsAccount(documentSnapshot.data().news)
           }
         }
       })
@@ -238,7 +242,7 @@ const UnrestrictedViewProfileScreen = ({ navigation, route, onPress }) => {
     }
   }
 
-  const handlePostsReport = (postId) => {
+  const handlePostsReport = (postId, userId) => {
     Alert.alert(
       'Report Post',
       'Are you sure?',
@@ -251,7 +255,7 @@ const UnrestrictedViewProfileScreen = ({ navigation, route, onPress }) => {
         {
           text: 'Confirm',
           onPress: () =>
-            navigation.navigate('ReportPostScreen', { postId: postId })
+            navigation.navigate('ReportPostScreen', { postId: postId, userId: userId })
         }
       ],
       { cancelable: false }
@@ -341,48 +345,63 @@ const UnrestrictedViewProfileScreen = ({ navigation, route, onPress }) => {
           <Text style={styles.name}>
             {userData ? userData.name : 'Anonymous User'}{' '}
           </Text>
-          <Text style={styles.userInfo}>
-            Major: {majorData || 'Undeclared'}{' '}
-          </Text>
+          { !isNewsAccount
+            ? (
+              <Text style={styles.userInfo}>
+                Major: {majorData || 'Undeclared'}{' '}
+              </Text>
+              )
+            : null
+          }
           <Text style={styles.userInfo}>
             {userData ? userData.bio : '.'}
           </Text>
-          <View style={styles.following}>
-            <Text style={styles.followerInfo} onPress={() => navigation.push('FollowersScreen', { userId: itemId, username: name })}>
-              {followers} {followers === 1 ? 'Follower' : 'Followers'}
-            </Text>
-            <Text style={styles.followingInfo} onPress={() => navigation.push('FollowingScreen', { userId: itemId, username: name })}>
-              {followingPeople} Following
-            </Text>
-          </View>
+          { !isNewsAccount
+            ? (
+              <View style={styles.following}>
+                <Text style={styles.followerInfo} onPress={() => navigation.push('FollowersScreen', { userId: itemId, username: name })}>
+                  {followers} {followers === 1 ? 'Follower' : 'Followers'}
+                </Text>
+                <Text style={styles.followingInfo} onPress={() => navigation.push('FollowingScreen', { userId: itemId, username: name })}>
+                  {followingPeople} Following
+                </Text>
+              </View>
+              )
+            : null
+          }
         </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={follow}
-        >
-          <Text style={styles.text}>
-            {following ? 'Unfollow' : requested ? 'Requested' : 'Follow'}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={message}
-        >
-          <Text style={styles.text}>Message</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.smallButton}
-          onPress={profileReport}
-        >
-          <MaterialIcons
-            name='report'
-            size={20}
-            color='white'
-          />
-        </TouchableOpacity>
-      </View>
+      { !isNewsAccount && currentUserId !== itemId
+        ? (
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={follow}
+            >
+              <Text style={styles.text}>
+                {following ? 'Unfollow' : requested ? 'Requested' : 'Follow'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={message}
+            >
+              <Text style={styles.text}>Message</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.smallButton}
+              onPress={profileReport}
+            >
+              <MaterialIcons
+                name='report'
+                size={20}
+                color='white'
+              />
+            </TouchableOpacity>
+          </View>
+          )
+        : null
+      }
       {posts.length !== 0
         ? (
           <FlatList
