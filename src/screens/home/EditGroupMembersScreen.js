@@ -54,11 +54,13 @@ export default function EditGroupMembersScreen ({ props, route, navigation }) {
         querySnapshot.forEach((doc) => {
           if (doc.id !== currentUserId && !doc.data().news) {
             const { name, userImg, bio } = doc.data()
+            const avatar = userImg || 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=52e7df63-abdf-4197-9ad3-79d4be61af10'
+
             const selected = memberIds[doc.id]
             list.push({
               id: doc.id,
               name: name,
-              img: userImg,
+              img: avatar,
               bio: bio,
               isSelected: selected
             })
