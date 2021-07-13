@@ -2,6 +2,7 @@ import * as firebase from 'firebase'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import {
+  ActivityIndicator,
   Alert,
   Animated,
   FlatList,
@@ -27,6 +28,7 @@ import {
 
 export default function MessagesScreen ({ navigation }) {
   const currentUserId = firebase.auth().currentUser.uid
+  const [loading, setLoading] = useState(true)
   const [threads, setThreads] = useState([])
   const [filteredDataSource, setFilteredDataSource] = useState([])
   const [search, setSearch] = useState('')
@@ -134,7 +136,6 @@ export default function MessagesScreen ({ navigation }) {
   }
 
   const matchUserToThreads = async (threads) => {
-    // console.log('Matching Threads:', threads);
     for (let k = 0; k < threads.length; k++) {
       const threadId = threads[k].id
 
@@ -191,8 +192,8 @@ export default function MessagesScreen ({ navigation }) {
     threads.sort((x, y) => {
       return y.latest - x.latest
     })
+    setLoading(false)
     setThreads(threads)
-    //        console.log("Threads: ", threads);
   }
 
   const reopenThread = (id) => {
@@ -214,7 +215,6 @@ export default function MessagesScreen ({ navigation }) {
 
   const checkIfNewMessage = async (deletedThreads, openThreads) => {
     // Reopen chat if new message received
-    // console.log('Deleted Threads', deletedThreads)
     const reopenedThreads = []
 
     for (let i = 0; i < deletedThreads.length; i++) {
@@ -232,7 +232,6 @@ export default function MessagesScreen ({ navigation }) {
           }
         })
     }
-    // console.log(reopenedThreads);
     const allOpenThreads = reopenedThreads.concat(openThreads)
     matchUserToThreads(allOpenThreads)
   }
@@ -301,7 +300,7 @@ export default function MessagesScreen ({ navigation }) {
         }}
         onPress={() => navigation.navigate('StartMessagesScreen')}
       />
-      {threads.length !== 0
+      {threads.length !== 0 && !loading
         ? (
           <View style={{ flex: 1 }}>
             <SearchBar
@@ -343,12 +342,18 @@ export default function MessagesScreen ({ navigation }) {
               )}
             />
           </View>)
-        : (
-          <View style={styles.postMessage}>
-            <Text style={styles.postsDescription}>
-              You have no open chats!{'\n'}Try messaging someone.
-            </Text>
-          </View>)}
+        : loading
+          ? (
+            <View style={styles.postMessage}>
+              <ActivityIndicator size='large' color='#0000ff' />
+            </View>
+            )
+          : (
+            <View style={styles.postMessage}>
+              <Text style={styles.postsDescription}>
+                You have no open chats!{'\n'}Try messaging someone.
+              </Text>
+            </View>)}
     </View>
   )
 }

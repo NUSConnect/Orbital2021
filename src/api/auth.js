@@ -169,6 +169,42 @@ export const deleteUser = () => {
               .firestore()
               .collection('users')
               .doc(currentUserId)
+              .collection('followers')
+              .get()
+              .then(querySnapshot => {
+                querySnapshot.forEach(documentSnapshot => {
+                  firebase
+                    .firestore()
+                    .collection('users')
+                    .doc(documentSnapshot.id)
+                    .collection('following')
+                    .doc(currentUserId)
+                    .delete()
+                })
+              })
+            firebase
+              .firestore()
+              .collection('users')
+              .doc(currentUserId)
+              .collection('following')
+              .get()
+              .then(querySnapshot => {
+                querySnapshot.forEach(documentSnapshot => {
+                  if (documentSnapshot.id !== currentUserId) {
+                    firebase
+                      .firestore()
+                      .collection('users')
+                      .doc(documentSnapshot.id)
+                      .collection('followers')
+                      .doc(currentUserId)
+                      .delete()
+                  }
+                })
+              })
+            firebase
+              .firestore()
+              .collection('users')
+              .doc(currentUserId)
               .delete()
             firebase.auth().currentUser.delete()
             Alert.alert(
@@ -193,6 +229,42 @@ export const deleteUser = () => {
         {
           text: 'Delete',
           onPress: () => {
+            firebase
+              .firestore()
+              .collection('users')
+              .doc(currentUserId)
+              .collection('followers')
+              .get()
+              .then(querySnapshot => {
+                querySnapshot.forEach(documentSnapshot => {
+                  firebase
+                    .firestore()
+                    .collection('users')
+                    .doc(documentSnapshot.id)
+                    .collection('following')
+                    .doc(currentUserId)
+                    .delete()
+                })
+              })
+            firebase
+              .firestore()
+              .collection('users')
+              .doc(currentUserId)
+              .collection('following')
+              .get()
+              .then(querySnapshot => {
+                querySnapshot.forEach(documentSnapshot => {
+                  if (documentSnapshot.id !== currentUserId) {
+                    firebase
+                      .firestore()
+                      .collection('users')
+                      .doc(documentSnapshot.id)
+                      .collection('followers')
+                      .doc(currentUserId)
+                      .delete()
+                  }
+                })
+              })
             firebase
               .firestore()
               .collection('users')

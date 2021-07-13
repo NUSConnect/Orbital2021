@@ -14,6 +14,7 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import CancelButton from '../../components/CancelButton'
 import SubmitButton from '../../components/SubmitButton'
+import Button from '../../components/Button'
 import { textChecker } from '../../api/textChecker'
 
 export default class ForumCreationScreen extends React.Component {
@@ -178,6 +179,13 @@ export default class ForumCreationScreen extends React.Component {
               style={styles.image}
             />
           </TouchableOpacity>
+          <View style={{ marginBottom: -15 }}>
+            <Button
+              onPress={() => this.setState({ image: 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/forum%2FWELCOME.png?alt=media&token=eb0f815b-0e18-4eca-b5a6-0cc170b0eb51' })}
+            >
+              Default Portal Image
+            </Button>
+          </View>
           <Text style={styles.subTitle}>Name</Text>
           <TextInput
             style={styles.nameInput}
