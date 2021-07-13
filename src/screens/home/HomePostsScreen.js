@@ -70,7 +70,7 @@ export default class HomePostsScreen extends React.Component {
         .doc(this.state.currentUserId)
         .get()
         .then((documentSnapshot) => {
-          if (documentSnapshot.data().preferredSorting != null) {
+          if (documentSnapshot.data().preferredSorting != null && documentSnapshot.data().preferredFilter != null) {
             this.setState({
               sortedBy: documentSnapshot.data().preferredSorting,
               filteredBy: documentSnapshot.data().preferredFilter
