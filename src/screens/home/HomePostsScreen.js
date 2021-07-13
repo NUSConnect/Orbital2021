@@ -36,7 +36,7 @@ export default class HomePostsScreen extends React.Component {
         { key: 0, section: true, label: 'Filter by:' },
         { key: 1, label: 'Posts' },
         { key: 2, label: 'News' },
-        { key: 2, label: 'Everything' }
+        { key: 3, label: 'Everything' }
       ],
       haveNewMessage: false
     }
@@ -428,6 +428,12 @@ export default class HomePostsScreen extends React.Component {
                       </ModalSelector>
                     </View>
                     <View style={styles.sortBar}>
+                      <MaterialCommunityIcons
+                        name='filter'
+                        color='blue'
+                        size={26}
+                      />
+                      <Text style={styles.text}>{'Filter: '}</Text>
                       <ModalSelector
                         data={this.state.filterOptions}
                         initValue={this.state.filteredBy}
@@ -456,12 +462,6 @@ export default class HomePostsScreen extends React.Component {
                           value={this.state.filteredBy}
                         />
                       </ModalSelector>
-                      <Text style={styles.text}>{' :Filter'}</Text>
-                      <MaterialCommunityIcons
-                        name='filter'
-                        color='blue'
-                        size={26}
-                      />
                     </View>
                   </View>
                     }
@@ -513,7 +513,8 @@ const styles = StyleSheet.create({
   sortBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 10
+    paddingLeft: 4,
+    width: '50%'
   },
   text: {
     fontSize: 16
