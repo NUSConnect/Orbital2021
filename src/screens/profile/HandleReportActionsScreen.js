@@ -101,15 +101,24 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
       .firestore()
       .collection('users')
       .doc(reportedUid)
-      .update({ numWarnings: increment })
-    await firebase
-      .firestore()
-      .collection('users')
-      .doc(reportedUid)
       .get()
       .then(documentSnapshot => {
-        if (documentSnapshot.data().numWarnings >= 3) {
-          banUser()
+        if (documentSnapshot.exists) {
+          firebase
+            .firestore()
+            .collection('users')
+            .doc(reportedUid)
+            .update({ numWarnings: increment })
+          firebase
+            .firestore()
+            .collection('users')
+            .doc(reportedUid)
+            .get()
+            .then(documentSnapshot => {
+              if (documentSnapshot.data().numWarnings >= 3) {
+                banUser()
+              }
+            })
         }
       })
     await firebase

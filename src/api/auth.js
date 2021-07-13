@@ -76,7 +76,7 @@ export const signUpUser = async ({ name, email, password }) => {
           .set({})
       })
 
-    Alert.alert('Email sent.\nPlease verify your account before signing in.')
+    Alert.alert('Email sent.', 'Please verify your account before signing in.')
     firebase.auth().signOut()
 
     return {
