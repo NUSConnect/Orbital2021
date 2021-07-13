@@ -55,7 +55,7 @@ export default function StartMessagesScreen ({ navigation }) {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          if (doc.id !== currentUserId) {
+          if (doc.id !== currentUserId && !doc.data().news) {
             const { name, bio, userImg } = doc.data()
 
             const users = [currentUserId, doc.id]

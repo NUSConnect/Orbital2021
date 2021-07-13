@@ -52,7 +52,7 @@ export default function EditGroupMembersScreen ({ props, route, navigation }) {
     await firebase.firestore().collection('users').get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          if (doc.id !== currentUserId) {
+          if (doc.id !== currentUserId && !doc.data().news) {
             const { name, userImg, bio } = doc.data()
             const selected = memberIds[doc.id]
             list.push({
