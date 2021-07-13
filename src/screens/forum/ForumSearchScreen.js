@@ -1,6 +1,7 @@
 import * as firebase from 'firebase'
 import React from 'react'
 import {
+  ActivityIndicator,
   FlatList,
   SafeAreaView,
   View,
@@ -16,6 +17,7 @@ export default class ForumSearchScreen extends React.Component {
     this.state = {
       data: [],
       refreshing: true,
+      loading: true,
       search: '',
       filteredData: [],
       filtered: false
@@ -53,7 +55,7 @@ export default class ForumSearchScreen extends React.Component {
         })
 
       if (this.state.refreshing) {
-        this.setState({ refreshing: false })
+        this.setState({ refreshing: false, loading: false })
       }
       this.setState({ data: list })
       console.log(this.state.data)
@@ -98,7 +100,7 @@ export default class ForumSearchScreen extends React.Component {
       const { navigation } = this.props
       return (
         <SafeAreaView style={{ flex: 1 }}>
-          {this.state.data.length !== 0
+          {this.state.data.length !== 0 && !this.state.loading
             ? (
               <View style={{ flex: 1 }}>
                 <SearchBar
@@ -127,12 +129,18 @@ export default class ForumSearchScreen extends React.Component {
                   onRefresh={this.handleRefresh}
                 />
               </View>)
-            : (
-              <View style={styles.postMessage}>
-                <Text style={styles.postsDescription}>
-                  There are currently no portals.{'\n'}Try opening one!
-                </Text>
-              </View>)}
+            : this.state.loading
+              ? (
+                <View style={styles.postMessage}>
+                  <ActivityIndicator size='large' color='#0000ff' />
+                </View>
+                )
+              : (
+                <View style={styles.postMessage}>
+                  <Text style={styles.postsDescription}>
+                    There are currently no portals.{'\n'}Try opening one!
+                  </Text>
+                </View>)}
         </SafeAreaView>
       )
     }

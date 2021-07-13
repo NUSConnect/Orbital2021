@@ -1,6 +1,7 @@
 import * as firebase from 'firebase'
 import React from 'react'
 import {
+  ActivityIndicator,
   Alert,
   FlatList,
   Image,
@@ -24,6 +25,7 @@ export default class HomePostsScreen extends React.Component {
       currentUserId: firebase.auth().currentUser.uid,
       data: [],
       refreshing: true,
+      loading: true,
       deleted: false,
       sortedBy: null,
       sortingOptions: [
@@ -140,7 +142,6 @@ export default class HomePostsScreen extends React.Component {
               })
             })
         }
-        // console.log("Following: ", following);
         const list = []
         this.setState({ refreshing: true })
 
@@ -194,10 +195,8 @@ export default class HomePostsScreen extends React.Component {
         this.setState({ data: list })
 
         if (this.state.refreshing) {
-          this.setState({ refreshing: false })
+          this.setState({ refreshing: false, loading: false })
         }
-
-        //            console.log("Posts: ", this.state.data);
       } catch (e) {
         console.log(e)
       }
@@ -247,8 +246,6 @@ export default class HomePostsScreen extends React.Component {
     };
 
     deletePost = (postId) => {
-      // console.log("Current Post Id: ", postId);
-
       firebase
         .firestore()
         .collection('posts')
@@ -264,7 +261,6 @@ export default class HomePostsScreen extends React.Component {
               const storageRef = firebase
                 .storage()
                 .refFromURL(postImg)
-              // console.log("storageRef", storageRef.fullPath);
               const imageRef = firebase
                 .storage()
                 .ref(storageRef.fullPath)
@@ -355,8 +351,6 @@ export default class HomePostsScreen extends React.Component {
 
     navigateProfile = (creatorId, ownNavigation, otherNavigation) => {
       return (currUserId) => {
-        // console.log("Current User: ", currUserId);
-        // console.log("Creator User: ", creatorId);
         if (currUserId === creatorId) {
           ownNavigation()
         } else {
@@ -386,7 +380,7 @@ export default class HomePostsScreen extends React.Component {
                 color='#ff7f50'
               />
               )}
-          {this.state.data.length !== 0
+          {this.state.data.length !== 0 && !this.state.loading
             ? (<FlatList
                 data={this.state.data}
                 ListHeaderComponent={
@@ -491,13 +485,19 @@ export default class HomePostsScreen extends React.Component {
                 onRefresh={this.handleRefresh}
                 style={{ marginBottom: 40 }}
                />)
-            : (
-              <View style={styles.postMessage}>
-                <Text style={styles.postsDescription}>
-                  No posts here!{'\n'}Follow someone or make a post yourself.
-                </Text>
-              </View>
-              )}
+            : this.state.loading
+              ? (
+                <View style={styles.postMessage}>
+                  <ActivityIndicator size='large' color='#0000ff' />
+                </View>
+                )
+              : (
+                <View style={styles.postMessage}>
+                  <Text style={styles.postsDescription}>
+                    No posts here!{'\n'}Follow someone or make a post yourself.
+                  </Text>
+                </View>
+                )}
         </SafeAreaView>
       )
     }
