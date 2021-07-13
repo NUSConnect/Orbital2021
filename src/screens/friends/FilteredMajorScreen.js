@@ -26,7 +26,6 @@ export default function FilteredMajorScreen ({
   const [filtered, setFiltered] = useState(false)
 
   const majorToFilter = route.params.major
-  //    console.log(majorToFilter);
 
   const getAllUsers = async () => {
     const users = []

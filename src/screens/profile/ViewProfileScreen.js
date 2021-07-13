@@ -1,6 +1,7 @@
 import * as firebase from 'firebase'
 import React, { useEffect, useState } from 'react'
 import {
+  ActivityIndicator,
   Alert,
   Dimensions,
   FlatList,
@@ -33,6 +34,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
   const [following, setFollowing] = useState(false)
   const [requested, setRequested] = useState(false)
   const [refreshing, setRefreshing] = useState(true)
+  const [loading, setLoading] = useState(true)
   const [majorData, setMajorData] = useState(null)
   const [images, setImages] = useState([{}])
   const [modalVisible, setModalVisible] = useState(false)
@@ -232,9 +234,8 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
 
       if (refreshing) {
         setRefreshing(false)
+        setLoading(false)
       }
-
-      //        console.log('Posts: ', posts);
     } catch (e) {
       console.log(e)
     }
@@ -400,7 +401,7 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
         : null}
       {(isPrivate && following) || !isPrivate
         ? (
-            posts.length !== 0
+            posts.length !== 0 && !loading
               ? (
                 <FlatList
                   numColumns={1}
@@ -422,13 +423,19 @@ const ViewProfileScreen = ({ navigation, route, onPress }) => {
                   style={{ width: '100%', paddingBottom: 200 }}
                 />
                 )
-              : (
-                <View style={styles.postMessage}>
-                  <Text style={styles.postsDescription}>
-                    User has no posts.
-                  </Text>
-                </View>
-                )
+              : loading
+                ? (
+                  <View style={styles.postMessage}>
+                    <ActivityIndicator size='large' color='#0000ff' />
+                  </View>
+                  )
+                : (
+                  <View style={styles.postMessage}>
+                    <Text style={styles.postsDescription}>
+                      User has no posts.
+                    </Text>
+                  </View>
+                  )
           )
         : (
           <View style={styles.postMessage}>

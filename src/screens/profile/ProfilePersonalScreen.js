@@ -222,7 +222,7 @@ export default class ProfilePersonalScreen extends React.Component {
                 onPress={() =>
                   this.props.navigation.navigate('SetupAccountScreen')}
               >
-                Setup Account
+                Edit Profile
               </Button>
               <Button
                 style={styles.accountset}

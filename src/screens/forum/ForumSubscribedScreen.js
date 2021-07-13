@@ -1,6 +1,7 @@
 import * as firebase from 'firebase'
 import React from 'react'
 import {
+  ActivityIndicator,
   FlatList,
   SafeAreaView,
   View,
@@ -15,7 +16,8 @@ export default class ForumFavouritesScreen extends React.Component {
     this.state = {
       currentUserId: firebase.auth().currentUser.uid,
       data: [],
-      refreshing: true
+      refreshing: true,
+      loading: true
     }
   }
 
@@ -71,7 +73,7 @@ export default class ForumFavouritesScreen extends React.Component {
       this.setState({ data: list })
 
       if (this.state.refreshing) {
-        this.setState({ refreshing: false })
+        this.setState({ refreshing: false, loading: false })
       }
       console.log('Subscribed Forums', this.state.data)
     };
@@ -96,7 +98,7 @@ export default class ForumFavouritesScreen extends React.Component {
       const { navigation } = this.props
       return (
         <SafeAreaView style={{ flex: 1 }}>
-          {this.state.data.length !== 0
+          {this.state.data.length !== 0 && !this.state.loading
             ? (<FlatList
                 numColumns={3}
                 data={this.state.data}
@@ -112,16 +114,22 @@ export default class ForumFavouritesScreen extends React.Component {
                 refreshing={this.state.refreshing}
                 onRefresh={this.handleRefresh}
                />)
-            : (
-              <View style={styles.postMessage}>
-                <Text style={styles.postsDescription}>
-                  You have no favourited portals.
-                </Text>
-                <Text style={styles.postsDescription}>
-                  Try favouriting by tapping the star on any portal header!
-                </Text>
-              </View>
-              )}
+            : this.state.loading
+              ? (
+                <View style={styles.postMessage}>
+                  <ActivityIndicator size='large' color='#0000ff' />
+                </View>
+                )
+              : (
+                <View style={styles.postMessage}>
+                  <Text style={styles.postsDescription}>
+                    You have no favourited portals.
+                  </Text>
+                  <Text style={styles.postsDescription}>
+                    Try favouriting by tapping the star on any portal header!
+                  </Text>
+                </View>
+                )}
         </SafeAreaView>
       )
     }
