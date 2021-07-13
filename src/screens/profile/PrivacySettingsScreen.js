@@ -12,7 +12,7 @@ export default function PrivacySettingsScreen ({ navigation }) {
   const getUserInfo = async () => {
     await firebase.firestore().collection('users').doc(currentUserId).get()
       .then((doc) => {
-        if (doc.data().isPrivate !== null) {
+        if (doc.data().isPrivate) {
           setIsEnabled(doc.data().isPrivate)
         }
       })

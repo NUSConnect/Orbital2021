@@ -33,6 +33,7 @@ const PostCard = ({
 }) => {
   const currentUserId = firebase.auth().currentUser.uid
   const currentUserName = firebase.auth().currentUser.displayName
+  const [vibrate, setVibrate] = useState(true)
   const [userData, setUserData] = useState(null)
   const [userLiked, setUserLiked] = useState(null)
 
@@ -53,8 +54,10 @@ const PostCard = ({
       .doc(item.userId)
       .onSnapshot((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          //          console.log('User Data', documentSnapshot.data());
           setUserData(documentSnapshot.data())
+          if (typeof documentSnapshot.data().enableVibration !== 'undefined') {
+            setVibrate(documentSnapshot.data().enableVibration)
+          }
         }
       })
   }
@@ -119,7 +122,7 @@ const PostCard = ({
         .update({ likeCount: item.likeCount })
       console.log('Like')
       setUserLiked(true)
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+      if (vibrate) { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium) }
 
       firebase.firestore().collection('users').doc(item.userId).get()
         .then((doc) => {

@@ -16,6 +16,7 @@ const ForumPost = ({
   onEdit
 }) => {
   const currentUserId = firebase.auth().currentUser.uid
+  const [vibrate, setVibrate] = useState(true)
   const [userData, setUserData] = useState(null)
   const [upvoted, setUpvoted] = useState(null)
   const [downvoted, setDownvoted] = useState(null)
@@ -29,6 +30,9 @@ const ForumPost = ({
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
           setUserData(documentSnapshot.data())
+          if (typeof documentSnapshot.data().enableVibration !== 'undefined') {
+            setVibrate(documentSnapshot.data().enableVibration)
+          }
         }
       })
   }
@@ -83,7 +87,7 @@ const ForumPost = ({
       .update({ votes: item.votes })
     setUpvoted(true)
     setDownvoted(false)
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+    if (vibrate) { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium) }
   }
 
   const downVote = async () => {
@@ -110,7 +114,7 @@ const ForumPost = ({
       .update({ votes: item.votes })
     setUpvoted(false)
     setDownvoted(true)
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+    if (vibrate) { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium) }
   }
 
   const unVote = async () => {

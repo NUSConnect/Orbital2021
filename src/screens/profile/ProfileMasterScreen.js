@@ -32,6 +32,7 @@ import FollowersScreen from './FollowersScreen'
 import FollowingScreen from './FollowingScreen'
 import RequestedFollowersScreen from './RequestedFollowersScreen'
 import PrivacySettingsScreen from './PrivacySettingsScreen'
+import SettingsScreen from './SettingsScreen'
 import ManageFollowersScreen from './ManageFollowersScreen'
 import SetupAccountScreen from './SetupAccountScreen'
 import SuperAdminScreen from './SuperAdminScreen'
@@ -108,6 +109,7 @@ const ProfileMasterScreen = ({ navigation }) => {
         <Stack.Screen name='FollowersScreen' component={FollowersScreen} />
         <Stack.Screen name='FollowingScreen' component={FollowingScreen} />
         <Stack.Screen name='RequestedFollowersScreen' component={RequestedFollowersScreen} />
+        <Stack.Screen name='SettingsScreen' component={SettingsScreen} />
         <Stack.Screen name='PrivacySettingsScreen' component={PrivacySettingsScreen} />
         <Stack.Screen name='ManageFollowersScreen' component={ManageFollowersScreen} />
         <Stack.Screen name='SetupAccountScreen' component={SetupAccountScreen} />

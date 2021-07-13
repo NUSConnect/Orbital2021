@@ -20,6 +20,7 @@ import {
 import ProgressiveImage from './ProgressiveImage'
 import DoubleTap from './DoubleTap'
 import { sendPushNotification } from '../api/notifications'
+import * as Haptics from 'expo-haptics'
 
 const PostCardView = ({
   route,
@@ -28,6 +29,7 @@ const PostCardView = ({
 }) => {
   const currentUserId = firebase.auth().currentUser.uid
   const currentUserName = firebase.auth().currentUser.displayName
+  const [vibrate, setVibrate] = useState(true)
   const [userData, setUserData] = useState(null)
   const [userLiked, setUserLiked] = useState(null)
 
@@ -40,6 +42,9 @@ const PostCardView = ({
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
           setUserData(documentSnapshot.data())
+          if (typeof documentSnapshot.data().enableVibration !== 'undefined') {
+            setVibrate(documentSnapshot.data().enableVibration)
+          }
         }
       })
   }
@@ -104,6 +109,8 @@ const PostCardView = ({
         .update({ likeCount: item.likeCount })
       console.log('Like')
       setUserLiked(true)
+      if (vibrate) { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium) }
+
       firebase.firestore().collection('users').doc(item.userId).get()
         .then((doc) => {
           console.log('Checking if pushToken available')
