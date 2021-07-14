@@ -1,5 +1,5 @@
 import * as React from 'react'
-import CommentItem from '../CommentItem'
+import ForumCommentItem from '../ForumCommentItem'
 import renderer from 'react-test-renderer'
 import moment from 'moment'
 import { fireEvent, render } from '@testing-library/react-native'
@@ -48,7 +48,7 @@ const mockItem = { userId: 12345, postTime: timestamp, commentBody: 'commentText
 // Tests
 
 it('renders correctly', async () => {
-  const tree = renderer.create(<CommentItem item={mockItem} />)
+  const tree = renderer.create(<ForumCommentItem item={mockItem} />)
   const instance = tree.root
   expect(instance.findByProps({ testID: 'time' }).props.children).toEqual([' ·', ' ', moment(timestamp.toDate()).fromNow()])
   expect(instance.findByProps({ testID: 'comment' }).props.children).toEqual('commentText')
@@ -56,7 +56,7 @@ it('renders correctly', async () => {
 
 it('on view profile', () => {
   const mockFn = jest.fn(x => x)
-  const { getByTestId } = render(<CommentItem item={mockItem} onViewProfile={mockFn} />)
+  const { getByTestId } = render(<ForumCommentItem item={mockItem} onViewProfile={mockFn} />)
   fireEvent.press(getByTestId('username'))
   expect(mockFn).toHaveBeenCalled()
 })
