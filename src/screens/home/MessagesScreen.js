@@ -395,6 +395,7 @@ const styles = StyleSheet.create({
   postsDescription: {
     fontSize: 18,
     color: 'darkslategrey',
-    width: '90%'
+    width: '90%',
+    textAlign: 'center'
   }
 })
