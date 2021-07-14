@@ -44,7 +44,6 @@ it('renders correctly', () => {
   expect(instance.findByProps({ testID: 'title' }).props.children).toEqual('mockTitle')
   expect(instance.findByProps({ testID: 'body' }).props.children).toEqual('mockBody')
   expect(instance.findByProps({ testID: 'time' }).props.children).toEqual([' ·', ' ', moment(timestamp.toDate()).fromNow()])
-  expect(instance.findByProps({ testID: 'votes' }).props.children).toEqual(100)
   expect(instance.findByProps({ testID: 'comments' }).props.children).toEqual(50)
 })
 

@@ -30,6 +30,7 @@ const PostCardView = ({
   const currentUserId = firebase.auth().currentUser.uid
   const currentUserName = firebase.auth().currentUser.displayName
   const [vibrate, setVibrate] = useState(true)
+  const [likeCount, setLikeCount] = useState(0)
   const [userData, setUserData] = useState(null)
   const [userLiked, setUserLiked] = useState(null)
 
@@ -38,13 +39,26 @@ const PostCardView = ({
       .firestore()
       .collection('users')
       .doc(item.userId)
-      .get()
-      .then((documentSnapshot) => {
+      .onSnapshot((documentSnapshot) => {
         if (documentSnapshot.exists) {
           setUserData(documentSnapshot.data())
           if (typeof documentSnapshot.data().enableVibration !== 'undefined') {
             setVibrate(documentSnapshot.data().enableVibration)
           }
+        }
+      })
+  }
+
+  const getLikes = async () => {
+    await firebase
+      .firestore()
+      .collection('posts')
+      .doc(item.userId)
+      .collection('userPosts')
+      .doc(item.postId)
+      .onSnapshot((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          setLikeCount(documentSnapshot.data().likeCount)
         }
       })
   }
@@ -70,7 +84,13 @@ const PostCardView = ({
   const likePost = async () => {
     console.log('Post ID: ' + item.postId)
     if (userLiked) {
-      item.likeCount = item.likeCount - 1
+      firebase
+        .firestore()
+        .collection('posts')
+        .doc(item.userId)
+        .collection('userPosts')
+        .doc(item.postId)
+        .update({ likeCount: firebase.firestore.FieldValue.increment(-1) })
       firebase
         .firestore()
         .collection('posts')
@@ -80,17 +100,16 @@ const PostCardView = ({
         .collection('likes')
         .doc(currentUserId)
         .delete()
+      console.log('Unlike')
+      setUserLiked(false)
+    } else {
       firebase
         .firestore()
         .collection('posts')
         .doc(item.userId)
         .collection('userPosts')
         .doc(item.postId)
-        .update({ likeCount: item.likeCount })
-      console.log('Unlike')
-      setUserLiked(false)
-    } else {
-      item.likeCount = item.likeCount + 1
+        .update({ likeCount: firebase.firestore.FieldValue.increment(1) })
       firebase
         .firestore()
         .collection('posts')
@@ -100,29 +119,25 @@ const PostCardView = ({
         .collection('likes')
         .doc(currentUserId)
         .set({})
-      firebase
-        .firestore()
-        .collection('posts')
-        .doc(item.userId)
-        .collection('userPosts')
-        .doc(item.postId)
-        .update({ likeCount: item.likeCount })
       console.log('Like')
       setUserLiked(true)
       if (vibrate) { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium) }
 
-      firebase.firestore().collection('users').doc(item.userId).get()
-        .then((doc) => {
-          console.log('Checking if pushToken available')
-          if (doc.data().pushToken != null) {
-            sendPushNotification(doc.data().pushToken.data, currentUserName, 'Liked your post!')
-          }
-        })
+      if (item.userId !== currentUserId) {
+        firebase.firestore().collection('users').doc(item.userId).get()
+          .then((doc) => {
+            console.log('Checking if pushToken available')
+            if (doc.data().pushToken != null) {
+              sendPushNotification(doc.data().pushToken.data, currentUserName, 'Liked your post!')
+            }
+          })
+      }
     }
   }
 
   useEffect(() => {
     getUser()
+    getLikes()
     checkLiked()
   }, [])
 
@@ -180,11 +195,11 @@ const PostCardView = ({
               color={userLiked ? '#dc143c' : '#333'}
             />
             <InteractionText>
-              {item.likeCount === 0
+              {likeCount === 0
                 ? 'Like'
-                : item.likeCount === 1
+                : likeCount === 1
                   ? '1 Like'
-                  : item.likeCount + ' Likes'}
+                  : likeCount + ' Likes'}
             </InteractionText>
           </Interaction>
         </InteractionWrapper>

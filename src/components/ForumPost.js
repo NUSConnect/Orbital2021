@@ -17,6 +17,7 @@ const ForumPost = ({
 }) => {
   const currentUserId = firebase.auth().currentUser.uid
   const [vibrate, setVibrate] = useState(true)
+  const [votes, setVotes] = useState(0)
   const [userData, setUserData] = useState(null)
   const [upvoted, setUpvoted] = useState(null)
   const [downvoted, setDownvoted] = useState(null)
@@ -26,13 +27,26 @@ const ForumPost = ({
       .firestore()
       .collection('users')
       .doc(item.userId)
-      .get()
-      .then((documentSnapshot) => {
+      .onSnapshot((documentSnapshot) => {
         if (documentSnapshot.exists) {
           setUserData(documentSnapshot.data())
           if (typeof documentSnapshot.data().enableVibration !== 'undefined') {
             setVibrate(documentSnapshot.data().enableVibration)
           }
+        }
+      })
+  }
+
+  const getVotes = async () => {
+    await firebase
+      .firestore()
+      .collection('forums')
+      .doc(item.forumId)
+      .collection('forumPosts')
+      .doc(item.postId)
+      .onSnapshot((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          setVotes(documentSnapshot.data().votes)
         }
       })
   }
@@ -64,11 +78,8 @@ const ForumPost = ({
   }
 
   const upVote = async () => {
-    if (downvoted) {
-      item.votes = item.votes + 2
-    } else {
-      item.votes = item.votes + 1
-    }
+    let incrementer = 1
+    if (downvoted) { incrementer = 2 }
     firebase
       .firestore()
       .collection('forums')
@@ -84,18 +95,15 @@ const ForumPost = ({
       .doc(item.forumId)
       .collection('forumPosts')
       .doc(item.postId)
-      .update({ votes: item.votes })
+      .update({ votes: firebase.firestore.FieldValue.increment(incrementer) })
     setUpvoted(true)
     setDownvoted(false)
     if (vibrate) { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium) }
   }
 
   const downVote = async () => {
-    if (upvoted) {
-      item.votes = item.votes - 2
-    } else {
-      item.votes = item.votes - 1
-    }
+    let incrementer = -1
+    if (upvoted) { incrementer = -2 }
     firebase
       .firestore()
       .collection('forums')
@@ -111,18 +119,15 @@ const ForumPost = ({
       .doc(item.forumId)
       .collection('forumPosts')
       .doc(item.postId)
-      .update({ votes: item.votes })
+      .update({ votes: firebase.firestore.FieldValue.increment(incrementer) })
     setUpvoted(false)
     setDownvoted(true)
     if (vibrate) { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium) }
   }
 
   const unVote = async () => {
-    if (upvoted) {
-      item.votes = item.votes - 1
-    } else {
-      item.votes = item.votes + 1
-    }
+    let incrementer = 1
+    if (upvoted) { incrementer = -1 }
     firebase
       .firestore()
       .collection('forums')
@@ -138,13 +143,14 @@ const ForumPost = ({
       .doc(item.forumId)
       .collection('forumPosts')
       .doc(item.postId)
-      .update({ votes: item.votes })
+      .update({ votes: firebase.firestore.FieldValue.increment(incrementer) })
     setUpvoted(false)
     setDownvoted(false)
   }
 
   useEffect(() => {
     getUser()
+    getVotes()
     checkVoted()
   }, [])
 
@@ -187,7 +193,7 @@ const ForumPost = ({
               color={upvoted ? 'lightgreen' : 'darkgray'}
             />
           </TouchableOpacity>
-          <Text style={styles.score} testID='votes'>{item.votes}</Text>
+          <Text style={styles.score} testID='votes'>{votes}</Text>
           <TouchableOpacity
             onPress={() => (downvoted ? unVote() : downVote())}
           >
