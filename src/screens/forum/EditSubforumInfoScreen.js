@@ -67,7 +67,7 @@ export default class EditSubforumInfoScreen extends React.Component {
 
     submitPost = async (goBack) => {
       Alert.alert(
-        'Edit forum info',
+        'Edit portal info',
         'Are you sure?',
         [
           {
@@ -244,7 +244,11 @@ export default class EditSubforumInfoScreen extends React.Component {
                 <SubmitButton
                   goBack={() => {
                     if (textChecker(this.state.nameText) && textChecker(this.state.descriptionText)) {
-                      this.submitPost(() => navigation.goBack())
+                      this.submitPost(() => {
+                        navigation.goBack()
+                        navigation.goBack()
+                        navigation.goBack()
+                      })
                     } else {
                       Alert.alert(
                         'Missing information',
