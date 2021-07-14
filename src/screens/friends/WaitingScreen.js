@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 70,
     fontSize: 18,
-    alignItems: 'center'
+    alignItems: 'center',
+    textAlign: 'center'
   }
 })
