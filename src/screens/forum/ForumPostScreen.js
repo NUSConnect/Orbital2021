@@ -4,7 +4,6 @@ import {
   Alert,
   Dimensions,
   FlatList,
-  Platform,
   StyleSheet
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -24,7 +23,6 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
   const [isFocused, setIsFocused] = useState(null)
 
   const { item, forumId, forumName } = route.params
-  const os = Platform.OS
 
   const fetchComments = async () => {
     const list = []
@@ -106,64 +104,23 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
     }
   }
 
-  const onPressComment = (comment) => {
-    console.log(currentUserId)
-    console.log(comment.userId)
-    if (currentUserId === comment.userId) {
-      if (os === 'ios') {
-        Alert.alert(
-          'Your comment has been selected',
-          'What do you want to do with it?',
-          [
-            {
-              text: 'Edit',
-              onPress: () =>
-                navigation.navigate('EditForumCommentScreen', {
-                  comment,
-                  forumId
-                })
-            },
-            {
-              text: 'Delete',
-              onPress: () => handleDelete(comment)
-            },
-            {
-              text: 'Cancel',
-              onPress: () => console.log('cancel pressed'),
-              style: 'cancel'
-            }
-          ],
-          { cancelable: true }
-        )
-      } else {
-        Alert.alert(
-          'Your comment has been selected',
-          'What do you want to do with it?',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => console.log('cancel pressed'),
-              style: 'cancel'
-            },
-            {
-              text: 'Delete',
-              onPress: () => handleDelete(comment)
-            },
-            {
-              text: 'Edit',
-              onPress: () =>
-                navigation.navigate('EditForumCommentScreen', {
-                  comment,
-                  forumId
-                })
-            }
-          ],
-          { cancelable: true }
-        )
-      }
-    } else {
-      handleReport(comment)
-    }
+  const handleEdit = (comment, forumId) => {
+    Alert.alert(
+      'Edit comment',
+      'Are you sure?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('cancel pressed')
+        },
+        {
+          text: 'OK',
+          onPress: () => navigation.navigate('EditForumCommentScreen', { comment, forumId })
+        }
+
+      ],
+      { cancelable: true }
+    )
   }
 
   const handleDelete = (comment) => {
@@ -237,7 +194,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
     )
   }
 
-  const handleEdit = (post) => {
+  const handleEditPost = (post) => {
     Alert.alert(
       'Edit post',
       'Are you sure?',
@@ -362,7 +319,7 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                   item
                 })
             )}
-            onEdit={() => handleEdit(item)}
+            onEdit={() => handleEditPost(item)}
             onDelete={() => handleDeletePost(item)}
             onReport={() => handleReportPost(item)}
           />
@@ -379,7 +336,9 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
                   item
                 })
             )}
-            onPressHandle={() => onPressComment(item)}
+            onEdit={() => handleEdit(item, forumId)}
+            onDelete={() => handleDelete(item)}
+            onReport={() => handleReport(item)}
           />
         )}
         keyExtractor={(item) => item.commentId}
