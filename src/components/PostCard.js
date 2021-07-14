@@ -224,7 +224,7 @@ const PostCard = ({
               )
             : (
               <Interaction onPress={() => onReport(item.id, item.userId)} testID='report'>
-                <MaterialIcons name='report-problem' size={25} />
+                <MaterialIcons name='report' size={25} />
               </Interaction>
               )}
         </InteractionWrapper>
