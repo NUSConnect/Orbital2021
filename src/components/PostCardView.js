@@ -38,8 +38,7 @@ const PostCardView = ({
       .firestore()
       .collection('users')
       .doc(item.userId)
-      .get()
-      .then((documentSnapshot) => {
+      .onSnapshot((documentSnapshot) => {
         if (documentSnapshot.exists) {
           setUserData(documentSnapshot.data())
           if (typeof documentSnapshot.data().enableVibration !== 'undefined') {
@@ -77,16 +76,16 @@ const PostCardView = ({
         .doc(item.userId)
         .collection('userPosts')
         .doc(item.postId)
-        .collection('likes')
-        .doc(currentUserId)
-        .delete()
+        .update({ likeCount: item.likeCount })
       firebase
         .firestore()
         .collection('posts')
         .doc(item.userId)
         .collection('userPosts')
         .doc(item.postId)
-        .update({ likeCount: item.likeCount })
+        .collection('likes')
+        .doc(currentUserId)
+        .delete()
       console.log('Unlike')
       setUserLiked(false)
     } else {
@@ -97,27 +96,29 @@ const PostCardView = ({
         .doc(item.userId)
         .collection('userPosts')
         .doc(item.postId)
-        .collection('likes')
-        .doc(currentUserId)
-        .set({})
+        .update({ likeCount: item.likeCount })
       firebase
         .firestore()
         .collection('posts')
         .doc(item.userId)
         .collection('userPosts')
         .doc(item.postId)
-        .update({ likeCount: item.likeCount })
+        .collection('likes')
+        .doc(currentUserId)
+        .set({})
       console.log('Like')
       setUserLiked(true)
       if (vibrate) { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium) }
 
-      firebase.firestore().collection('users').doc(item.userId).get()
-        .then((doc) => {
-          console.log('Checking if pushToken available')
-          if (doc.data().pushToken != null) {
-            sendPushNotification(doc.data().pushToken.data, currentUserName, 'Liked your post!')
-          }
-        })
+      if (item.userId !== currentUserId) {
+        firebase.firestore().collection('users').doc(item.userId).get()
+          .then((doc) => {
+            console.log('Checking if pushToken available')
+            if (doc.data().pushToken != null) {
+              sendPushNotification(doc.data().pushToken.data, currentUserName, 'Liked your post!')
+            }
+          })
+      }
     }
   }
 

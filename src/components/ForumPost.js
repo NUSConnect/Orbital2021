@@ -26,8 +26,7 @@ const ForumPost = ({
       .firestore()
       .collection('users')
       .doc(item.userId)
-      .get()
-      .then((documentSnapshot) => {
+      .onSnapshot((documentSnapshot) => {
         if (documentSnapshot.exists) {
           setUserData(documentSnapshot.data())
           if (typeof documentSnapshot.data().enableVibration !== 'undefined') {

@@ -124,13 +124,15 @@ const PostCard = ({
       setUserLiked(true)
       if (vibrate) { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium) }
 
-      firebase.firestore().collection('users').doc(item.userId).get()
-        .then((doc) => {
-          console.log('Checking if pushToken available')
-          if (doc.data().pushToken != null) {
-            sendPushNotification(doc.data().pushToken.data, currentUserName, 'Liked your post!')
-          }
-        })
+      if (item.userId !== currentUserId) {
+        firebase.firestore().collection('users').doc(item.userId).get()
+          .then((doc) => {
+            console.log('Checking if pushToken available')
+            if (doc.data().pushToken != null) {
+              sendPushNotification(doc.data().pushToken.data, currentUserName, 'Liked your post!')
+            }
+          })
+      }
     }
   }
 

@@ -1,5 +1,5 @@
 import * as firebase from 'firebase'
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Alert, Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { MaterialCommunityIcons } from 'react-native-vector-icons'
 import { createGroupChat } from '../../api/matching'
@@ -12,6 +12,7 @@ const groupThreshold = 2
 
 export default function FindGroupScreen ({ navigation }) {
   const currentUserId = firebase.auth().currentUser.uid
+  const [vibrate, setVibrate] = useState(true)
 
   useEffect(() => {
     const subscriber = firebase
@@ -22,6 +23,9 @@ export default function FindGroupScreen ({ navigation }) {
         if (documentSnapshot.data().finding) {
           calculateGroup(documentSnapshot.data().groupCategory)
           console.log('checking at ' + new Date())
+        }
+        if (typeof documentSnapshot.data().enableVibration !== 'undefined') {
+          setVibrate(documentSnapshot.data().enableVibration)
         }
       })
 
@@ -53,7 +57,7 @@ export default function FindGroupScreen ({ navigation }) {
             )
           })
       })
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+    if (vibrate) { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium) }
   }
 
   //  const stopFinding = async (userId) => {
