@@ -211,7 +211,8 @@ export default class EditSubforumInfoScreen extends React.Component {
             returnKeyType='next'
             onChangeText={(nameText) => this.setState({ nameText })}
             value={this.state.nameText}
-            placeholder='Enter a name'
+            placeholder='Enter a name (maximum 20 characters)'
+            maxLength={20}
           />
           <Text style={styles.subTitle}>Description</Text>
           <TextInput
