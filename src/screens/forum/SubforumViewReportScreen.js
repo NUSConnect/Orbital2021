@@ -26,6 +26,12 @@ export default function SubforumViewReportScreen ({ navigation, route }) {
         </Button>
         <Button
           style={styles.button}
+          onPress={() => navigation.navigate('EditSubforumInfoScreen', { forumName: forumName, forumId: forumId })}
+        >
+          edit forum info
+        </Button>
+        <Button
+          style={styles.button}
           onPress={() => navigation.navigate('ForumAdminManagementScreen', { forumName: forumName, forumId: forumId })}
         >
           manage forum admins
