@@ -249,8 +249,6 @@ export default class EditSubforumInfoScreen extends React.Component {
                     if (textChecker(this.state.nameText) && textChecker(this.state.descriptionText)) {
                       this.submitPost(() => {
                         navigation.goBack()
-                        navigation.goBack()
-                        navigation.goBack()
                       })
                     } else {
                       Alert.alert(
