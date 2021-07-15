@@ -79,7 +79,7 @@ export default class HomePostsScreen extends React.Component {
               filteredBy: documentSnapshot.data().preferredFilter
             })
           } else {
-            this.setState({ sortedBy: 'Latest', filteredBy: 'Posts' })
+            this.setState({ sortedBy: 'Latest', filteredBy: 'Everything' })
           }
         })
     };
