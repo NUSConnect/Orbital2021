@@ -30,7 +30,7 @@ export default function PromoteSuperAdminScreen ({ props, navigation, route }) {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(documentSnapshot => {
-          if (!documentSnapshot.data().superAdmin) {
+          if (!documentSnapshot.data().superAdmin && !documentSnapshot.data().news) {
             allUsersId.push(documentSnapshot.id)
           }
         })
