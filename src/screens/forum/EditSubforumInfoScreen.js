@@ -31,16 +31,20 @@ export default class EditSubforumInfoScreen extends React.Component {
   }
 
   componentDidMount () {
-    this.getForumImg()
+    this.getForumInfo()
   }
 
-  getForumImg = async () => {
+  getForumInfo = async () => {
     await firebase
       .firestore()
       .collection('forums')
       .doc(this.props.route.params.forumId)
       .get()
-      .then(documentSnapshot => this.setState({ image: documentSnapshot.data().forumImg }))
+      .then(documentSnapshot => this.setState({
+        image: documentSnapshot.data().forumImg,
+        nameText: documentSnapshot.data().forumName,
+        descriptionText: documentSnapshot.data().forumDescription
+      }))
   }
 
     handleChoosePhotoFromLibrary = async () => {
