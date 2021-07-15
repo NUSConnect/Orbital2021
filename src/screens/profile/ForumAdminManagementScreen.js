@@ -48,20 +48,22 @@ export default function ForumAdminManagementScreen ({ props, route, navigation }
     await firebase.firestore().collection('users').get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          const { name, userImg, bio } = doc.data()
-          const selected = adminIds[doc.id]
-          list.push({
-            id: doc.id,
-            name: name,
-            img: userImg,
-            bio: bio,
-            isSelected: selected
-          })
-          if (selected) {
-            isAdmin.push({
+          const { name, userImg, bio, news } = doc.data()
+          if (!news) {
+            const selected = adminIds[doc.id]
+            list.push({
               id: doc.id,
-              name: name
+              name: name,
+              img: userImg,
+              bio: bio,
+              isSelected: selected
             })
+            if (selected) {
+              isAdmin.push({
+                id: doc.id,
+                name: name
+              })
+            }
           }
         })
       })
