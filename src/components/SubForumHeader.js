@@ -82,6 +82,7 @@ export default function SubForumHeader ({
 const styles = StyleSheet.create({
   container: {
     height: 60,
+    width: '100%',
     flexDirection: 'row',
     backgroundColor: '#ffffff',
     borderColor: '#dcdcdc',
@@ -96,14 +97,15 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     flexDirection: 'row',
-    width: '85%',
+    width: '50%',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: 30
+    paddingLeft: 30,
+    paddingRight: 30
   },
   text: {
     color: '#ff7f50',
-    fontSize: 30,
+    fontSize: 26,
     textAlign: 'center'
   },
   icon: {},

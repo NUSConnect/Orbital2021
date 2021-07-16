@@ -7,9 +7,8 @@ const ForumIcon = ({ item, onPress }) => {
       <Image
         style={styles.image}
         source={{
-          uri:
-                        item.forumImg ||
-                        'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
+          uri: item.forumImg ||
+            'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=8050b8f8-493f-4e12-8fe3-6f44bb544460'
         }}
         testID='image'
       />
@@ -37,6 +36,10 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    color: 'black'
+    color: 'black',
+    height: 40,
+    width: 130 * Dimensions.get('window').width / 414 - 10,
+    paddingTop: 4,
+    textAlign: 'center'
   }
 })

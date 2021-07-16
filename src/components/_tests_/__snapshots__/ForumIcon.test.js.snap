@@ -45,6 +45,10 @@ exports[`renders correctly 1`] = `
       Object {
         "color": "black",
         "fontSize": 16,
+        "height": 40,
+        "paddingTop": 4,
+        "textAlign": "center",
+        "width": 225.5072463768116,
       }
     }
     testID="text"
