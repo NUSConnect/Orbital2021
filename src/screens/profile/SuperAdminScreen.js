@@ -24,12 +24,6 @@ export default function SuperAdminScreen ({ navigation }) {
         </Button>
         <Button
           style={styles.button}
-          onPress={() => navigation.navigate('BannedUsersScreen')}
-        >
-          View Users To Ban
-        </Button>
-        <Button
-          style={styles.button}
           onPress={() => navigation.navigate('PromoteAdminOptionsScreen')}
         >
           Manage Admins

@@ -67,13 +67,6 @@ export const signUpUser = async ({ name, email, password }) => {
           .collection('following')
           .doc(currentUserId)
           .set({})
-        firebase
-          .firestore()
-          .collection('users')
-          .doc(currentUserId)
-          .collection('following')
-          .doc('H0sH7GW3dyegouLw2cTEE1PoBBt1')
-          .set({})
       })
 
     Alert.alert('Email sent.', 'Please verify your account before signing in.')

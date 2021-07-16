@@ -37,7 +37,7 @@ export default function AccountSettingsScreen ({ navigation }) {
           onPress={() => navigation.navigate('SettingsScreen')}
         >
           {' '}
-          Settings{' '}
+          User preferences{' '}
         </Button>
         <Button
           style={styles.button}

@@ -4,8 +4,7 @@ import {
   Alert,
   FlatList,
   Dimensions,
-  StyleSheet,
-  Platform
+  StyleSheet
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import TitleWithBack from '../../components/TitleWithBack'
@@ -25,7 +24,6 @@ const CommentScreen = ({ navigation, route, onPress }) => {
   const [isFocused, setIsFocused] = useState(null)
 
   const { item } = route.params
-  const os = Platform.OS
 
   const fetchComments = async () => {
     const list = []
@@ -95,56 +93,6 @@ const CommentScreen = ({ navigation, route, onPress }) => {
       .collection('userPosts')
       .doc(item.postId)
       .update({ commentCount: item.commentCount })
-  }
-
-  const onPressComment = (comment) => {
-    if (currentUserId === comment.userId) {
-      if (os === 'ios') {
-        Alert.alert(
-          'Your comment has been selected',
-          'What do you want to do with it?',
-          [
-            {
-              text: 'Edit',
-              onPress: () => onPressEdit(comment)
-            },
-            {
-              text: 'Delete',
-              onPress: () => handleDelete(comment.commentId)
-            },
-            {
-              text: 'Cancel',
-              onPress: () => console.log('cancel pressed'),
-              style: 'cancel'
-            }
-          ],
-          { cancelable: true }
-        )
-      } else {
-        Alert.alert(
-          'Your comment has been selected',
-          'What do you want to do with it?',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => console.log('cancel pressed'),
-              style: 'cancel'
-            },
-            {
-              text: 'Delete',
-              onPress: () => handleDelete(comment.commentId)
-            },
-            {
-              text: 'Edit',
-              onPress: () => onPressEdit(comment)
-            }
-          ],
-          { cancelable: true }
-        )
-      }
-    } else {
-      handleReport(comment, comment.userId)
-    }
   }
 
   const onPressEdit = (comment) => {
@@ -302,7 +250,9 @@ const CommentScreen = ({ navigation, route, onPress }) => {
                   item
                 })
             )}
-            onPressHandle={() => onPressComment(item)}
+            onEdit={() => onPressEdit(item)}
+            onDelete={() => handleDelete(item.commentId)}
+            onReport={() => handleReport(item, item.userId)}
           />
         )}
         keyExtractor={(item) => item.commentId}

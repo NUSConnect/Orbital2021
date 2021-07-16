@@ -22,10 +22,10 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
   const [subscribed, setSubscribed] = useState(null)
   const [sortedBy, setSortedBy] = useState(null)
   const [isAdmin, setIsAdmin] = useState(false)
+  const [forumName, setForumName] = useState('')
 
   const { item } = route.params
   const forumId = item.id
-  const forumName = item.forumName
   const sortingOptions = [{ key: 0, section: true, label: 'Sort posts by:' }, { key: 1, label: 'Latest' }, { key: 2, label: 'Trending' }]
 
   const getUser = async () => {
@@ -91,6 +91,12 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
 
   const fetchPosts = async () => {
     let sorter
+    await firebase
+      .firestore()
+      .collection('forums')
+      .doc(forumId)
+      .get()
+      .then(documentSnapshot => setForumName(documentSnapshot.data().forumName))
     await firebase
       .firestore()
       .collection('users')
@@ -276,7 +282,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
         navigation={navigation}
         isSubscribed={subscribed}
         subscribe={subscribe}
-        title={item.forumName}
+        title={forumName}
         isAdmin={isAdmin}
       />
       {posts.length !== 0
@@ -325,7 +331,7 @@ const SubForumScreen = ({ navigation, route, onPress }) => {
                       item
                     })
                 )}
-                onPress={() => navigation.navigate('ForumPostScreen', { item, forumId, forumName })}
+                onPress={() => navigation.navigate('ForumPostScreen', { item, forumId, forumName: forumName })}
                 onEdit={() => handleEdit(item)}
                 onDelete={() => handleDelete(item)}
                 onReport={() => handleReport(item)}
@@ -381,6 +387,7 @@ const styles = StyleSheet.create({
   postsDescription: {
     fontSize: 18,
     color: 'darkslategrey',
-    width: '90%'
+    width: '90%',
+    textAlign: 'center'
   }
 })

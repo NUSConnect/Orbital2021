@@ -36,9 +36,9 @@ export default class HomePostsScreen extends React.Component {
       filteredBy: null,
       filterOptions: [
         { key: 0, section: true, label: 'Filter by:' },
-        { key: 1, label: 'Posts' },
+        { key: 1, label: 'Everything' },
         { key: 2, label: 'News' },
-        { key: 3, label: 'Everything' }
+        { key: 3, label: 'Posts' }
       ],
       haveNewMessage: false
     }
@@ -79,7 +79,7 @@ export default class HomePostsScreen extends React.Component {
               filteredBy: documentSnapshot.data().preferredFilter
             })
           } else {
-            this.setState({ sortedBy: 'Latest', filteredBy: 'Posts' })
+            this.setState({ sortedBy: 'Latest', filteredBy: 'Everything' })
           }
         })
     };
@@ -492,10 +492,86 @@ export default class HomePostsScreen extends React.Component {
                 </View>
                 )
               : (
-                <View style={styles.postMessage}>
-                  <Text style={styles.postsDescription}>
-                    No posts here!{'\n'}Follow someone or make a post yourself.
-                  </Text>
+                <View style={styles.headerComponentStyle}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={styles.sortBar}>
+                      <MaterialCommunityIcons
+                        name='sort'
+                        color='blue'
+                        size={26}
+                      />
+                      <Text style={styles.text}>{'Sorted by: '}</Text>
+                      <ModalSelector
+                        data={this.state.sortingOptions}
+                        initValue={this.state.sortedBy}
+                        onChange={(option) =>
+                          this.changeSorting(option.label)}
+                        animationType='fade'
+                        backdropPressToClose
+                        overlayStyle={{
+                          flex: 1,
+                          padding: '5%',
+                          justifyContent: 'center',
+                          backgroundColor: 'rgba(0,0,0,0.9)'
+                        }}
+                        sectionTextStyle={{ fontSize: 20 }}
+                        cancelTextStyle={{
+                          color: 'crimson',
+                          fontSize: 20
+                        }}
+                        cancelText='Cancel'
+                        optionTextStyle={{ fontSize: 20 }}
+                      >
+                        <TextInput
+                          style={styles.pickerText}
+                          editable={false}
+                          placeholder={this.state.sortedBy}
+                          value={this.state.sortedBy}
+                        />
+                      </ModalSelector>
+                    </View>
+                    <View style={styles.sortBar}>
+                      <MaterialCommunityIcons
+                        name='filter'
+                        color='blue'
+                        size={26}
+                      />
+                      <Text style={styles.text}>{'Filter: '}</Text>
+                      <ModalSelector
+                        data={this.state.filterOptions}
+                        initValue={this.state.filteredBy}
+                        onChange={(option) =>
+                          this.changeFilter(option.label)}
+                        animationType='fade'
+                        backdropPressToClose
+                        overlayStyle={{
+                          flex: 1,
+                          padding: '5%',
+                          justifyContent: 'center',
+                          backgroundColor: 'rgba(0,0,0,0.9)'
+                        }}
+                        sectionTextStyle={{ fontSize: 20 }}
+                        cancelTextStyle={{
+                          color: 'crimson',
+                          fontSize: 20
+                        }}
+                        cancelText='Cancel'
+                        optionTextStyle={{ fontSize: 20 }}
+                      >
+                        <TextInput
+                          style={styles.pickerText}
+                          editable={false}
+                          placeholder={this.state.filteredBy}
+                          value={this.state.filteredBy}
+                        />
+                      </ModalSelector>
+                    </View>
+                  </View>
+                  <View style={styles.postMessage}>
+                    <Text style={styles.postsDescription}>
+                      No posts here!{'\n'}Follow someone or make a post yourself.
+                    </Text>
+                  </View>
                 </View>
                 )}
         </SafeAreaView>
@@ -543,6 +619,7 @@ const styles = StyleSheet.create({
   postsDescription: {
     fontSize: 18,
     color: 'darkslategrey',
-    width: '90%'
+    width: '90%',
+    textAlign: 'center'
   }
 })

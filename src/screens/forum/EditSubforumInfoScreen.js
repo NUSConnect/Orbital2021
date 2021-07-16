@@ -17,17 +17,34 @@ import SubmitButton from '../../components/SubmitButton'
 import Button from '../../components/Button'
 import { textChecker } from '../../api/textChecker'
 
-export default class ForumCreationScreen extends React.Component {
+export default class EditSubforumInfoScreen extends React.Component {
   constructor (props) {
     super(props)
+    console.log(props)
     this.state = {
       nameText: '',
       descriptionText: '',
-      reasonText: '',
       image: 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/forum%2FWELCOME.png?alt=media&token=eb0f815b-0e18-4eca-b5a6-0cc170b0eb51',
       uploading: false,
       transferred: 0
     }
+  }
+
+  componentDidMount () {
+    this.getForumInfo()
+  }
+
+  getForumInfo = async () => {
+    await firebase
+      .firestore()
+      .collection('forums')
+      .doc(this.props.route.params.forumId)
+      .get()
+      .then(documentSnapshot => this.setState({
+        image: documentSnapshot.data().forumImg,
+        nameText: documentSnapshot.data().forumName,
+        descriptionText: documentSnapshot.data().forumDescription
+      }))
   }
 
     handleChoosePhotoFromLibrary = async () => {
@@ -54,8 +71,8 @@ export default class ForumCreationScreen extends React.Component {
 
     submitPost = async (goBack) => {
       Alert.alert(
-        'Open portal',
-        'Are you sure all the information has been correctly entered?',
+        'Edit portal info',
+        'Are you sure?',
         [
           {
             text: 'Cancel',
@@ -74,41 +91,43 @@ export default class ForumCreationScreen extends React.Component {
     handleSubmit = async (navigator) => {
       const imageUrl = await this.uploadImage()
 
-      firebase
+      await firebase
         .firestore()
         .collection('forums')
-        .add({
+        .doc(this.props.route.params.forumId)
+        .update({
           forumImg: imageUrl,
           forumName: this.state.nameText,
-          forumDescription: this.state.descriptionText,
-          reason: this.state.reasonText
+          forumDescription: this.state.descriptionText
         })
-        .then((docRef) => {
-          const currentUserId = firebase.auth().currentUser.uid
-          firebase.firestore().collection('users').doc(currentUserId).update({ forumAdmin: true })
-          firebase.firestore().collection('users').doc(currentUserId).collection('forumAdmin').doc(docRef.id)
-            .set({ name: this.state.nameText })
-          firebase.firestore().collection('forums').doc(docRef.id).collection('admins').doc(currentUserId).set({})
-
-          Alert.alert(
-            'Portal opened!',
-            'The portal has successfully opened. Make your first post!',
-            [
-              {
-                text: 'OK',
-                onPress: navigator
-              }
-            ],
-            { cancelable: false }
-          )
-          this.setState({ text: null })
+      await firebase
+        .firestore()
+        .collection('forums')
+        .doc(this.props.route.params.forumId)
+        .collection('admins')
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(documentSnapshot => {
+            firebase
+              .firestore()
+              .collection('users')
+              .doc(documentSnapshot.id)
+              .collection('forumAdmin')
+              .doc(this.props.route.params.forumId)
+              .update({ name: this.state.nameText })
+          })
         })
-        .catch((error) => {
-          console.log(
-            'Something went wrong with added post to firestore.',
-            error
-          )
-        })
+      Alert.alert(
+        'Portal info edited!',
+        'Info has been successfully updated.',
+        [
+          {
+            text: 'OK',
+            onPress: navigator
+          }
+        ],
+        { cancelable: false }
+      )
     };
 
     uploadImage = async () => {
@@ -169,7 +188,7 @@ export default class ForumCreationScreen extends React.Component {
           resetScrollToCoords={{ x: 0, y: 0 }}
           scrollEnabled
         >
-          <Text style={styles.title}>Open a new portal</Text>
+          <Text style={styles.title}>Edit {this.props.route.params.forumName} Info</Text>
           <Text style={styles.subTitle}>Portal Image</Text>
           <TouchableOpacity style={styles.imageContainer} onPress={this.handleChoosePhotoFromLibrary}>
             <Image
@@ -204,14 +223,6 @@ export default class ForumCreationScreen extends React.Component {
             placeholder='Enter a description'
             multiline
           />
-          <Text style={styles.subTitle}>Reason for new portal</Text>
-          <TextInput
-            style={styles.reasonInput}
-            onChangeText={(reasonText) => this.setState({ reasonText })}
-            value={this.state.reasonText}
-            placeholder='How is this portal different from what is already open?'
-            multiline
-          />
           {this.state.uploading
             ? (
               <View
@@ -236,9 +247,10 @@ export default class ForumCreationScreen extends React.Component {
                 <View style={styles.space} />
                 <SubmitButton
                   goBack={() => {
-                    if (textChecker(this.state.nameText) && textChecker(this.state.descriptionText) &&
-                                        textChecker(this.state.reasonText)) {
-                      this.submitPost(() => navigation.goBack())
+                    if (textChecker(this.state.nameText) && textChecker(this.state.descriptionText)) {
+                      this.submitPost(() => {
+                        navigation.goBack()
+                      })
                     } else {
                       Alert.alert(
                         'Missing information',
@@ -246,7 +258,7 @@ export default class ForumCreationScreen extends React.Component {
                       )
                     }
                   }}
-                  string='Open'
+                  string='Edit'
                 />
               </View>
               )}

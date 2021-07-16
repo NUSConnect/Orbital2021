@@ -17,7 +17,8 @@ import {
   ReportForumCommentScreen,
   SubforumReportsListScreen,
   SubforumViewReportScreen,
-  SubForumInfoScreen
+  SubForumInfoScreen,
+  EditSubforumInfoScreen
 } from './'
 import ForumAdminManagementScreen from '../profile/ForumAdminManagementScreen'
 import ReportDetailScreen from '../profile/viewReports/ReportDetailScreen'
@@ -67,6 +68,7 @@ export default function ForumScreen () {
         <Stack.Screen name='UnrestrictedViewProfileScreen' component={UnrestrictedViewProfileScreen} />
         <Stack.Screen name='SubForumInfoScreen' component={SubForumInfoScreen} />
         <Stack.Screen name='ChatScreen' component={ChatScreen} />
+        <Stack.Screen name='EditSubforumInfoScreen' component={EditSubforumInfoScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )
