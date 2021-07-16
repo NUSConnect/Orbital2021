@@ -1,26 +1,8 @@
 import * as firebase from 'firebase'
 import { getClusters } from './kMeans'
 import { sendPushNotification } from './notifications'
+import { Alert } from 'react-native'
 
-/*
-const splitClusterTest = (cluster) => {
-  const firstHalf = cluster.splice(cluster.length / 2)
-  const result = [firstHalf, cluster]
-  return result.flatMap(x => splitHelper(x))
-}
-
-const splitHelperTest = (cluster) => {
-  if (cluster.length <= 5) {
-    return [cluster]
-  } else {
-    const firstHalf = cluster.splice(cluster.length / 2)
-    const result = [firstHalf, cluster]
-    return result.flatMap(x => splitHelper(x))
-  }
-}
-
-const test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
-*/
 export async function formClusters () {
   const data = []
   console.log('Start pulling')
@@ -176,6 +158,7 @@ export async function formClusters () {
         }
       })
   }
+  Alert.alert('Clustering done!', 'Clustering has been executed.')
 }
 
 export async function deletePool () {
@@ -189,6 +172,7 @@ export async function deletePool () {
         documentSnapshot.ref.delete()
       })
     })
+  Alert.alert('Pool deleted!', 'Matching pool has been deleted.')
 }
 
 export async function createGroupChat (category, threadId, groupName, users, date) {

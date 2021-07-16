@@ -31,6 +31,7 @@ exports[`renders correctly 1`] = `
           "flexDirection": "row",
           "height": 60,
           "justifyContent": "center",
+          "width": "100%",
         }
       }
     >
@@ -60,15 +61,19 @@ exports[`renders correctly 1`] = `
             "flexDirection": "row",
             "justifyContent": "center",
             "paddingLeft": 30,
-            "width": "85%",
+            "paddingRight": 30,
+            "width": "50%",
           }
         }
       >
         <Text
+          numberOfLines={2}
           style={
             Object {
               "color": "#ff7f50",
-              "fontSize": 30,
+              "flex": 1,
+              "flexWrap": "wrap",
+              "fontSize": 24,
               "textAlign": "center",
             }
           }

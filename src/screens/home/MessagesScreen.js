@@ -29,6 +29,7 @@ import {
 export default function MessagesScreen ({ navigation }) {
   const currentUserId = firebase.auth().currentUser.uid
   const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(true)
   const [threads, setThreads] = useState([])
   const [filteredDataSource, setFilteredDataSource] = useState([])
   const [search, setSearch] = useState('')
@@ -84,6 +85,13 @@ export default function MessagesScreen ({ navigation }) {
     console.log('Delete')
     if (item.isGroup) {
       console.log('group')
+      if (item.id.substring(0, 7) === 'MatchMe') {
+        const matchMeId = item.id.slice(-13)
+
+        firebase.firestore().collection('users').doc(currentUserId).collection('matchHistory').doc(matchMeId)
+          .update({ deleted: true })
+      }
+
       firebase.firestore().collection('THREADS').doc(item.id).get()
         .then((docSnapshot) => {
           const { users } = docSnapshot.data()
@@ -192,6 +200,7 @@ export default function MessagesScreen ({ navigation }) {
     threads.sort((x, y) => {
       return y.latest - x.latest
     })
+    setRefreshing(false)
     setLoading(false)
     setThreads(threads)
   }
@@ -237,6 +246,7 @@ export default function MessagesScreen ({ navigation }) {
   }
 
   const getThreads = async () => {
+    setRefreshing(true)
     // Get open threads
     const openThreads = []
     const deletedThreads = []
@@ -291,6 +301,11 @@ export default function MessagesScreen ({ navigation }) {
     }
   }
 
+  const handleRefresh = () => {
+    getThreads()
+    setRefreshing(false)
+  }
+
   return (
     <View style={styles.container}>
       <MessageTopTab
@@ -340,6 +355,8 @@ export default function MessagesScreen ({ navigation }) {
                   </Card>
                 </Swipeable>
               )}
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
             />
           </View>)
         : loading

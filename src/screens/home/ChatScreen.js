@@ -16,6 +16,7 @@ import {
 import { IconButton } from 'react-native-paper'
 import { Ionicons } from 'react-native-vector-icons'
 import { sendPushNotification } from '../../api/notifications'
+import * as Notifications from 'expo-notifications'
 
 export default function ChatScreen ({ route, onPress, navigation }) {
   const [messages, setMessages] = useState([])
@@ -203,6 +204,13 @@ export default function ChatScreen ({ route, onPress, navigation }) {
         setMessages(messages)
       })
 
+    // hide push notifications
+    Notifications.setNotificationHandler({
+      handleNotification: async () => {
+        return { shouldShowAlert: false }
+      }
+    })
+
     const backNav = navigation.addListener('beforeRemove', (e) => {
       e.preventDefault()
       backNav()
@@ -211,7 +219,15 @@ export default function ChatScreen ({ route, onPress, navigation }) {
     })
 
     // Stop listening for updates whenever the component unmounts
-    return () => messagesListener()
+    return () => {
+      messagesListener()
+      // show push notifications
+      Notifications.setNotificationHandler({
+        handleNotification: async () => {
+          return { shouldShowAlert: true }
+        }
+      })
+    }
   }, [])
 
   function renderBubble (props) {

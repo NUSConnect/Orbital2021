@@ -26,7 +26,7 @@ export default function SubForumHeader ({
         />
       </TouchableOpacity>
       <View style={styles.title}>
-        <Text style={styles.text}>{title}</Text>
+        <Text style={styles.text} numberOfLines={2}>{title}</Text>
         <TouchableOpacity
           style={styles.button}
           activeOpacity={0.4}
@@ -82,6 +82,7 @@ export default function SubForumHeader ({
 const styles = StyleSheet.create({
   container: {
     height: 60,
+    width: '100%',
     flexDirection: 'row',
     backgroundColor: '#ffffff',
     borderColor: '#dcdcdc',
@@ -96,15 +97,18 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     flexDirection: 'row',
-    width: '85%',
+    width: '50%',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: 30
+    paddingLeft: 30,
+    paddingRight: 30
   },
   text: {
     color: '#ff7f50',
-    fontSize: 30,
-    textAlign: 'center'
+    fontSize: 24,
+    textAlign: 'center',
+    flex: 1,
+    flexWrap: 'wrap'
   },
   icon: {},
   moreOptions: {

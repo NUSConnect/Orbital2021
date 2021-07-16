@@ -50,7 +50,8 @@ export default class MatchHistoryScreen extends React.Component {
                 isGroup,
                 success,
                 timeMatched,
-                users
+                users,
+                deleted
               } = doc.data()
               list.push({
                 id: doc.id,
@@ -58,7 +59,8 @@ export default class MatchHistoryScreen extends React.Component {
                 isGroup,
                 success,
                 timeMatched,
-                users
+                users,
+                deleted
               })
             })
           })

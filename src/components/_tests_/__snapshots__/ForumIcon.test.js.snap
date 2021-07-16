@@ -41,10 +41,17 @@ exports[`renders correctly 1`] = `
     testID="image"
   />
   <Text
+    numberOfLines={2}
     style={
       Object {
         "color": "black",
+        "flex": 1,
+        "flexWrap": "wrap",
         "fontSize": 16,
+        "height": 40,
+        "paddingTop": 4,
+        "textAlign": "center",
+        "width": 225.5072463768116,
       }
     }
     testID="text"
