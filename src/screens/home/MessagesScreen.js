@@ -29,6 +29,7 @@ import {
 export default function MessagesScreen ({ navigation }) {
   const currentUserId = firebase.auth().currentUser.uid
   const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(true)
   const [threads, setThreads] = useState([])
   const [filteredDataSource, setFilteredDataSource] = useState([])
   const [search, setSearch] = useState('')
@@ -199,6 +200,7 @@ export default function MessagesScreen ({ navigation }) {
     threads.sort((x, y) => {
       return y.latest - x.latest
     })
+    setRefreshing(false)
     setLoading(false)
     setThreads(threads)
   }
@@ -244,6 +246,7 @@ export default function MessagesScreen ({ navigation }) {
   }
 
   const getThreads = async () => {
+    setRefreshing(true)
     // Get open threads
     const openThreads = []
     const deletedThreads = []
@@ -298,6 +301,11 @@ export default function MessagesScreen ({ navigation }) {
     }
   }
 
+  const handleRefresh = () => {
+    getThreads()
+    setRefreshing(false)
+  }
+
   return (
     <View style={styles.container}>
       <MessageTopTab
@@ -347,6 +355,8 @@ export default function MessagesScreen ({ navigation }) {
                   </Card>
                 </Swipeable>
               )}
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
             />
           </View>)
         : loading
