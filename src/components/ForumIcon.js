@@ -12,7 +12,7 @@ const ForumIcon = ({ item, onPress }) => {
         }}
         testID='image'
       />
-      <Text style={styles.text} testID='text'>{item.forumName}</Text>
+      <Text style={styles.text} numberOfLines={2} testID='text'>{item.forumName}</Text>
     </TouchableOpacity>
   )
 }
@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
     height: 40,
     width: 130 * Dimensions.get('window').width / 414 - 10,
     paddingTop: 4,
-    textAlign: 'center'
+    textAlign: 'center',
+    flex: 1,
+    flexWrap: 'wrap'
   }
 })

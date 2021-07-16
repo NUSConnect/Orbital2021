@@ -67,10 +67,13 @@ exports[`renders correctly 1`] = `
         }
       >
         <Text
+          numberOfLines={2}
           style={
             Object {
               "color": "#ff7f50",
-              "fontSize": 26,
+              "flex": 1,
+              "flexWrap": "wrap",
+              "fontSize": 24,
               "textAlign": "center",
             }
           }

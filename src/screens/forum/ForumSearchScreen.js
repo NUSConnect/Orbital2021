@@ -109,6 +109,7 @@ export default class ForumSearchScreen extends React.Component {
                   searchFilterFunction={this.searchFilterFunction}
                   resetFilter={() => this.setState({ filteredData: this.state.data })}
                 />
+                <Text />
                 <FlatList
                   numColumns={3}
                   data={

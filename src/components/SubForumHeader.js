@@ -26,7 +26,7 @@ export default function SubForumHeader ({
         />
       </TouchableOpacity>
       <View style={styles.title}>
-        <Text style={styles.text}>{title}</Text>
+        <Text style={styles.text} numberOfLines={2}>{title}</Text>
         <TouchableOpacity
           style={styles.button}
           activeOpacity={0.4}
@@ -105,8 +105,10 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#ff7f50',
-    fontSize: 26,
-    textAlign: 'center'
+    fontSize: 24,
+    textAlign: 'center',
+    flex: 1,
+    flexWrap: 'wrap'
   },
   icon: {},
   moreOptions: {
