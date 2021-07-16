@@ -84,6 +84,13 @@ export default function MessagesScreen ({ navigation }) {
     console.log('Delete')
     if (item.isGroup) {
       console.log('group')
+      if (item.id.substring(0, 7) === 'MatchMe') {
+        const matchMeId = item.id.slice(-13)
+
+        firebase.firestore().collection('users').doc(currentUserId).collection('matchHistory').doc(matchMeId)
+          .update({ deleted: true })
+      }
+
       firebase.firestore().collection('THREADS').doc(item.id).get()
         .then((docSnapshot) => {
           const { users } = docSnapshot.data()

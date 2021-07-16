@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 
 const MatchCard = ({ item, onPress }) => {
   const currentUserId = firebase.auth().currentUser.uid
-  const color = item.success ? '#90EE90' : '#FF7F7F'
+  const color = item.deleted ? 'darkgray' : item.success ? '#90EE90' : '#FF7F7F'
   const [otherName, setOtherName] = useState('')
   const [otherId, setOtherId] = useState('')
   const [otherBio, setOtherBio] = useState('')
@@ -79,7 +79,9 @@ const MatchCard = ({ item, onPress }) => {
   }
 
   const onPressFn = () => {
-    if (item.isGroup === undefined) {
+    if (item.deleted) {
+      Alert.alert('Deleted MatchMe Group', 'You have already left this MatchMe group')
+    } else if (item.isGroup === undefined) {
       console.log('Failure')
       Alert.alert('Match failed!', 'Sorry, better luck next time :(')
     } else if (item.isGroup) {
@@ -101,14 +103,16 @@ const MatchCard = ({ item, onPress }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onPressFn} testID='pressable'>
+      <TouchableOpacity onPress={onPressFn} activeOpacity={0.8} testID='pressable'>
         <Card style={{ padding: 10, margin: 10, backgroundColor: color, height: 100, borderRadius: 15 }}>
-          <Text style={styles.title}>{item.success ? 'Success!' : 'Sorry!'}</Text>
-          {item.success
-            ? item.isGroup
-                ? <Text style={styles.info}>{category} successfully completed on {item.timeMatched.toDate().toDateString()}! Tap here to chat with your new group!</Text>
-                : <Text style={styles.info}>{category} match successfully completed on {item.timeMatched.toDate().toDateString()}! Tap here to check out {otherName}{'\'s profile!'}</Text>
-            : <Text style={styles.info}>Match failed, better luck next time!</Text>}
+          <Text style={styles.title}>{item.deleted ? 'Deleted' : item.success ? 'Success!' : 'Sorry!'}</Text>
+          {item.deleted
+            ? <Text style={styles.info}>You have left your {category} group created on {item.timeMatched.toDate().toDateString()}</Text>
+            : item.success
+              ? item.isGroup
+                  ? <Text style={styles.info}>{category} successfully completed on {item.timeMatched.toDate().toDateString()}! Tap here to chat with your new group!</Text>
+                  : <Text style={styles.info}>{category} match successfully completed on {item.timeMatched.toDate().toDateString()}! Tap here to check out {otherName}{'\'s profile!'}</Text>
+              : <Text style={styles.info}>Match failed, better luck next time!</Text>}
         </Card>
       </TouchableOpacity>
     </View>
