@@ -54,7 +54,7 @@ export default class ProfilePersonalScreen extends React.Component {
       })
 
       if (!result.cancelled) {
-        const userId = this.state.currentUSerId
+        const userId = this.state.currentUserId
         const imagePath = 'profile/' + userId
 
         this.uploadImage(result.uri, imagePath)
