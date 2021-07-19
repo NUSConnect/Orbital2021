@@ -311,7 +311,7 @@ export default function FindGroupScreen ({ navigation }) {
           </TouchableOpacity>
         </View>
       </View>
-      <Text style={styles.header}> Nothing suits you? </Text>
+      <Text style={styles.header}> Find a group! </Text>
       <TouchableOpacity style={styles.button} onPress={() => _handleMatchMe()}>
         <Text style={styles.buttonText}> Match Me! </Text>
       </TouchableOpacity>
