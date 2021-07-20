@@ -9,9 +9,27 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
   // const { itemId, category } = route.params
   const { item, itemId, category } = route.params
   const reportedUid = category === 'users' ? itemId : item.userId
-  // console.log(item)
-  // console.log(itemId)
-  console.log(reportedUid)
+  const [isSuperAdmin, setIsSuperAdmin] = React.useState(false)
+  const currentUserId = firebase.auth().currentUser.uid
+
+  React.useEffect(() => {
+    checkSuperAdmin()
+    console.log(currentUserId)
+    console.log(isSuperAdmin)
+  }, [])
+
+  const checkSuperAdmin = async () => {
+    await firebase
+      .firestore()
+      .collection('users')
+      .doc(currentUserId)
+      .get()
+      .then(documentSnapshot => {
+        if (documentSnapshot.data().superAdmin !== null) {
+          setIsSuperAdmin(documentSnapshot.data().superAdmin)
+        }
+      })
+  }
 
   const navigateToCategories = () => {
     navigation.goBack()
@@ -202,12 +220,15 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
         >
           Issue Warning
         </Button>
-        <Button
-          style={styles.button}
-          onPress={() => handleBanUser()}
-        >
-          Ban user
-        </Button>
+        {isSuperAdmin
+          ? (
+            <Button
+              style={styles.button}
+              onPress={() => handleBanUser()}
+            >
+              Ban user
+            </Button>)
+          : null}
       </View>
     </Background>
   )
