@@ -1,4 +1,5 @@
 # NUS Orbital 2021 (Team Name: NUSConnect)
+![Background](https://raw.githubusercontent.com/NUSConnect/Orbital2021/main/assets/background.png)
 ![Node.js CI](https://github.com/NUSConnect/Orbital2021/actions/workflows/node.js.yml/badge.svg)
 [![React-Native](https://img.shields.io/badge/react--native-v0.64.5-blue?logo=react)](https://reactnative.dev)
 [![runs with expo](https://img.shields.io/badge/Runs%20with%20Expo-4630EB.svg?style=flat&logo=EXPO&labelColor=f3f3f3&logoColor=000)](https://expo.io/@luayida99/Orbital2021)
@@ -8,8 +9,6 @@ Orbital (Independent Software Development Project) is NUS School of Computing se
 **Proposed Level of Achievement:** Apollo 11
 
 ## Introducing Portal.io
-
-<img src="https://raw.githubusercontent.com/benedictchuajj/Orbital2021/main/src/assets/logo.png" width="160">
 
 A cross-platform mobile application (written in React Native) to help users seamlessly connect with each other.
 
@@ -40,6 +39,7 @@ We plan to make it a cross-platform mobile app, which users can download and reg
 
 **Milestone 1:** [Link to report](https://docs.google.com/document/d/1kk2xyrJco7O6uScoS3XqIbGLOcx2QNYJV4IhLyRGNxg/edit?usp=sharing)             
 **Milestone 2:** [Link to report](https://docs.google.com/document/d/1x6VheE0PXcwjMB-_03SBfArbyHGMapKNLqP0gecd_4c/edit?usp=sharing)
+**Milestone 3:** To be updated
 
 ### Documentation:
 
@@ -57,7 +57,7 @@ Simply download Expo Go on your mobile devices, create an Expo account and scan 
 
 Note: iOS users will not be able to run the application out of the box due to restrictions on Expo put in place by Apple. If you want to test out the app, please contact us on Telegram for access.
 
-**Updated for Milestone 2**
+**Updated for Milestone 3**
 
 ![QR Code](https://raw.githubusercontent.com/benedictchuajj/Orbital2021/main/assets/deploymentQR.png)
 
