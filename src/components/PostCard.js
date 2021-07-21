@@ -1,7 +1,7 @@
 import * as firebase from 'firebase'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Ionicons, MaterialIcons } from 'react-native-vector-icons'
 import {
@@ -21,6 +21,8 @@ import ProgressiveImage from './ProgressiveImage'
 import DoubleTap from './DoubleTap'
 import { sendPushNotification } from '../api/notifications'
 import * as Haptics from 'expo-haptics'
+
+const DeviceWidth = Dimensions.get('window').width
 
 const PostCard = ({
   route,
@@ -259,7 +261,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   user: {
-    width: 360
+    width: DeviceWidth * 0.9
   },
   button: {}
 })

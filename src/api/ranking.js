@@ -38,3 +38,9 @@ export const sortByName = (x, y) => {
   if (x.name > y.name) { return 1 }
   return 0
 }
+
+export const sortByForumName = (x, y) => {
+  if (x.forumName < y.forumName) { return -1 }
+  if (x.forumName > y.forumName) { return 1 }
+  return 0
+}

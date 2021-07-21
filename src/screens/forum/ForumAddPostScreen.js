@@ -1,10 +1,12 @@
 import * as firebase from 'firebase'
 import React, { useState } from 'react'
-import { Alert, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Alert, Dimensions, StyleSheet, Text, TextInput, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import CancelButton from '../../components/CancelButton'
 import SubmitButton from '../../components/SubmitButton'
 import { textChecker } from '../../api/textChecker'
+
+const DeviceHeight = Dimensions.get('window').height
 
 const ForumAddPostScreen = ({ navigation, route, onPress }) => {
   const userID = firebase.auth().currentUser.uid
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
   },
   inputBody: {
     flex: 0,
-    height: 440,
+    height: DeviceHeight * 0.5,
     margin: 12,
     borderWidth: 1,
     justifyContent: 'flex-start',

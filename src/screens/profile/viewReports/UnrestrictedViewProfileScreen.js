@@ -11,7 +11,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Modal
+  Modal,
+  PixelRatio
 } from 'react-native'
 import PostCard from '../../../components/PostCard'
 import TitleWithBack from '../../../components/TitleWithBack'
@@ -20,6 +21,7 @@ import { Ionicons, MaterialIcons } from 'react-native-vector-icons'
 import { sendPushNotification } from '../../../api/notifications'
 
 const DeviceWidth = Dimensions.get('window').width
+const followingFont = PixelRatio.get() <= 1.5 ? 12 : 16
 
 // For Admins only: ignores privacy of user => To be used for managing user reports ONLY
 
@@ -530,7 +532,7 @@ const styles = StyleSheet.create({
     paddingRight: '20%'
   },
   followerInfo: {
-    fontSize: 16,
+    fontSize: followingFont,
     color: 'darkslategrey',
     fontWeight: '600',
     flexWrap: 'wrap',

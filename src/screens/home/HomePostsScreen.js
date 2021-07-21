@@ -10,13 +10,17 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  PixelRatio
 } from 'react-native'
 import ModalSelector from 'react-native-modal-selector'
 import { MaterialCommunityIcons } from 'react-native-vector-icons'
 import { sortByLatest, sortByTrending } from '../../api/ranking'
 import HomeTopTab from '../../components/HomeTopTab'
 import PostCard from '../../components/PostCard'
+
+const iconSize = PixelRatio.get() <= 1.5 ? 22 : 26
+const textFont = PixelRatio.get() <= 1.5 ? 14 : 16
 
 export default class HomePostsScreen extends React.Component {
   constructor (props) {
@@ -389,7 +393,7 @@ export default class HomePostsScreen extends React.Component {
                       <MaterialCommunityIcons
                         name='sort'
                         color='blue'
-                        size={26}
+                        size={iconSize}
                       />
                       <Text style={styles.text}>{'Sorted by: '}</Text>
                       <ModalSelector
@@ -425,7 +429,7 @@ export default class HomePostsScreen extends React.Component {
                       <MaterialCommunityIcons
                         name='filter'
                         color='blue'
-                        size={26}
+                        size={iconSize}
                       />
                       <Text style={styles.text}>{'Filter: '}</Text>
                       <ModalSelector
@@ -498,7 +502,7 @@ export default class HomePostsScreen extends React.Component {
                       <MaterialCommunityIcons
                         name='sort'
                         color='blue'
-                        size={26}
+                        size={iconSize}
                       />
                       <Text style={styles.text}>{'Sorted by: '}</Text>
                       <ModalSelector
@@ -534,7 +538,7 @@ export default class HomePostsScreen extends React.Component {
                       <MaterialCommunityIcons
                         name='filter'
                         color='blue'
-                        size={26}
+                        size={iconSize}
                       />
                       <Text style={styles.text}>{'Filter: '}</Text>
                       <ModalSelector
@@ -593,7 +597,7 @@ const styles = StyleSheet.create({
     width: '50%'
   },
   text: {
-    fontSize: 16
+    fontSize: textFont
   },
   pickerText: {
     fontSize: 16,

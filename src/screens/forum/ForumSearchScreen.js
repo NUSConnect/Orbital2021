@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import ForumIcon from '../../components/ForumIcon'
 import SearchBar from '../../components/SearchBar'
+import { sortByForumName } from '../../api/ranking'
 
 export default class ForumSearchScreen extends React.Component {
   constructor (props) {
@@ -57,6 +58,7 @@ export default class ForumSearchScreen extends React.Component {
       if (this.state.refreshing) {
         this.setState({ refreshing: false, loading: false })
       }
+      list.sort(sortByForumName)
       this.setState({ data: list })
       console.log(this.state.data)
     };

@@ -27,18 +27,6 @@ export default function SubForumHeader ({
       </TouchableOpacity>
       <View style={styles.title}>
         <Text style={styles.text} numberOfLines={2}>{title}</Text>
-        <TouchableOpacity
-          style={styles.button}
-          activeOpacity={0.4}
-          onPress={subscribe}
-        >
-          <Ionicons
-            name='star'
-            color={isSubscribed ? 'gold' : 'darkgray'}
-            size={26}
-            style={styles.star}
-          />
-        </TouchableOpacity>
       </View>
       <Menu style={styles.centerAlign}>
         <MenuTrigger>
@@ -55,6 +43,12 @@ export default function SubForumHeader ({
             <View style={styles.menuItems}>
               <MaterialIcons name='info' size={30} color='#79D2E6' />
               <Text style={styles.menuText}>Forum Info</Text>
+            </View>
+          </MenuOption>
+          <MenuOption onSelect={() => subscribe()}>
+            <View style={styles.menuItems}>
+              <MaterialIcons name='star' size={30} color={isSubscribed ? 'gold' : 'darkgray'} />
+              <Text style={styles.menuText}>Favourite</Text>
             </View>
           </MenuOption>
           {isAdmin === true
