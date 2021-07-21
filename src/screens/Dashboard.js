@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import * as Permissions from 'expo-permissions'
 import * as Notifications from 'expo-notifications'
 import * as firebase from 'firebase'
-import checkIfFirstLaunch from '../api/firstLaunch'
 import { FontAwesome5, MaterialCommunityIcons } from 'react-native-vector-icons'
 import {
   ForumScreen,
@@ -98,6 +97,8 @@ export default function Dashboard () {
     )
     let finalStatus = existingStatus
 
+    const currentUserId = firebase.auth().currentUser.uid
+
     // only ask if permissions have not already been determined, because
     // iOS won't necessarily prompt the user a second time.
     if (existingStatus !== 'granted') {
@@ -109,6 +110,7 @@ export default function Dashboard () {
 
     // Stop here if the user did not grant permissions
     if (finalStatus !== 'granted') {
+      await firebase.firestore().collection('users').doc(currentUserId).update({ pushInit: true })
       return
     }
 
@@ -122,7 +124,8 @@ export default function Dashboard () {
         .collection('users')
         .doc(firebase.auth().currentUser.uid)
         .update({
-          pushToken: token
+          pushToken: token,
+          pushInit: true
         })
     } catch (error) {
       console.log(error)
@@ -130,11 +133,12 @@ export default function Dashboard () {
   }
 
   useEffect(() => {
-    checkIfFirstLaunch().then((ifFirstLaunch) => {
-      if (ifFirstLaunch) {
-        registerForPushNotificationsAsync()
-      }
-    })
+    firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).get()
+      .then((documentSnapshot) => {
+        if (!documentSnapshot.data().pushInit) {
+          registerForPushNotificationsAsync()
+        }
+      })
   }, [])
 
   return <MyTabs />

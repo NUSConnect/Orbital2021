@@ -21,7 +21,7 @@ export default function FindGroupScreen ({ navigation }) {
       .doc(currentUserId)
       .onSnapshot((documentSnapshot) => {
         if (documentSnapshot.data().finding) {
-          calculateGroup(documentSnapshot.data().groupCategory)
+          navigator(documentSnapshot.data().groupCategory)
           console.log('checking at ' + new Date())
         }
         if (typeof documentSnapshot.data().enableVibration !== 'undefined') {
@@ -58,6 +58,13 @@ export default function FindGroupScreen ({ navigation }) {
           })
       })
     if (vibrate) { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium) }
+
+    await firebase.firestore().collection('categories').doc(category).collection('people').get()
+      .then(querySnapshot => {
+        if (querySnapshot.size >= groupThreshold) {
+          clearUsers(true, category)
+        }
+      })
   }
 
   //  const stopFinding = async (userId) => {
@@ -173,7 +180,7 @@ export default function FindGroupScreen ({ navigation }) {
     }
   }
 
-  const calculateGroup = async (category) => {
+  const navigator = async (category) => {
     let count
 
     const unsubscribe = firebase
@@ -188,9 +195,6 @@ export default function FindGroupScreen ({ navigation }) {
           unsubscribe()
         } else if (count >= groupThreshold) {
           // hit threshold, handle logic to form a group. currently only an alert.
-
-          const successfulFinding = count >= groupThreshold
-          clearUsers(successfulFinding, category)
           const loggedInListener = firebase.auth().onAuthStateChanged(user => {
             if (user) {
               navigation.navigate('FindGroupScreen')
