@@ -4,7 +4,7 @@ import * as Permissions from 'expo-permissions'
 import * as Notifications from 'expo-notifications'
 import * as firebase from 'firebase'
 import checkIfFirstLaunch from '../api/firstLaunch'
-import { FontAwesome5, MaterialCommunityIcons } from 'react-native-vector-icons'
+import { FontAwesome5, MaterialCommunityIcons, Ionicons } from 'react-native-vector-icons'
 import {
   ForumScreen,
   FriendsScreen,
@@ -49,8 +49,8 @@ function MyTabs () {
         options={{
           tabBarLabel: 'Portals',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name='forum'
+            <Ionicons
+              name='aperture'
               color={color}
               size={26}
             />
