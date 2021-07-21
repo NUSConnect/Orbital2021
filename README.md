@@ -32,13 +32,13 @@ We plan to make it a cross-platform mobile app, which users can download and reg
 * Social media features
 * Messaging (supports Direct Messaging and Group Messaging)
 * Forum (known as Portals in our application)
-* Group-based Matching Algorithm (to be implemented)
-* Pulling news of events happening in universities (to be implemented)
+* User and Group-based Matching
+* Pulling news of events happening in universities
 
 ### Milestones:
 
 **Milestone 1:** [Link to report](https://docs.google.com/document/d/1kk2xyrJco7O6uScoS3XqIbGLOcx2QNYJV4IhLyRGNxg/edit?usp=sharing)             
-**Milestone 2:** [Link to report](https://docs.google.com/document/d/1x6VheE0PXcwjMB-_03SBfArbyHGMapKNLqP0gecd_4c/edit?usp=sharing)
+**Milestone 2:** [Link to report](https://docs.google.com/document/d/1x6VheE0PXcwjMB-_03SBfArbyHGMapKNLqP0gecd_4c/edit?usp=sharing)             
 **Milestone 3:** To be updated
 
 ### Documentation:
