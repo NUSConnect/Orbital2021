@@ -9,6 +9,7 @@ import {
   Text
 } from 'react-native'
 import ForumIcon from '../../components/ForumIcon'
+import { sortByForumName } from '../../api/ranking'
 
 export default class ForumFavouritesScreen extends React.Component {
   constructor (props) {
@@ -67,9 +68,7 @@ export default class ForumFavouritesScreen extends React.Component {
           })
       }
 
-      list.sort(function (x, y) {
-        return y.forumName - x.forumName
-      })
+      list.sort(sortByForumName)
       this.setState({ data: list })
 
       if (this.state.refreshing) {

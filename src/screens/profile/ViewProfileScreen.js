@@ -11,7 +11,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Modal
+  Modal,
+  PixelRatio
 } from 'react-native'
 import PostCard from '../../components/PostCard'
 import TitleWithBack from '../../components/TitleWithBack'
@@ -20,6 +21,7 @@ import { Ionicons, MaterialIcons } from 'react-native-vector-icons'
 import { sendPushNotification } from '../../api/notifications'
 
 const DeviceWidth = Dimensions.get('window').width
+const followingFont = PixelRatio.get() <= 1.5 ? 12 : 16
 
 const ViewProfileScreen = ({ navigation, route, onPress }) => {
   const currentUserId = firebase.auth().currentUser.uid
@@ -547,7 +549,7 @@ const styles = StyleSheet.create({
     paddingLeft: 4
   },
   followingInfo: {
-    fontSize: 16,
+    fontSize: followingFont,
     color: 'darkslategrey',
     fontWeight: '600',
     flexWrap: 'wrap'

@@ -193,7 +193,12 @@ const ForumPost = ({
               color={upvoted ? 'lightgreen' : 'darkgray'}
             />
           </TouchableOpacity>
-          <Text style={styles.score} testID='votes'>{votes}</Text>
+          <Text
+            style={[styles.score, { color: upvoted ? 'darkseagreen' : downvoted ? 'red' : 'darkgray' }]}
+            testID='votes'
+          >
+            {votes}
+          </Text>
           <TouchableOpacity
             onPress={() => (downvoted ? unVote() : downVote())}
           >
@@ -319,8 +324,7 @@ const styles = StyleSheet.create({
   score: {
     fontSize: 16,
     paddingLeft: 4,
-    paddingRight: 4,
-    color: 'darkgray'
+    paddingRight: 4
   },
   commentText: {
     fontSize: 16,

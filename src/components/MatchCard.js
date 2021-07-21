@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import * as firebase from 'firebase'
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, View, PixelRatio } from 'react-native'
 import { Card } from 'react-native-shadow-cards'
 import { useNavigation } from '@react-navigation/native'
+
+const titleFont = PixelRatio.get() <= 1.5 ? 16 : 22
+const bodyFont = PixelRatio.get() <= 1.5 ? 14 : 16
 
 const MatchCard = ({ item, onPress }) => {
   const currentUserId = firebase.auth().currentUser.uid
@@ -126,12 +129,12 @@ const styles = StyleSheet.create({
     paddingBottom: 5
   },
   title: {
-    fontSize: 22,
+    fontSize: titleFont,
     color: '#000000',
     fontWeight: '600'
   },
   info: {
-    fontSize: 16,
+    fontSize: bodyFont,
     color: '#000000',
     fontWeight: '300'
   }

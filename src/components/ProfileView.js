@@ -7,12 +7,14 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Modal
+  Modal,
+  PixelRatio
 } from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import { Ionicons } from 'react-native-vector-icons'
 
 const DeviceWidth = Dimensions.get('window').width
+const followingFont = PixelRatio.get() <= 1.5 ? 12 : 16
 
 const ProfileView = ({ route, item, navigation }) => {
   const defaultUri =
@@ -239,7 +241,7 @@ const styles = StyleSheet.create({
     paddingLeft: 4
   },
   followingInfo: {
-    fontSize: 16,
+    fontSize: followingFont,
     color: 'darkslategrey',
     fontWeight: '600',
     flexWrap: 'wrap'
