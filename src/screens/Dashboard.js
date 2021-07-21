@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import * as Permissions from 'expo-permissions'
 import * as Notifications from 'expo-notifications'
 import * as firebase from 'firebase'
-import checkIfFirstLaunch from '../api/firstLaunch'
 import { FontAwesome5, MaterialCommunityIcons, Ionicons } from 'react-native-vector-icons'
 import {
   ForumScreen,
