@@ -48,7 +48,7 @@ export default function EditGroupScreen ({ route, navigation }) {
 
   const checkSubmit = () => {
     if (textChecker(name) & textChecker(description)) {
-      handleSubmit(() => navigation.navigate('MessagesScreen'))
+      handleSubmit(() => navigation.goBack())
     } else {
       Alert.alert(
         'Missing information',
