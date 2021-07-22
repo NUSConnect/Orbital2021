@@ -141,6 +141,7 @@ export default function ForumAdminManagementScreen ({ props, route, navigation }
         }
       })
       navigation.goBack()
+      Alert.alert('Success', 'Changes have been made successfully')
     }
   }
 

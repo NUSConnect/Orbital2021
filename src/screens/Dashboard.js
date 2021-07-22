@@ -1,5 +1,6 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import React, { useEffect } from 'react'
+import { Alert } from 'react-native'
 import * as Permissions from 'expo-permissions'
 import * as Notifications from 'expo-notifications'
 import * as firebase from 'firebase'
@@ -72,13 +73,13 @@ function MyTabs () {
         }}
       />
       <Tab.Screen
-        name='Friends'
+        name='Search'
         component={FriendsScreen}
         options={{
-          tabBarLabel: 'Friends',
+          tabBarLabel: 'Search',
           tabBarIcon: ({ color }) => (
-            <FontAwesome5
-              name='user-friends'
+            <Ionicons
+              name='search-outline'
               color={color}
               size={24}
               style={{ width: 34 }}
@@ -147,11 +148,28 @@ export default function Dashboard () {
     }
   }
 
+  const warningAlert = (message) => {
+    Alert.alert(
+      'Warning',
+      message,
+      [
+        {
+          text: 'OK',
+          onPress: () => firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).update({ warningUnchecked: false })
+        }
+      ],
+      { cancelable: false }
+    )
+  }
+
   useEffect(() => {
     firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).get()
       .then((documentSnapshot) => {
         if (!documentSnapshot.data().pushInit) {
           registerForPushNotificationsAsync()
+        }
+        if (documentSnapshot.data().warningUnchecked === true) {
+          warningAlert(documentSnapshot.data().warningMessage)
         }
       })
   }, [])
