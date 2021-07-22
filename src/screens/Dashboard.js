@@ -72,13 +72,13 @@ function MyTabs () {
         }}
       />
       <Tab.Screen
-        name='Friends'
+        name='Search'
         component={FriendsScreen}
         options={{
-          tabBarLabel: 'Friends',
+          tabBarLabel: 'Search',
           tabBarIcon: ({ color }) => (
-            <FontAwesome5
-              name='user-friends'
+            <Ionicons
+              name='search-outline'
               color={color}
               size={24}
               style={{ width: 34 }}
