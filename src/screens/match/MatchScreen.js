@@ -18,6 +18,9 @@ import FollowersScreen from '../profile/FollowersScreen'
 import ReportPostScreen from '../home/ReportPostScreen'
 import ReportUserScreen from '../friends/ReportUserScreen'
 import ReportCommentScreen from '../home/ReportCommentScreen'
+import GroupInfoScreen from '../home/GroupInfoScreen'
+import EditGroupScreen from '../home/EditGroupScreen'
+import EditGroupMembersScreen from '../home/EditGroupMembersScreen'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -58,6 +61,9 @@ const HomeScreen = ({ navigation }) => {
         <Stack.Screen name='ReportPostScreen' component={ReportPostScreen} />
         <Stack.Screen name='ReportUserScreen' component={ReportUserScreen} />
         <Stack.Screen name='ReportCommentScreen' component={ReportCommentScreen} />
+        <Stack.Screen name='GroupInfoScreen' component={GroupInfoScreen} />
+        <Stack.Screen name='EditGroupScreen' component={EditGroupScreen} />
+        <Stack.Screen name='EditGroupMembersScreen' component={EditGroupMembersScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )
