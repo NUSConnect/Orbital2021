@@ -1,6 +1,7 @@
 import * as firebase from 'firebase'
 import React, { useState, useEffect } from 'react'
 import {
+  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -135,6 +136,7 @@ export default function ForumAdminSelectionScreen ({ props, route, navigation })
     }
 
     navigation.goBack()
+    Alert.alert('Success', 'Changes have been made successfully')
   }
 
   const addAdmin = (forumId) => {

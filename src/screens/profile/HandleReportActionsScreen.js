@@ -4,6 +4,7 @@ import BackButton from '../../components/BackButton'
 import Background from '../../components/Background'
 import Button from '../../components/Button'
 import * as firebase from 'firebase'
+import { sendPushNotification } from '../../api/notifications'
 
 export default function HandleReportActionsScreen ({ route, navigation }) {
   // const { itemId, category } = route.params
@@ -135,6 +136,8 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
             .then(documentSnapshot => {
               if (documentSnapshot.data().numWarnings >= 3) {
                 banUser()
+              } else {
+                warnUser()
               }
             })
         }
@@ -147,7 +150,28 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
       .doc(itemId)
       .update({ actionTaken: true })
     Alert.alert('Success!', 'User has been issued a warning.')
+
     navigateToCategories()
+  }
+
+  const warnUser = async () => {
+    const message = category === 'users'
+      ? 'Your user profile has some elements that violates our community guidelines. Please change it as soon as possible.'
+      : 'You have made a post/comment that violates our community guidelines. Please be mindful of what you post in the future.'
+
+    await firebase.firestore().collection('users').doc(reportedUid).get()
+      .then((doc) => {
+        console.log('Checking if pushToken available')
+        if (doc.data().pushToken != null) {
+          sendPushNotification(doc.data().pushToken.data, 'Warning', message)
+        }
+      })
+
+    await firebase.firestore().collection('users').doc(reportedUid)
+      .update({
+        warningUnchecked: true,
+        warningMessage: message
+      })
   }
 
   const handleIssueWarning = () => {
@@ -183,6 +207,15 @@ export default function HandleReportActionsScreen ({ route, navigation }) {
       .doc(itemId)
       .update({ actionTaken: true })
     Alert.alert('Success!', 'User has been added to the list to be banned.')
+
+    await firebase.firestore().collection('users').doc(reportedUid).get()
+      .then((doc) => {
+        console.log('Checking if pushToken available')
+        if (doc.data().pushToken != null) {
+          sendPushNotification(doc.data().pushToken.data, 'Ban notice', 'You have been banned for violating our community guidelines')
+        }
+      })
+
     navigateToCategories()
   }
 
