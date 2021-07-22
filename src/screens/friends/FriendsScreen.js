@@ -12,31 +12,14 @@ import ViewProfileScreen from '../profile/ViewProfileScreen'
 import FollowingScreen from '../profile/FollowingScreen'
 import FollowersScreen from '../profile/FollowersScreen'
 import FilteredMajorScreen from './FilteredMajorScreen'
-import FindGroupScreen from './FindGroupScreen'
 import FriendSearchScreen from './FriendSearchScreen'
 import MajorsSearchScreen from './MajorsSearchScreen'
-import WaitingScreen from './WaitingScreen'
-import MatchMeScreen from './MatchMeScreen'
 import ReportPostScreen from '../home/ReportPostScreen'
 import ReportUserScreen from './ReportUserScreen'
 import ReportCommentScreen from '../home/ReportCommentScreen'
 
 const Stack = createStackNavigator()
 const TopTab = createMaterialTopTabNavigator()
-
-function GroupStack () {
-  return (
-    <Stack.Navigator
-      initialRouteName='FriendSearchScreen'
-      screenOptions={{
-        headerShown: false
-      }}
-    >
-      <Stack.Screen name='FindGroupScreen' component={FindGroupScreen} />
-      <Stack.Screen name='WaitingScreen' component={WaitingScreen} />
-    </Stack.Navigator>
-  )
-}
 
 function MajorStack () {
   return (
@@ -70,10 +53,6 @@ function FriendsTabs () {
         name='Search By Major'
         component={MajorStack}
       />
-      <TopTab.Screen
-        name='Match Me!'
-        component={GroupStack}
-      />
     </TopTab.Navigator>
   )
 }
@@ -99,7 +78,6 @@ const FriendsScreen = ({ navigation }) => {
         <Stack.Screen name='FollowingScreen' component={FollowingScreen} />
         <Stack.Screen name='ChatScreen' component={ChatScreen} />
         <Stack.Screen name='CommentScreen' component={CommentScreen} />
-        <Stack.Screen name='MatchMeScreen' component={MatchMeScreen} />
         <Stack.Screen name='ReportPostScreen' component={ReportPostScreen} />
         <Stack.Screen name='ReportUserScreen' component={ReportUserScreen} />
         <Stack.Screen name='ReportCommentScreen' component={ReportCommentScreen} />

@@ -8,7 +8,8 @@ import {
   ForumScreen,
   FriendsScreen,
   HomeScreen,
-  ProfileMasterScreen
+  ProfileMasterScreen,
+  MatchScreen
 } from './'
 
 const Tab = createMaterialBottomTabNavigator()
@@ -50,6 +51,20 @@ function MyTabs () {
           tabBarIcon: ({ color }) => (
             <Ionicons
               name='aperture'
+              color={color}
+              size={26}
+            />
+          )
+        }}
+      />
+      <Tab.Screen
+        name='Matching'
+        component={MatchScreen}
+        options={{
+          tabBarLabel: 'Matching',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name='handshake'
               color={color}
               size={26}
             />
