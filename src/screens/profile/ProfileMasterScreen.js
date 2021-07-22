@@ -22,7 +22,6 @@ import EngineeringMajorsScreen from './EngineeringMajorsScreen'
 import ProfilePersonalScreen from './ProfilePersonalScreen'
 import ProfilePostsScreen from './ProfilePostsScreen'
 import UpdateEmailScreen from './UpdateEmailScreen'
-import MatchHistoryScreen from './MatchHistoryScreen'
 import EditPostScreen from '../home/EditPostScreen'
 import ChatScreen from '../home/ChatScreen'
 import ViewProfileScreen from './ViewProfileScreen'
@@ -70,7 +69,6 @@ function ProfileHomeTabs () {
     >
       <Tab.Screen name='Personal' component={ProfilePersonalScreen} />
       <Tab.Screen name='Posts' component={ProfilePostsScreen} />
-      <Tab.Screen name='Matches' component={MatchHistoryScreen} />
     </Tab.Navigator>
   )
 }

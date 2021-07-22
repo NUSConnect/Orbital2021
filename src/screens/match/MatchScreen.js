@@ -1,3 +1,4 @@
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import {
@@ -8,21 +9,55 @@ import {
 import FindGroupScreen from './FindGroupScreen'
 import MatchMeScreen from './MatchMeScreen'
 import WaitingScreen from './WaitingScreen'
+import MatchHistoryScreen from './MatchHistoryScreen'
+import ChatScreen from '../home/ChatScreen'
+import CommentScreen from '../home/CommentScreen'
+import ViewProfileScreen from '../profile/ViewProfileScreen'
+import FollowingScreen from '../profile/FollowingScreen'
+import FollowersScreen from '../profile/FollowersScreen'
+import ReportPostScreen from '../home/ReportPostScreen'
+import ReportUserScreen from '../friends/ReportUserScreen'
+import ReportCommentScreen from '../home/ReportCommentScreen'
 
 const Stack = createStackNavigator()
+const Tab = createMaterialTopTabNavigator()
+
+function MatchTabs () {
+  return (
+    <Tab.Navigator
+      tabBarOptions={{
+        pressColor: '#ffa500',
+        pressOpacity: 'ffa500',
+        indicatorStyle: { backgroundColor: '#ff8c00' },
+        labelStyle: { fontSize: 14 }
+      }}
+    >
+      <Tab.Screen name='Match Me' component={FindGroupScreen} />
+      <Tab.Screen name='Match History' component={MatchHistoryScreen} />
+    </Tab.Navigator>
+  )
+}
 
 const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Navigator
-        initialRouteName='FindGroupScreen'
+        initialRouteName='MatchTabs'
         screenOptions={{
           headerShown: false
         }}
       >
-        <Stack.Screen name='FindGroupScreen' component={FindGroupScreen} />
+        <Stack.Screen name='MatchTabs' component={MatchTabs} />
         <Stack.Screen name='MatchMeScreen' component={MatchMeScreen} />
         <Stack.Screen name='WaitingScreen' component={WaitingScreen} />
+        <Stack.Screen name='ViewProfileScreen' component={ViewProfileScreen} />
+        <Stack.Screen name='FollowersScreen' component={FollowersScreen} />
+        <Stack.Screen name='FollowingScreen' component={FollowingScreen} />
+        <Stack.Screen name='ChatScreen' component={ChatScreen} />
+        <Stack.Screen name='CommentScreen' component={CommentScreen} />
+        <Stack.Screen name='ReportPostScreen' component={ReportPostScreen} />
+        <Stack.Screen name='ReportUserScreen' component={ReportUserScreen} />
+        <Stack.Screen name='ReportCommentScreen' component={ReportCommentScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )
