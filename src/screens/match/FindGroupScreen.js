@@ -191,13 +191,13 @@ export default function FindGroupScreen ({ navigation }) {
       .onSnapshot((querySnapshot) => {
         count = querySnapshot.size
         if (count === 0) {
-          navigation.navigate('Matching')
+          navigation.navigate('FindGroupScreen')
           unsubscribe()
         } else if (count >= groupThreshold) {
           // hit threshold, handle logic to form a group. currently only an alert.
           const loggedInListener = firebase.auth().onAuthStateChanged(user => {
             if (user) {
-              navigation.navigate('Matching')
+              navigation.navigate('FindGroupScreen')
               Alert.alert('Friend found!', 'Congratulations! Find your new friend on your profile page, under Matches.')
               loggedInListener()
             }
