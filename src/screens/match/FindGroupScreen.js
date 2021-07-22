@@ -198,7 +198,7 @@ export default function FindGroupScreen ({ navigation }) {
           const loggedInListener = firebase.auth().onAuthStateChanged(user => {
             if (user) {
               navigation.navigate('Matching')
-              Alert.alert('Friend found!', 'Congratulations! Find your new friend on your profile page, under Matches.')
+              Alert.alert('Friend found!', 'Congratulations! Find your new friend on your matching page, under Match History.')
               loggedInListener()
             }
           })
