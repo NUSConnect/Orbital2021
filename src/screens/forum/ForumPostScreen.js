@@ -73,10 +73,6 @@ const ForumPostScreen = ({ navigation, route, onPress }) => {
       })
       .then(() => {
         console.log('Comment added')
-        Alert.alert(
-          'Comment published!',
-          'Your comment has been published successfully!'
-        )
         fetchComments()
         setRefreshing(false)
         setComment('')
