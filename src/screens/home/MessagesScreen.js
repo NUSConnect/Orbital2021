@@ -338,7 +338,7 @@ export default function MessagesScreen ({ navigation }) {
                   >
                     <UserInfo>
                       <UserImgWrapper>
-                        <UserImg source={{ uri: item.avatar }} />
+                        <UserImg source={{ uri: item.avatar || 'https://firebasestorage.googleapis.com/v0/b/orbital2021-a4766.appspot.com/o/profile%2Fplaceholder.png?alt=media&token=52e7df63-abdf-4197-9ad3-79d4be61af10' }} />
                       </UserImgWrapper>
                       <TextSection>
                         <UserInfoText>
