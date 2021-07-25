@@ -34,11 +34,12 @@ exports[`renders correctly 1`] = `
     testID="back"
   />
   <Text
+    numberOfLines={2}
     style={
       Object {
         "color": "#ff7f50",
         "flex": 1,
-        "fontSize": 30,
+        "fontSize": 24,
         "textAlign": "center",
         "width": "85%",
       }
