@@ -18,7 +18,7 @@ export default function SubForumHeader ({ title, style, goBack, ...props }) {
           style={styles.icon}
         />
       </TouchableOpacity>
-      <Text style={styles.text}>{title}</Text>
+      <Text style={styles.text} numberOfLines={2}>{title}</Text>
       <Ionicons
         name='add'
         color='white'
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '85%',
     color: '#ff7f50',
-    fontSize: 30,
+    fontSize: 24,
     textAlign: 'center'
   },
   icon: {}
