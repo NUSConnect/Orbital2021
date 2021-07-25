@@ -26,6 +26,8 @@ import HandleReportActionsScreen from '../profile/HandleReportActionsScreen'
 import UnrestrictedViewProfileScreen from '../profile/viewReports/UnrestrictedViewProfileScreen'
 import ChatScreen from '../home/ChatScreen'
 import CommentScreen from '../home/CommentScreen'
+import FollowingScreen from '../profile/FollowingScreen'
+import FollowersScreen from '../profile/FollowersScreen'
 
 const Stack = createStackNavigator()
 const TopTab = createMaterialTopTabNavigator()
@@ -71,6 +73,8 @@ export default function ForumScreen () {
         <Stack.Screen name='ChatScreen' component={ChatScreen} />
         <Stack.Screen name='EditSubforumInfoScreen' component={EditSubforumInfoScreen} />
         <Stack.Screen name='CommentScreen' component={CommentScreen} />
+        <Stack.Screen name='FollowingScreen' component={FollowingScreen} />
+        <Stack.Screen name='FollowersScreen' component={FollowersScreen} />
       </Stack.Navigator>
     </SafeAreaView>
   )
