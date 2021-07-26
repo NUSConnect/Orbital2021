@@ -82,7 +82,6 @@ function MyTabs () {
               name='search-outline'
               color={color}
               size={24}
-              style={{ width: 34 }}
             />
           )
         }}
