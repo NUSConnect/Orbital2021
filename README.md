@@ -39,7 +39,7 @@ We plan to make it a cross-platform mobile app, which users can download and reg
 
 **Milestone 1:** [Link to report](https://docs.google.com/document/d/1kk2xyrJco7O6uScoS3XqIbGLOcx2QNYJV4IhLyRGNxg/edit?usp=sharing)             
 **Milestone 2:** [Link to report](https://docs.google.com/document/d/1x6VheE0PXcwjMB-_03SBfArbyHGMapKNLqP0gecd_4c/edit?usp=sharing)             
-**Milestone 3:** To be updated
+**Milestone 3:** [Link to report](https://docs.google.com/document/d/1_8Grfh0Gk-ZOqjhNwirYCEpmya54C5kOCQH09Ky5IdM/edit?usp=sharing)
 
 ### Documentation:
 

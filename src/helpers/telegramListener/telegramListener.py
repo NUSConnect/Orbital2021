@@ -11,12 +11,12 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 # Firebase setup
-cred = credentials.Certificate("/Users/benedict/Desktop/School/Modules/orbital/serviceAccountKey.json")
+cred = credentials.Certificate("../../../keys/serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 # Telegram Auth
-telegramKeys = open("/Users/benedict/Desktop/School/Modules/orbital/telegramKeys.json")
+telegramKeys = open("../../../keys/telegramKeys.json")
 data = json.load(telegramKeys)
 
 api_id = data['api_id']
