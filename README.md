@@ -12,9 +12,9 @@ Orbital (Independent Software Development Project) is NUS School of Computing se
 
 A cross-platform mobile application (written in React Native) to help users seamlessly connect with each other.
 
-**Project Poster:** [Link](https://drive.google.com/file/d/1Rv0ABxjwhlMkmuo6r3s8MI8Rb_m9RhfG/view?usp=sharing)
+**Project Poster:** [Link](https://drive.google.com/file/d/1bf-z8HCQVCIKek5p7NKCIeK2icWBohx-/view?usp=sharing)
 
-**Project Video:** [Link](https://drive.google.com/file/d/1z5kuxifAWhNEVR1n1lSTL2k1HrSq4I5v/view?usp=sharing)
+**Project Video:** [Link](https://drive.google.com/file/d/1URIMoCvxGfSQuZYGnpnFHTE1oevCULOq/view?usp=sharing)
 
 ### Motivation
 
