@@ -104,7 +104,7 @@ export default class MatchHistoryScreen extends React.Component {
             : (
               <View style={styles.postMessage}>
                 <Text style={styles.postsDescription}>
-                  No matches yet!{'\n'}Try it out on the friends page.
+                  No matches yet!
                 </Text>
               </View>
               )}
