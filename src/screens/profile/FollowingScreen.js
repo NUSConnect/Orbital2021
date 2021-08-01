@@ -158,7 +158,7 @@ export default function FollowingScreen ({ props, navigation, route }) {
           : (
             <View style={styles.postMessage}>
               <Text style={styles.postsDescription}>
-                You're not following anyone.{'\n'}Go follow someone!
+                {currentUserId === userId ? 'You are' : username + ' is'} not following anyone.
               </Text>
             </View>
             )}
