@@ -155,7 +155,7 @@ export default function FollowersScreen ({ props, navigation, route }) {
           : (
             <View style={styles.postMessage}>
               <Text style={styles.postsDescription}>
-                You have no followers.
+                {currentUserId === userId ? 'You have' : username + ' has'} no followers.
               </Text>
             </View>
             )}
