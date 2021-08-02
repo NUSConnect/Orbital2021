@@ -3,6 +3,31 @@ import { getClusters } from './kMeans'
 import { sendPushNotification } from './notifications'
 import { Alert } from 'react-native'
 
+export const splitCluster = (cluster) => {
+  console.log('Splitting...')
+  const mean = cluster.mean
+  const clusterData = cluster.data
+
+  const firstHalf = clusterData.splice(clusterData.length / 2)
+  const result = [{ data: firstHalf, mean: mean }, { data: clusterData, mean: mean }]
+
+  return result.flatMap(x => splitHelper(x))
+}
+
+export const splitHelper = (cluster) => {
+  if (cluster.data.length <= 5) {
+    return [cluster]
+  } else {
+    const clusterMean = cluster.mean
+    const clusterData = cluster.data
+
+    const firstHalf = clusterData.splice(clusterData.length / 2)
+    const result = [{ data: firstHalf, mean: clusterMean }, { data: clusterData, mean: clusterMean }]
+
+    return result.flatMap(x => splitHelper(x))
+  }
+}
+
 export async function formClusters () {
   const data = []
   console.log('Start pulling')
@@ -50,23 +75,6 @@ export async function formClusters () {
 
     const correctedClusters = flattenHelper(incorrectClusters, 0)
     return acceptableClusters.concat(correctedClusters)
-  }
-
-  const splitCluster = (cluster) => {
-    console.log('Splitting...')
-    const firstHalf = cluster.splice(cluster.data.length / 2)
-    const result = [firstHalf, cluster]
-    return result.flatMap(x => splitHelper(x))
-  }
-
-  const splitHelper = (cluster) => {
-    if (cluster.data.length <= 5) {
-      return [cluster]
-    } else {
-      const firstHalf = cluster.splice(cluster.data.length / 2)
-      const result = [firstHalf, cluster]
-      return result.flatMap(x => splitHelper(x))
-    }
   }
 
   const flattenedClusters = flattenClusters(clusters)
