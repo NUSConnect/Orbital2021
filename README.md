@@ -6,7 +6,7 @@
 
 Orbital (Independent Software Development Project) is NUS School of Computing self-directed, independent work course. This programme gives students the opportunity to pick up software development skills on their own, using sources on the web. Our team members consist of Lua Yida and Benedict Chua.
 
-**Proposed Level of Achievement:** Apollo 11
+**Proposed Level of Achievement:** Artemis
 
 ## Introducing Portal.io
 
